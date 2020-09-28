@@ -1,6 +1,7 @@
 #include "stdafx.h"
 //#include <charconv>
 //#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
+#include "WasdCamera.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
@@ -33,6 +34,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
 	SetIsDebugInput(true);
+	
+	std::unique_ptr<GameObj::CSkinModelRender> testModel( NewGO<GameObj::CSkinModelRender>() );
+	testModel->Init( L"Resource/modelData/block.cmo" );
+	testModel->SetPos( CVector3( 0, 0, 0 ) );
+
+	GameObj::PerspectiveCamera c;
+	SetMainCamera( &c );
+	
+	GetMainCamera()->SetPos( { 0, 0, 2 } );
+	GetMainCamera()->SetTarget( { 0, 0, 0 } );
+	WasdCamera camera;
 
 	//ゲームループ。
 	GetEngine().RunGameLoop();

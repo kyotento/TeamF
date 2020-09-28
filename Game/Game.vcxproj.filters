@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="WasdCamera.cpp">
+      <Filter>ForTest</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="WasdCamera.h">
+      <Filter>ForTest</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{4b746416-32af-4a26-9df1-700712c7e479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForTest">
+      <UniqueIdentifier>{9b1a111d-7133-40d8-a041-116e45fff757}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Assets\block.fbx">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Resource\modelData\Carriage.fbx">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\modelData\ground.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
