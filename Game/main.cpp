@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "RandomMapMaker.h"
 //#include <charconv>
 //#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
 #include "WasdCamera.h"
@@ -48,6 +49,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	GetMainCamera()->SetTarget( { 0, 0, 0 } );
 	WasdCamera camera;
 
+	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
+	rMM->Awake();
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 }
