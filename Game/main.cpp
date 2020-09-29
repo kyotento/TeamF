@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "RandomMapMaker.h"
 //#include <charconv>
 //#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
 
@@ -34,6 +35,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	SetIsDebugDraw(true);
 	SetIsDebugInput(true);
 
+	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
+	rMM->Awake();
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 }
