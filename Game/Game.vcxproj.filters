@@ -6,11 +6,29 @@
     <ClCompile Include="WasdCamera.cpp">
       <Filter>ForTest</Filter>
     </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WasdCamera.h">
       <Filter>ForTest</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -20,18 +38,19 @@
     <Filter Include="ForTest">
       <UniqueIdentifier>{9b1a111d-7133-40d8-a041-116e45fff757}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\modelData">
+      <UniqueIdentifier>{cfb8a5ff-f3c2-45b5-8c4d-157697e725a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Block">
+      <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\block.fbx">
-      <Filter>Assets</Filter>
+    <MeshContentTask Include="Assets\modelData\block.fbx">
+      <Filter>Assets\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Resource\modelData\Carriage.fbx">
-      <Filter>Assets</Filter>
-    </MeshContentTask>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resource\modelData\ground.jpg">
-      <Filter>Assets</Filter>
-    </Image>
   </ItemGroup>
 </Project>

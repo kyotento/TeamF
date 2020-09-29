@@ -1,0 +1,34 @@
+#pragma once
+#include "Chunk.h"
+
+class World{
+public:
+	Block* GetBlock( const CVector3& pos ){
+		int x = std::roundf( pos.x );
+		int y = std::roundf( pos.y );
+		int z = std::roundf( pos.z );
+		return GetBlock( x, y, z );
+	}
+	Block* GetBlock( int x, int y, int z );
+
+	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
+		int x = std::roundf( pos.x );
+		int y = std::roundf( pos.y );
+		int z = std::roundf( pos.z );
+		SetBlock( x, y, z, std::move(block) );
+	}
+	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block );
+
+	Chunk* GetChunkFromWorldPos( int x, int z );
+
+	Chunk* CreateChunkFromWorldPos( int x, int z );
+
+	//チャンク座標を計算
+	static int CalcChunkCoord( int num ){
+		if( num < 0 )num -= Chunk::WIDTH - 1;
+		return num / Chunk::WIDTH;
+	}
+private:
+	std::map<int, std::map<int, Chunk>> m_chunkMap;
+};
+

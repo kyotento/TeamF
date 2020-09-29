@@ -2,6 +2,7 @@
 //#include <charconv>
 //#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
 #include "WasdCamera.h"
+#include "World.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
@@ -35,9 +36,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	SetIsDebugDraw(true);
 	SetIsDebugInput(true);
 	
-	std::unique_ptr<GameObj::CSkinModelRender> testModel( NewGO<GameObj::CSkinModelRender>() );
-	testModel->Init( L"Resource/modelData/block.cmo" );
-	testModel->SetPos( CVector3( 0, 0, 0 ) );
+	World world;
+
+	world.SetBlock( 0, 0, 0, std::make_unique<Block>() );
+	world.SetBlock( 0, 1, 0, std::make_unique<Block>() );
 
 	GameObj::PerspectiveCamera c;
 	SetMainCamera( &c );
