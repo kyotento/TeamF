@@ -55,18 +55,18 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\cube.fbx">
+    <MeshContentTask Include="Assets\modelData\cube.fbx">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\GrassBlock.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\soilBlock.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
       <FileType>Document</FileType>
-    </None>
-    <None Include="Assets\modelData\stoneBlock.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
       <FileType>Document</FileType>
-    </None>
+    </MeshContentTask>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

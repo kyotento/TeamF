@@ -24,15 +24,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\modelData\cube.fbx" />
-    <None Include="Assets\modelData\stoneBlock.FBX">
+    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
       <Filter>Assets\modelData</Filter>
-    </None>
-    <None Include="Assets\modelData\soilBlock.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
       <Filter>Assets\modelData</Filter>
-    </None>
-    <None Include="Assets\modelData\GrassBlock.FBX">
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
       <Filter>Assets\modelData</Filter>
-    </None>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\cube.fbx" />
   </ItemGroup>
 </Project>
