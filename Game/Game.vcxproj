@@ -52,6 +52,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockType.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />

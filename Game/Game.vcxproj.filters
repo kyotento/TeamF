@@ -30,6 +30,7 @@
     <ClInclude Include="Block.h">
       <Filter>Block</Filter>
     </ClInclude>
+    <ClInclude Include="BlockType.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -50,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\block.fbx">
-        <Filter>Assets\modelData</Filter>
+      <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>

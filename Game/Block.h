@@ -1,4 +1,6 @@
 #pragma once
+#include "../BlockType.h"
+
 
 class Block{
 public:
@@ -11,8 +13,16 @@ public:
 	GameObj::CInstancingModelRender& GetModel(){
 		return m_model;
 	}
-
+	void SetBlockType(EnCube enCube)
+	{
+		m_state = enCube;
+	}
+	EnCube GetBlockType()
+	{
+		return m_state;
+	}
 private:
 	GameObj::CInstancingModelRender m_model;
+	EnCube m_state = enCube_None;
 };
 
