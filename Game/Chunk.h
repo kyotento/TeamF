@@ -9,7 +9,7 @@ public:
 
 	//チャンク内の座標でブロックを取得
 	Block* GetBlock( int x, int y, int z ){
-		return m_blockArray[z][y][x].get();
+		return m_blockArray[x][y][z].get();
 	}
 	Block* GetBlock( const CVector3& pos ){
 		int x = std::roundf( pos.x );
@@ -20,9 +20,8 @@ public:
 
 	//チャンク内の座標でブロックを設定
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block){
-		m_blockArray[z][x][y] = std::move(block);
-		CalcWorldCoord( x, z );
-		m_blockArray[z][x][y]->SetPos( x, y, z );
+		m_blockArray[x][y][z] = std::move(block);
+		m_blockArray[x][y][z]->SetPos( CalcWorldCoordX(x), y, CalcWorldCoordZ(z) );
 	}
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block){
 		int x = std::roundf( pos.x );
@@ -41,9 +40,11 @@ public:
 	}
 
 	//ワールド座標を計算
-	void CalcWorldCoord( int& x , int& z){
-		x += m_chunkX * Chunk::WIDTH;
-		z += m_chunkZ * Chunk::WIDTH;
+	int CalcWorldCoordX( int x){
+		return x + m_chunkX * Chunk::WIDTH;
+	}
+	int CalcWorldCoordZ( int z ){
+		return z + m_chunkZ * Chunk::WIDTH;
 	}
 
 	static constexpr int WIDTH = 16;

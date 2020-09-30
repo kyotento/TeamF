@@ -1,19 +1,21 @@
 #include "stdafx.h"
 #include "WasdCamera.h"
 
+static const float MOVE_SPEED = 7;
+static const float EYE_SPEED = 10;
+
 void WasdCamera::Update(){
 	GameObj::ICamera* camera = GetMainCamera();
 
 	const float deltaTime = GetRealDeltaTimeSec();
 
 	//wasdキーによるカメラの移動。
-	const float speed = 10;
 	CVector3 front = camera->GetFront();
 	front.y = 0;
 	front.Normalize();
-	front *= deltaTime * speed;
-	CVector3 left = camera->GetLeft() * deltaTime * speed;
-	CVector3 up = CVector3::Up() * deltaTime * speed;
+	front *= deltaTime * MOVE_SPEED;
+	CVector3 left = camera->GetLeft() * deltaTime * MOVE_SPEED;
+	CVector3 up = CVector3::Up() * deltaTime * MOVE_SPEED;
 
 	CVector3 pos = camera->GetPos();
 	{
@@ -50,9 +52,9 @@ void WasdCamera::Update(){
 
 		CVector2 mouse = MouseCursor().GetMouseMove();
 		CQuaternion rotY;
-		rotY.SetRotationDeg( CVector3::AxisY(), mouse.x * deltaTime * speed );
+		rotY.SetRotationDeg( CVector3::AxisY(), mouse.x * deltaTime * EYE_SPEED );
 		CQuaternion rotX;
-		rotX.SetRotationDeg( camera->GetLeft(), -mouse.y * deltaTime * speed );
+		rotX.SetRotationDeg( camera->GetLeft(), -mouse.y * deltaTime * EYE_SPEED );
 
 		rotY.Multiply( rotX );
 

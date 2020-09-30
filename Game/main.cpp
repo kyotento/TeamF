@@ -39,9 +39,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	World world;
 
-	world.SetBlock( 0, 0, 0, std::make_unique<Block>() );
-	world.SetBlock( 0, 1, 0, std::make_unique<Block>() );
-
 	GameObj::PerspectiveCamera c;
 	SetMainCamera( &c );
 	
@@ -50,6 +47,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	WasdCamera camera;
 
 	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
+	rMM->SetWorld( &world );
 	rMM->Awake();
 	//ゲームループ。
 	GetEngine().RunGameLoop();
