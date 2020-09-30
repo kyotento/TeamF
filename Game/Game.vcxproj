@@ -56,6 +56,7 @@
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\GrassBlock.FBX" />
     <MeshContentTask Include="Assets\modelData\soilBlock.FBX" />
+    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

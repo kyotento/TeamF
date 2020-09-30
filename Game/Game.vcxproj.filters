@@ -27,5 +27,8 @@
     <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
 </Project>
