@@ -6,12 +6,12 @@
 
 bool GameCamera::Start()
 {
-	m_position = CVector3(00.0f, 200.0f, 100.0f);
+	m_position = CVector3(00.0f, 20.0f, 10.0f);
 	m_camera = NewGO<GameObj::PerspectiveCamera>();
-	m_target = CVector3(0.0f, 100.0f, 0.0f);
+	m_target = CVector3(0.0f, 10.0f, 0.0f);
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
-	//SetMainCamera(m_camera);
+	SetMainCamera(m_camera);
 	return true;
 }
 
@@ -29,7 +29,7 @@ void GameCamera::TPS()
 	CVector3 stickR = CVector3::Zero();
 	float degreeSpeed = 60.0f;
 	const float maxDegreeXZ = 70.0f;
-	const float minDegreeXZ = 15.0f;
+	const float minDegreeXZ = 5.0f;
 	stickR = Pad(0).GetStick(R);	//アナログスティックのxの入力量を取得。
 	stickR.x = -stickR.x;
 	stickR.z = 0.0f;
@@ -49,8 +49,8 @@ void GameCamera::TPS()
 	float radianY = M_PI / 180 * m_degreeY;
 	float radianXZ = M_PI / 180 * m_degreeXZ;
 
-	m_target = m_player->GetPosition() + m_player->GetRight()* 30.0f;
-	m_target.y += 40.0f;
+	m_target = m_player->GetPosition() + m_player->GetRight()* 3.0f;
+	m_target.y += 4.0f;
 	//Y軸周りに回転させる。
 	CQuaternion qRot;
 	qRot.SetRotation(CVector3::AxisY(), radianY);

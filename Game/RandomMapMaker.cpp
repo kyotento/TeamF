@@ -37,9 +37,9 @@ void RandomMapMaker::Awake()
 			m_cubeList.push_back(cube);*/
 			CVector3 pos = CVector3(x, 0, z);
 			pos.y = SetY(pos);
-			int xx = int(pos.x) / 10;
-			int yy = int(pos.y) / 10;
-			int zz = int(pos.z) / 10;
+			int xx = int(pos.x);
+			int yy = int(pos.y);
+			int zz = int(pos.z);
 
 			{
 				auto block = std::make_unique<Block>();

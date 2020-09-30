@@ -18,7 +18,7 @@ private:
 	void Move();
 	void Turn();
 public:
-	CVector3 m_position = CVector3::One() * 100.0f;
+	CVector3 m_position = CVector3::One() * 10.0f;
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);
 	GameCamera* m_gameCamera;
 	float m_radian = 0.0f;

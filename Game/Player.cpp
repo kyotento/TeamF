@@ -12,7 +12,7 @@ void Player::Update()
 
 void Player::Move()
 {
-	const float mult = 10.0f;
+	const float mult = 4.0f;
 	
 	//左スティックの入力量を取得
 	CVector3 stickL;
@@ -21,7 +21,7 @@ void Player::Move()
 
 	CVector3 moveSpeed = CVector3::Zero();
 
-	moveSpeed.z = +sin(m_radian)*stickL.x * mult;
+	moveSpeed.z = sin(m_radian)*stickL.x * mult;
 	moveSpeed.x = -cos(m_radian)*stickL.x * mult;
 	//スティックの上下入力の処理
 	moveSpeed.z += cos(m_radian)*stickL.y * mult;
@@ -47,7 +47,7 @@ void Player::Turn()
 	stickR.x = -Pad(0).GetStick(R).x;	//アナログスティックのxの入力量を取得。
 	//向き
 	//右スティック
- 	float sDegree = -stickR.x * Mult * GetEngine().GetStandardFrameRate();
+ 	float sDegree = -stickR.x * Mult / GetEngine().GetStandardFrameRate();
 	//回転処理
 	m_degree += sDegree;
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degree);
