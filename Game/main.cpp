@@ -26,7 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initparam.isShaderPathReplaceForEngineFilePath = true;
 	
 	//ƒGƒ“ƒWƒ“‰Šú‰»
-	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Obosh", initparam);	
+	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam);	
 	
 	//”»’è•\¦
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
