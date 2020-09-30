@@ -16,6 +16,7 @@ void RandomMapMaker::Awake()
 	m_seedY = rand() % 101;
 
 	m_cubeList.resize(m_width);
+	//m_cubeList[0].push_back();
 	for (int i = 0; i < m_width; i++) {
 		m_cubeList[i].resize(m_maxHeight + 1);
 		for (int j = 0; j < m_maxHeight + 1; j++) {
@@ -67,13 +68,13 @@ void RandomMapMaker::Awake()
 	}
 
 	m_position = CVector3(00.0f, 200.0f, 100.0f);
-	m_camera = NewGO<GameObj::PerspectiveCamera>();
+	/*m_camera = NewGO<GameObj::PerspectiveCamera>();
 	//m_camera = FindGO<GameObj::PerspectiveCamera>(L"Camera");
 	//Vector3 pos = Vector3(-400.0f, 400.0f, 400.0f);
 	m_target = CVector3(0.0f, 100.0f, 0.0f);
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
-	SetMainCamera(m_camera);
+	SetMainCamera(m_camera);*/
 	//m_cubeModel.Init(m_posList.size(),L"Resource/modelData/cube.cmo");
 
 	/*for (auto pos : m_posList) {

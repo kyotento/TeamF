@@ -35,8 +35,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -46,17 +48,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Perlin.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMapMaker.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\cube.fbx">
+    <None Include="Assets\modelData\cube.fbx">
       <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX" />
-    <MeshContentTask Include="Assets\modelData\soilBlock.FBX" />
-    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX" />
+    </None>
+    <None Include="Assets\modelData\GrassBlock.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\soilBlock.FBX">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Assets\modelData\stoneBlock.FBX">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -52,8 +52,8 @@ public:
 		speed *= 5.0f;
 		m_position += speed;
 		m_target += speed;
-		m_camera->SetPos(m_position);
-		m_camera->SetTarget(m_target);
+		/*m_camera->SetPos(m_position);
+		m_camera->SetTarget(m_target);*/
 		//MainCamera().Update();
 	} 
 	//void Draw();

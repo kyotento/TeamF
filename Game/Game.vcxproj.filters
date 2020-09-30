@@ -5,11 +5,15 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="RandomMapMaker.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -20,15 +24,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\cube.fbx" />
-    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
+    <None Include="Assets\modelData\cube.fbx" />
+    <None Include="Assets\modelData\stoneBlock.FBX">
       <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
+    </None>
+    <None Include="Assets\modelData\soilBlock.FBX">
       <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
+    </None>
+    <None Include="Assets\modelData\GrassBlock.FBX">
       <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
+    </None>
   </ItemGroup>
 </Project>
