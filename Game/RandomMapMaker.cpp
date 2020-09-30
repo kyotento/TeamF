@@ -37,8 +37,6 @@ void RandomMapMaker::Awake()
 			m_cubeList.push_back(cube);*/
 			CVector3 pos = CVector3(x, 0, z);
 			pos.y = SetY(pos);
-			pos *= 10.f;
-
 			int xx = int(pos.x) / 10;
 			int yy = int(pos.y) / 10;
 			int zz = int(pos.z) / 10;
