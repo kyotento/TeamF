@@ -11,7 +11,7 @@ bool GameCamera::Start()
 	m_target = CVector3(0.0f, 100.0f, 0.0f);
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
-	SetMainCamera(m_camera);
+	//SetMainCamera(m_camera);
 	return true;
 }
 
