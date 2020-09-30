@@ -1,4 +1,25 @@
 #pragma once
+
+enum EnCube
+{
+	enCube_None = -1,
+	enCube_Grass = 0,
+	enCube_Soil,
+	enCube_Stone,
+	enCube_Ore
+};
+
+struct Cube {
+	CVector3 s_position = CVector3::Zero();
+	GameObj::CInstancingModelRender* s_model = nullptr;
+	EnCube s_state = enCube_None;
+};
+
+/*class Cube {
+public:
+	
+};*/
+
 class RandomMapMaker : public IGameObject
 {
 public:
@@ -38,15 +59,15 @@ public:
 	//void Draw();
 private:
 	float SetY(const CVector3& pos);
+	void Soil(const int x, const int y, const int z);
+	void Stone(const int x, const int y, const int z);
+	void Ore(const int x, const int y, const int z);
 private:
-	struct Cube {
-		CVector3 s_position;
-		GameObj::CInstancingModelRender m_model;
-	};
-	float m_seedX, m_seedZ;
-	const float m_width = 70;		//マップのサイズ
-	const float m_depth = 70;
-	float m_maxHeight = 20;			//マップの最大の高さ
+
+	float m_seedX, m_seedZ, m_seedY;
+	const float m_width = 50;		//マップのサイズ
+	const float m_depth = 50;
+	float m_maxHeight = 15;			//マップの最大の高さ
 	float m_relief = 20.f;			//起状の激しさ
 	float m_mapSize = 1.f;			//マップの大きさ
 	//GameObj::CSkinModelRender m_cubeModel;
@@ -56,11 +77,18 @@ private:
 	std::vector<PosList> m_posVector;
 	CVector3 m_position;
 	CVector3 m_target;
-	float m_minHeight = -5;
+	float m_minHeight = 0;
 	GameObj::PerspectiveCamera* m_camera;                   //3Dカメラのインスタンス
 	//std::list<CSkinModelRender*> m_cubeList;
 	std::list<GameObj::CInstancingModelRender*> m_cubeModelList;
 
-	std::list<Cube> typedef CubeList;
+	std::vector<std::vector<std::vector<Cube>>> m_cubeList;
+	std::vector<const wchar_t*> m_filePathList;
+
+	const int m_stoneMaxHeight = 3;
+	const int m_stoneMinHeight = 0;
+	const int m_OreMaxHeight = 2;
+	const int m_OreMinHeight = 0;
+	float m_relief2 = 10.f;
 };
 
