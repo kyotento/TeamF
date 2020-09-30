@@ -2,6 +2,8 @@
 #include "RandomMapMaker.h"
 #include "Perlin.h"
 #include <random>
+#include "Block.h"
+#include "World.h"
 
 void RandomMapMaker::Awake()
 {
@@ -41,12 +43,19 @@ void RandomMapMaker::Awake()
 			int yy = int(pos.y) / 10;
 			int zz = int(pos.z) / 10;
 
-			m_cubeList[xx][yy][zz].s_position = pos;
+			{
+				auto block = std::make_unique<Block>();
+				block->GetModel().Init( m_width * m_depth * ( m_maxHeight + 1 ), m_filePathList[enCube_Grass] );
+				block->GetModel().SetScale( CVector3::One() * 0.0075f );
+				m_world->SetBlock( xx, yy, zz, std::move( block ) );
+			}
+
+			/*m_cubeList[xx][yy][zz].s_position = pos;
 			m_cubeList[xx][yy][zz].s_model = new GameObj::CInstancingModelRender();
 			m_cubeList[xx][yy][zz].s_state = enCube_Grass;
 			m_cubeList[xx][yy][zz].s_model->Init(m_width * m_depth * (m_maxHeight + 1), m_filePathList[m_cubeList[xx][yy][zz].s_state]);
 			m_cubeList[xx][yy][zz].s_model->SetPos(pos);
-			m_cubeList[xx][yy][zz].s_model->SetScale(CVector3::One() * 0.1f);
+			m_cubeList[xx][yy][zz].s_model->SetScale(CVector3::One() * 0.07f);*/
 		
 
 			m_posList.push_back(pos);
@@ -54,24 +63,32 @@ void RandomMapMaker::Awake()
 			while (yy > m_minHeight) {
 				yy--;
 				pos.y = float(yy) * 10.f;
-				m_cubeList[xx][yy][zz].s_position = pos;
+
+				{
+					auto block = std::make_unique<Block>();
+					block->GetModel().Init( m_width * m_depth * ( m_maxHeight + 1 ), m_filePathList[enCube_Soil] );
+					block->GetModel().SetScale( CVector3::One() * 0.0075f );
+					m_world->SetBlock( xx, yy, zz, std::move( block ) );
+				}
+
+				/*m_cubeList[xx][yy][zz].s_position = pos;
 				m_cubeList[xx][yy][zz].s_model = new GameObj::CInstancingModelRender();
 				Soil(xx, yy, zz);
 				Stone(xx, yy, zz);
 				Ore(xx, yy, zz);
 				m_cubeList[xx][yy][zz].s_model->Init(m_width * m_depth * (m_maxHeight + 1), m_filePathList[m_cubeList[xx][yy][zz].s_state]);
 				m_cubeList[xx][yy][zz].s_model->SetPos(pos);
-				m_cubeList[xx][yy][zz].s_model->SetScale(CVector3::One() * 0.1f);
+				m_cubeList[xx][yy][zz].s_model->SetScale(CVector3::One() * 0.07f);*/
 				//m_posList2.push_back(pos);
 			}
 		}
 	}
 
-	m_position = CVector3(00.0f, 200.0f, 100.0f);
-	/*m_camera = NewGO<GameObj::PerspectiveCamera>();
+	/*m_position = CVector3(00.0f, 200.0f, 100.0f);
+	m_camera = NewGO<GameObj::PerspectiveCamera>();*/
 	//m_camera = FindGO<GameObj::PerspectiveCamera>(L"Camera");
 	//Vector3 pos = Vector3(-400.0f, 400.0f, 400.0f);
-	m_target = CVector3(0.0f, 100.0f, 0.0f);
+	/*m_target = CVector3(0.0f, 100.0f, 0.0f);
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
 	SetMainCamera(m_camera);*/

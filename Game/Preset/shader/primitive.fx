@@ -30,8 +30,3 @@ float4 PSConvertLinearToSRGB(PSInput In) : SV_Target0
 	Out.xyz = pow(Out.xyz, 1.0f / 2.2f);
 	return Out;
 }
-
-float4 PSMainColor(PSInput In) : SV_Target0
-{
-	return float4(0.0f,1.0f,1.0f,1.0f);
-}
