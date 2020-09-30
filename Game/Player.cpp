@@ -4,8 +4,19 @@
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
 
+bool Player::Start()
+{
+	m_model.Init(L"Resource/modelData/GrassBlock.cmo");
+	m_model.SetScale(CVector3::One() * 0.01f);
+	return true;
+}
+
 void Player::Update()
 {
+	if (m_gameCamera == nullptr) {
+		m_gameCamera = FindGO<GameCamera>();
+		return;
+	}
 	Move();
 	Turn();
 }
@@ -13,7 +24,7 @@ void Player::Update()
 void Player::Move()
 {
 	const float mult = 4.0f;
-	
+
 	//左スティックの入力量を取得
 	CVector3 stickL;
 	stickL.y = -Pad(0).GetStick(L).y;
@@ -21,6 +32,14 @@ void Player::Move()
 
 	CVector3 moveSpeed = CVector3::Zero();
 
+	/*if (m_gameCamera->GetIsFPS()) {
+		stickL.y = Pad(0).GetStick(L).y;
+		stickL.x = -Pad(0).GetStick(L).x;	//アナログスティックの入力量を取得。
+	}
+	else {
+		stickL.y = -Pad(0).GetStick(L).y;
+		stickL.x = Pad(0).GetStick(L).x;	//アナログスティックの入力量を取得。
+	}*/
 	moveSpeed.z = sin(m_radian)*stickL.x * mult;
 	moveSpeed.x = -cos(m_radian)*stickL.x * mult;
 	//スティックの上下入力の処理
@@ -28,16 +47,12 @@ void Player::Move()
 	moveSpeed.x += sin(m_radian)*stickL.y * mult;
 	moveSpeed.y = 0.0f;
 	m_position += moveSpeed * mult / GetEngine().GetStandardFrameRate();
+	m_model.SetPos(m_position);
 }
 
 void Player::Turn()
 {
 	const float Mult = 60.0f;
-
-	if (m_gameCamera == nullptr) {
-		m_gameCamera = FindGO<GameCamera>();
-		return;
-	}
 
 	CVector3 rotation = { 0.0f,0.0f,0.0f };
 	//自機の角度の差分
@@ -52,7 +67,9 @@ void Player::Turn()
 	m_degree += sDegree;
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degree);
 
-	CVector3 moveSpeedXZ = { 0.0f,0.0f,1.0f };
-	m_rotation.Multiply(moveSpeedXZ);
-	m_right = moveSpeedXZ;
+	m_right = { -1.0f,0.0f,0.0f };
+	m_rotation.Multiply(m_right);
+
+	m_front = { 0.0f,0.0f,-1.0f };
+	m_rotation.Multiply(m_front);
 }
