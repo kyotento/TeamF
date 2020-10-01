@@ -22,20 +22,28 @@ void GameCamera::Update()
 		return;
 	}
 
-	if (m_isFPS) {
+	switch (m_mode)
+	{
+	case EnMode_FPS:
 		FPS();
-	}
-	else {
+		break;
+	case EnMode_TPS:
 		TPS();
+		break;
+	case EnMode_ReverseTPS:
+		ReverseTPS();
+		break;
+	default:
+		break;
 	}
-	if (Pad(0).GetDown(enButtonA)) {
-		if (m_isFPS) {
-			m_isFPS = false;
-		}
-		else {
-			m_isFPS = true;
+
+	if (GetKeyDown(116)) {
+		m_mode = EnCameraMode(m_mode + 1);
+		if (m_mode == EnMode_Num) {
+			m_mode = EnMode_FPS;
 		}
 	}
+
 }
 
 void GameCamera::FPS()
@@ -137,4 +145,55 @@ void GameCamera::TPS()
 	m_position = m_target + toPos;
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
+}
+
+void GameCamera::ReverseTPS()
+{
+	float degreeSpeed = 60.0f;
+	const float maxDegreeXZ = 70.0f;
+	const float minDegreeXZ = -50.0f;
+	const float height = 1.0f;
+	const float front = 0.5f;
+
+	CVector3 stickR = CVector3::Zero();
+
+	stickR = Pad(0).GetStick(R);	//アナログスティックのxの入力量を取得。
+	stickR.x = -stickR.x;
+	stickR.z = 0.0f;
+	//右スティックの入力
+	//右スティック
+	m_degreeY -= stickR.x * degreeSpeed / GetEngine().GetStandardFrameRate();
+	m_degreeXZ -= stickR.y * degreeSpeed / GetEngine().GetStandardFrameRate();
+
+	if (m_degreeXZ < minDegreeXZ) {
+		m_degreeXZ = minDegreeXZ;
+	}
+	else if (m_degreeXZ > maxDegreeXZ) {
+		m_degreeXZ = maxDegreeXZ;
+	}
+
+	//角度をラジアン単位に直す
+	float radianY = M_PI / 180 * m_degreeY;
+	float radianXZ = M_PI / 180 * m_degreeXZ;
+
+	m_position = m_player->GetPosition();
+	m_position += m_player->GetFront() * front;
+	m_position.y += height;
+	//Y軸周りに回転させる。
+	CQuaternion qRot;
+	qRot.SetRotation(CVector3::AxisY(), radianY);
+	CVector3 toPos = { 0.0f, 0.0f, 1.0f };
+	qRot.Multiply(toPos);
+	//上下の回転。
+	//まずは回す軸を計算する。
+	CVector3 rotAxis;
+	rotAxis.Cross(toPos, CVector3::AxisY());
+	//ベクトルを正規化する。
+	rotAxis.Normalize();
+	qRot.SetRotation(rotAxis, radianXZ);
+	qRot.Multiply(toPos);
+	toPos *= m_radius;
+	m_target = m_position - toPos;
+	m_camera->SetPos(m_target);
+	m_camera->SetTarget(m_position);
 }

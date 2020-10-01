@@ -53,6 +53,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	rMM->Awake();
 	Player* player = NewGO<Player>();
 	GameCamera* gameCamera = NewGO<GameCamera>();
+	player->SetGameCamera(gameCamera);
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 }

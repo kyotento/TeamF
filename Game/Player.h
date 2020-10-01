@@ -19,6 +19,10 @@ public:
 	{
 		return m_position;
 	}
+	void SetGameCamera(GameCamera* gameCamera)
+	{
+		m_gameCamera = gameCamera;
+	}
 private:
 	void Move();
 	void Turn();

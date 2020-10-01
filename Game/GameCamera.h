@@ -1,5 +1,11 @@
 #pragma once
 class Player;
+enum EnCameraMode {
+	EnMode_FPS,
+	EnMode_TPS,
+	EnMode_ReverseTPS,
+	EnMode_Num
+};
 class GameCamera : public IGameObject
 {
 public:
@@ -11,9 +17,26 @@ public:
 	{
 		return m_isFPS;
 	}
+	void SetPlayer(Player* player)
+	{
+		m_player = player;
+	}
+	void SetDegreeY(float degreeY)
+	{
+		m_degreeY = degreeY;
+	}
+	void SetDegreeXZ(float degreeXZ)
+	{
+		m_degreeXZ = degreeXZ;
+	}
+	EnCameraMode GetCameraMode()
+	{
+		return m_mode;
+	}
 private:
 	void TPS();
 	void FPS();
+	void ReverseTPS();
 public:
 	Player* m_player = nullptr;
 	GameObj::PerspectiveCamera* m_camera;
@@ -23,5 +46,6 @@ public:
 	float m_degreeY = 0.0f;
 	float m_degreeXZ = 0.0f;
 	bool m_isFPS = true;
+	EnCameraMode m_mode = EnMode_FPS;
 };
 

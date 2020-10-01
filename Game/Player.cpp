@@ -8,6 +8,7 @@ bool Player::Start()
 {
 	m_model.Init(L"Resource/modelData/GrassBlock.cmo");
 	m_model.SetScale(CVector3::One() * 0.01f);
+	m_gameCamera->SetDegreeY(m_degree);
 	return true;
 }
 
@@ -27,8 +28,14 @@ void Player::Move()
 
 	//左スティックの入力量を取得
 	CVector3 stickL;
-	stickL.y = -Pad(0).GetStick(L).y;
-	stickL.x = Pad(0).GetStick(L).x;	//アナログスティックの入力量を取得。
+	if (m_gameCamera->GetCameraMode() == EnMode_ReverseTPS) {
+		stickL.y = Pad(0).GetStick(L).y;
+		stickL.x = -Pad(0).GetStick(L).x;	//アナログスティックの入力量を取得。
+	}
+	else {
+		stickL.y = -Pad(0).GetStick(L).y;
+		stickL.x = Pad(0).GetStick(L).x;	//アナログスティックの入力量を取得。
+	}
 
 	CVector3 moveSpeed = CVector3::Zero();
 
