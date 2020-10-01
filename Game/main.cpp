@@ -18,25 +18,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	}
 
 	//エンジンの初期化設定
-	InitEngineParameter initparam;
-	
-	//TODO フルスク対応
-	//initparam.windowStyle = WS_POPUP | WS_BORDER ;		//ウィンドウスタイル
+	InitEngineParameter initparam;	
 
 	//解像度
 	//initparam.screenWidth = initparam.frameBufferWidth = initparam.frameBufferWidth3D = 1920;
 	//initparam.screenHeight = initparam.frameBufferHeight = initparam.frameBufferHeight3D = 1080;
 
-	initparam.useFpsLimiter = false;
+	//initparam.useFpsLimiter = false;//フレームレート上限無効
+	initparam.limitFps = 60;		//フレームレート上限
+	initparam.standardFps = 60;		//動作フレームレート※これいじるとゲームスピードが変わる(処理実行回数が増える)
+
 	initparam.useVSync = false;
 	initparam.isWindowMode = true;
+	//initparam.windowStyle = WS_POPUP | WS_BORDER ;		//ウィンドウスタイル
 
 	//シェーダー
 	//※デバッグ用
 	initparam.isShaderPathReplaceForEngineFilePath = true;
 	
 	//エンジン初期化
-	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Obosh", initparam);	
+	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam);	
 	
 	//判定表示
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
