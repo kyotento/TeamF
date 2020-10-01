@@ -18,7 +18,7 @@ bool GameCamera::Start()
 	m_camera->SetPos({ 0.f,250.f,-500.f });
 	SetMainCamera(m_camera);
 
-	return false;
+	return true;
 }
 
 void GameCamera::Update()

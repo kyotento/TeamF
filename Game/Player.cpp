@@ -11,6 +11,8 @@ namespace {
 	CVector2 mouseCursorMovePow = CVector2::Zero();		//マウスカーソルの移動量。
 
 	CVector3 movePower;						//キャラコンの移動にかかる力。
+
+	CQuaternion rotMousePower;				//マウスの回転量。
 }
 
 Player::Player()
@@ -78,15 +80,12 @@ void Player::Move()
 //回転処理。
 void Player::Rotation()
 {
-	CQuaternion mouseRot;		//マウスの回転量。
+	mouseCursorMovePow = MouseCursor().GetMouseMove();			//マウスの移動量を取得。
 
-	mouseCursorMovePow = MouseCursor().GetMouseMove();
+	rotMousePower.SetRotationDeg(CVector3::AxisY(), mouseCursorMovePow.x);		//移動量をもとにY軸回転の力を計算。
 
-	mouseRot.SetRotation(CVector3::AxisY(), mouseCursorMovePow.x);
-
-	m_rot.x += mouseRot.x;
+	m_rot.Multiply(rotMousePower);			//元のRotationに加算。
 
 	m_skinModelRender->SetRot(m_rot);
 
-	//MouseCursor();
 }
