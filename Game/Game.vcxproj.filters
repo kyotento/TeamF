@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="GameCamera.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{fe86d3ad-fe2d-4577-82d5-3ae2e913a2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\model">
+      <UniqueIdentifier>{decf4dc9-0715-46ae-bd6a-a0868782765d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="Preset\modelData\player.FBX">
+      <Filter>Assets\model</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Preset\modelData\flore_kari.FBX">
+      <Filter>Assets\model</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+</Project>

@@ -1,10 +1,21 @@
 #include "stdafx.h"
+#include "Game.h"
 //#include <charconv>
 //#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
+
+namespace {
+	bool isStart = false;		//ゲームが実行されて一度だけ呼ばれる。
+}
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);
+
+	if (isStart == false)
+	{
+		NewGO<Game>();
+		isStart = true;
+	}
 
 	//エンジンの初期化設定
 	InitEngineParameter initparam;
