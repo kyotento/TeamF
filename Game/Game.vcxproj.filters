@@ -53,6 +53,9 @@
     <MeshContentTask Include="Assets\modelData\block.fbx">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\cube.fbx">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
@@ -85,6 +88,5 @@
     <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\cube.fbx" />
   </ItemGroup>
 </Project>

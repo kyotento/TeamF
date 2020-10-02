@@ -41,19 +41,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	World world;
 
-	GameObj::PerspectiveCamera c;
-	SetMainCamera( &c );
+	//GameObj::PerspectiveCamera c;
+	//SetMainCamera( &c );
 	
 	GetMainCamera()->SetPos( { 0, 0, 2 } );
 	GetMainCamera()->SetTarget( { 0, 0, 0 } );
-	WasdCamera camera;
+	//WasdCamera camera;
 
 	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
 	rMM->SetWorld( &world );
 	rMM->Awake();
 	Player* player = NewGO<Player>();
 	GameCamera* gameCamera = NewGO<GameCamera>();
-	player->SetGameCamera(gameCamera);
+	MouseCursor().SetLockMouseCursor(true);
+	//MouseCursor().SetLockMouseCursor(true);
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 }

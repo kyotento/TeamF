@@ -1,9 +1,10 @@
 #pragma once
 class Player;
+//カメラのモード
 enum EnCameraMode {
-	EnMode_FPS,
-	EnMode_TPS,
-	EnMode_ReverseTPS,
+	EnMode_FPS,   //FPS
+	EnMode_TPS,   //TPS
+	EnMode_ReverseTPS,    //正面からのカメラ
 	EnMode_Num
 };
 class GameCamera : public IGameObject
@@ -13,39 +14,26 @@ public:
 	~GameCamera() {}
 	bool Start() override;
 	void Update() override;
-	bool GetIsFPS()
-	{
-		return m_isFPS;
-	}
-	void SetPlayer(Player* player)
-	{
-		m_player = player;
-	}
-	void SetDegreeY(float degreeY)
-	{
-		m_degreeY = degreeY;
-	}
-	void SetDegreeXZ(float degreeXZ)
-	{
-		m_degreeXZ = degreeXZ;
-	}
+	//カメラのモードを取得
 	EnCameraMode GetCameraMode()
 	{
 		return m_mode;
 	}
 private:
+	//TPS
 	void TPS();
+	//FPS
 	void FPS();
+	//正面からのカメラ
 	void ReverseTPS();
 public:
-	Player* m_player = nullptr;
-	GameObj::PerspectiveCamera* m_camera;
-	CVector3 m_position = CVector3::One() * 10.0f;
-	CVector3 m_target = CVector3::Zero();
-	const float m_radius = 4.0f;
-	float m_degreeY = 0.0f;
-	float m_degreeXZ = 0.0f;
-	bool m_isFPS = true;
-	EnCameraMode m_mode = EnMode_FPS;
+	Player* m_player = nullptr;							//プレイヤー
+	GameObj::PerspectiveCamera* m_camera;				//ゲームカメラ
+	CVector3 m_position = CVector3::One() * 10.0f;		//座標
+	CVector3 m_target = CVector3::Zero();				//注視点
+	const float m_radius = 4.0f;						//注視点と座標の距離
+	float m_radianY = 0.0f;								//Y軸の回転(ラジアン)
+	float m_radianXZ = 0.0f;							//XZ軸の回転(ラジアン)
+	EnCameraMode m_mode = EnMode_FPS;					//カメラのモード
 };
 
