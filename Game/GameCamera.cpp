@@ -11,6 +11,7 @@ bool GameCamera::Start()
 	m_target = CVector3(0.0f, 10.0f, 0.0f);
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
+	m_camera->SetNear(0.1f);
 	SetMainCamera(m_camera);
 	return true;
 }
@@ -55,9 +56,9 @@ void GameCamera::Update()
 void GameCamera::FPS()
 {
 	//カメラの高さ
-	const float height = 1.0f;
+	const float height = 0.30f;
 	//カメラをプレイヤーの正面に
-	const float front = 0.5f;
+	const float front = 0.05f;
 
 	m_position = m_player->GetPosition();
 	m_position += m_player->GetFront() * front;
@@ -84,9 +85,9 @@ void GameCamera::FPS()
 void GameCamera::TPS()
 {
 	//カメラの高さ
-	const float height = 2.0f;
+	const float height = 0.20f;
 	//カメラをプレイヤーより横にずらす
-	const float right = 2.0f;
+	const float right = 0.20f;
 	
 	m_target = m_player->GetPosition() + m_player->GetRight() * right;
 	m_target.y += height;
@@ -112,9 +113,9 @@ void GameCamera::TPS()
 void GameCamera::ReverseTPS()
 {
 	//カメラの高さ
-	const float height = 1.0f;
+	const float height = 0.1f;
 	//カメラをプレイヤーの正面に
-	const float front = 0.5f;
+	const float front = 0.05f;
 
 	m_position = m_player->GetPosition();
 	m_position += m_player->GetFront() * front;

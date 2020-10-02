@@ -1,10 +1,10 @@
 #pragma once
 #include "Block.h"
+#include "../physics/character/CCharacterController.h"
+
+
 class GameCamera;
-
-
 class Item;
-
 struct Inventory {
 	Item* s_item = nullptr;
 	int s_number = 0;
@@ -61,8 +61,10 @@ public:
 	float m_radianY = 0.0f;										//Y軸の回転(ラジアン)
 	float m_radianXZ = 0.0f;									//XZ軸の回転(ラジアン)
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン
-	GameObj::CSkinModelRender m_model;
-	//std::vector<Item*> m_itemList;
+	GameObj::CSkinModelRender m_model;							//モデル
+	CCharacterController m_characon;							//キャラコン
+	float m_characonRadius = 50.f;			//キャラコンの半径。
+	float m_characonHeight = 100.f;			//キャラコンの高さ。
 	CFont m_font;												//フォント
 	std::vector<Inventory*> m_inventoryList;					//インベントリ
 };

@@ -7,8 +7,11 @@
 
 bool Player::Start()
 {
-	m_model.Init(L"Resource/modelData/GrassBlock.cmo");
-	m_model.SetScale(CVector3::One() * 0.01f);
+	m_model.Init(L"Resource/modelData/player.cmo");
+	m_model.SetScale(CVector3::One() * 0.001f);
+
+	//キャラコンの初期化。
+	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
 
 	for (int i = 0; i < inventryWidth; i++) {
 		//m_inventoryList[i] = new Inventory();
@@ -33,54 +36,53 @@ void Player::Update()
 void Player::Move()
 {
 	//移動速度
-	const float mult = 10.0f;
+	const float moveMult = 400.0f;
+	const float move = 1.0f;
 
 	//WSADキーによる移動量
 	CVector3 stickL = CVector3::Zero();
 
-	bool isKey = false;
+	//各キー入力により移動量を計算
 	if (GetKeyInput('W')) {
-		stickL.y = -1.0f;
-		isKey = true;
+		stickL.y = -move;
 	}
 	else if (GetKeyInput('S')) {
-		stickL.y = 1.0f;
-		isKey = true;
+		stickL.y = move;
 	}
 	if (GetKeyInput('A')) {
-		stickL.x = -1.0f;
-		isKey = true;
+		stickL.x = -move;
 	}
 	else if (GetKeyInput('D')) {
-		stickL.x = 1.0f;
-		isKey = true;
+		stickL.x = move;
 	}
-	if (isKey) {
-		stickL.Normalize();
-	}
+	stickL.Normalize();
 
 	CVector3 moveSpeed = CVector3::Zero();
 
+	//左右入力の処理
 	moveSpeed.z = sin(m_radianY) * stickL.x;
 	moveSpeed.x = -cos(m_radianY) * stickL.x;
+	//上下入力の処理
 	moveSpeed.z += cos(m_radianY) * stickL.y;
 	moveSpeed.x += sin(m_radianY) * stickL.y;
 	moveSpeed.y = 0.0f;
-	m_position += moveSpeed * mult / GetEngine().GetStandardFrameRate();
+	moveSpeed *= moveMult * GetEngine().GetRealDeltaTimeSec();
+	//キャラコンを移動させる。
+	m_position = m_characon.Execute(moveSpeed);
 	m_model.SetPos(m_position);
 }
 
 void Player::Turn()
 {
 	//回転速度
-	const float Mult = 30.0f;
+	const float turnMult = 30.0f;
 	//XZ軸の回転の制限
 	const float maxDegreeXZ = 70.0f;
 	const float minDegreeXZ = -50.0f;
 	
 	//向き
 	//マウス
-	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * Mult * GetEngine().GetRealDeltaTimeSec();
+	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetEngine().GetRealDeltaTimeSec();
 	//回転処理
 	m_degreeY -= mouseCursorMovePow.x;
 	m_degreeXZ += mouseCursorMovePow.y;
@@ -97,7 +99,12 @@ void Player::Turn()
 	m_radianY = M_PI / 180 * m_degreeY;
 	m_radianXZ = M_PI / 180 * m_degreeXZ;
 
+	//クォータニオンを計算
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
+	CQuaternion modelRot;
+	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
+
+	m_model.SetRot(modelRot);
 
 	//右方向と正面方向のベクトルの計算
 	m_right = { -1.0f,0.0f,0.0f };
