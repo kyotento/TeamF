@@ -1,70 +1,69 @@
 #pragma once
-#include "../physics/character/CCharacterController.h"
+#include "Block.h"
+class GameCamera;
+
+
+class Item;
+
+struct Inventory {
+	Item* s_item = nullptr;
+	int s_number = 0;
+};
+
 class Player : public IGameObject
 {
 public:
-	Player();
-	~Player();
-
-	bool Start();
-	void Update();
-
-	/// <summary>
-	/// プレイヤーの移動処理。
-	/// </summary>
-	void Move();
-
-	/// <summary>
-	/// プレイヤーの回転処理。
-	/// </summary>
-	void Rotation();
-
-	/// <summary>
-	/// プレイヤーの前方方向を取得。
-	/// </summary>
-	/// <returns>プレイヤーの前方方向</returns>
-	CVector3 GetFront()
-	{
-		return m_front;
-	}
-
-	/// <summary>
-	/// プレイヤーの右方向を取得する。
-	/// </summary>
-	/// <returns>プレイヤーの右方向</returns>
-	CVector3 GetRight()
+	Player() {}
+	~Player() {}
+	bool Start() override;
+	void Update() override;
+	void PostRender() override;
+	//右方向を取得
+	const CVector3& GetRight()
 	{
 		return m_right;
 	}
-
-	/// <summary>
-	/// 座標を入手する。
-	/// </summary>
-	/// <returns>プレイヤーの座標</returns>
-	CVector3 GetPosition()
+	//正面方向を取得
+	const CVector3& GetFront()
+	{
+		return m_front;
+	}
+	//座標を取得
+	const CVector3& GetPosition()
 	{
 		return m_position;
 	}
-
-
+	//Y軸の回転を取得
+	float GetRadianY()
+	{
+		return m_radianY;
+	}
+	//XZ軸の回転を取得
+	float GetRadianXZ()
+	{
+		return m_radianXZ;
+	}
+	//インベントリの長さ
+	static const int inventryWidth = 9;
+	static const int inventryHeight = 1;
 private:
-
-	CVector3 m_position = CVector3::Zero();				//プレイヤーの座標。
-	CVector3 m_charaPos = CVector3::Zero();				//キャラコンの座標。
-	CVector3 m_scale = CVector3::One();					//プレイヤーモデルのスケール。
-	CVector3 m_front = CVector3::Front();				//プレイヤーの前方方向。
-	CVector3 m_right = CVector3::Right();				//プレイヤーの右方向。
-
-	CQuaternion m_rot = CQuaternion::Identity();		//プレイヤーの回転。
-
-	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//プレイヤーのモデル。
-	CCharacterController m_characon;					//キャラコン。
-
-
-private://仮。
-
-	GameObj::CSkinModelRender* m_skn = nullptr;			//仮床。
-
-
- };
+	//移動
+	void Move();
+	//回転
+	void Turn();
+public:
+	CVector3 m_position = CVector3::One() * 15.0f;				//座標
+	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向
+	CVector3 m_front = CVector3(0.0f, 0.0f, 1.0f);				//正面
+	GameCamera* m_gameCamera;									//ゲームカメラ
+	float m_degreeY = 0.0f;										//Y軸の回転
+	float m_degreeXZ = 0.0f;									//XZ軸の回転
+	float m_radianY = 0.0f;										//Y軸の回転(ラジアン)
+	float m_radianXZ = 0.0f;									//XZ軸の回転(ラジアン)
+	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン
+	GameObj::CSkinModelRender m_model;
+	//std::vector<Item*> m_itemList;
+	CFont m_font;												//フォント
+	std::vector<Inventory*> m_inventoryList;					//インベントリ
+};
 

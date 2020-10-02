@@ -1,120 +1,116 @@
 #include "stdafx.h"
 #include "Player.h"
-#include <assert.h>
+#include "GameCamera.h"
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
-#include <math.h>
-
-namespace {
-	float characonRadius = 50.f;			//キャラコンの半径。
-	float characonHeight = 100.f;			//キャラコンの高さ。
-
-	float moveSpeed = 20.f;					//プレイヤーの移動速度。
-	float mouseSensitivity = 1.0f;			//マウス感度。
-	float degry;							//プレイヤーの向き(単位::デグリー)。
-	float radian;							//プレイヤーの向き(単位::ラジアン)。
-
-	CVector2 mouseCursorMovePow = CVector2::Zero();		//マウスカーソルの移動量。
-
-	CVector3 moveDirection;					//キャラコンの移動にかかる向き。
-	CVector3 moveSp;						//キャラコンの移動にかかる力。
-
-	CQuaternion rotMousePower;				//マウスの回転量。
-}
-
-Player::Player()
-{
-}
-
-
-Player::~Player()
-{
-	DeleteGO(m_skinModelRender);
-}
+#include <math.h> 
+#include "ItemData.h"
 
 bool Player::Start()
 {
-	//プレイヤーモデルの初期化。
-	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/player.cmo");
-	m_skinModelRender->SetPos(m_position);
-	m_skinModelRender->SetScale(m_scale);
-	m_skinModelRender->SetRot(m_rot);
+	m_model.Init(L"Resource/modelData/GrassBlock.cmo");
+	m_model.SetScale(CVector3::One() * 0.01f);
 
-	m_skn = NewGO<GameObj::CSkinModelRender>();
-	m_skn->Init(L"Resource/modelData/flore_kari.cmo");
-	m_skn->SetPos({ 0.f,0.f,0.f });
+	for (int i = 0; i < inventryWidth; i++) {
+		//m_inventoryList[i] = new Inventory();
+		//m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
+	}
 
-	m_charaPos = m_position;
-	//キャラコンの初期化。
-	m_characon.Init(characonRadius, characonHeight, m_charaPos);
+
 
 	return true;
 }
 
 void Player::Update()
 {
-	Move();			//移動処理。
-	Rotation();		//回転処理。
+	if (m_gameCamera == nullptr) {
+		m_gameCamera = FindGO<GameCamera>();
+		return;
+	}
+	Move();
+	Turn();
 }
 
-//移動処理。
 void Player::Move()
 {
-	//キーボードの移動処理。
-	if (GetKeyInput('A')) {
-		moveDirection.x -= 1.f;
-	}
-	if (GetKeyInput('D')) {
-		moveDirection.x += 1.f;
-	}
+	//移動速度
+	const float mult = 10.0f;
+
+	//WSADキーによる移動量
+	CVector3 stickL = CVector3::Zero();
+
+	bool isKey = false;
 	if (GetKeyInput('W')) {
-		moveDirection.z += 1.f;
+		stickL.y = -1.0f;
+		isKey = true;
 	}
-	if (GetKeyInput('S')) {
-		moveDirection.z -= 1.f;
+	else if (GetKeyInput('S')) {
+		stickL.y = 1.0f;
+		isKey = true;
+	}
+	if (GetKeyInput('A')) {
+		stickL.x = -1.0f;
+		isKey = true;
+	}
+	else if (GetKeyInput('D')) {
+		stickL.x = 1.0f;
+		isKey = true;
+	}
+	if (isKey) {
+		stickL.Normalize();
 	}
 
-	moveDirection.Normalize();			//正規化。
-	m_front = moveDirection;			//プレイヤーの前方方向を取得。
+	CVector3 moveSpeed = CVector3::Zero();
 
-	radian = M_PI / 180 * degry;	//プレイヤーの向きをラジアン単位に変更・
-
-	//左右入力の処理。
-	moveSp.z = -sin(radian) * moveDirection.x * moveSpeed;
-	moveSp.x = cos(radian) * moveDirection.x * moveSpeed;
-	//上下入力の処理。
-	moveSp.z += cos(radian) * moveDirection.z * moveSpeed;
-	moveSp.x += sin(radian) * moveDirection.z * moveSpeed;
-	moveSp.y = 0.0f;
-
-	//キャラコンを移動させる。
-	m_position = m_characon.Execute(moveSp, 1.f);
-
-	m_skinModelRender->SetPos(m_position);		//プレイヤーの座標を指定する。
-
-	moveDirection = CVector3::Zero();			//キャラコンの向きと移動量を初期化。
-
+	moveSpeed.z = sin(m_radianY) * stickL.x;
+	moveSpeed.x = -cos(m_radianY) * stickL.x;
+	moveSpeed.z += cos(m_radianY) * stickL.y;
+	moveSpeed.x += sin(m_radianY) * stickL.y;
+	moveSpeed.y = 0.0f;
+	m_position += moveSpeed * mult / GetEngine().GetStandardFrameRate();
+	m_model.SetPos(m_position);
 }
 
-//回転処理。
-void Player::Rotation()
+void Player::Turn()
 {
-	//枚フレーム初期化する必要があるため。
-	m_right = CVector3::Right();
-	m_front = CVector3::Front();
-
-	mouseCursorMovePow = MouseCursor().GetMouseMove();			//マウスの移動量を取得。
-
-	degry += mouseCursorMovePow.x * mouseSensitivity;			//マウスの向き。
-
-	rotMousePower.SetRotationDeg(CVector3::AxisY(), mouseCursorMovePow.x * mouseSensitivity);		//移動量をもとにY軸回転の力を計算。
-
-	m_rot.Multiply(rotMousePower);			//元のRotationに加算。
-
-	m_skinModelRender->SetRot(m_rot);
+	//回転速度
+	const float Mult = 30.0f;
+	//XZ軸の回転の制限
+	const float maxDegreeXZ = 70.0f;
+	const float minDegreeXZ = -50.0f;
 	
-	//カメラで使うよう。
-	m_rot.Multiply(m_right);
-	m_rot.Multiply(m_front);
+	//向き
+	//マウス
+	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * Mult * GetEngine().GetRealDeltaTimeSec();
+	//回転処理
+	m_degreeY -= mouseCursorMovePow.x;
+	m_degreeXZ += mouseCursorMovePow.y;
 
+	//XZ軸の回転を制限
+	if (m_degreeXZ < minDegreeXZ) {
+		m_degreeXZ = minDegreeXZ;
+	}
+	else if (m_degreeXZ > maxDegreeXZ) {
+		m_degreeXZ = maxDegreeXZ;
+	}
+
+	//ラジアンに変換
+	m_radianY = M_PI / 180 * m_degreeY;
+	m_radianXZ = M_PI / 180 * m_degreeXZ;
+
+	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
+
+	//右方向と正面方向のベクトルの計算
+	m_right = { -1.0f,0.0f,0.0f };
+	m_rotation.Multiply(m_right);
+	m_front = { 0.0f,0.0f,-1.0f };
+	m_rotation.Multiply(m_front);
+}
+
+void Player::PostRender()
+{
+	/*for (int i = 0; i < inventryWidth; i++) {
+		if (m_itemList[i]->s_block->GetBlockType() != enCube_None) {
+			//m_font
+		}
+	}*/
 }

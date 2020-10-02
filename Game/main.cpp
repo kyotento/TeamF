@@ -1,7 +1,12 @@
 #include "stdafx.h"
+#include "RandomMapMaker.h"
+#include "GameCamera.h"
+#include "Player.h"
 #include "Game.h"
 //#include <charconv>
 //#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
+#include "WasdCamera.h"
+#include "World.h"
 
 namespace {
 	bool isStart = false;		//ゲームが実行されて一度だけ呼ばれる。
@@ -45,7 +50,23 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
 	SetIsDebugInput(true);
+	
+	World world;
 
+	//GameObj::PerspectiveCamera c;
+	//SetMainCamera( &c );
+	
+	GetMainCamera()->SetPos( { 0, 0, 2 } );
+	GetMainCamera()->SetTarget( { 0, 0, 0 } );
+	//WasdCamera camera;
+
+	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
+	rMM->SetWorld( &world );
+	rMM->Awake();
+	Player* player = NewGO<Player>();
+	GameCamera* gameCamera = NewGO<GameCamera>();
+	MouseCursor().SetLockMouseCursor(true);
+	//MouseCursor().SetLockMouseCursor(true);
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 }
