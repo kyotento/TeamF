@@ -84,7 +84,7 @@ void Player::Turn()
 	//ƒ}ƒEƒX
 	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetEngine().GetRealDeltaTimeSec();
 	//‰ñ“]ˆ—
-	m_degreeY -= mouseCursorMovePow.x;
+	m_degreeY += mouseCursorMovePow.x;
 	m_degreeXZ += mouseCursorMovePow.y;
 
 	//XZ²‚Ì‰ñ“]‚ğ§ŒÀ
