@@ -8,7 +8,7 @@
 bool Player::Start()
 {
 	m_model.Init(L"Resource/modelData/player.cmo");
-	m_model.SetScale(CVector3::One() * 0.001f);
+	m_model.SetScale(CVector3::One() * 0.0003f);
 
 	//ƒLƒƒƒ‰ƒRƒ“‚Ì‰Šú‰»B
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);

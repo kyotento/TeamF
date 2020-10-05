@@ -35,10 +35,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Drop.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
+    <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -54,8 +57,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockType.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Drop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMapMaker.h" />

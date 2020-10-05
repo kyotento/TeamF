@@ -16,6 +16,9 @@
       <Filter>Block</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Drop.cpp" />
+    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="Box.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -33,6 +36,9 @@
     </ClInclude>
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Drop.h" />
+    <ClInclude Include="ItemData.h" />
+    <ClInclude Include="Box.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
