@@ -12,31 +12,32 @@ Box::Box()
 
 int Box::AddItem(EnCube enCube, int number)
 {
+	int n = number;
 	for (auto itr : m_inventoryList) {
-		if (number == 0)
+		if (n == 0 || itr->s_number == itr->s_item->GetLimit())
 			continue;
 		//何もアイテム入ってなかったら
 		if (itr->s_item->GetBlockType() == enCube_None) {
 			itr->s_item = GetItemData().GetItem(enCube);
-			itr->s_number = number;
-			number = 0;
+			itr->s_number = n;
+			n = 0;
 		}
 		//同じ種類のアイテムが入ってたら
 		else if (itr->s_item->GetBlockType() == enCube) {
-			int temNumber = itr->s_number + number;
+			int temNumber = itr->s_number + n;
 			//アイテム溢れたら
-			if (temNumber > itr->s_item->GetLimit()) {
+			if (temNumber >= itr->s_item->GetLimit()) {
 				itr->s_number = itr->s_item->GetLimit();
-				number = temNumber - itr->s_item->GetLimit();
+				n = temNumber - itr->s_item->GetLimit();
 			}
 			//溢れなかったら
 			else {
 				itr->s_number = temNumber;
-				number = 0;
+				n = 0;
 			}
 		}
 	}
-	return number;
+	return n;
 }
 
 void Box::PostRender()

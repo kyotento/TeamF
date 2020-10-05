@@ -27,7 +27,7 @@ bool Game::Start()
 			Drop* drop = NewGO<Drop>();
 			drop->SetEnCube(EnCube(rand() % enCube_Num));
 			drop->SetPosition(CVector3(i, 15, j));
-			drop->SetNumber(rand() % 10);
+			drop->SetNumber((rand() % 10) + 1);
 		}
 	}
 

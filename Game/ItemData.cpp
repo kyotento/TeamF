@@ -8,7 +8,7 @@ ItemData::ItemData()
 		enCube_Soil,
 		enCube_Stone,
 		enCube_Ore,*/
-	m_itemList[enCube_None] = new Item(enCube_None, L"ñ≥Çµ", 0);
+	m_itemList[enCube_None] = new Item(enCube_None, L"ñ≥Çµ", 64);
 	m_itemList[enCube_Grass] = new Item(enCube_Grass, L"ëê", 64);
 	m_itemList[enCube_Soil] = new Item(enCube_Soil, L"ìy", 64);
 	m_itemList[enCube_Stone] = new Item(enCube_Stone, L"êŒ", 64);
