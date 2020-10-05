@@ -19,6 +19,12 @@
     <ClCompile Include="Drop.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -34,11 +40,19 @@
     <ClInclude Include="Block.h">
       <Filter>Block</Filter>
     </ClInclude>
-    <ClInclude Include="BlockType.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Drop.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockType.h">
+      <Filter>Block</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -55,6 +69,9 @@
     </Filter>
     <Filter Include="Block">
       <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,15 +91,11 @@
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="RandomMapMaker.h" />
-    <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
