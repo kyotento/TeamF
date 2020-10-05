@@ -17,13 +17,14 @@ void RandomMapMaker::Awake()
 	m_seedZ = rand() % 101;
 	m_seedY = rand() % 101;
 
-	m_cubeList.resize(m_width);
+	/*m_cubeList.resize(m_width);
+	//m_cubeList[0].push_back();
 	for (int i = 0; i < m_width; i++) {
 		m_cubeList[i].resize(m_maxHeight + 1);
 		for (int j = 0; j < m_maxHeight + 1; j++) {
 			m_cubeList[i][j].resize(m_depth);
 		}
-	}
+	}*/
 	//ƒLƒ…[ƒu¶¬
 	for (int x = 0; x < m_width; x++) {
 		for (int z = 0; z < m_depth; z++) {
@@ -36,11 +37,9 @@ void RandomMapMaker::Awake()
 			m_cubeList.push_back(cube);*/
 			CVector3 pos = CVector3(x, 0, z);
 			pos.y = SetY(pos);
-			pos *= 10.f;
-
-			int xx = int(pos.x) / 10;
-			int yy = int(pos.y) / 10;
-			int zz = int(pos.z) / 10;
+			int xx = int(pos.x);
+			int yy = int(pos.y);
+			int zz = int(pos.z);
 
 			{
 				auto block = std::make_unique<Block>();
@@ -65,9 +64,13 @@ void RandomMapMaker::Awake()
 
 				{
 					auto block = std::make_unique<Block>();
-					block->GetModel().Init( m_width * m_depth * ( m_maxHeight + 1 ), m_filePathList[enCube_Soil] );
 					block->GetModel().SetScale( CVector3::One() * 0.0075f );
+					Soil(xx, yy, zz, block.get());
+					Stone(xx, yy, zz, block.get());
+					Ore(xx, yy, zz, block.get());
+					block->GetModel().Init( m_width * m_depth * ( m_maxHeight + 1 ), m_filePathList[block->GetBlockType()] );
 					m_world->SetBlock( xx, yy, zz, std::move( block ) );
+
 				}
 
 				/*m_cubeList[xx][yy][zz].s_position = pos;
@@ -127,24 +130,24 @@ float RandomMapMaker::SetY(const CVector3& pos)
 	return y;
 }
 
-void RandomMapMaker::Soil(const int x, const int y, const int z)
+void RandomMapMaker::Soil(const int x, const int y, const int z, Block* b)
 {
-		m_cubeList[x][y][z].s_state = enCube_Soil;
+	b->SetBlockType(enCube_Soil);
 }
 
-void RandomMapMaker::Stone(const int x, const int y, const int z)
+void RandomMapMaker::Stone(const int x, const int y, const int z, Block* b)
 {
 	if (m_stoneMaxHeight >= y && y >= m_stoneMinHeight) {
-		m_cubeList[x][y][z].s_state = enCube_Stone;
+		b->SetBlockType(enCube_Stone);
 	}
 }
 
-void RandomMapMaker::Ore(const int x, const int y, const int z)
+void RandomMapMaker::Ore(const int x, const int y, const int z, Block* b)
 {
 	if (m_OreMaxHeight >= y && y >= m_OreMinHeight) {
 		float noise = GetPerlin().PerlinNoise((float(x) + m_seedX) / m_relief2, (float(y) + m_seedY) / m_relief2, (float(z) + m_seedZ) / m_relief2);
 		if (noise >= 0.7f) {
-			m_cubeList[x][y][z].s_state = enCube_Soil;
+			b->SetBlockType(enCube_Soil);
 		}
 	}
 }

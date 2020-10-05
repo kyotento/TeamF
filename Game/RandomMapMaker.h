@@ -1,25 +1,8 @@
 #pragma once
 
-enum EnCube
-{
-	enCube_None = -1,
-	enCube_Grass = 0,
-	enCube_Soil,
-	enCube_Stone,
-	enCube_Ore
-};
 
-struct Cube {
-	CVector3 s_position = CVector3::Zero();
-	GameObj::CInstancingModelRender* s_model = nullptr;
-	EnCube s_state = enCube_None;
-};
 
-/*class Cube {
-public:
-	
-};*/
-
+class Block;
 class World;
 
 class RandomMapMaker : public IGameObject
@@ -66,14 +49,14 @@ public:
 	//void Draw();
 private:
 	float SetY(const CVector3& pos);
-	void Soil(const int x, const int y, const int z);
-	void Stone(const int x, const int y, const int z);
-	void Ore(const int x, const int y, const int z);
+	void Soil(const int x, const int y, const int z, Block* b);
+	void Stone(const int x, const int y, const int z, Block* b);
+	void Ore(const int x, const int y, const int z, Block* b);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
-	const float m_width = 20;		//マップのサイズ
-	const float m_depth = 20;
+	const float m_width = 70;		//マップのサイズ
+	const float m_depth = 70;
 	float m_maxHeight = 15;			//マップの最大の高さ
 	float m_relief = 20.f;			//起状の激しさ
 	float m_mapSize = 1.f;			//マップの大きさ
@@ -89,7 +72,7 @@ private:
 	//std::list<CSkinModelRender*> m_cubeList;
 	std::list<GameObj::CInstancingModelRender*> m_cubeModelList;
 
-	std::vector<std::vector<std::vector<Cube>>> m_cubeList;
+	//std::vector<std::vector<std::vector<Cube>>> m_cubeList;
 	std::vector<const wchar_t*> m_filePathList;
 
 	const int m_stoneMaxHeight = 3;

@@ -15,6 +15,7 @@
     <ClCompile Include="Block.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -30,6 +31,8 @@
     <ClInclude Include="Block.h">
       <Filter>Block</Filter>
     </ClInclude>
+    <ClInclude Include="BlockType.h" />
+    <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -50,17 +53,30 @@
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\block.fbx">
-        <Filter>Assets\modelData</Filter>
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\cube.fbx">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Preset\modelData\player.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Preset\modelData\flore_kari.FBX">
+      <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="RandomMapMaker.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -71,11 +87,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\cube.fbx" />
-    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
+    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
+    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
