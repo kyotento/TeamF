@@ -5,10 +5,22 @@
 #include <math.h> 
 #include "ItemData.h"
 
+namespace {
+	const float turnMult = 30.0f;			//プレイヤーの回転速度。
+	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
+	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
+	const float moveMult = 400.0f;			//プレイヤーの移動速度。
+
+}
+
 bool Player::Start()
 {
-	m_model.Init(L"Resource/modelData/player.cmo");
-	m_model.SetScale(CVector3::One() * 0.001f);
+	//プレイヤークラスの初期化。
+	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelRender->Init(L"Resource/modelData/player.cmo");
+	m_skinModelRender->SetPos(m_position);
+	m_skinModelRender->SetScale(CVector3::One() * 0.001f);
+	m_skinModelRender->SetRot(m_rotation);
 
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
@@ -17,8 +29,6 @@ bool Player::Start()
 		//m_inventoryList[i] = new Inventory();
 		//m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
 	}
-
-
 
 	return true;
 }
@@ -36,7 +46,6 @@ void Player::Update()
 void Player::Move()
 {
 	//移動速度
-	const float moveMult = 400.0f;
 	const float move = 1.0f;
 
 	//WSADキーによる移動量
@@ -69,17 +78,11 @@ void Player::Move()
 	moveSpeed *= moveMult * GetEngine().GetRealDeltaTimeSec();
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
-	m_model.SetPos(m_position);
+	m_skinModelRender->SetPos(m_position);
 }
 
 void Player::Turn()
 {
-	//回転速度
-	const float turnMult = 30.0f;
-	//XZ軸の回転の制限
-	const float maxDegreeXZ = 70.0f;
-	const float minDegreeXZ = -50.0f;
-	
 	//向き
 	//マウス
 	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetEngine().GetRealDeltaTimeSec();
@@ -104,20 +107,11 @@ void Player::Turn()
 	CQuaternion modelRot;
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
 
-	m_model.SetRot(modelRot);
+	m_skinModelRender->SetRot(modelRot);
 
 	//右方向と正面方向のベクトルの計算
 	m_right = { -1.0f,0.0f,0.0f };
 	m_rotation.Multiply(m_right);
 	m_front = { 0.0f,0.0f,-1.0f };
 	m_rotation.Multiply(m_front);
-}
-
-void Player::PostRender()
-{
-	/*for (int i = 0; i < inventryWidth; i++) {
-		if (m_itemList[i]->s_block->GetBlockType() != enCube_None) {
-			//m_font
-		}
-	}*/
 }
