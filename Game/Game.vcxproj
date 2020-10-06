@@ -35,6 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
