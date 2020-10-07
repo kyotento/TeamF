@@ -13,10 +13,32 @@ struct Inventory {
 class Player : public IGameObject
 {
 public:
-	Player() {}
-	~Player() {}
+	Player();
+	~Player();
 	bool Start() override;
 	void Update() override;
+
+	/// <summary>
+	/// アニメーション。
+	/// </summary>
+	enum enAnimationClip{
+		enAnimationClip_Idle,			//待機状態。
+		enAnimationClip_move,			//移動。
+		enAnimationClip_excavate,		//物を掘る。
+		enAnimationClip_Num,			//アニメーションの数。
+	};
+
+	AnimationClip m_animationClip[enAnimationClip_Num];			//アニメーションの数を格納。
+
+	/// <summary>
+	/// プレイヤーの状態。
+	/// </summary>
+	enum enPlayerState {
+		enPlayerState_idle,				//待機。	
+		enPlayerState_move,				//移動。
+		enPlayerState_excavate,			//物を掘る。
+		enPlayerState_num,				//状態の数。
+	};
 
 	/// <summary>
 	/// プレイヤーの右方向を取得。
@@ -67,15 +89,20 @@ public:
 	static const int inventryHeight = 1;
 private:
 	/// <summary>
-	/// 移動。
+	/// 移動処理。
 	/// </summary>
 	void Move();
 
 	/// <summary>
-	/// 回転
+	/// 回転処理。
 	/// </summary>
 	void Turn();
-//public:
+
+	/// <summary>
+	/// プレイヤーの状態管理。
+	/// </summary>
+	void StateManagement();
+
 	float m_degreeY = 0.0f;										//Y軸の回転。
 	float m_degreeXZ = 0.0f;									//XZ軸の回転。
 	float m_radianY = 0.0f;										//Y軸の回転(ラジアン)。
@@ -89,10 +116,13 @@ private:
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 
+	std::vector<Inventory*> m_inventoryList;					//インベントリ。
+
+	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
+
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterController m_characon;							//キャラコン。
 	CFont m_font;												//フォント。
-	std::vector<Inventory*> m_inventoryList;					//インベントリ。
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 };
 

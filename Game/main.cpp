@@ -61,7 +61,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
 	rMM->SetWorld( &world );
 	rMM->Awake();
-	MouseCursor().SetLockMouseCursor(true);
+	MouseCursor().SetLockMouseCursor(true);			//マウスカーソルを中央に固定。
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 }
