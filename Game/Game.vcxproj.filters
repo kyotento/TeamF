@@ -87,6 +87,9 @@
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\leafBlock.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />

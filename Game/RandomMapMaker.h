@@ -52,13 +52,14 @@ private:
 	void Soil(const int x, const int y, const int z, Block* b);
 	void Stone(const int x, const int y, const int z, Block* b);
 	void Ore(const int x, const int y, const int z, Block* b);
+	void Tree(const int x, const int y, const int z, Block* b);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
-	const float m_width = 50;		//マップのサイズ
-	const float m_depth = 50;
+	const float m_width = 70;		//マップのサイズ
+	const float m_depth = 70;
 	float m_maxHeight = 10;			//マップの最大の高さ
-	float m_relief = 20.f;			//起状の激しさ
+	float m_relief = 15.f;			//起状の激しさ
 	float m_mapSize = 1.f;			//マップの大きさ
 	//GameObj::CSkinModelRender m_cubeModel;
 	std::list<CVector3> m_posList;
@@ -79,8 +80,10 @@ private:
 	const int m_stoneMinHeight = 0;
 	const int m_OreMaxHeight = 2;
 	const int m_OreMinHeight = 0;
-	float m_relief2 = 10.f;
 
 	World* m_world = nullptr;
+	float m_seedX2, m_seedZ2, m_seedY2;
+	float m_relief2 = 1.5f;			//起状の激しさ
+	float m_relief3 = 1000.0f;
 };
 

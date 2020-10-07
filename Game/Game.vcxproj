@@ -79,6 +79,7 @@
     <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\leafBlock.FBX" />
     <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
