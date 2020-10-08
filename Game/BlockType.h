@@ -6,6 +6,7 @@ enum EnCube
 	enCube_Grass = 0,
 	enCube_Soil,
 	enCube_Stone,
+	enCube_Leaf,
 	enCube_Ore,
 	enCube_Num
 };
