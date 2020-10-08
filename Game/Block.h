@@ -8,6 +8,7 @@ public:
 
 	void SetPos( int x, int y, int z ){
 		m_model.SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) );
+		m_collision.SetPosition(CVector3(x + 0.5f, y + 0.5f, z + 0.5f));
 	}
 
 	GameObj::CInstancingModelRender& GetModel(){
@@ -23,9 +24,14 @@ public:
 	}
 	void SetIsDraw(bool isDraw){
 		m_model.SetIsDraw( isDraw );
+		m_collision.SetEnable(isDraw);
+	}
+	SuicideObj::CCollisionObj& GetCollision() {
+		return m_collision;
 	}
 private:
 	GameObj::CInstancingModelRender m_model;
 	EnCube m_state = enCube_None;
+	SuicideObj::CCollisionObj m_collision;
 };
 
