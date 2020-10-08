@@ -28,6 +28,15 @@
     <ClCompile Include="Zombie.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Drop.cpp" />
+    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCamera.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -59,6 +68,16 @@
     <ClInclude Include="Zombie.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Drop.h" />
+    <ClInclude Include="ItemData.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -79,6 +98,9 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{cd3e36e7-3201-43a7-af48-d00a10f72a22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\block.fbx">
@@ -96,19 +118,18 @@
     <MeshContentTask Include="Preset\modelData\zombie.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\leafBlock.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
-    <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="RandomMapMaker.h" />
-    <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

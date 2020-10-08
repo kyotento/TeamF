@@ -35,6 +35,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Drop.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -42,6 +44,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
+    <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -61,8 +64,11 @@
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Drop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMapMaker.h" />
@@ -81,6 +87,7 @@
     <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\leafBlock.FBX" />
     <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
       <FileType>Document</FileType>
     </MeshContentTask>

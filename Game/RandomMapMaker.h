@@ -17,6 +17,7 @@ public:
 
 private:
 	float SetY(const CVector3& pos);
+	void Tree(const int x, const int y, const int z, Block* b);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
@@ -40,8 +41,10 @@ private:
 	const int m_stoneMinHeight = 0;
 	const int m_OreMaxHeight = 2;
 	const int m_OreMinHeight = 0;
-	float m_relief2 = 10.f;
 
 	World* m_world = nullptr;
+	float m_seedX2, m_seedZ2, m_seedY2;
+	float m_relief2 = 1.5f;			//‹Nó‚ÌŒƒ‚µ‚³
+	float m_relief3 = 1000.0f;
 };
 
