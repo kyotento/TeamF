@@ -95,7 +95,6 @@
       <FileType>Document</FileType>
     </MeshContentTask>
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX" />
-    <MeshContentTask Include="Preset\modelData\player.FBX" />
     <MeshContentTask Include="Preset\modelData\zombie.FBX" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

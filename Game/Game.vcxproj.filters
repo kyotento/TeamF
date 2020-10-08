@@ -77,7 +77,6 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Player</Filter>
     </ClInclude>
-    
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -107,9 +106,6 @@
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\cube.fbx">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Preset\modelData\player.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX">

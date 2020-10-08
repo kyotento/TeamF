@@ -34,7 +34,7 @@ bool Player::Start()
 {
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/player.cmo", m_animationClip, enAnimationClip_Num);
+	m_skinModelRender->Init(L"Resource/modelData/zombie.cmo", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetScale(CVector3::One() * 0.001f);
 	m_skinModelRender->SetRot(m_rotation);
@@ -67,7 +67,7 @@ void Player::Update()
 	//回転処理。
 	Turn();
 	//プレイヤーの状態管理。0
-	StateManagement();
+//	StateManagement();
 }
 
 //移動処理。
