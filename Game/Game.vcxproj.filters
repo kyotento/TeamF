@@ -22,6 +22,12 @@
     <ClCompile Include="DebugTimer.cpp">
       <Filter>ForTest</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -47,6 +53,12 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ForTest</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -64,6 +76,9 @@
     <Filter Include="Block">
       <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{cd3e36e7-3201-43a7-af48-d00a10f72a22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\block.fbx">
@@ -76,6 +91,9 @@
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Preset\modelData\zombie.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
   </ItemGroup>

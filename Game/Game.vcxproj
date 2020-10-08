@@ -37,6 +37,7 @@
   <ItemGroup>
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
@@ -53,11 +54,13 @@
     </ClCompile>
     <ClCompile Include="WasdCamera.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="DebugTimer.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Perlin.h" />
@@ -68,6 +71,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WasdCamera.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\block.fbx" />
@@ -85,6 +89,7 @@
     </MeshContentTask>
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX" />
     <MeshContentTask Include="Preset\modelData\player.FBX" />
+    <MeshContentTask Include="Preset\modelData\zombie.FBX" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

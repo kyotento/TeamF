@@ -56,7 +56,7 @@ public:
 	}
 
 	static constexpr int WIDTH = 16;
-	static constexpr int HEIGHT = 40;
+	static constexpr int HEIGHT = 64;
 private:
 	int m_chunkX = 0;
 	int m_chunkZ = 0;
