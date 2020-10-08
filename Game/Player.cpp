@@ -5,10 +5,39 @@
 #include <math.h> 
 #include "ItemData.h"
 
+namespace {
+	const float turnMult = 30.0f;			//プレイヤーの回転速度。
+	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
+	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
+	const float moveMult = 400.0f;			//プレイヤーの移動速度。
+	const float move = 1.0f;				//移動速度(基本的には触らない)。
+
+}
+
+Player::Player()
+{
+	m_animationClip[enAnimationClip_Idle].Load(L"Assets/animData/player_idle.tka");
+	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_move].Load(L"Assets/animData/player_move.tka");
+	m_animationClip[enAnimationClip_move].SetLoopFlag(true);
+	m_animationClip[enAnimationClip_excavate].Load(L"Assets/animData/player_Excavate.tka");
+	m_animationClip[enAnimationClip_excavate].SetLoopFlag(true);
+
+}
+
+Player::~Player()
+{
+	DeleteGO(m_skinModelRender);
+}
+
 bool Player::Start()
 {
-	m_model.Init(L"Resource/modelData/player.cmo");
-	m_model.SetScale(CVector3::One() * 0.0003f);
+	//プレイヤークラスの初期化。
+	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelRender->Init(L"Resource/modelData/player.cmo", m_animationClip, enAnimationClip_Num);
+	m_skinModelRender->SetPos(m_position);
+	m_skinModelRender->SetScale(CVector3::One() * 0.001f);
+	m_skinModelRender->SetRot(m_rotation);
 
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
@@ -17,7 +46,6 @@ bool Player::Start()
 		//m_inventoryList[i] = new Inventory();
 		//m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
 	}
-
 
 
 	return true;
@@ -29,15 +57,22 @@ void Player::Update()
 		m_gameCamera = FindGO<GameCamera>();
 		return;
 	}
+
+	if( GetKeyDown( 'C' ) ){
+		static bool lock = true;
+		MouseCursor().SetLockMouseCursor( lock = !lock );
+	}
+
 	Move();
+	//回転処理。
 	Turn();
+	//プレイヤーの状態管理。0
+	StateManagement();
 }
 
+//移動処理。
 void Player::Move()
 {
-	//移動速度
-	const float moveMult = 400.0f;
-	const float move = 1.0f;
 
 	//WSADキーによる移動量
 	CVector3 stickL = CVector3::Zero();
@@ -55,6 +90,11 @@ void Player::Move()
 	else if (GetKeyInput('D')) {
 		stickL.x = move;
 	}
+	if( GetKeyInput( VK_SHIFT ) ){
+		stickL.z = -move;
+	} else if( GetKeyInput( VK_SPACE ) ){
+		stickL.z = move;
+	}
 	stickL.Normalize();
 
 	CVector3 moveSpeed = CVector3::Zero();
@@ -65,29 +105,31 @@ void Player::Move()
 	//上下入力の処理
 	moveSpeed.z += cos(m_radianY) * stickL.y;
 	moveSpeed.x += sin(m_radianY) * stickL.y;
-	moveSpeed.y = 0.0f;
+	moveSpeed.y = stickL.z;
 	moveSpeed *= moveMult * GetEngine().GetRealDeltaTimeSec();
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
-	m_model.SetPos(m_position);
+	m_skinModelRender->SetPos(m_position);
+
+	//プレイヤーの状態の変更。
+	if (stickL.Length() > 0.001f) {
+		m_playerState = enPlayerState_move;
+	}
+	else {
+		m_playerState = enPlayerState_idle;
+	}
 }
 
+//回転処理。
 void Player::Turn()
 {
-	//回転速度
-	const float turnMult = 30.0f;
-	//XZ軸の回転の制限
-	const float maxDegreeXZ = 70.0f;
-	const float minDegreeXZ = -50.0f;
-	
-	//向き
-	//マウス
+	//マウスの移動量を取得。
 	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetEngine().GetRealDeltaTimeSec();
 	//回転処理
 	m_degreeY += mouseCursorMovePow.x;
 	m_degreeXZ += mouseCursorMovePow.y;
 
-	//XZ軸の回転を制限
+	//XZ軸の回転を制限。
 	if (m_degreeXZ < minDegreeXZ) {
 		m_degreeXZ = minDegreeXZ;
 	}
@@ -95,29 +137,51 @@ void Player::Turn()
 		m_degreeXZ = maxDegreeXZ;
 	}
 
-	//ラジアンに変換
+	//マウスの回転量をラジアンに変換。
 	m_radianY = M_PI / 180 * m_degreeY;
 	m_radianXZ = M_PI / 180 * m_degreeXZ;
 
-	//クォータニオンを計算
+	//回転を計算。
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
 	CQuaternion modelRot;
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
 
-	m_model.SetRot(modelRot);
+	m_skinModelRender->SetRot(modelRot);
 
-	//右方向と正面方向のベクトルの計算
+	//右方向と正面方向のベクトルの計算。
 	m_right = { -1.0f,0.0f,0.0f };
 	m_rotation.Multiply(m_right);
 	m_front = { 0.0f,0.0f,-1.0f };
 	m_rotation.Multiply(m_front);
 }
 
-void Player::PostRender()
+//プレイヤーの状態管理。
+void Player::StateManagement()
 {
-	/*for (int i = 0; i < inventryWidth; i++) {
-		if (m_itemList[i]->s_block->GetBlockType() != enCube_None) {
-			//m_font
-		}
-	}*/
+	switch (m_playerState)
+	{
+	case Player::enPlayerState_idle:
+
+		//アニメーションの再生。
+		m_skinModelRender->GetAnimCon().Play(enAnimationClip_Idle, 0.3f);
+		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
+
+		break;
+	case Player::enPlayerState_move:
+
+		//アニメーションの再生。
+		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
+		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
+
+		break;
+	case Player::enPlayerState_excavate:
+
+		//アニメーションの再生。
+		m_skinModelRender->GetAnimCon().Play(enAnimationClip_excavate, 0.3f);
+		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
+		break;
+	default:
+
+		break;
+	}
 }

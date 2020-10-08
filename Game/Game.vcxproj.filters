@@ -16,6 +16,18 @@
       <Filter>Block</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="BlockFactory.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugTimer.cpp">
+      <Filter>ForTest</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="Drop.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="Box.cpp" />
@@ -41,6 +53,21 @@
       <Filter>Block</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="BlockFactory.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockType.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugTimer.h">
+      <Filter>ForTest</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="Drop.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Box.h" />
@@ -50,9 +77,7 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="BlockType.h">
-      <Filter>Block</Filter>
-    </ClInclude>
+    
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -70,6 +95,9 @@
     <Filter Include="Block">
       <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{cd3e36e7-3201-43a7-af48-d00a10f72a22}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
     </Filter>
@@ -85,6 +113,9 @@
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX">
+      <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Preset\modelData\zombie.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\modelData\leafBlock.FBX">

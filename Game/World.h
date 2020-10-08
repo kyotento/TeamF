@@ -23,6 +23,9 @@ public:
 
 	Chunk* CreateChunkFromWorldPos( int x, int z );
 
+	//ワールド生成後に埋まっているブロックを非表示にする。
+	void GenerateEndCulling();
+
 	//チャンク座標を計算
 	static int CalcChunkCoord( int num ){
 		if( num < 0 )num -= Chunk::WIDTH - 1;

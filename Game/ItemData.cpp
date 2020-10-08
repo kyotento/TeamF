@@ -12,7 +12,7 @@ ItemData::ItemData()
 	m_itemList[enCube_Grass] = new Item(enCube_Grass, L"‘", 64);
 	m_itemList[enCube_Soil] = new Item(enCube_Soil, L"“y", 64);
 	m_itemList[enCube_Stone] = new Item(enCube_Stone, L"Î", 64);
-	m_itemList[enCube_Reaf] = new Item(enCube_Reaf, L"—t", 64);
+	m_itemList[enCube_Leaf] = new Item(enCube_Leaf, L"—t", 64);
 	m_itemList[enCube_Ore] = new Item(enCube_Ore, L"zÎ", 64);
 
 }

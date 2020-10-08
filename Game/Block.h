@@ -17,9 +17,12 @@ public:
 	{
 		m_state = enCube;
 	}
-	EnCube GetBlockType()
+	EnCube GetBlockType() const
 	{
 		return m_state;
+	}
+	void SetIsDraw(bool isDraw){
+		m_model.SetIsDraw( isDraw );
 	}
 private:
 	GameObj::CInstancingModelRender m_model;
