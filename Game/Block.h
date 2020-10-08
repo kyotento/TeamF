@@ -29,6 +29,9 @@ public:
 	SuicideObj::CCollisionObj& GetCollision() {
 		return m_collision;
 	}
+
+	static constexpr float WIDTH = 140;
+
 private:
 	GameObj::CInstancingModelRender m_model;
 	EnCube m_state = enCube_None;

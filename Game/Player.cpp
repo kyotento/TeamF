@@ -9,7 +9,7 @@ namespace {
 	const float turnMult = 30.0f;			//プレイヤーの回転速度。
 	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
-	const float moveMult = 400.0f;			//プレイヤーの移動速度。
+	const float moveMult = 4000.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 
 }
