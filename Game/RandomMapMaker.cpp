@@ -40,6 +40,7 @@ void RandomMapMaker::Awake(){
 
 			//上で決定した高さをもとに最高高度のブロックを設置。
 			m_world->SetBlock( xx, yy, zz, BlockFactory::CreateBlock( enCube_Grass ) );
+			Tree(xx, yy, zz);
 
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( yy > m_minHeight ){
@@ -94,7 +95,7 @@ float RandomMapMaker::SetY( const CVector3& pos ){
 
 
 
-void RandomMapMaker::Tree(const int x, const int y, const int z, Block* b)
+void RandomMapMaker::Tree(const int x, const int y, const int z)
 {
 	//同じマップを生成しないようにシード生成
 	float xSample = (x + m_seedX2) / m_relief2;
@@ -111,11 +112,7 @@ void RandomMapMaker::Tree(const int x, const int y, const int z, Block* b)
 		noise *= 100.f;
 		int height = rand() * int(noise) % 3 + 3;
 		for (int i = 0; i < height; i++) {
-			auto block = std::make_unique<Block>();
-			block->GetModel().SetScale(CVector3::One() * 0.0075f);
-			block->SetBlockType(enCube_Soil);
-			block->GetModel().Init(m_width * m_depth * (m_maxHeight + 1), m_filePathList[block->GetBlockType()]);
-			m_world->SetBlock(xx, yy, zz, std::move(block));
+			m_world->SetBlock(xx, yy, zz, BlockFactory::CreateBlock(enCube_Soil));
 			yy += 1;
 		}
 
@@ -164,11 +161,7 @@ void RandomMapMaker::Tree(const int x, const int y, const int z, Block* b)
 					float a = 0.0015f;
 					if (abs(noise - noise2) > a || abs(noise - noise3) > a || abs(noise - noise4) > a || abs(noise - noise5) > a)
 						continue;
-					auto block = std::make_unique<Block>();
-					block->GetModel().SetScale(CVector3::One() * 0.0075f);
-					block->SetBlockType(enCube_Reaf);
-					block->GetModel().Init(m_width * m_depth * (m_maxHeight + 7), m_filePathList[block->GetBlockType()]);
-					m_world->SetBlock(xx + j, yy + i, zz + p, std::move(block));
+					m_world->SetBlock(xx + j, yy + i, zz + p, BlockFactory::CreateBlock(enCube_Leaf));
 				}
 			}
 		}

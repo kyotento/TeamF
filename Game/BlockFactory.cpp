@@ -7,6 +7,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_Grass] = L"Resource/modelData/GrassBlock.cmo";
 	FILE_PATH_ARRAY[enCube_Soil] = L"Resource/modelData/soilBlock.cmo";
 	FILE_PATH_ARRAY[enCube_Stone] = L"Resource/modelData/stoneBlock.cmo";
+	FILE_PATH_ARRAY[enCube_Leaf] = L"Resource/modelData/leafBlock.cmo";
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 

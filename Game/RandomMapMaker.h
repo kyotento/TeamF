@@ -17,7 +17,7 @@ public:
 
 private:
 	float SetY(const CVector3& pos);
-	void Tree(const int x, const int y, const int z, Block* b);
+	void Tree(const int x, const int y, const int z);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
