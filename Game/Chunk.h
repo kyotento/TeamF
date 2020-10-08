@@ -21,7 +21,9 @@ public:
 	//チャンク内の座標でブロックを設定
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block){
 		m_blockArray[x][y][z] = std::move(block);
-		m_blockArray[x][y][z]->SetPos( CalcWorldCoordX(x), y, CalcWorldCoordZ(z) );
+		m_blockArray[x][y][z]->SetPos( CalcWorldCoordX(x) * Block::WIDTH,
+									   y * Block::WIDTH,
+									   CalcWorldCoordZ(z) * Block::WIDTH );
 	}
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block){
 		int x = std::roundf( pos.x );

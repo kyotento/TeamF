@@ -42,7 +42,7 @@ void Player::Update()
 void Player::Move()
 {
 	//ˆÚ“®‘¬“x
-	const float moveMult = 400.0f;
+	const float moveMult = 40000.0f;
 	const float move = 1.0f;
 
 	//WSADƒL[‚É‚æ‚éˆÚ“®—Ê

@@ -11,7 +11,8 @@ bool GameCamera::Start()
 	m_target = CVector3(0.0f, 10.0f, 0.0f);
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
-	m_camera->SetNear(0.1f);
+	m_camera->SetNear(10.f);
+	m_camera->SetFar( 50000 );
 	SetMainCamera(m_camera);
 	return true;
 }

@@ -81,9 +81,8 @@ void World::GenerateEndCulling(){
 						}
 
 						b->SetIsDraw( false );
+						BREAK_LABEL:;
 					}
-				BREAK_LABEL:;
-
 				}
 			}
 
