@@ -1,8 +1,8 @@
 #include "stdafx.h"
+#include "resource.h"
+
 #include "RandomMapMaker.h"
 #include "Game.h"
-//#include <charconv>
-//#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
 #include "WasdCamera.h"
 #include "World.h"
 
@@ -40,7 +40,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initparam.isShaderPathReplaceForEngineFilePath = true;
 	
 	//ÉGÉìÉWÉìèâä˙âª
-	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam);	
+	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1)));
 	
 	//îªíËï\é¶
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
