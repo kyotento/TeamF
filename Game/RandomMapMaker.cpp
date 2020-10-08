@@ -188,8 +188,7 @@ void RandomMapMaker::Tree(const int x, const int y, const int z, Block* b)
 		int reafHeight = 5;
 		int reafWidth = 3;
 		int reafDepth = 3;
-		yy -= 2;
-
+		yy -= rand() * int(noise * 100) % 2 + 1;		
 		float seed = 13;
 
 		float a = 1.f;
@@ -204,7 +203,7 @@ void RandomMapMaker::Tree(const int x, const int y, const int z, Block* b)
 			for (int j = -2; j < reafWidth; j++) {
 				for (int p = -2; p < reafDepth; p++) {
 					int rm = rand() * int(noise * 10000) % 2;
-					int rm2 = rand() * int(noise * 10000) % 1;
+					int rm2 = rand() * int(noise * 10000) % 2;
 					int b = 15;
 					float xSample = (xx + j + seed + rm2) / m_relief3 * a;
 					float ySample = (yy + i * b + seed) / m_relief3;
