@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlockFactory.cpp" />
+    <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
@@ -56,6 +57,7 @@
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
+    <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Perlin.h" />

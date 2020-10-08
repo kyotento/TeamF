@@ -61,6 +61,8 @@ void RandomMapMaker::Awake(){
 			}
 		}
 	}
+
+	m_world->GenerateEndCulling();
 }
 
 float RandomMapMaker::SetY( const CVector3& pos ){

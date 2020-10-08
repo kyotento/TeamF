@@ -15,7 +15,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 
 		GameObj::InstancingModel* instanceModel = mngr.Load( instanceMax, type );
 		
-		instanceModel->SetIsFrustumCulling( false );
+		instanceModel->SetIsFrustumCulling( true );
 	}
 }
 

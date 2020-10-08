@@ -47,6 +47,14 @@ public:
 		return z + m_chunkZ * Chunk::WIDTH;
 	}
 
+	int GetX() const{
+		return m_chunkX;
+	}
+
+	int GetZ() const{
+		return m_chunkZ;
+	}
+
 	static constexpr int WIDTH = 16;
 	static constexpr int HEIGHT = 40;
 private:

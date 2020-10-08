@@ -19,6 +19,9 @@
     <ClCompile Include="BlockFactory.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="DebugTimer.cpp">
+      <Filter>ForTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -40,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="BlockType.h">
       <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugTimer.h">
+      <Filter>ForTest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

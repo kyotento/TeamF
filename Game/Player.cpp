@@ -29,6 +29,12 @@ void Player::Update()
 		m_gameCamera = FindGO<GameCamera>();
 		return;
 	}
+
+	if( GetKeyDown( 'C' ) ){
+		static bool lock = true;
+		MouseCursor().SetLockMouseCursor( lock = !lock );
+	}
+
 	Move();
 	Turn();
 }
@@ -55,6 +61,11 @@ void Player::Move()
 	else if (GetKeyInput('D')) {
 		stickL.x = move;
 	}
+	if( GetKeyInput( VK_SHIFT ) ){
+		stickL.z = -move;
+	} else if( GetKeyInput( VK_SPACE ) ){
+		stickL.z = move;
+	}
 	stickL.Normalize();
 
 	CVector3 moveSpeed = CVector3::Zero();
@@ -65,7 +76,7 @@ void Player::Move()
 	//ã‰º“ü—Í‚Ìˆ—
 	moveSpeed.z += cos(m_radianY) * stickL.y;
 	moveSpeed.x += sin(m_radianY) * stickL.y;
-	moveSpeed.y = 0.0f;
+	moveSpeed.y = stickL.z;
 	moveSpeed *= moveMult * GetEngine().GetRealDeltaTimeSec();
 	//ƒLƒƒƒ‰ƒRƒ“‚ğˆÚ“®‚³‚¹‚éB
 	m_position = m_characon.Execute(moveSpeed);
