@@ -31,6 +31,8 @@ public:
 		if( num < 0 )num -= Chunk::WIDTH - 1;
 		return num / Chunk::WIDTH;
 	}
+
+	void Test();
 private:
 	std::map<int, std::map<int, Chunk>> m_chunkMap;
 };

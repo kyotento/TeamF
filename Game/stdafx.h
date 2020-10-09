@@ -6,5 +6,6 @@
 #include <stdexcept>
 #include <random>
 #include <chrono>
+#include <fstream>
 
 using namespace DemolisherWeapon;

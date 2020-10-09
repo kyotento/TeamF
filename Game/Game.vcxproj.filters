@@ -37,6 +37,9 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="ChunkFiler.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -77,7 +80,9 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Player</Filter>
     </ClInclude>
-    
+    <ClInclude Include="ChunkFiler.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

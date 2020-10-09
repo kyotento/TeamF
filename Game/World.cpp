@@ -90,3 +90,19 @@ void World::GenerateEndCulling(){
 		}
 	}
 }
+
+#include "ChunkFiler.h"
+
+void World::Test(){
+
+	if( GetKeyDown( 'U' ) ){
+		ChunkFiler filer;
+		filer.Write( m_chunkMap[0][0] );
+		m_chunkMap[0].erase( 0 );
+	}
+
+	if( GetKeyDown( 'I' ) ){
+		ChunkFiler filer;
+		filer.Read( m_chunkMap[0][0] );
+	}
+}

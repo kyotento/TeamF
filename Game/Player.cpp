@@ -6,10 +6,10 @@
 #include "ItemData.h"
 
 namespace {
-	const float turnMult = 30.0f;			//プレイヤーの回転速度。
+	const float turnMult = 20.0f;			//プレイヤーの回転速度。
 	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
-	const float moveMult = 4000.0f;			//プレイヤーの移動速度。
+	const float moveMult = 40000.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 
 }
@@ -106,7 +106,7 @@ void Player::Move()
 	moveSpeed.z += cos(m_radianY) * stickL.y;
 	moveSpeed.x += sin(m_radianY) * stickL.y;
 	moveSpeed.y = stickL.z;
-	moveSpeed *= moveMult * GetEngine().GetRealDeltaTimeSec();
+	moveSpeed *= moveMult * GetDeltaTimeSec();
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
@@ -124,7 +124,7 @@ void Player::Move()
 void Player::Turn()
 {
 	//マウスの移動量を取得。
-	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetEngine().GetRealDeltaTimeSec();
+	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetDeltaTimeSec();
 	//回転処理
 	m_degreeY += mouseCursorMovePow.x;
 	m_degreeXZ += mouseCursorMovePow.y;
