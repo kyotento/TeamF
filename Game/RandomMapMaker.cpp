@@ -20,14 +20,6 @@ void RandomMapMaker::Awake(){
 	m_seedY2 = rand() % 101 + 50;
 	m_seedZ2 = rand() % 101 + 50;
 
-	/*m_cubeList.resize(m_width);
-	//m_cubeList[0].push_back();
-	for (int i = 0; i < m_width; i++) {
-		m_cubeList[i].resize(m_maxHeight + 1);
-		for (int j = 0; j < m_maxHeight + 1; j++) {
-			m_cubeList[i][j].resize(m_depth);
-		}
-	}*/
 	//ƒLƒ…[ƒu¶¬
 	for( int x = 0; x < m_width; x++ ){
 		for( int z = 0; z < m_depth; z++ ){
