@@ -110,7 +110,7 @@ private:
 	float m_characonRadius = 50.f;								//キャラコンの半径。
 	float m_characonHeight = 100.f;								//キャラコンの高さ。
 
-	CVector3 m_position = CVector3::One() * 15.0f;				//プレイヤーの座標。
+	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。
 	CVector3 m_front = CVector3(0.0f, 0.0f, 1.0f);				//正面。
 

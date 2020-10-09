@@ -24,7 +24,7 @@ public:
 	}
 	void SetIsDraw(bool isDraw){
 		m_model.SetIsDraw( isDraw );
-		m_collision.SetEnable(isDraw);
+		//m_collision.SetEnable(isDraw);
 	}
 	SuicideObj::CCollisionObj& GetCollision() {
 		return m_collision;

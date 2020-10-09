@@ -1,4 +1,5 @@
 #pragma once
+#include "Block.h"
 class Player;
 //カメラのモード
 enum EnCameraMode {
@@ -31,7 +32,7 @@ public:
 	GameObj::PerspectiveCamera* m_camera;				//ゲームカメラ
 	CVector3 m_position = CVector3::One() * 10.0f;		//座標
 	CVector3 m_target = CVector3::Zero();				//注視点
-	const float m_radius = 0.4f;						//注視点と座標の距離
+	const float m_radius = 0.4f* Block::WIDTH;						//注視点と座標の距離
 	float m_radianY = 0.0f;								//Y軸の回転(ラジアン)
 	float m_radianXZ = 0.0f;							//XZ軸の回転(ラジアン)
 	EnCameraMode m_mode = EnMode_FPS;					//カメラのモード

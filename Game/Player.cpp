@@ -4,12 +4,13 @@
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
 #include "ItemData.h"
+#include "Chunk.h"
 
 namespace {
 	const float turnMult = 30.0f;			//プレイヤーの回転速度。
 	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
-	const float moveMult = 4000.0f;			//プレイヤーの移動速度。
+	const float moveMult = 40.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 
 }
@@ -36,7 +37,7 @@ bool Player::Start()
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelRender->Init(L"Assets/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
-	m_skinModelRender->SetScale(CVector3::One() * 0.001f);
+	m_skinModelRender->SetScale(CVector3::One() * 0.001f * Block::WIDTH);
 	m_skinModelRender->SetRot(m_rotation);
 
 	//キャラコンの初期化。

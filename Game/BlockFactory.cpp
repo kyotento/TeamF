@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BlockFactory.h"
 
+
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num - 1]{};
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
@@ -26,7 +27,7 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	block->GetModel().Init( 0, FILE_PATH_ARRAY[blockType] );
 	//block->GetModel().SetScale( CVector3::One() * 0.0075f );
 	block->SetBlockType( blockType );
-	block->GetCollision().CreateBox(CVector3::Zero(), CQuaternion::Identity(), CVector3::One());
+	block->GetCollision().CreateBox(CVector3::Zero(), CQuaternion::Identity(), CVector3::One() * Block::WIDTH);
 	block->GetCollision().SetTimer(enNoTimer);
 	block->GetCollision().SetIsHurtCollision(true);
 	return std::move( block );
