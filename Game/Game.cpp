@@ -17,6 +17,7 @@ Game::~Game()
 bool Game::Start()
 {
 	m_player = NewGO<Player>();
+	m_player->SetName(L"player");
 	m_gameCamera = NewGO<GameCamera>();
 	m_zombie = NewGO<Zombie>();
 

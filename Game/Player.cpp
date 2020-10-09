@@ -9,7 +9,7 @@ namespace {
 	const float turnMult = 30.0f;			//プレイヤーの回転速度。
 	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
-	const float moveMult = 400.0f;			//プレイヤーの移動速度。
+	const float moveMult = 4.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 
 }
@@ -34,7 +34,7 @@ bool Player::Start()
 {
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/zombie.cmo", m_animationClip, enAnimationClip_Num);
+	m_skinModelRender->Init(L"Assets/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetScale(CVector3::One() * 0.001f);
 	m_skinModelRender->SetRot(m_rotation);
@@ -42,11 +42,11 @@ bool Player::Start()
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
 
+	//インベントリ―の初期化。
 	for (int i = 0; i < inventryWidth; i++) {
 		//m_inventoryList[i] = new Inventory();
 		//m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
 	}
-
 
 	return true;
 }
@@ -67,7 +67,7 @@ void Player::Update()
 	//回転処理。
 	Turn();
 	//プレイヤーの状態管理。0
-//	StateManagement();
+	StateManagement();
 }
 
 //移動処理。
@@ -106,7 +106,7 @@ void Player::Move()
 	moveSpeed.z += cos(m_radianY) * stickL.y;
 	moveSpeed.x += sin(m_radianY) * stickL.y;
 	moveSpeed.y = stickL.z;
-	moveSpeed *= moveMult * GetEngine().GetRealDeltaTimeSec();
+	moveSpeed *= moveMult * GetEngine().GetStandardFrameRate();
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
