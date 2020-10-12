@@ -74,7 +74,6 @@ void Player::Update()
 //移動処理。
 void Player::Move()
 {
-
 	//WSADキーによる移動量
 	CVector3 stickL = CVector3::Zero();
 
@@ -98,7 +97,7 @@ void Player::Move()
 	}
 	stickL.Normalize();
 
-	CVector3 moveSpeed = CVector3::Zero();
+	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 
 	//左右入力の処理
 	moveSpeed.z = sin(m_radianY) * stickL.x;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "../physics/character/CCharacterController.h"
 
 class Enemy : public IGameObject
 {
@@ -37,15 +38,20 @@ public:
 protected:
 
 	const float m_moveSpeed = 1.0f;					//移動速度。
+	const float m_characonRadius = 50.f;								//キャラコンの半径。
+	const float m_characonHeight = 100.f;								//キャラコンの高さ。
 
-	CVector3 m_position = CVector3::Zero();			//座標。
+	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。
+	CVector3 m_characonPos = CVector3::Zero();		//キャラコンの座標。
 
 	CQuaternion m_rot = CQuaternion::Identity();	//回転情報。
 
 	AnimationClip m_animationClips[enAnimationClip_num];		//アニメーション。
 
 	enEnemyState m_enemyState = enEnemy_num;					//エネミーの状態。
+
+	CCharacterController m_characon;							//キャラコン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
 	Player* m_player = nullptr;
