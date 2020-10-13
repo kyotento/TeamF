@@ -3,16 +3,46 @@
 #include "Chunk.h"
 #include "BlockFactory.h"
 
+namespace{
 
 size_t GetSeekSize( const Chunk & chunk ){
 	constexpr uint32_t chunkSize = Chunk::WIDTH * Chunk::WIDTH * Chunk::HEIGHT * sizeof( short );
-	const int chunkNo = chunk.GetX() * chunk.GetZ();
+	const int chunkNo = chunk.GetX() * 32 + chunk.GetZ();
 
 	return chunkSize * chunkNo;
 }
 
+int GetCharLen( int num ){
+	if( num == 0 ){
+		return 1;
+	}
+
+	int minus = 0;
+
+	if( num < 0 ){
+		minus = 1;
+		num *= -1;
+	}
+
+	return log10( num ) + 1 + minus;
+}
+
+std::filesystem::path GetFilePath( const Chunk & chunk ){
+	int x = chunk.GetX() / 32;
+	int z = chunk.GetZ() / 32;
+
+	size_t pathSize = sizeof( "./Save/World/region,.regi" ) + GetCharLen( x ) + GetCharLen( z );
+
+	auto filePath = std::make_unique<char[]>( pathSize );
+	sprintf_s( filePath.get(), pathSize, "./Save/World/region%d,%d.regi", x, z );
+
+	return std::filesystem::path( filePath.get() );
+}
+
+}
+
 void ChunkFiler::Read( Chunk & chunk ){
-	std::ifstream ifs( m_filePath );
+	std::ifstream ifs( GetFilePath(chunk), std::ios::binary );
 
 	if( !ifs )abort();
 
@@ -38,9 +68,13 @@ void ChunkFiler::Read( Chunk & chunk ){
 }
 
 void ChunkFiler::Write( const Chunk & chunk ){
-	std::filesystem::create_directories( m_filePath.parent_path() );
+	std::filesystem::path filePath = GetFilePath( chunk );
+	std::filesystem::create_directories( filePath.parent_path() );
+	std::ofstream ofs( filePath, std::ios::binary | std::ios::in);
 
-	std::ofstream ofs( m_filePath );
+	if( !ofs ){
+		ofs.open( filePath, std::ios::binary);
+	}
 
 	if( !ofs )abort();
 

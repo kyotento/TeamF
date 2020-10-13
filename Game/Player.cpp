@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
 #include "ItemData.h"
+#include "World.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -62,6 +63,8 @@ void Player::Update()
 		static bool lock = true;
 		MouseCursor().SetLockMouseCursor( lock = !lock );
 	}
+
+	m_world->Test( m_position / Block::WIDTH );
 
 	Move();
 	//回転処理。

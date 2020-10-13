@@ -21,6 +21,7 @@ bool Game::Start()
 	m_world.Generate();
 
 	m_player = NewGO<Player>();
+	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 	m_zombie = NewGO<Zombie>();
 

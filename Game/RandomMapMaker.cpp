@@ -75,8 +75,6 @@ void RandomMapMaker::Init( World* world ){
 			}
 		}
 	}
-
-	m_world->GenerateEndCulling();
 }
 
 float RandomMapMaker::SetY( const CVector3& pos ){

@@ -2,9 +2,10 @@
 #include "Block.h"
 #include "../physics/character/CCharacterController.h"
 
-
+class World;
 class GameCamera;
 class Item;
+
 struct Inventory {
 	Item* s_item = nullptr;
 	int s_number = 0;
@@ -84,6 +85,15 @@ public:
 	{
 		return m_radianXZ;
 	}
+
+	World* GetWorld(){
+		return m_world;
+	}
+
+	void SetWorld(World* world){
+		m_world = world;
+	}
+
 	//インベントリの長さ
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
@@ -124,5 +134,7 @@ private:
 	CCharacterController m_characon;							//キャラコン。
 	CFont m_font;												//フォント。
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
+	
+	World* m_world = nullptr;                                   //ワールド。
 };
 
