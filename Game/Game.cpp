@@ -1,8 +1,10 @@
 #include "stdafx.h"
-#include "Game.h"
-#include "Drop.h"
-#include <random>
 #include "Box.h"
+#include "Drop.h"
+#include "Game.h"
+#include "GameCamera.h"
+#include "Player.h"
+#include "Zombie.h"
 
 Game::Game()
 {
@@ -16,6 +18,8 @@ Game::~Game()
 
 bool Game::Start()
 {
+	m_world.Generate();
+
 	m_player = NewGO<Player>();
 	m_gameCamera = NewGO<GameCamera>();
 	m_zombie = NewGO<Zombie>();

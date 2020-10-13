@@ -1,8 +1,13 @@
 #pragma once
 #include "Chunk.h"
+#include "RandomMapMaker.h"
 
 class World{
 public:
+	void Generate(){
+		m_mapmMaker.Init(this);
+	}
+
 	Block* GetBlock( const CVector3& pos ){
 		int x = std::roundf( pos.x );
 		int y = std::roundf( pos.y );
@@ -34,6 +39,7 @@ public:
 
 	void Test(const CVector3& pos);
 private:
+	RandomMapMaker m_mapmMaker;
 	std::map<int, std::map<int, Chunk>> m_chunkMap;
 };
 

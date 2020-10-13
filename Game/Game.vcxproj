@@ -76,6 +76,7 @@
     <ClInclude Include="RandomMapMaker.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WasdCamera.h" />
     <ClInclude Include="World.h" />
@@ -99,6 +100,12 @@
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX" />
     <MeshContentTask Include="Preset\modelData\player.FBX" />
     <MeshContentTask Include="Preset\modelData\zombie.FBX" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\mc2.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

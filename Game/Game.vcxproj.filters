@@ -80,6 +80,7 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ChunkFiler.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -154,5 +155,11 @@
     <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\mc2.ico" />
   </ItemGroup>
 </Project>

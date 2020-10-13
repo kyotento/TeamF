@@ -5,7 +5,8 @@
 
 #include "BlockFactory.h"
 
-void RandomMapMaker::Awake(){
+void RandomMapMaker::Init( World* world ){
+	m_world = world;
 
 	//ブロックファクトリを初期化
 	BlockFactory::LoadInstancingModels( m_width * m_depth * ( m_maxHeight + 1 ) );
