@@ -93,16 +93,18 @@ void World::GenerateEndCulling(){
 
 #include "ChunkFiler.h"
 
-void World::Test(){
+void World::Test( const CVector3& pos ){
+
+	Chunk* chunk = GetChunkFromWorldPos( pos.x, pos.z );
 
 	if( GetKeyDown( 'U' ) ){
 		ChunkFiler filer;
-		filer.Write( m_chunkMap[0][0] );
-		m_chunkMap[0].erase( 0 );
+		filer.Write( *chunk );
+		m_chunkMap[chunk->GetX()].erase( chunk->GetZ() );
 	}
 
 	if( GetKeyDown( 'I' ) ){
 		ChunkFiler filer;
-		filer.Read( m_chunkMap[0][0] );
+		filer.Read( *chunk );
 	}
 }

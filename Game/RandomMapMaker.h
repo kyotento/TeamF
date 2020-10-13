@@ -15,8 +15,6 @@ public:
 		m_world = world;
 	}
 
-	void Update() override;
-
 private:
 	float SetY(const CVector3& pos);
 	void Tree(const int x, const int y, const int z);

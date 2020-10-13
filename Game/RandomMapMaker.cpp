@@ -78,10 +78,6 @@ void RandomMapMaker::Awake(){
 	m_world->GenerateEndCulling();
 }
 
-void RandomMapMaker::Update(){
-	m_world->Test();
-}
-
 float RandomMapMaker::SetY( const CVector3& pos ){
 	float y = 0;
 

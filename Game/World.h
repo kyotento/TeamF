@@ -32,7 +32,7 @@ public:
 		return num / Chunk::WIDTH;
 	}
 
-	void Test();
+	void Test(const CVector3& pos);
 private:
 	std::map<int, std::map<int, Chunk>> m_chunkMap;
 };
