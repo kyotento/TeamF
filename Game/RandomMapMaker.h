@@ -1,19 +1,13 @@
 #pragma once
 
-
-
 class Block;
 class World;
 
-class RandomMapMaker : public IGameObject
+class RandomMapMaker
 {
 public:
 	//‰Šú‰»
-	void Awake();
-
-	void SetWorld( World* world ){
-		m_world = world;
-	}
+	void Init( World* world );
 
 private:
 	float SetY(const CVector3& pos);

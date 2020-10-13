@@ -48,19 +48,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
 	SetIsDebugInput(true);
-	
-	World world;
 
-	//GameObj::PerspectiveCamera c;
-	//SetMainCamera( &c );
-	
-	GetMainCamera()->SetPos( { 0, 0, 2 } );
-	GetMainCamera()->SetTarget( { 0, 0, 0 } );
-	//WasdCamera camera;
-
-	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
-	rMM->SetWorld( &world );
-	rMM->Awake();
 	MouseCursor().SetLockMouseCursor(true);			//マウスカーソルを中央に固定。
 	//ゲームループ。
 	GetEngine().RunGameLoop();
