@@ -57,7 +57,7 @@ protected:
 
 	enEnemyState m_enemyState = enEnemy_num;					//エネミーの状態。
 
-	CCharacterController m_characon;							//キャラコン。
+	CCharacterControllerType2 m_characon;							//キャラコン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
 	Player* m_player = nullptr;

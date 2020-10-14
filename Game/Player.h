@@ -121,7 +121,7 @@ private:
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
-	CCharacterController m_characon;							//キャラコン。
+	CCharacterControllerType2 m_characon;							//キャラコン。
 	CFont m_font;												//フォント。
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 };

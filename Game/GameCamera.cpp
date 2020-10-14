@@ -57,7 +57,7 @@ void GameCamera::Update()
 void GameCamera::FPS()
 {
 	//カメラの高さ
-	const float height = 0.30f* Block::WIDTH;
+	const float height = 1.50f* Block::WIDTH;
 	//カメラをプレイヤーの正面に
 	const float front = 0.05f* Block::WIDTH;
 

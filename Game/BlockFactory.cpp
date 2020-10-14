@@ -27,8 +27,9 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	block->GetModel().Init( 0, FILE_PATH_ARRAY[blockType] );
 	//block->GetModel().SetScale( CVector3::One() * 0.0075f );
 	block->SetBlockType( blockType );
-	//block->GetCollision().CreateBox(CVector3::Zero(), CQuaternion::Identity(), CVector3::One() * Block::WIDTH);
-	//block->GetCollision().SetTimer(enNoTimer);
+	block->GetCollision().SetIsStaticObject(true);
+	block->GetCollision().CreateBox(CVector3::Zero(), CQuaternion::Identity(), CVector3::One() * Block::WIDTH);
+	block->GetCollision().SetTimer(enNoTimer);
 	//block->GetCollision().SetIsHurtCollision(true);
 	return std::move( block );
 }
