@@ -13,7 +13,10 @@ public:
 	/// </summary>
 	/// <param name="pos">追跡させるEnemyの座標</param>
 	/// プレイヤーを追従するEnemyの子クラスで呼んであげてください。
-	virtual void Tracking(/*const CVector3 pos*/);
+	virtual void Tracking();
+
+	//状態管理。
+	virtual void StateManagement();
 
 	//エネミーのアニメーション。
 	enum enAnimationClips {
@@ -38,8 +41,10 @@ public:
 protected:
 
 	const float m_moveSpeed = 1.0f;					//移動速度。
-	const float m_characonRadius = 50.f;								//キャラコンの半径。
-	const float m_characonHeight = 100.f;								//キャラコンの高さ。
+	const float m_characonRadius = 50.f;			//キャラコンの半径。
+	const float m_characonHeight = 100.f;			//キャラコンの高さ。
+	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
+	const float m_animSpeed = 1.0f;					//アニメーションの速度。
 
 	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。

@@ -37,7 +37,7 @@ bool Player::Start()
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelRender->Init(L"Assets/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
-	m_skinModelRender->SetScale(CVector3::One() * 0.001f * Block::WIDTH);
+	m_skinModelRender->SetScale(CVector3::One() * 0.01f * Block::WIDTH);
 	m_skinModelRender->SetRot(m_rotation);
 
 	//ƒLƒƒƒ‰ƒRƒ“‚Ì‰Šú‰»B

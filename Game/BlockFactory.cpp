@@ -5,10 +5,10 @@
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num - 1]{};
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
-	FILE_PATH_ARRAY[enCube_Grass] = L"Resource/modelData/GrassBlock.cmo";
-	FILE_PATH_ARRAY[enCube_Soil] = L"Resource/modelData/soilBlock.cmo";
-	FILE_PATH_ARRAY[enCube_Stone] = L"Resource/modelData/stoneBlock.cmo";
-	FILE_PATH_ARRAY[enCube_Leaf] = L"Resource/modelData/leafBlock.cmo";
+	FILE_PATH_ARRAY[enCube_Grass] = L"Assets/modelData/GrassBlock.tkm";
+	FILE_PATH_ARRAY[enCube_Soil] = L"Assets/modelData/soilBlock.tkm";
+	FILE_PATH_ARRAY[enCube_Stone] = L"Assets/modelData/stoneBlock.tkm";
+	FILE_PATH_ARRAY[enCube_Leaf] = L"Assets/modelData/leafBlock.tkm";
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
