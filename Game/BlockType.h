@@ -1,5 +1,7 @@
+/// @file
 #pragma once
 
+/// @brief Block ‚Ìí—ŞB
 enum EnCube
 {
 	enCube_None = -1,

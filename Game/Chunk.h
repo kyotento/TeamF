@@ -1,16 +1,22 @@
+/// @file
 #pragma once
 #include "Block.h"
 
+/*! @brief World クラスは保持するべき Block オブジェクトをこのクラスごとに分けて保持する。
+    @details #WIDTH * #HEIGHT * #WIDTH の3次元配列でブロックを保持する。
+    @author Takayama */
 class Chunk{
 public:
+	/// @brief チャンク1個分を1としたときのこのチャンクの座標を設定。
 	void SetChunkPos( int x, int z ){
 		m_chunkX = x; m_chunkZ = z;
 	}
 
-	//チャンク内の座標でブロックを取得
+	/// @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( int x, int y, int z ){
 		return m_blockArray[x][y][z].get();
 	}
+	/// @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( const CVector3& pos ){
 		int x = std::roundf( pos.x );
 		int y = std::roundf( pos.y );
@@ -18,13 +24,13 @@ public:
 		return GetBlock( x, y, z );
 	}
 
-	//チャンク内の座標でブロックを設定
+	/// @brief チャンク内の座標でブロックを設定
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block){
 		m_blockArray[x][y][z] = std::move(block);
-		m_blockArray[x][y][z]->SetPos( CalcWorldCoordX(x) * Block::WIDTH,
-									   y * Block::WIDTH,
-									   CalcWorldCoordZ(z) * Block::WIDTH );
+		m_blockArray[x][y][z]->SetPos( CalcWorldCoordX(x), y,  CalcWorldCoordZ(z) );
 	}
+
+	/// @brief チャンク内の座標でブロックを設定
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block){
 		int x = std::roundf( pos.x );
 		int y = std::roundf( pos.y );
@@ -32,7 +38,9 @@ public:
 		SetBlock( x, y, z, std::move(block) );
 	}
 
-	//チャンク内座標を計算
+	/// @brief チャンク内座標を計算
+	/// @param coord ワールド座標のxかz
+	/// @return チャンク内座標のxかz
 	static int CalcInChunkCoord( int coord ){
 		if( coord < 0 ){
 			coord -= Chunk::WIDTH - 1;
@@ -41,32 +49,39 @@ public:
 		return coord % Chunk::WIDTH;
 	}
 
-	//ワールド座標を計算
+	/// @brief ワールド座標のX値を計算
 	int CalcWorldCoordX( int x){
 		return x + m_chunkX * Chunk::WIDTH;
 	}
+
+	/// @brief ワールド座標のZ値を計算
 	int CalcWorldCoordZ( int z ){
 		return z + m_chunkZ * Chunk::WIDTH;
 	}
 
+	/// @brief チャンク座標のX。
 	int GetX() const{
 		return m_chunkX;
 	}
-
+	/// @brief チャンク座標のZ。
 	int GetZ() const{
 		return m_chunkZ;
 	}
+
+	/// @brief ブロック配列の先頭アドレスを取得。
 	const auto& Data() const{
 		return m_blockArray;
 	}
 
+	/// @brief ブロック配列の先頭アドレスを取得。
 	auto& Data(){
 		return m_blockArray;
 	}
 
+	/// @brief チャンクのx,z方向の長さ。
 	static constexpr int WIDTH = 16;
+	/// @brief チャンクのy方向の長さ。
 	static constexpr int HEIGHT = 64;
-
 private:
 	int m_chunkX = 0;
 	int m_chunkZ = 0;

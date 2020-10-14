@@ -1,4 +1,7 @@
 #pragma once
+
+/// @brief 時間を計るデバッグ用ストップウォッチ。使われてないので消してもよい。
+/// @author Takayama
 class DebugTimer{
 public:
 	void Start();

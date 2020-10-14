@@ -2,24 +2,19 @@
 #include "World.h"
 
 Block * World::GetBlock( int x, int y, int z ){
-	try{
-
-		Chunk* chunk = GetChunkFromWorldPos( x, z );
+	Chunk* chunk = GetChunkFromWorldPos( x, z );
+	if( chunk ){
 		x = Chunk::CalcInChunkCoord( x );
 		z = Chunk::CalcInChunkCoord( z );
 		return chunk->GetBlock( x, y, z );
-
-	} catch( std::out_of_range e ){
-		return nullptr;
 	}
+	return nullptr;
 }
 
 void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
-	Chunk* chunk;
+	Chunk* chunk = GetChunkFromWorldPos( x, z );
 
-	try{
-		chunk = GetChunkFromWorldPos( x, z );
-	} catch( std::out_of_range e ){
+	if(!chunk ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
@@ -28,17 +23,17 @@ void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	chunk->SetBlock( x, y, z, std::move( block ) );
 }
 
-Chunk* World::GetChunkFromWorldPos( int x, int z ){
-	int chunkX = CalcChunkCoord( x );
-	int chunkZ = CalcChunkCoord( z );
-	return &m_chunkMap.at( chunkX ).at( chunkZ );
+Chunk* World::GetChunk( int x, int z ){
+	try{
+		return &m_chunkMap.at( x ).at( z );
+	} catch( std::out_of_range ){
+		return nullptr;
+	}
 }
 
-Chunk * World::CreateChunkFromWorldPos( int x, int z ){
-	int chunkX = CalcChunkCoord( x );
-	int chunkZ = CalcChunkCoord( z );
-	Chunk* chunk = &m_chunkMap[chunkX][chunkZ];
-	chunk->SetChunkPos( chunkX, chunkZ );
+Chunk * World::CreateChunk( int x, int z ){
+	Chunk* chunk = &m_chunkMap[x][z];
+	chunk->SetChunkPos( x, z );
 	return chunk;
 }
 
@@ -110,7 +105,8 @@ void World::Test( const CVector3& pos ){
 	if( GetKeyDown( 'I' ) ){
 		Chunk* chunk = CreateChunkFromWorldPos( pos.x, pos.z );
 		ChunkFiler filer;
-		filer.Read( *chunk );
-		ChunkCulling( *chunk );
+		if( filer.Read( *chunk ) ){
+			ChunkCulling( *chunk );
+		}
 	}
 }

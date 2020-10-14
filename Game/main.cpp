@@ -3,7 +3,6 @@
 
 #include "RandomMapMaker.h"
 #include "Game.h"
-#include "WasdCamera.h"
 #include "World.h"
 
 namespace {
