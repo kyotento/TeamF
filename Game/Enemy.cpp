@@ -26,14 +26,14 @@ void Enemy::Tracking()
 {
 	//追従処理。
 	CVector3 direction;			//Enemyから見たPlayerの向き。
-	direction = (m_player->GetPosition() - m_characonPos);
+	direction = (m_player->GetPosition() - m_position);
+	CVector3 oldDirection = direction;		//正規化する前の値を格納。
 	direction.Normalize();
-	m_characonPos += direction * m_moveSpeed;
-	direction.y = 0.f;			//高さは不要なので０を代入。
+	direction.y = 0.f;
+	if (oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
 
-	if (direction.Length() >= 1.f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
-
-		m_position = m_characon.Execute(m_characonPos);
+		m_characonMove = direction * m_moveSpeed;
+		m_position = m_characon.Execute(m_characonMove);
 		m_skinModelRender->SetPos(m_position);
 
 		m_enemyState = enEnemy_tracking;			//追跡状態に。
@@ -51,35 +51,35 @@ void Enemy::StateManagement()
 {
 	switch (m_enemyState)
 	{
-	enEnemy_idle:
+	case enEnemy_idle:
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_idle, m_interpolateTimeSec);
 		m_skinModelRender->GetAnimCon().SetSpeed(m_animSpeed);
 
 		break;
-	enEnemy_move:
+	case enEnemy_move:
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, m_interpolateTimeSec);
 		m_skinModelRender->GetAnimCon().SetSpeed(m_animSpeed);
 
 		break;
-	enEnemy_tracking:
+	case enEnemy_tracking:
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_tracking, m_interpolateTimeSec);
 		m_skinModelRender->GetAnimCon().SetSpeed(m_animSpeed);
 
 		break;
-	enEnemy_attack:
+	case enEnemy_attack:
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_attack, m_interpolateTimeSec);
 		m_skinModelRender->GetAnimCon().SetSpeed(m_animSpeed);
 
 		break;
-	enEnemy_fan:
+	case enEnemy_fan:
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAniamtionClip_fan, m_interpolateTimeSec);

@@ -40,7 +40,7 @@ public:
 
 protected:
 
-	const float m_moveSpeed = 1.0f;					//移動速度。
+	const float m_moveSpeed = 100.0f;					//移動速度。
 	const float m_characonRadius = 50.f;			//キャラコンの半径。
 	const float m_characonHeight = 100.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
@@ -49,6 +49,7 @@ protected:
 	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。
 	CVector3 m_characonPos = CVector3::Zero();		//キャラコンの座標。
+	CVector3 m_characonMove = CVector3::Zero();		//キャラコンの移動量(向き持)。
 
 	CQuaternion m_rot = CQuaternion::Identity();	//回転情報。
 
