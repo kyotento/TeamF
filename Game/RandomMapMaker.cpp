@@ -77,6 +77,60 @@ void RandomMapMaker::Init( World* world ){
 	}
 }
 
+void RandomMapMaker::GenerateChunk( Chunk & chunk ){
+	const int xStart = chunk.CalcWorldCoordX( 0 );
+	const int xEnd = chunk.CalcWorldCoordX( Chunk::WIDTH );
+	const int zStart = chunk.CalcWorldCoordZ( 0 );
+	const int zEnd = chunk.CalcWorldCoordZ( Chunk::WIDTH );
+
+	//wx,wz <- ワールド座標。cx,cz <- チャンク内座標。
+	//チャンク内のx,z座標をループ。
+	for( int wx = xStart, cx = 0; wx < xEnd; wx++, cx++ ){
+		for( int wz = zStart, cz = 0; wz < zEnd; wz++, cz++ ){
+
+			//地表の高さを決定。
+			CVector3 pos = CVector3( wx, 0, wz );
+			pos.y = SetY( pos );
+			int wy = int( pos.y );
+
+			//上で決定した高さをもとに最高高度のブロックを設置。
+			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
+			//木を生やす。
+			Tree( wx, wy, wz );
+
+			//決定した最高地点から最低高度までブロックをしきつめていく。
+			while( wy > m_minHeight ){
+
+				wy--;
+
+				{
+					//土
+					EnCube bType = enCube_Soil;
+					//石ブロック圏内なら石
+					if( m_stoneMaxHeight >= wy && wy >= m_stoneMinHeight ){
+						bType = enCube_Stone;
+					}
+
+					//鉱石ブロック圏内でノイズが許せば鉱石
+					if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
+
+						//パーリンノイズ
+						float noise = GetPerlin().PerlinNoise( ( float( wx ) + m_seedX ) / m_relief2,
+							( float( wy ) + m_seedY ) / m_relief2, ( float( wz ) + m_seedZ ) / m_relief2 );
+
+						if( noise >= 0.7f ){
+							bType = enCube_Soil;//暫定的に土で代用
+						}
+					}
+
+					chunk.SetBlock( cx, wy, cz, BlockFactory::CreateBlock( bType ) );
+
+				}
+			}
+		}
+	}
+}
+
 float RandomMapMaker::SetY( const CVector3& pos ){
 	float y = 0;
 

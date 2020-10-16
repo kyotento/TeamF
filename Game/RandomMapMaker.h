@@ -2,12 +2,17 @@
 
 class Block;
 class World;
+class Chunk;
 
 class RandomMapMaker
 {
 public:
 	//初期化
 	void Init( World* world );
+
+	//! @brief チャンクの地形を生成する。
+	//! @param[in] chunk このチャンクに生成する。
+	void GenerateChunk( Chunk& chunk );
 
 private:
 	float SetY(const CVector3& pos);

@@ -6,16 +6,16 @@
 namespace{
 
 	//! REGION_W * REGION_W 個のチャンクで構成される正方形を1ファイルとする。
-	constexpr uint32_t REGION_W = 32;
+	constexpr int32_t REGION_W = 32;
 
 	//! チャンクが存在するかのフラグのデータサイズ。
-	constexpr uint32_t FLAG_BYTES = ( REGION_W * REGION_W + 7 ) / 8;
+	constexpr int32_t FLAG_BYTES = ( REGION_W * REGION_W + 7 ) / 8;
 
 	//! チャンクのデータサイズ(byte)
-	constexpr uint32_t CHUNK_SIZE = Chunk::WIDTH * Chunk::WIDTH * Chunk::HEIGHT * sizeof( short );
+	constexpr int32_t CHUNK_SIZE = Chunk::WIDTH * Chunk::WIDTH * Chunk::HEIGHT * sizeof( short );
 
 	//! チャンクに与える番号。ファイル内の書き込み位置を決定する。0～(REGION_W * REGION_W - 1)まで。
-	uint32_t GetChunkNo( const Chunk & chunk ){
+	int32_t GetChunkNo( const Chunk & chunk ){
 		int x = chunk.GetX() % REGION_W;
 		int z = chunk.GetX() % REGION_W;
 
@@ -30,7 +30,7 @@ namespace{
 	}
 
 	//! 10進数の文字数を返す。マイナス符号も1とみなす。
-	int GetCharLen( int num ){
+	int32_t GetCharLen( int num ){
 		if( num == 0 ){
 			return 1;
 		}

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "World.h"
+#include "ChunkFiler.h"
 
 Block * World::GetBlock( int x, int y, int z ){
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
@@ -24,25 +25,30 @@ void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 }
 
 Chunk* World::GetChunk( int x, int z ){
-	try{
-		return &m_chunkMap.at( x ).at( z );
-	} catch( std::out_of_range ){
+	auto pair = std::make_pair( x, z );
+	if( m_chunkMap.count( pair ) == 0 ){
 		return nullptr;
 	}
+	return &m_chunkMap.at(pair);
 }
 
 Chunk * World::CreateChunk( int x, int z ){
-	Chunk* chunk = &m_chunkMap[x][z];
+	auto itr = m_chunkMap.find(std::make_pair( x, z ));
+	if( itr != m_chunkMap.end() ){
+		return &itr->second;
+	}
+
+	Chunk* chunk = &m_chunkMap[std::make_pair( x, z )];
+
+	
 	chunk->SetChunkPos( x, z );
 	return chunk;
 }
 
 void World::AllChunkCulling(){
 	//全チャンクをループ
-	for( auto& chunkMapZ : m_chunkMap ){
-		for( auto& chunkPair : chunkMapZ.second ){
-			ChunkCulling( chunkPair.second );
-		}
+	for( auto& chunkPair : m_chunkMap ){
+		ChunkCulling( chunkPair.second );
 	}
 }
 
@@ -91,22 +97,28 @@ void World::ChunkCulling( Chunk& chunk ){
 	}
 }
 
-#include "ChunkFiler.h"
-
 void World::Test( const CVector3& pos ){
 
 	if( GetKeyDown( 'U' ) ){
 		Chunk* chunk = GetChunkFromWorldPos( pos.x, pos.z );
 		ChunkFiler filer;
 		filer.Write( *chunk );
-		m_chunkMap[chunk->GetX()].erase( chunk->GetZ() );
+		m_chunkMap.erase( std::make_pair( chunk->GetX(), chunk->GetZ() ) );
 	}
 
 	if( GetKeyDown( 'I' ) ){
 		Chunk* chunk = CreateChunkFromWorldPos( pos.x, pos.z );
+
+		//ファイルから読み込む。
 		ChunkFiler filer;
-		if( filer.Read( *chunk ) ){
-			ChunkCulling( *chunk );
+		bool readResult = filer.Read( *chunk );
+
+		//ファイルにチャンクが存在しなかった場合。
+		if( !readResult ){
+			m_mapMaker.GenerateChunk( *chunk );
 		}
+
+		//埋まったブロックを非表示にする。
+		ChunkCulling( *chunk );
 	}
 }
