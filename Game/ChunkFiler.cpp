@@ -19,12 +19,8 @@ namespace{
 		int x = chunk.GetX() % REGION_W;
 		int z = chunk.GetX() % REGION_W;
 
-		if( x < 0 ){
-			x += REGION_W;
-		}
-		if( z < 0 ){
-			z += REGION_W;
-		}
+		if( x < 0 )x += REGION_W;
+		if( z < 0 )z += REGION_W;
 
 		return x * REGION_W + z;
 	}
@@ -47,8 +43,16 @@ namespace{
 
 	//! チャンクを保存するべきregionファイルを決定する。region座標で"regionX,Z.regi"のファイル名となる。
 	std::filesystem::path GetFilePath( const Chunk & chunk ){
-		int x = chunk.GetX() / REGION_W;
-		int z = chunk.GetZ() / REGION_W;
+		int x = chunk.GetX();
+		int z = chunk.GetZ();
+
+		//REGION_Wがもし5なら、0～4のときと、-1～-4のときで、共にレギオン座標が0になってしまうので、
+		//値がマイナスのときは(REGION_W - 1)を引く。上の例だと-1は-5になりレギオン座標は-1になる。
+		if( x < 0 )x -= REGION_W - 1;
+		if( z < 0 )z -= REGION_W - 1;
+
+		x /= REGION_W;
+		z /= REGION_W;
 
 		size_t pathSize = sizeof( "./Save/World/region,.regi" ) + GetCharLen( x ) + GetCharLen( z );
 

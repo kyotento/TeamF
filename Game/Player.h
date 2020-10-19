@@ -90,9 +90,9 @@ public:
 		return m_world;
 	}
 
-	void SetWorld(World* world){
-		m_world = world;
-	}
+	//! @brief World をセットする。
+	//! @param recursive trueなら World::SetPlayer(this, false) も呼び出す。
+	void SetWorld( World* world , bool recursive = true);
 
 	//インベントリの長さ
 	static const int inventryWidth = 9;

@@ -35,9 +35,9 @@ public:
 	}
 	//! @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( const CVector3& pos ){
-		int x = std::roundf( pos.x );
-		int y = std::roundf( pos.y );
-		int z = std::roundf( pos.z );
+		int x = (int)std::roundf( pos.x );
+		int y = (int)std::roundf( pos.y );
+		int z = (int)std::roundf( pos.z );
 		return GetBlock( x, y, z );
 	}
 
@@ -49,9 +49,9 @@ public:
 
 	//! @brief チャンク内の座標でブロックを設定
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
-		int x = std::roundf( pos.x );
-		int y = std::roundf( pos.y );
-		int z = std::roundf( pos.z );
+		int x = (int)std::roundf( pos.x );
+		int y = (int)std::roundf( pos.y );
+		int z = (int)std::roundf( pos.z );
 		SetBlock( x, y, z, std::move( block ) );
 	}
 

@@ -41,7 +41,7 @@ void RandomMapMaker::Init( World* world ){
 
 			//上で決定した高さをもとに最高高度のブロックを設置。
 			m_world->SetBlock( xx, yy, zz, BlockFactory::CreateBlock( enCube_Grass ) );
-			Tree(xx, yy, zz);
+			//Tree(xx, yy, zz);
 
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( yy > m_minHeight ){
@@ -96,7 +96,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			//上で決定した高さをもとに最高高度のブロックを設置。
 			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
 			//木を生やす。
-			Tree( wx, wy, wz );
+			//Tree( wx, wy, wz );
 
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( wy > m_minHeight ){

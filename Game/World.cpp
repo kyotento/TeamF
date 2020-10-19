@@ -1,6 +1,51 @@
 #include "stdafx.h"
 #include "World.h"
 #include "ChunkFiler.h"
+#include "Player.h"
+
+void World::PostUpdate(){
+	const CVector3 pPosV = m_player->GetPosition() / Block::WIDTH;
+
+	const int pPosX = CalcChunkCoord( (int)pPosV.x );
+	const int pPosZ = CalcChunkCoord( (int)pPosV.z );
+	const int cl = m_chunkLoadRange;
+
+	for( int x = pPosX - cl; x <= pPosX + cl; x++ ){
+		for( int z = pPosZ - cl; z <= pPosZ + cl; z++ ){
+			if( !IsExistChunk( x, z ) ){
+				Chunk* chunk = CreateChunk( x, z );
+
+				//ファイルから読み込む。
+				ChunkFiler filer;
+				bool readResult = filer.Read( *chunk );
+
+				//ファイルにチャンクが存在しなかった場合。
+				if( !readResult ){
+					m_mapMaker.GenerateChunk( *chunk );
+				}
+
+				//埋まったブロックを非表示にする。
+				ChunkCulling( *chunk );
+			}
+		}
+	}
+
+	for( auto& [coord, chunk] : m_chunkMap ){
+		const int x = chunk.GetX(), z = chunk.GetZ();
+		if( !(pPosX - cl <= x && x <= pPosX + cl && pPosZ - cl <= z && z <= pPosZ + cl) ){
+			ChunkFiler filer;
+			filer.Write( chunk );
+			m_chunkMap.erase( std::make_pair( chunk.GetX(), chunk.GetZ() ) );
+		}
+	}
+	
+}
+
+void World::SetPlayer( Player* player, bool recursive ){
+	m_player = player;
+	if( recursive )
+		player->SetWorld( this , false);
+}
 
 Block * World::GetBlock( int x, int y, int z ){
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
@@ -100,14 +145,14 @@ void World::ChunkCulling( Chunk& chunk ){
 void World::Test( const CVector3& pos ){
 
 	if( GetKeyDown( 'U' ) ){
-		Chunk* chunk = GetChunkFromWorldPos( pos.x, pos.z );
+		Chunk* chunk = GetChunkFromWorldPos( (int)pos.x, (int)pos.z );
 		ChunkFiler filer;
 		filer.Write( *chunk );
 		m_chunkMap.erase( std::make_pair( chunk->GetX(), chunk->GetZ() ) );
 	}
 
 	if( GetKeyDown( 'I' ) ){
-		Chunk* chunk = CreateChunkFromWorldPos( pos.x, pos.z );
+		Chunk* chunk = CreateChunkFromWorldPos( (int)pos.x, (int)pos.z );
 
 		//ファイルから読み込む。
 		ChunkFiler filer;

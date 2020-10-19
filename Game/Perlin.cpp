@@ -38,6 +38,11 @@ float Perlin::PerlinNoise(float x, float y, float z)
     float xf = x - (int)x;
     float yf = y - (int)y;
     float zf = z - (int)z;
+	
+	//マイナスの値が渡されたとき、補間用の変数をプラスにする。(-0.2fなら0.8fになる。)
+	if( x < 0 )xf += 1;
+	if( y < 0 )yf += 1;
+	if( z < 0 )zf += 1;
 
     float u = Fade(xf);
     float v = Fade(yf);

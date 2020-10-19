@@ -10,7 +10,7 @@ namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
 	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
-	const float moveMult = 40000.0f;			//プレイヤーの移動速度。
+	const float moveMult = 40000.0f * 3;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 
 }
@@ -64,13 +64,17 @@ void Player::Update()
 		MouseCursor().SetLockMouseCursor( lock = !lock );
 	}
 
-	m_world->Test( m_position / Block::WIDTH );
-
 	Move();
 	//回転処理。
 	Turn();
 	//プレイヤーの状態管理。0
 	StateManagement();
+}
+
+void Player::SetWorld( World* world, bool recursive ){
+	m_world = world;
+	if(recursive)
+		world->SetPlayer( this, false);
 }
 
 //移動処理。

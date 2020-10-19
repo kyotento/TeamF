@@ -3,10 +3,23 @@
 #include "Chunk.h"
 #include "RandomMapMaker.h"
 
+class Player;
+
 //! @brief Block オブジェクトを保持するワールド
 //! @author Takayama
-class World{
+class World : public IGameObject{
 public:
+
+	//! @brief 更新関数。チャンクをストレージに退避させる処理をする。
+	void PostUpdate() override;
+
+	//! @brief Player をセットする。
+	//! @param recursive trueなら Player::SetWorld(this, false) も呼び出す。
+	void SetPlayer( Player* player, bool recursive );
+
+	Player* GetPlayer(){
+		return m_player;
+	}
 
 	//! @brief ワールドを生成する。 
 	void Generate(){
@@ -15,17 +28,17 @@ public:
 	}
 
 	Block* GetBlock( const CVector3& pos ){
-		int x = std::roundf( pos.x );
-		int y = std::roundf( pos.y );
-		int z = std::roundf( pos.z );
+		int x = (int)std::roundf( pos.x );
+		int y = (int)std::roundf( pos.y );
+		int z = (int)std::roundf( pos.z );
 		return GetBlock( x, y, z );
 	}
 	Block* GetBlock( int x, int y, int z );
 
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
-		int x = std::roundf( pos.x );
-		int y = std::roundf( pos.y );
-		int z = std::roundf( pos.z );
+		int x = (int)std::roundf( pos.x );
+		int y = (int)std::roundf( pos.y );
+		int z = (int)std::roundf( pos.z );
 		SetBlock( x, y, z, std::move(block) );
 	}
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block );
@@ -85,5 +98,9 @@ private:
 
 	RandomMapMaker m_mapMaker;
 	std::map<std::pair<int, int>, Chunk> m_chunkMap;
+
+	Player* m_player = nullptr;
+
+	int m_chunkLoadRange = 2;
 };
 
