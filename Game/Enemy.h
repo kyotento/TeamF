@@ -41,8 +41,8 @@ public:
 protected:
 
 	const float m_moveSpeed = 100.0f;					//移動速度。
-	const float m_characonRadius = 50.f;			//キャラコンの半径。
-	const float m_characonHeight = 100.f;			//キャラコンの高さ。
+	const float m_characonRadius = 40.f;			//キャラコンの半径。
+	const float m_characonHeight = 160.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
 	const float m_animSpeed = 1.0f;					//アニメーションの速度。
 

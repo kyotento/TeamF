@@ -37,6 +37,7 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="GameMode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -77,6 +78,7 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="GameMode.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

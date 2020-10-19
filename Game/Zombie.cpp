@@ -23,7 +23,7 @@ bool Zombie::Start()
 	m_skinModelRender->Init(L"Resource/modelData/zombie.cmo", m_animationClips, enAnimationClip_num);
 	m_position = { 35.f,15.f,35.f };
 	m_skinModelRender->SetPos(m_position);
-	m_skinModelRender->SetScale(m_scale * 0.01f * Block::WIDTH);
+	m_skinModelRender->SetScale(m_scale);
 	m_skinModelRender->SetRot(m_rot);
 
 	return true;
