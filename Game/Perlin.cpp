@@ -26,23 +26,32 @@ Perlin::Perlin()
 
 float Perlin::PerlinNoise(float x, float y, float z)
 {
-    /*if (m_repeat > 0) {
-        x = x % m_repeat;
-        y = y % m_repeat;
-        z = z % m_repeat;
-    }*/
-    int xi = int(x) & (listSize - 1);
-    int yi = int(y) & (listSize - 1);
-    int zi = int(z) & (listSize - 1);
+	//単位立方体の隅のうち最小のものを指す。
+    int xi = int(x);
+    int yi = int(y);
+    int zi = int(z);
 
+	//単位立方体内の座標。1～0。
     float xf = x - (int)x;
     float yf = y - (int)y;
     float zf = z - (int)z;
 	
-	//マイナスの値が渡されたとき、補間用の変数をプラスにする。(-0.2fなら0.8fになる。)
-	if( x < 0 )xf += 1;
-	if( y < 0 )yf += 1;
-	if( z < 0 )zf += 1;
+	//マイナスの場合に必要な調整。
+	if( x < 0 ){
+		xi -= 1;
+		xf += 1;
+	}
+	if( y < 0 ){
+		yi -= 1;
+		yf += 1;
+	}
+	if( z < 0 ){
+		zi -= 1;
+		zf += 1;
+	}
+
+	//単位立方体の隅の座標を0～255に収める。
+	xi &= 0xff; yi &= 0xff; zi &= 0xff;
 
     float u = Fade(xf);
     float v = Fade(yf);

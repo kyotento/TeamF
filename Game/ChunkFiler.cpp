@@ -17,7 +17,7 @@ namespace{
 	//! チャンクに与える番号。ファイル内の書き込み位置を決定する。0～(REGION_W * REGION_W - 1)まで。
 	int32_t GetChunkNo( const Chunk & chunk ){
 		int x = chunk.GetX() % REGION_W;
-		int z = chunk.GetX() % REGION_W;
+		int z = chunk.GetZ() % REGION_W;
 
 		if( x < 0 )x += REGION_W;
 		if( z < 0 )z += REGION_W;
@@ -66,7 +66,8 @@ namespace{
 
 bool ChunkFiler::Read( Chunk & chunk ){
 	const uint32_t chunkNo = GetChunkNo( chunk );
-	std::ifstream ifs( GetFilePath( chunk ), std::ios::binary );
+	auto path = GetFilePath( chunk );
+	std::ifstream ifs( path, std::ios::binary );
 
 	if( !ifs )return false;
 
@@ -76,7 +77,6 @@ bool ChunkFiler::Read( Chunk & chunk ){
 	ifs.read( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
 
 	if( !( ( 1 << chunkNo % 8 )  & flags ) ){
-		OutputDebugStringA( "無かった。\n" );
 		return false;
 	}
 
