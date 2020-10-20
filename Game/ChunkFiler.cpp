@@ -33,14 +33,14 @@ namespace{
 			return 1;
 		}
 
-		int minus = 0;
+		int32_t minus = 0;
 
 		if( num < 0 ){
 			minus = 1;
 			num *= -1;
 		}
 
-		return log10( num ) + 1 + minus;
+		return int32_t(log10( num )) + 1 + minus;
 	}
 
 	//! チャンクを保存するべきregionファイルを決定する。region座標で"regionX,Z.regi"のファイル名となる。
