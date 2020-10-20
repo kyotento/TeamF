@@ -123,13 +123,27 @@ private:
 	void Shift();
 
 	/// <summary>
+	/// 移動方法の切り替え(クリエイティブ)。
+	/// </summary>
+	void ChangeMovemontC();
+
+	/// <summary>
 	/// プレイヤーの状態管理。
 	/// </summary>
 	void StateManagement();
 
+	/// <summary>
+	/// スペースをダブルクリックしたかどうか。
+	/// </summary>
+	/// <returns>doubleClickFlag</returns>
+	bool SpaceDoubleClick();
+
 	bool m_isJump = false;					//飛んでいるか。
 	bool m_doubleCilckFlag = false;			//ダブルクリックフラグ。
 	bool m_runFlag = false;					//走っているか。
+	bool m_flyingMode = true;				//クリエイティブの際、飛行モードかどうか。
+	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
+	bool m_flyingflag = false;				//飛べる状態か。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -139,6 +153,7 @@ private:
 	float m_jmpInitialVelocity = 3.f;						//ジャンプの初速度。
 	float m_runSpeedDouble = 1.f;							//走るときの移動速度の倍率。(走るときは2.fになる予定)。
 	float m_doubleClickTimer = 0.0f;						//ダブルクリックの判定時間。
+	float m_doubleClickTimerC = 0.0f;						//ダブルクリックの判定時間(クリエイティブ)。
 	const float m_characonRadius = 50.f;					//キャラコンの半径。
 	const float m_characonHeight = 160.f;					//キャラコンの高さ。
 	const float m_gravity = 0.65f;							//重力。

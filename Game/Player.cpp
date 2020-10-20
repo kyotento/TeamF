@@ -14,9 +14,11 @@ namespace {
 	const float moveMult = 8.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//重力加速度。
+	const float doubleClickRug = 0.2f;		//ダブルクリック判定になる間合い。
+
+
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
-
 }
 
 Player::Player()
@@ -100,11 +102,55 @@ void Player::KeyBoardInput()
 	}
 
 	if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative) {		//クリエイティブのとき。
-		if (GetKeyInput(VK_SHIFT)) {
-			stickL.z = -move;
+
+		ChangeMovemontC();
+
+		if (m_flyingMode) {			//飛行モードのとき。
+			if (GetKeyInput(VK_SHIFT)) {
+				stickL.z = -move;
+			}
+			else if (GetKeyInput(VK_SPACE)) {
+				stickL.z = move;
+			}
 		}
-		else if (GetKeyInput(VK_SPACE)) {
-			stickL.z = move;
+	}
+}
+
+//スペースをダブルクリックしたかどうか。
+bool Player::SpaceDoubleClick()
+{
+	bool doubleClickeFlag = false;
+	if (!m_doubleClickFlagC) {
+		if (GetKeyUp(VK_SPACE)) {			//スペースキーを離したとき。
+			m_doubleClickFlagC = true;
+		}
+	}
+	if (m_doubleClickFlagC) {
+		if (m_doubleClickTimerC <= doubleClickRug) {
+			m_doubleClickTimerC += GetEngine().GetRealDeltaTimeSec();
+			if (GetKeyDown(VK_SPACE)) {
+				doubleClickeFlag = true;
+			}
+		}
+		else {
+			m_doubleClickFlagC = false;
+			m_doubleClickTimerC = 0.f;
+			doubleClickeFlag = false;
+		}
+	}	
+	return doubleClickeFlag;
+}
+
+// 移動方法の切り替え(クリエイティブ)。
+void Player::ChangeMovemontC()
+{
+	if (SpaceDoubleClick()) {		//ダブルクリックしたら。
+		if (!m_flyingMode){
+			m_flyingMode = true;	//飛行モードに。
+			return;
+		}
+		else {						//ダブルクリックしていなければ。
+			m_flyingMode = false;	//歩行モードに。
 		}
 	}
 }
@@ -116,10 +162,10 @@ void Player::Dash()
 		m_doubleCilckFlag = true;
 	}
 	if (m_doubleCilckFlag) {
-		if (m_doubleClickTimer <= 0.2f && m_playerState != enPlayerState_run) {
+		if (m_doubleClickTimer <= doubleClickRug && m_playerState != enPlayerState_run) {
 			m_doubleClickTimer += GetEngine().GetRealDeltaTimeSec();	//タイマーを進める。
 		}
-		if (m_doubleClickTimer <= 0.2f) {
+		if (m_doubleClickTimer <= doubleClickRug) {
 			if (GetKeyDown('W')) {		//走らせる。
 				m_playerState = enPlayerState_run;
 				m_runFlag = true;
@@ -182,7 +228,8 @@ void Player::Move()
 //ジャンプ。
 void Player::Jump()
 {
-	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {			//サバイバルのとき。
+	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival		//サバイバルのときか。
+		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
 		if (GetKeyDown(VK_SPACE) && m_characon.IsOnGround()) {		//スペースを押したら。
 			m_isJump = true;			//ジャンプフラグを返す。
 		}
