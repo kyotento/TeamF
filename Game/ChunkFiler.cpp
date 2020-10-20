@@ -5,11 +5,13 @@
 
 namespace{
 
+#include "ChunkFlags.h"
+
 	//! REGION_W * REGION_W 個のチャンクで構成される正方形を1ファイルとする。
 	constexpr int32_t REGION_W = 32;
 
-	//! チャンクが存在するかのフラグのデータサイズ。
-	constexpr int32_t FLAG_BYTES = ( REGION_W * REGION_W + 7 ) / 8;
+	//! チャンクが存在するかのフラグと、チャンクが生成済みかのフラグのデータサイズ。
+	constexpr int32_t FLAG_BYTES = ( REGION_W * REGION_W * ChunkFlagsEnum::Num + 7 ) / 8;
 
 	//! チャンクのデータサイズ(byte)
 	constexpr int32_t CHUNK_SIZE = Chunk::WIDTH * Chunk::WIDTH * Chunk::HEIGHT * sizeof( short );
@@ -71,14 +73,17 @@ bool ChunkFiler::Read( Chunk & chunk ){
 
 	if( !ifs )return false;
 
-	//自分のフラグがある場所のバイトを読み込む。
-	uint8_t flags = 0;
-	ifs.seekg( chunkNo / 8 );
-	ifs.read( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
+	//チャンクが存在するかどうかのフラグを管理するオブジェクト。
+	ChunkFlags flags( ifs, chunkNo );
 
-	if( !( ( 1 << chunkNo % 8 )  & flags ) ){
-		return false;
-	}
+	//自分のフラグがある場所のバイトを読み込む。
+	flags.ReadFlags();
+
+	//チャンクが存在しない。
+	if( !flags.IsExist() )return false;
+
+	//チャンクを生成済みにする。
+	if( flags.IsGenerated() )chunk.SetGenerated();
 
 	//チャンクデータまでシーク。
 	ifs.seekg( chunkNo * CHUNK_SIZE + FLAG_BYTES );
@@ -113,13 +118,12 @@ void ChunkFiler::Write( const Chunk & chunk ){
 	//元の内容を保持しつつ編集するためにios::inも指定する。
 	std::fstream fs( filePath, std::ios::binary | std::ios::out | std::ios::in );
 
-	//チャンクが存在するかどうかのフラグ。
-	uint8_t flags = 0;
+	//チャンクが存在するかどうかのフラグを管理するオブジェクト。
+	ChunkFlags flags( fs, chunkNo );
 
 	if( fs ){
 		//自分のフラグがある場所のバイトを読み込む。
-		fs.seekg( chunkNo / 8 );
-		fs.read( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
+		flags.ReadFlags();
 	} else{
 		//ios::inはファイルが存在しない場合に失敗するため、その場合は開き直す。
 		fs.open( filePath, std::ios::binary | std::ios::out );
@@ -127,10 +131,13 @@ void ChunkFiler::Write( const Chunk & chunk ){
 	}
 
 	//チャンクが存在するフラグを立てる。
-	flags |= ( 1 << chunkNo % 8 );
-	fs.seekp( chunkNo / 8 );
-	fs.write( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
+	flags.SetExist();
 
+	//チャンクが生成済みのフラグを立てる。
+	if( chunk.IsGenerated() ) flags.SetGenerated();
+
+	//フラグを書き込む。
+	flags.WriteFlags();
 
 	//チャンクデータまでシーク。
 	fs.seekp( chunkNo * CHUNK_SIZE + FLAG_BYTES );

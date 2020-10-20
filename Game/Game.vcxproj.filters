@@ -78,6 +78,9 @@
     <ClInclude Include="ChunkFiler.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="ChunkFlags.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

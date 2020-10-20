@@ -7,5 +7,7 @@
 #include <random>
 #include <chrono>
 #include <fstream>
+#include <thread>
+#include <type_traits>
 
 using namespace DemolisherWeapon;

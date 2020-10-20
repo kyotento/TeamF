@@ -24,11 +24,6 @@ public:
 		std::move( &c.m_blockArray[0][0][0], &c.m_blockArray[WIDTH - 1][HEIGHT - 1][WIDTH - 1], &m_blockArray[0][0][0] );
 	}
 
-	//! @brief チャンク1個分を1としたときのこのチャンクの座標を設定。
-	void SetChunkPos( int x, int z ){
-		m_chunkX = x; m_chunkZ = z;
-	}
-
 	//! @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( int x, int y, int z ){
 		return m_blockArray[x][y][z].get();
@@ -76,6 +71,11 @@ public:
 		return z + m_chunkZ * Chunk::WIDTH;
 	}
 
+	//! @brief チャンク1個分を1としたときのこのチャンクの座標を設定。
+	void SetChunkPos( int x, int z ){
+		m_chunkX = x; m_chunkZ = z;
+	}
+
 	//! @brief チャンク座標のX。
 	int GetX() const{
 		return m_chunkX;
@@ -95,6 +95,16 @@ public:
 		return m_blockArray;
 	}
 
+	//! @brief 地形生成完了フラグを立てる。
+	void SetGenerated(){
+		m_isGenerated = true;
+	}
+
+	//! @brief 地形生成が完了しているかを返す。
+	bool IsGenerated() const{
+		return m_isGenerated;
+	}
+
 	//! @brief チャンクのx,z方向の長さ。
 	static constexpr int WIDTH = 16;
 	//! @brief チャンクのy方向の長さ。
@@ -103,5 +113,7 @@ private:
 	int m_chunkX = 0;
 	int m_chunkZ = 0;
 	std::unique_ptr<Block> m_blockArray[WIDTH][HEIGHT][WIDTH];
+
+	bool m_isGenerated = false;
 };
 

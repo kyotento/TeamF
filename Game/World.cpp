@@ -10,6 +10,7 @@ void World::PostUpdate(){
 	const int pPosZ = CalcChunkCoord( (int)pPosV.z );
 	const int cl = m_chunkLoadRange;
 
+	//読み込まれていないチャンクを読み込む。
 	for( int x = pPosX - cl; x <= pPosX + cl; x++ ){
 		for( int z = pPosZ - cl; z <= pPosZ + cl; z++ ){
 			if( !IsExistChunk( x, z ) ){
@@ -19,17 +20,25 @@ void World::PostUpdate(){
 				ChunkFiler filer;
 				bool readResult = filer.Read( *chunk );
 
-				//ファイルにチャンクが存在しなかった場合。
-				if( !readResult ){
+				//ファイルにチャンクが存在しなかったか、存在はしたが生成が済んでない場合。
+				if( !chunk->IsGenerated() ){
 					m_mapMaker.GenerateChunk( *chunk );
 				}
 
 				//埋まったブロックを非表示にする。
 				ChunkCulling( *chunk );
+			} else{
+				Chunk* chunk = GetChunk( x, z );
+				//チャンクが存在はしたが生成が住んでない場合。
+				if( !chunk->IsGenerated() ){
+					m_mapMaker.GenerateChunk( *chunk );
+					ChunkCulling( *chunk );
+				}
 			}
 		}
 	}
 
+	//範囲外のチャンクを書き出してメモリから消す。
 	for( auto& [coord, chunk] : m_chunkMap ){
 		const int x = chunk.GetX(), z = chunk.GetZ();
 		if( !(pPosX - cl <= x && x <= pPosX + cl && pPosZ - cl <= z && z <= pPosZ + cl) ){
@@ -139,31 +148,5 @@ void World::ChunkCulling( Chunk& chunk ){
 				if( doCulling )b->SetIsDraw( false );
 			}
 		}
-	}
-}
-
-void World::Test( const CVector3& pos ){
-
-	if( GetKeyDown( 'U' ) ){
-		Chunk* chunk = GetChunkFromWorldPos( (int)pos.x, (int)pos.z );
-		ChunkFiler filer;
-		filer.Write( *chunk );
-		m_chunkMap.erase( std::make_pair( chunk->GetX(), chunk->GetZ() ) );
-	}
-
-	if( GetKeyDown( 'I' ) ){
-		Chunk* chunk = CreateChunkFromWorldPos( (int)pos.x, (int)pos.z );
-
-		//ファイルから読み込む。
-		ChunkFiler filer;
-		bool readResult = filer.Read( *chunk );
-
-		//ファイルにチャンクが存在しなかった場合。
-		if( !readResult ){
-			m_mapMaker.GenerateChunk( *chunk );
-		}
-
-		//埋まったブロックを非表示にする。
-		ChunkCulling( *chunk );
 	}
 }

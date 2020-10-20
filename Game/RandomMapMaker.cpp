@@ -8,8 +8,10 @@
 void RandomMapMaker::Init( World* world ){
 	m_world = world;
 
+	int loadEdge = m_world->GetChunkLoadRange() * 2 * Chunk::WIDTH;
+
 	//ブロックファクトリを初期化
-	BlockFactory::LoadInstancingModels( m_width * m_depth * ( m_maxHeight + 1 ) );
+	BlockFactory::LoadInstancingModels(loadEdge * loadEdge * ( int(m_maxHeight) + 1 ) );
 
 	std::random_device rand;
 	//同じマップを生成しないようにシード生成
@@ -20,61 +22,6 @@ void RandomMapMaker::Init( World* world ){
 	m_seedX2 = rand() % 101 + 50;
 	m_seedY2 = rand() % 101 + 50;
 	m_seedZ2 = rand() % 101 + 50;
-
-	/*m_cubeList.resize(m_width);
-	//m_cubeList[0].push_back();
-	for (int i = 0; i < m_width; i++) {
-		m_cubeList[i].resize(m_maxHeight + 1);
-		for (int j = 0; j < m_maxHeight + 1; j++) {
-			m_cubeList[i][j].resize(m_depth);
-		}
-	}*/
-	//キューブ生成
-	for( int x = 0; x < m_width; x++ ){
-		for( int z = 0; z < m_depth; z++ ){
-
-			CVector3 pos = CVector3( x, 0, z );
-			pos.y = SetY( pos );
-			int xx = int( pos.x );
-			int yy = int( pos.y );
-			int zz = int( pos.z );
-
-			//上で決定した高さをもとに最高高度のブロックを設置。
-			m_world->SetBlock( xx, yy, zz, BlockFactory::CreateBlock( enCube_Grass ) );
-			//Tree(xx, yy, zz);
-
-			//決定した最高地点から最低高度までブロックをしきつめていく。
-			while( yy > m_minHeight ){
-
-				yy--;
-				pos.y = float( yy ) * 10.f;
-
-				{
-					//土
-					EnCube bType = enCube_Soil;
-					//石ブロック圏内なら石
-					if( m_stoneMaxHeight >= yy && yy >= m_stoneMinHeight ){
-						bType = enCube_Stone;
-					}
-
-					//鉱石ブロック圏内でノイズが許せば鉱石
-					if( m_OreMaxHeight >= yy && yy >= m_OreMinHeight ){
-
-						//パーリンノイズ
-						float noise = GetPerlin().PerlinNoise( ( float( xx ) + m_seedX ) / m_relief2,
-							( float( yy ) + m_seedY ) / m_relief2, ( float( zz ) + m_seedZ ) / m_relief2 );
-
-						if( noise >= 0.7f ){
-							bType = enCube_Soil;//暫定的に土で代用
-						}
-					}
-
-					m_world->SetBlock( xx, yy, zz, BlockFactory::CreateBlock( bType ) );
-
-				}
-			}
-		}
-	}
 }
 
 void RandomMapMaker::GenerateChunk( Chunk & chunk ){
@@ -89,14 +36,14 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 		for( int wz = zStart, cz = 0; wz < zEnd; wz++, cz++ ){
 
 			//地表の高さを決定。
-			CVector3 pos = CVector3( wx, 0, wz );
+			CVector3 pos = CVector3( float(wx), 0, float(wz) );
 			pos.y = SetY( pos );
 			int wy = int( pos.y );
 
 			//上で決定した高さをもとに最高高度のブロックを設置。
 			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
 			//木を生やす。
-			//Tree( wx, wy, wz );
+			Tree( wx, wy, wz );
 
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( wy > m_minHeight ){
@@ -129,6 +76,9 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			}
 		}
 	}
+
+	//チャンクを生成済みにする。
+	chunk.SetGenerated();
 }
 
 float RandomMapMaker::SetY( const CVector3& pos ){

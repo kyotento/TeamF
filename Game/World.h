@@ -27,6 +27,12 @@ public:
 		AllChunkCulling();
 	}
 
+	//! @brief チャンクを読み込む距離を取得。
+	//! @details この値の2倍を辺とする正方形が読み込み範囲。
+	int GetChunkLoadRange(){
+		return m_chunkLoadRange;
+	}
+
 	Block* GetBlock( const CVector3& pos ){
 		int x = (int)std::roundf( pos.x );
 		int y = (int)std::roundf( pos.y );
@@ -89,7 +95,6 @@ public:
 		return num / Chunk::WIDTH;
 	}
 
-	void Test(const CVector3& pos);
 private:
 	//! @brief ワールド生成後に埋まっているブロックを非表示にする。
 	void AllChunkCulling();
@@ -101,6 +106,7 @@ private:
 
 	Player* m_player = nullptr;
 
+	//! 読み込み範囲を指定。チャンク単位。
 	int m_chunkLoadRange = 2;
 };
 

@@ -63,6 +63,7 @@
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="ChunkFiler.h" />
+    <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Box.h" />
