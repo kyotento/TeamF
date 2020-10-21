@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="ChunkFiler.cpp" />
     <ClCompile Include="Drop.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
@@ -56,13 +57,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="WasdCamera.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
+    <ClInclude Include="ChunkFiler.h" />
+    <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Box.h" />
@@ -76,8 +78,8 @@
     <ClInclude Include="RandomMapMaker.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="WasdCamera.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
@@ -98,6 +100,12 @@
     </MeshContentTask>
     <MeshContentTask Include="Preset\modelData\flore_kari.FBX" />
     <MeshContentTask Include="Preset\modelData\zombie.FBX" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\mc2.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

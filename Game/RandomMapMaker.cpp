@@ -5,10 +5,13 @@
 
 #include "BlockFactory.h"
 
-void RandomMapMaker::Awake(){
+void RandomMapMaker::Init( World* world ){
+	m_world = world;
+
+	int loadEdge = m_world->GetChunkLoadRange() * 2 * Chunk::WIDTH;
 
 	//ブロックファクトリを初期化
-	BlockFactory::LoadInstancingModels( m_width * m_depth * ( m_maxHeight + 1 ) );
+	BlockFactory::LoadInstancingModels(loadEdge * loadEdge * ( int(m_maxHeight) + 1 ) );
 
 	std::random_device rand;
 	//同じマップを生成しないようにシード生成
@@ -19,55 +22,63 @@ void RandomMapMaker::Awake(){
 	m_seedX2 = rand() % 101 + 50;
 	m_seedY2 = rand() % 101 + 50;
 	m_seedZ2 = rand() % 101 + 50;
+}
 
-	//キューブ生成
-	for( int x = 0; x < m_width; x++ ){
-		for( int z = 0; z < m_depth; z++ ){
+void RandomMapMaker::GenerateChunk( Chunk & chunk ){
+	const int xStart = chunk.CalcWorldCoordX( 0 );
+	const int xEnd = chunk.CalcWorldCoordX( Chunk::WIDTH );
+	const int zStart = chunk.CalcWorldCoordZ( 0 );
+	const int zEnd = chunk.CalcWorldCoordZ( Chunk::WIDTH );
 
-			CVector3 pos = CVector3( x, 0, z );
+	//wx,wz <- ワールド座標。cx,cz <- チャンク内座標。
+	//チャンク内のx,z座標をループ。
+	for( int wx = xStart, cx = 0; wx < xEnd; wx++, cx++ ){
+		for( int wz = zStart, cz = 0; wz < zEnd; wz++, cz++ ){
+
+			//地表の高さを決定。
+			CVector3 pos = CVector3( float(wx), 0, float(wz) );
 			pos.y = SetY( pos );
-			int xx = int( pos.x );
-			int yy = int( pos.y );
-			int zz = int( pos.z );
+			int wy = int( pos.y );
 
 			//上で決定した高さをもとに最高高度のブロックを設置。
-			m_world->SetBlock( xx, yy, zz, BlockFactory::CreateBlock( enCube_Grass ) );
-			Tree(xx, yy, zz);
+			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
+			//木を生やす。
+			Tree( wx, wy, wz );
 
 			//決定した最高地点から最低高度までブロックをしきつめていく。
-			while( yy > m_minHeight ){
+			while( wy > m_minHeight ){
 
-				yy--;
-				pos.y = float( yy ) * 10.f;
+				wy--;
 
 				{
 					//土
 					EnCube bType = enCube_Soil;
 					//石ブロック圏内なら石
-					if( m_stoneMaxHeight >= yy && yy >= m_stoneMinHeight ){
+					if( m_stoneMaxHeight >= wy && wy >= m_stoneMinHeight ){
 						bType = enCube_Stone;
 					}
 
 					//鉱石ブロック圏内でノイズが許せば鉱石
-					if( m_OreMaxHeight >= yy && yy >= m_OreMinHeight ){
+					if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
 
 						//パーリンノイズ
-						float noise = GetPerlin().PerlinNoise( ( float( xx ) + m_seedX ) / m_relief2,
-							( float( yy ) + m_seedY ) / m_relief2, ( float( zz ) + m_seedZ ) / m_relief2 );
+						float noise = GetPerlin().PerlinNoise( ( float( wx ) + m_seedX ) / m_relief2,
+							( float( wy ) + m_seedY ) / m_relief2, ( float( wz ) + m_seedZ ) / m_relief2 );
 
 						if( noise >= 0.7f ){
 							bType = enCube_Soil;//暫定的に土で代用
 						}
 					}
 
-					m_world->SetBlock( xx, yy, zz, BlockFactory::CreateBlock( bType ) );
+					chunk.SetBlock( cx, wy, cz, BlockFactory::CreateBlock( bType ) );
 
 				}
 			}
 		}
 	}
 
-	m_world->GenerateEndCulling();
+	//チャンクを生成済みにする。
+	chunk.SetGenerated();
 }
 
 float RandomMapMaker::SetY( const CVector3& pos ){
@@ -113,14 +124,20 @@ void RandomMapMaker::Tree(const int x, const int y, const int z)
 		int reafHeight = 5;
 		int reafWidth = 3;
 		int reafDepth = 3;
-		yy -= rand() * int(noise * 100) % 2 + 1;		
+		yy -= rand() * int(noise * 100) % 2 + 1;
+
 		float seed = 13;
 
 		float a = 1.f;
 	
-		xSample = (xx + seed) / m_relief3 * a;
-		ySample = (yy + seed) / m_relief3;
-		zSample = (zz + seed) / m_relief3 * a;
+		int xxx = xx % 10;
+		int yyy = yy % 10;
+		int zzz = zz % 10;
+
+
+		xSample = (xxx + seed) / m_relief3 * a;
+		ySample = (yyy + seed) / m_relief3;
+		zSample = (zzz + seed) / m_relief3 * a;
 
 		noise = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
@@ -130,24 +147,24 @@ void RandomMapMaker::Tree(const int x, const int y, const int z)
 					int rm = rand() * int(noise * 10000) % 2;
 					int rm2 = rand() * int(noise * 10000) % 2;
 					int b = 15;
-					float xSample = (xx + j + seed + rm2) / m_relief3 * a;
-					float ySample = (yy + i * b + seed) / m_relief3;
-					float zSample = (zz + p + seed + rm) / m_relief3 * a;
+					float xSample = (xxx + j + seed + rm2) / m_relief3 * a;
+					float ySample = (yyy + i * b + seed) / m_relief3;
+					float zSample = (zzz + p + seed + rm) / m_relief3 * a;
 					float noise2 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
-					xSample = (xx + j + seed + rm2) / m_relief3 * a;
-					ySample = (yy + i * b + seed) / m_relief3;
-					zSample = (zz - p + seed - rm) / m_relief3 * a;
+					xSample = (xxx + j + seed + rm2) / m_relief3 * a;
+					ySample = (yyy + i * b + seed) / m_relief3;
+					zSample = (zzz - p + seed - rm) / m_relief3 * a;
 					float noise3 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
-					xSample = (xx - j + seed - rm2) / m_relief3 * a;
-					ySample = (yy + i * b + seed) / m_relief3;
-					zSample = (zz + p + seed + rm) / m_relief3 * a;
+					xSample = (xxx - j + seed - rm2) / m_relief3 * a;
+					ySample = (yyy + i * b + seed) / m_relief3;
+					zSample = (zzz + p + seed + rm) / m_relief3 * a;
 					float noise4 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
-					xSample = (xx - j + seed - rm2) / m_relief3 * a;
-					ySample = (yy + i * b + seed) / m_relief3;
-					zSample = (zz - p + seed - rm) / m_relief3 * a;
+					xSample = (xxx - j + seed - rm2) / m_relief3 * a;
+					ySample = (yyy + i * b + seed) / m_relief3;
+					zSample = (zzz - p + seed - rm) / m_relief3 * a;
 					float noise5 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
 					float a = 0.0015f;

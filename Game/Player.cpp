@@ -8,7 +8,7 @@
 #include "GameMode.h"
 
 namespace {
-	const float turnMult = 30.0f;			//プレイヤーの回転速度。
+	const float turnMult = 20.0f;			//プレイヤーの回転速度。
 	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;			//プレイヤーの移動速度。
@@ -80,7 +80,11 @@ void Player::Update()
 	//プレイヤーの状態管理。0
 	StateManagement();
 }
-
+void Player::SetWorld(World* world, bool recursive) {
+	m_world = world;
+	if (recursive)
+		world->SetPlayer(this, false);
+}
 //キーボードの入力情報管理。
 void Player::KeyBoardInput()
 {
@@ -267,7 +271,7 @@ void Player::Jump()
 void Player::Turn()
 {
 	//マウスの移動量を取得。
-	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetEngine().GetRealDeltaTimeSec();
+	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetDeltaTimeSec();
 	//回転処理
 	m_degreeY += mouseCursorMovePow.x;
 	m_degreeXZ += mouseCursorMovePow.y;

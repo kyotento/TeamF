@@ -1,9 +1,8 @@
 #include "stdafx.h"
+#include "resource.h"
+
 #include "RandomMapMaker.h"
 #include "Game.h"
-//#include <charconv>
-//#include "DemolisherWeapon/GraphicsAPI/DirectX12/DX12Test.h"
-#include "WasdCamera.h"
 #include "World.h"
 
 namespace {
@@ -40,7 +39,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initparam.isShaderPathReplaceForEngineFilePath = true;
 	
 	//エンジン初期化
-	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam);	
+	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1)));
 	
 	//判定表示
 
@@ -49,19 +48,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
 	SetIsDebugInput(true);
-	
-	World world;
 
-	//GameObj::PerspectiveCamera c;
-	//SetMainCamera( &c );
-	
-	GetMainCamera()->SetPos( { 0, 0, 2 } );
-	GetMainCamera()->SetTarget( { 0, 0, 0 } );
-	//WasdCamera camera;
-
-	RandomMapMaker* rMM = NewGO<RandomMapMaker>();
-	rMM->SetWorld( &world );
-	rMM->Awake();
 	MouseCursor().SetLockMouseCursor(true);			//マウスカーソルを中央に固定。
 	//ゲームループ。
 	GetEngine().RunGameLoop();

@@ -84,3 +84,6 @@ obj/
 /ZekeGame/ZekeGame/python36_d.dll
 /ZekeGame/ZekeGame/bulletPhysics/src/BulletCollision/x64/RelWithDebInfo/BulletCollision.tlog
 /ZekeGame/ZekeGame/bulletPhysics/src/BulletDynamics/x64/RelWithDebInfo/BulletDynamics.tlog
+
+#file of chunk
+*.regi

@@ -2,7 +2,7 @@
 #include "Block.h"
 #include "../physics/character/CCharacterController.h"
 
-
+class World;
 class GameCamera;
 class Item;
 class GameMode;
@@ -18,6 +18,14 @@ public:
 	~Player();
 	bool Start() override;
 	void Update() override;
+
+	CFont font;
+	void HUDRender( int HUDNum ) override{
+		std::wstringstream str;
+		CVector3 pos = GetPosition() / Block::WIDTH;
+		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
+		font.Draw( str.str().c_str(), { 0.5f , 0.3f }, CVector4::White(), CVector2::One(), {0.5f, 0.5f} );
+	}
 
 	/// <summary>
 	/// アニメーション。
@@ -88,6 +96,15 @@ public:
 	{
 		return m_radianXZ;
 	}
+
+	World* GetWorld(){
+		return m_world;
+	}
+
+	//! @brief World をセットする。
+	//! @param recursive trueなら World::SetPlayer(this, false) も呼び出す。
+	void SetWorld( World* world , bool recursive = true);
+
 	//インベントリの長さ
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
@@ -173,6 +190,8 @@ private:
 	CCharacterControllerType2 m_characon;							//キャラコン。
 	CFont m_font;												//フォント。
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
+	
+	World* m_world = nullptr;                                   //ワールド。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 };
 

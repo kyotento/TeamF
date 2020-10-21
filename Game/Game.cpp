@@ -1,8 +1,10 @@
 #include "stdafx.h"
-#include "Game.h"
-#include "Drop.h"
-#include <random>
 #include "Box.h"
+#include "Drop.h"
+#include "Game.h"
+#include "GameCamera.h"
+#include "Player.h"
+#include "Zombie.h"
 
 Game::Game()
 {
@@ -19,8 +21,11 @@ bool Game::Start()
 	//必要なクラスの生成。
 	m_gameMode = NewGO<GameMode>();
 	m_gameMode->SetName(L"gamemode");
+	m_world.Generate();
+
 	m_player = NewGO<Player>();
 	m_player->SetName(L"player");
+	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 	m_zombie = NewGO<Zombie>();
 

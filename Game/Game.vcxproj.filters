@@ -3,9 +3,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="WasdCamera.cpp">
-      <Filter>ForTest</Filter>
-    </ClCompile>
     <ClCompile Include="World.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -38,12 +35,12 @@
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="ChunkFiler.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="WasdCamera.h">
-      <Filter>ForTest</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -79,6 +76,13 @@
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="GameMode.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ChunkFiler.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkFlags.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -147,5 +151,11 @@
     <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
       <Filter>Assets\modelData</Filter>
     </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\mc2.ico" />
   </ItemGroup>
 </Project>
