@@ -157,6 +157,7 @@ private:
 	const float m_characonRadius = 50.f;					//キャラコンの半径。
 	const float m_characonHeight = 160.f;					//キャラコンの高さ。
 	const float m_gravity = 0.65f;							//重力。
+	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。

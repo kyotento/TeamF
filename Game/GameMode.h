@@ -9,6 +9,8 @@ public:
 	bool Start();
 	void Update();
 
+	void PostRender() override;
+
 	/// <summary>
 	/// ゲームモードの状態。
 	/// </summary>
@@ -26,6 +28,7 @@ public:
 private:
 
 	enGameMode m_gameMode = enGameModeNum;			//ゲームモード。
+	CFont m_font;									//フォント。
 
 };
 

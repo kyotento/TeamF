@@ -205,6 +205,9 @@ void Player::Move()
 	moveSpeed.x *= moveMult * GetEngine().GetStandardFrameRate() * m_runSpeedDouble;
 	moveSpeed.y *= moveMult * GetEngine().GetStandardFrameRate();
 	moveSpeed.z *= moveMult * GetEngine().GetStandardFrameRate() * m_runSpeedDouble;
+	if (m_flyingMode) {			//クリエイティブの飛行モードなら移動速度を上げる。
+		moveSpeed *= m_creativeSpeedMag;
+	}
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
