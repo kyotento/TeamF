@@ -124,14 +124,20 @@ void RandomMapMaker::Tree(const int x, const int y, const int z)
 		int reafHeight = 5;
 		int reafWidth = 3;
 		int reafDepth = 3;
-		yy -= rand() * int(noise * 100) % 2 + 1;		
+		yy -= rand() * int(noise * 100) % 2 + 1;
+		std::random_device rand;
 		float seed = 13;
 
 		float a = 1.f;
 	
-		xSample = (xx + seed) / m_relief3 * a;
-		ySample = (yy + seed) / m_relief3;
-		zSample = (zz + seed) / m_relief3 * a;
+		int xxx = xx % 10;
+		int yyy = yy % 10;
+		int zzz = zz % 10;
+
+
+		xSample = (xxx + seed) / m_relief3 * a;
+		ySample = (yyy + seed) / m_relief3;
+		zSample = (zzz + seed) / m_relief3 * a;
 
 		noise = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
@@ -141,24 +147,24 @@ void RandomMapMaker::Tree(const int x, const int y, const int z)
 					int rm = rand() * int(noise * 10000) % 2;
 					int rm2 = rand() * int(noise * 10000) % 2;
 					int b = 15;
-					float xSample = (xx + j + seed + rm2) / m_relief3 * a;
-					float ySample = (yy + i * b + seed) / m_relief3;
-					float zSample = (zz + p + seed + rm) / m_relief3 * a;
+					float xSample = (xxx + j + seed + rm2) / m_relief3 * a;
+					float ySample = (yyy + i * b + seed) / m_relief3;
+					float zSample = (zzz + p + seed + rm) / m_relief3 * a;
 					float noise2 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
-					xSample = (xx + j + seed + rm2) / m_relief3 * a;
-					ySample = (yy + i * b + seed) / m_relief3;
-					zSample = (zz - p + seed - rm) / m_relief3 * a;
+					xSample = (xxx + j + seed + rm2) / m_relief3 * a;
+					ySample = (yyy + i * b + seed) / m_relief3;
+					zSample = (zzz - p + seed - rm) / m_relief3 * a;
 					float noise3 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
-					xSample = (xx - j + seed - rm2) / m_relief3 * a;
-					ySample = (yy + i * b + seed) / m_relief3;
-					zSample = (zz + p + seed + rm) / m_relief3 * a;
+					xSample = (xxx - j + seed - rm2) / m_relief3 * a;
+					ySample = (yyy + i * b + seed) / m_relief3;
+					zSample = (zzz + p + seed + rm) / m_relief3 * a;
 					float noise4 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
-					xSample = (xx - j + seed - rm2) / m_relief3 * a;
-					ySample = (yy + i * b + seed) / m_relief3;
-					zSample = (zz - p + seed - rm) / m_relief3 * a;
+					xSample = (xxx - j + seed - rm2) / m_relief3 * a;
+					ySample = (yyy + i * b + seed) / m_relief3;
+					zSample = (zzz - p + seed - rm) / m_relief3 * a;
 					float noise5 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
 
 					float a = 0.0015f;
