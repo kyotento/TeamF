@@ -205,7 +205,8 @@ void Player::Move()
 	moveSpeed.x *= moveMult * GetEngine().GetStandardFrameRate() * m_runSpeedDouble;
 	moveSpeed.y *= moveMult * GetEngine().GetStandardFrameRate();
 	moveSpeed.z *= moveMult * GetEngine().GetStandardFrameRate() * m_runSpeedDouble;
-	if (m_flyingMode) {			//クリエイティブの飛行モードなら移動速度を上げる。
+	if (m_flyingMode			//クリエイティブの飛行モードなら移動速度を上げる。
+		&& m_gameMode->GetGameMode() == GameMode::enGameModeCreative) {			
 		moveSpeed *= m_creativeSpeedMag;
 	}
 	//キャラコンを移動させる。
