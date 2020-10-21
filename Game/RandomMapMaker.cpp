@@ -125,7 +125,7 @@ void RandomMapMaker::Tree(const int x, const int y, const int z)
 		int reafWidth = 3;
 		int reafDepth = 3;
 		yy -= rand() * int(noise * 100) % 2 + 1;
-		std::random_device rand;
+
 		float seed = 13;
 
 		float a = 1.f;
