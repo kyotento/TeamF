@@ -67,7 +67,7 @@ namespace{
 }
 
 bool ChunkFiler::Read( Chunk & chunk ){
-	const uint32_t chunkNo = GetChunkNo( chunk );
+	const int32_t chunkNo = GetChunkNo( chunk );
 	auto path = GetFilePath( chunk );
 	std::ifstream ifs( path, std::ios::binary );
 
@@ -90,12 +90,26 @@ bool ChunkFiler::Read( Chunk & chunk ){
 
 	auto& data = chunk.Data();
 
+	int airCount = 0;////////////////デバッグ
+
 	for( int x = 0; x < chunk.WIDTH; x++ ){
 		for( int y = 0; y < chunk.HEIGHT; y++ ){
 			for( int z = 0; z < chunk.WIDTH; z++ ){
 				uint16_t bt;
 
 				ifs.read( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
+
+				////////////////デバッグ
+				if( flags.IsGenerated() ){
+					if( bt == 0xffff ){
+						airCount++;
+						if( airCount > 16 * 16 * 16 ){
+							abort();
+						}
+					} else{
+						airCount = 0;
+					}
+				}
 
 				if( bt == 0xffff ){
 					continue;
@@ -110,7 +124,7 @@ bool ChunkFiler::Read( Chunk & chunk ){
 }
 
 void ChunkFiler::Write( const Chunk & chunk ){
-	const uint32_t chunkNo = GetChunkNo( chunk );
+	const int32_t chunkNo = GetChunkNo( chunk );
 
 	std::filesystem::path filePath = GetFilePath( chunk );
 	//ディレクトリが無い場合に作成する。
@@ -121,6 +135,11 @@ void ChunkFiler::Write( const Chunk & chunk ){
 	//チャンクが存在するかどうかのフラグを管理するオブジェクト。
 	ChunkFlags flags( fs, chunkNo );
 
+	if( flags.IsGenerated() ){
+		OutputDebugStringA( "初期化ミス。\n" );
+		abort();
+	}
+
 	if( fs ){
 		//自分のフラグがある場所のバイトを読み込む。
 		flags.ReadFlags();
@@ -130,8 +149,21 @@ void ChunkFiler::Write( const Chunk & chunk ){
 		if( !fs )abort();
 	}
 
+	/////////////デバッグ
+	bool geneCheck = flags.IsGenerated();
+	if( !chunk.IsGenerated() && geneCheck){
+		OutputDebugStringA( "チャンクがジェネレート前なのにフラグがある。\n" );
+		abort();
+	}
+
 	//チャンクが存在するフラグを立てる。
 	flags.SetExist();
+
+	/////////////デバッグ
+	if( !geneCheck && flags.IsGenerated() ){
+		OutputDebugStringA( "イグジストのセットでジェネレートがたってる。\n" );
+		abort();
+	}
 
 	//チャンクが生成済みのフラグを立てる。
 	if( chunk.IsGenerated() ) flags.SetGenerated();
@@ -144,11 +176,25 @@ void ChunkFiler::Write( const Chunk & chunk ){
 
 	const auto& data = chunk.Data();
 
+	int airCount = 0;////////////////デバッグ
+
 	for( int x = 0; x < chunk.WIDTH; x++ ){
 		for( int y = 0; y < chunk.HEIGHT; y++ ){
 			for( int z = 0; z < chunk.WIDTH; z++ ){
 
 				auto& block = data[x][y][z];
+
+				////////////////デバッグ
+				if( flags.IsGenerated() ){
+					if( !block ){
+						airCount++;
+						if( airCount > 16 * 16 * 16 ){
+							abort();
+						}
+					} else{
+						airCount = 0;
+					}
+				}
 
 				if( !block ){
 					uint16_t air = 0xffff;

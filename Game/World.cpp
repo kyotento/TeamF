@@ -39,12 +39,15 @@ void World::PostUpdate(){
 	}
 
 	//範囲外のチャンクを書き出してメモリから消す。
-	for( auto& [coord, chunk] : m_chunkMap ){
+	for( auto itr = m_chunkMap.begin(); itr != m_chunkMap.end();){
+		Chunk& chunk = itr->second;
 		const int x = chunk.GetX(), z = chunk.GetZ();
-		if( !(pPosX - cl <= x && x <= pPosX + cl && pPosZ - cl <= z && z <= pPosZ + cl) ){
+		if( !( pPosX - cl <= x && x <= pPosX + cl && pPosZ - cl <= z && z <= pPosZ + cl ) ){
 			ChunkFiler filer;
 			filer.Write( chunk );
-			m_chunkMap.erase( std::make_pair( chunk.GetX(), chunk.GetZ() ) );
+			itr = m_chunkMap.erase( itr );
+		} else{
+			itr++;
 		}
 	}
 	
@@ -93,9 +96,13 @@ Chunk * World::CreateChunk( int x, int z ){
 	}
 
 	Chunk* chunk = &m_chunkMap[std::make_pair( x, z )];
-
 	
 	chunk->SetChunkPos( x, z );
+
+	//ファイルにチャンクがあれば、それを読む。
+	ChunkFiler filer;
+	filer.Read( *chunk );
+
 	return chunk;
 }
 
