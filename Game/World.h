@@ -107,6 +107,6 @@ private:
 	Player* m_player = nullptr;
 
 	//! 読み込み範囲を指定。チャンク単位。
-	int m_chunkLoadRange = 2;
+	int m_chunkLoadRange = 1;
 };
 

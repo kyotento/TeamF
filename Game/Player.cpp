@@ -4,8 +4,8 @@
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
 #include "ItemData.h"
-#include "Chunk.h"
 #include "GameMode.h"
+#include "World.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。

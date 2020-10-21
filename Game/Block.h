@@ -12,7 +12,7 @@ public:
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z ){
-		m_model.SetPos(CVector3(x * Block::WIDTH + 0.5f, y * Block::WIDTH + 0.5f,
+		m_model.SetPos(CVector3(x * Block::WIDTH + 0.5f, y * Block::WIDTH + 0.5f, z * Block::WIDTH + 0.5f));
 		m_collision.SetPosition(CVector3(x + 0.5f, y + 70.5f, z + 0.5f));
 	}
 
