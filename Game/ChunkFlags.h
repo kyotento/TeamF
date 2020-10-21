@@ -19,7 +19,10 @@ public:
 		if constexpr( std::is_same<Stream, std::fstream>::value ){
 			stream.seekp( chunkNo * Flag::Num / 8 );
 			stream.write( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
+		} else{
+			_ASSERTE( false && "std::ifstreamで初期化するとこの関数は使えません。" );
 		}
+		
 	}
 
 	//! チャンクが存在するフラグを立てる。
@@ -31,11 +34,11 @@ public:
 		flags |= GetFlagMask( Flag::Generated );
 	}
 	//! チャンクが存在するフラグを取得。
-	bool IsExist(){
+	bool IsExist() const {
 		return flags & GetFlagMask( Flag::Exist );
 	}
 	//! チャンクが生成済みのフラグを取得。
-	bool IsGenerated(){
+	bool IsGenerated() const {
 		return flags & GetFlagMask( Flag::Generated );
 	}
 
@@ -47,20 +50,20 @@ public:
 
 private:
 	//! 各フラグのチャンク番号に合わせたマスクを取得。
-	int8_t GetFlagMask( Flag f){
+	int8_t GetFlagMask( Flag f) const {
 		//1チャンクごとにNum個のフラグがある。
 		//自分のチャンクがさす場所に移動したのち、目的のフラグ " f " に移動する。
 		return  1 << ( chunkNo * Flag::Num % 8 + f );
 	}
 
 	//! チャンク番号
-	int32_t chunkNo;
+	int32_t chunkNo = 0;
 
 	//! 読み書き用ファイルストリーム
 	Stream& stream;
 
 	//! フラグの格納された数値
-	int8_t flags;
+	int8_t flags = 0;
 };
 
 using ChunkFlagsEnum = ChunkFlags<std::fstream>::Flag;

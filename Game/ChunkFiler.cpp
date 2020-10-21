@@ -67,7 +67,7 @@ namespace{
 }
 
 bool ChunkFiler::Read( Chunk & chunk ){
-	const uint32_t chunkNo = GetChunkNo( chunk );
+	const int32_t chunkNo = GetChunkNo( chunk );
 	auto path = GetFilePath( chunk );
 	std::ifstream ifs( path, std::ios::binary );
 
@@ -87,8 +87,6 @@ bool ChunkFiler::Read( Chunk & chunk ){
 
 	//チャンクデータまでシーク。
 	ifs.seekg( chunkNo * CHUNK_SIZE + FLAG_BYTES );
-
-	auto& data = chunk.Data();
 
 	for( int x = 0; x < chunk.WIDTH; x++ ){
 		for( int y = 0; y < chunk.HEIGHT; y++ ){
@@ -110,7 +108,7 @@ bool ChunkFiler::Read( Chunk & chunk ){
 }
 
 void ChunkFiler::Write( const Chunk & chunk ){
-	const uint32_t chunkNo = GetChunkNo( chunk );
+	const int32_t chunkNo = GetChunkNo( chunk );
 
 	std::filesystem::path filePath = GetFilePath( chunk );
 	//ディレクトリが無い場合に作成する。

@@ -19,6 +19,14 @@ public:
 	bool Start() override;
 	void Update() override;
 
+	CFont font;
+	void HUDRender( int HUDNum ) override{
+		std::wstringstream str;
+		CVector3 pos = GetPosition() / Block::WIDTH;
+		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
+		font.Draw( str.str().c_str(), { 0.5f , 0.3f }, CVector4::White(), CVector2::One(), {0.5f, 0.5f} );
+	}
+
 	/// <summary>
 	/// アニメーション。
 	/// </summary>
