@@ -37,7 +37,14 @@ public:
 		enEnemy_fan,					//煽り。		
 		enEnemy_num,					//エネミーの状態の数。
 	};
-
+	void SetPosition(const CVector3& pos)
+	{
+		m_position = pos;
+	}
+	void SetScale(const CVector3& scale)
+	{
+		m_scale = scale;
+	}
 protected:
 
 	const float m_moveSpeed = 100.0f;					//移動速度。

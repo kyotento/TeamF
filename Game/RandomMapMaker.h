@@ -15,8 +15,12 @@ public:
 	void GenerateChunk( Chunk& chunk );
 
 private:
+	//Y座標をきめたいわけ。
 	float SetY(const CVector3& pos);
-	void Tree(const int x, const int y, const int z);
+	//木を生やす。
+	bool Tree(const int x, const int y, const int z);
+	//ゾンビをつくる。
+	void CreateZombie(const int x, const int y, const int z);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
@@ -36,7 +40,7 @@ private:
 
 	World* m_world = nullptr;
 	float m_seedX2, m_seedZ2, m_seedY2;
-	float m_relief2 = 1.5f;			//起状の激しさ
+	float m_relief2 = 2.5f;			//起状の激しさ
 	float m_relief3 = 1000.0f;
 };
 
