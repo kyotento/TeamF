@@ -72,6 +72,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntVector3.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />

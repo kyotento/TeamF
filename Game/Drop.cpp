@@ -8,7 +8,7 @@
 bool Drop::Start()
 {
 	m_model = NewGO<GameObj::CSkinModelRender>();
-	m_model->Init(L"Resource/modelData/GrassBlock.cmo");
+	m_model->Init(L"Resource/modelData/GrassBlock.tkm");
 	m_model->SetScale(CVector3::One() * 0.001f);
 	return true;
 }

@@ -3,7 +3,7 @@
 
 GameMode::GameMode()
 {
-	m_gameMode = enGameModeSurvival;		//defaultのゲームモードをサバイバルに。
+	m_gameMode = enGameModeCreative;		//defaultのゲームモードをサバイバルに。
 }
 
 

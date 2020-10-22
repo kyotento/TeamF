@@ -9,5 +9,6 @@
 #include <fstream>
 #include <thread>
 #include <type_traits>
+#include <unordered_set>
 
 using namespace DemolisherWeapon;
