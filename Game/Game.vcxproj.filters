@@ -85,14 +85,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{4b746416-32af-4a26-9df1-700712c7e479}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ForTest">
       <UniqueIdentifier>{9b1a111d-7133-40d8-a041-116e45fff757}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\modelData">
-      <UniqueIdentifier>{cfb8a5ff-f3c2-45b5-8c4d-157697e725a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
@@ -106,23 +100,6 @@
     <Filter Include="Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\block.fbx">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\cube.fbx">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Preset\modelData\flore_kari.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Preset\modelData\zombie.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\leafBlock.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
@@ -140,17 +117,6 @@
     <Filter Include="Assets\modelData">
       <UniqueIdentifier>{843f38b8-6549-4447-965b-35e077ae4fc4}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
-      <Filter>Assets\modelData</Filter>
-    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

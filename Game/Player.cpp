@@ -24,13 +24,13 @@ namespace {
 Player::Player()
 {
 	//アニメーションの設定。
-	m_animationClip[enAnimationClip_Idle].Load(L"Assets/animData/player_idle.tka");
+	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_move].Load(L"Assets/animData/player_move.tka");
+	m_animationClip[enAnimationClip_move].Load(L"Resource/animData/player_move.tka");
 	m_animationClip[enAnimationClip_move].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_shift].Load(L"Assets/animData/player_shift.tka");
+	m_animationClip[enAnimationClip_shift].Load(L"Resource/animData/player_shift.tka");
 	m_animationClip[enAnimationClip_shift].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_excavate].Load(L"Assets/animData/player_Excavate.tka");
+	m_animationClip[enAnimationClip_excavate].Load(L"Resource/animData/player_Excavate.tka");
 	m_animationClip[enAnimationClip_excavate].SetLoopFlag(true);
 }
 
@@ -43,7 +43,7 @@ bool Player::Start()
 {
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Assets/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
+	m_skinModelRender->Init(L"Resource/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetRot(m_rotation);
 

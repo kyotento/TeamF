@@ -84,24 +84,6 @@
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\block.fbx" />
-    <MeshContentTask Include="Assets\modelData\cube.fbx">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\leafBlock.FBX" />
-    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Preset\modelData\flore_kari.FBX" />
-    <MeshContentTask Include="Preset\modelData\zombie.FBX" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
