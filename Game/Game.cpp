@@ -18,15 +18,20 @@ Game::~Game()
 
 bool Game::Start()
 {
+	//必要なクラスの生成。
+	m_gameMode = NewGO<GameMode>();
+	m_gameMode->SetName(L"gamemode");
 	m_world.Generate();
 
 	m_player = NewGO<Player>();
+	m_player->SetName(L"player");
 	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 	m_zombie = NewGO<Zombie>();
 
 	Box* box = NewGO<Box>();
 
+	//todo 何これ？？by佐伯。
 	for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
 			std::random_device rand;

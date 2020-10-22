@@ -8,12 +8,12 @@
 class Block{
 public:
 	Block();
+	~Block();
 
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
-	void SetPos( int x, int y, int z ){
-		m_model.SetPos( CVector3( x * Block::WIDTH + 0.5f, y * Block::WIDTH + 0.5f, z * Block::WIDTH + 0.5f ) );
-	}
+
+	void SetPos( int x, int y, int z );
 
 	GameObj::CInstancingModelRender& GetModel(){
 		return m_model;
@@ -37,12 +37,23 @@ public:
 		m_model.SetIsDraw( isDraw );
 	}
 
+	bool IsCollisionEnabled() const{
+		return m_collision.operator bool();
+	}
+
+	void EnableCollision();
+
+	void DisableCollision(){
+		m_collision.reset();
+	}
+
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
-
 private:
 	GameObj::CInstancingModelRender m_model;
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
+
+	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
 };
 

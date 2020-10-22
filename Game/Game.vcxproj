@@ -45,6 +45,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
+    <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
@@ -70,6 +71,8 @@
     <ClInclude Include="Drop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntVector3.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
@@ -80,25 +83,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="Zombie.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <MeshContentTask Include="Assets\modelData\block.fbx" />
-    <MeshContentTask Include="Assets\modelData\cube.fbx">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\GrassBlock.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\leafBlock.FBX" />
-    <MeshContentTask Include="Assets\modelData\soilBlock.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Assets\modelData\stoneBlock.FBX">
-      <FileType>Document</FileType>
-    </MeshContentTask>
-    <MeshContentTask Include="Preset\modelData\flore_kari.FBX" />
-    <MeshContentTask Include="Preset\modelData\player.FBX" />
-    <MeshContentTask Include="Preset\modelData\zombie.FBX" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

@@ -42,6 +42,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1)));
 	
 	//判定表示
+
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
 	//デバッグ表示・入力、常時有効化
@@ -51,4 +52,5 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	MouseCursor().SetLockMouseCursor(true);			//マウスカーソルを中央に固定。
 	//ゲームループ。
 	GetEngine().RunGameLoop();
+	return 0;
 }

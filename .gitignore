@@ -27,8 +27,6 @@ __pycache__/
 
 *.cmo
 
-*.dds
-
 bin/
 Debug/
 Release/

@@ -2,6 +2,7 @@
 #pragma once
 #include "Chunk.h"
 #include "RandomMapMaker.h"
+#include "IntVector3.h"
 
 class Player;
 
@@ -107,6 +108,10 @@ private:
 	Player* m_player = nullptr;
 
 	//! 読み込み範囲を指定。チャンク単位。
-	int m_chunkLoadRange = 2;
+	int m_chunkLoadRange = 1;
+
+	//! プレイヤーを中心とした、コリジョンが有効化される範囲。ブロック単位。
+	int m_collisionEnableRange = 2;
+	std::unordered_set<IntVector3> m_activeCollisions;
 };
 
