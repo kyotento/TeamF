@@ -33,7 +33,6 @@ public:
 	enum enAnimationClip{
 		enAnimationClip_Idle,			//待機状態。
 		enAnimationClip_move,			//移動。
-		enAnimationClip_shift,			//しゃがみ。
 		enAnimationClip_excavate,		//物を掘る。
 		enAnimationClip_Num,			//アニメーションの数。
 	};
@@ -47,7 +46,6 @@ public:
 		enPlayerState_idle,				//待機。	
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
-		enPlayerState_shift,			//しゃがみ。
 		enPlayerState_excavate,			//物を掘る。
 		enPlayerState_num,				//状態の数。
 	};
@@ -140,6 +138,11 @@ private:
 	void Shift();
 
 	/// <summary>
+	/// 頭の回転処理。
+	/// </summary>
+	void Headbang();
+
+	/// <summary>
 	/// 移動方法の切り替え(クリエイティブ)。
 	/// </summary>
 	void ChangeMovemontC();
@@ -181,16 +184,18 @@ private:
 	CVector3 m_front = CVector3(0.0f, 0.0f, 1.0f);				//正面。	
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
+	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
 
 	std::vector<Inventory*> m_inventoryList;					//インベントリ。
 
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
-	CCharacterControllerType2 m_characon;							//キャラコン。
+	CCharacterControllerType2 m_characon;						//キャラコン。
 	CFont m_font;												//フォント。
-	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
-	
+	Bone* m_bone;												//骨。
+
+	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 };

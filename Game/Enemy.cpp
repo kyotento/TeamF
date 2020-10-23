@@ -25,14 +25,13 @@ Enemy::~Enemy()
 void Enemy::Tracking()
 {
 	//追従処理。
-	CVector3 direction;			//Enemyから見たPlayerの向き。
-	direction = (m_player->GetPosition() - m_position);
-	CVector3 oldDirection = direction;		//正規化する前の値を格納。
-	direction.Normalize();
-	direction.y = 0.f;
-	if (oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
+	m_direction = (m_player->GetPosition() - m_position);
+	m_oldDirection = m_direction;		//正規化する前の値を格納。
+	m_direction.Normalize();
+	m_direction.y = 0.f;
+	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
 
-		m_characonMove = direction * m_moveSpeed;
+		m_characonMove = m_direction * m_moveSpeed;
 		m_position = m_characon.Execute(m_characonMove);
 		m_skinModelRender->SetPos(m_position);
 
@@ -42,7 +41,7 @@ void Enemy::Tracking()
 		m_enemyState = enEnemy_attack;				//攻撃状態に。
 	}
 	//プレイヤーの方向を向く処理。
-	m_rot.SetRotation(CVector3::AxisY(), atan2f(direction.x, direction.z));
+	m_rot.SetRotation(CVector3::AxisY(), atan2f(m_direction.x, m_direction.z));
 	m_skinModelRender->SetRot(m_rot);
 }
 

@@ -57,6 +57,8 @@ protected:
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。
 	CVector3 m_characonPos = CVector3::Zero();		//キャラコンの座標。
 	CVector3 m_characonMove = CVector3::Zero();		//キャラコンの移動量(向き持)。
+	CVector3 m_direction = CVector3::Zero();		//Enemyから見たPlayerの向き。
+	CVector3 m_oldDirection = CVector3::Zero();		//正規化する前の値を格納。
 
 	CQuaternion m_rot = CQuaternion::Identity();	//回転情報。
 
