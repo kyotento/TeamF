@@ -310,14 +310,14 @@ void Player::Shift()
 	CQuaternion bodyRot;			//体の骨の回転。
 	CQuaternion rightLegRot;		//右足の骨の回転。
 	CQuaternion leftLegRot;			//左足の骨の回転。
+	Bone* bodyBone = m_skinModelRender->FindBone(L"Bone010");		//胴体の骨。
+	Bone* rightLegBone = m_skinModelRender->FindBone(L"Bone015");	//右足の骨。
+	Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
+	const float shiftDir = 30.f;			//しゃがむ角度。
 
+	//しゃがみの処理。
 	if (GetKeyInput(VK_SHIFT)) {
 		//todo ブロックから落ちない処理を追加する。
-		const float shiftDir = 30.f;			//しゃがむ角度。
-		Bone* bodyBone = m_skinModelRender->FindBone(L"Bone010");		//胴体の骨。
-		Bone* rightLegBone = m_skinModelRender->FindBone(L"Bone015");	//右足の骨。
-		Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
-
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
 		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
 		leftLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir);
@@ -326,9 +326,19 @@ void Player::Shift()
 		rightLegBone->SetRotationOffset(rightLegRot);
 		leftLegBone->SetRotationOffset(leftLegRot);
 	}
+	//元に戻る処理。
+	if (GetKeyUp(VK_SHIFT)) {
+		bodyRot.SetRotationDeg(CVector3::AxisZ(), -shiftDir* 0.5f);
+		rightLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir* 0.5f);
+		leftLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir* 0.5f);
+
+		bodyBone->SetRotationOffset(bodyRot);
+		rightLegBone->SetRotationOffset(rightLegRot);
+		leftLegBone->SetRotationOffset(leftLegRot);
+	}
 }
 
-
+//頭の回転処理。
 void Player::Headbang()
 {
 	m_bone = m_skinModelRender->FindBone(L"Bone002");
