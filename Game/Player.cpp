@@ -307,6 +307,10 @@ void Player::Turn()
 //しゃがみの処理。
 void Player::Shift()
 {
+	CQuaternion bodyRot;			//体の骨の回転。
+	CQuaternion rightLegRot;		//右足の骨の回転。
+	CQuaternion leftLegRot;			//左足の骨の回転。
+
 	if (GetKeyInput(VK_SHIFT)) {
 		//todo ブロックから落ちない処理を追加する。
 		const float shiftDir = 30.f;			//しゃがむ角度。
@@ -314,9 +318,6 @@ void Player::Shift()
 		Bone* rightLegBone = m_skinModelRender->FindBone(L"Bone015");	//右足の骨。
 		Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
 
-		CQuaternion bodyRot;			//体の骨の回転。
-		CQuaternion rightLegRot;		//右足の骨の回転。
-		CQuaternion leftLegRot;			//左足の骨の回転。
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
 		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
 		leftLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir);
