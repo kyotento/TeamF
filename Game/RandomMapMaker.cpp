@@ -196,6 +196,7 @@ void RandomMapMaker::CreateZombie(const int x, const int y, const int z)
 
 	float minNoise = 0.701;
 	float maxNoise = 0.7017;
+	//ノイズが一定以内やったらゾンビ生成。
 	if (noise < minNoise || noise > maxNoise) {
 		return;
 	}
