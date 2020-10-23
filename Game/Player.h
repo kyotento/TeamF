@@ -1,6 +1,7 @@
 #pragma once
 #include "Block.h"
 #include "../physics/character/CCharacterController.h"
+#include "Mob.h"
 
 class World;
 class GameCamera;
@@ -11,7 +12,7 @@ struct Inventory {
 	int s_number = 0;
 };
 
-class Player : public IGameObject
+class Player : public Mob
 {
 public:
 	Player();

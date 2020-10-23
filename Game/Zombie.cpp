@@ -26,6 +26,8 @@ bool Zombie::Start()
 	m_skinModelRender->SetScale(m_scale);
 	m_skinModelRender->SetRot(m_rot);
 
+	m_characon.SetPosition(m_position);
+
 	return true;
 }
 

@@ -12,7 +12,6 @@ Enemy::Enemy()
 	if (m_player == nullptr) {			//プレイヤーのインスタンスが取得されていないとき。
 		m_player = FindGO<Player>(L"player");		//プレイヤーのインスタンスを取得。
 	}
-
 }
 
 

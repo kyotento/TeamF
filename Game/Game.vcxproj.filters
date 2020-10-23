@@ -20,23 +20,26 @@
       <Filter>ForTest</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Mob\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Zombie.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Mob\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Drop.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Player.cpp">
-      <Filter>Player</Filter>
+      <Filter>Mob\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameCamera.cpp">
-      <Filter>Player</Filter>
+      <Filter>Mob\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="ChunkFiler.cpp">
       <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Mob.cpp">
+      <Filter>Mob</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,19 +64,19 @@
       <Filter>ForTest</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Enemy</Filter>
+      <Filter>Mob\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Zombie.h">
-      <Filter>Enemy</Filter>
+      <Filter>Mob\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Drop.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Player.h">
-      <Filter>Player</Filter>
+      <Filter>Mob\Player</Filter>
     </ClInclude>
     <ClInclude Include="GameCamera.h">
-      <Filter>Player</Filter>
+      <Filter>Mob\Player</Filter>
     </ClInclude>
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="resource.h" />
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="ChunkFlags.h">
       <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Mob.h">
+      <Filter>Mob</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,11 +100,14 @@
     <Filter Include="Block">
       <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{cd3e36e7-3201-43a7-af48-d00a10f72a22}</UniqueIdentifier>
+    <Filter Include="Mob">
+      <UniqueIdentifier>{32b447d9-28f4-41dd-8d81-f570ba88f44d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Player">
+    <Filter Include="Mob\Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mob\Enemy">
+      <UniqueIdentifier>{cd3e36e7-3201-43a7-af48-d00a10f72a22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

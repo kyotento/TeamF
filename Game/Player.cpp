@@ -71,7 +71,7 @@ void Player::Update()
 		static bool lock = true;
 		MouseCursor().SetLockMouseCursor( lock = !lock );
 	}
-
+	//ˆÚ“®ˆ—B
 	Move();
 	//‰ñ“]ˆ—B
 	Turn();

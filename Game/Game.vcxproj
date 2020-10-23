@@ -48,6 +48,7 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mob.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="ItemData.h" />
+    <ClInclude Include="Mob.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMapMaker.h" />

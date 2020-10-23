@@ -1,8 +1,9 @@
 #pragma once
 #include "Player.h"
 #include "../physics/character/CCharacterController.h"
+#include "Mob.h"
 
-class Enemy : public IGameObject
+class Enemy : public Mob
 {
 public:
 	Enemy();
