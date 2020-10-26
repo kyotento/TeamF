@@ -1,8 +1,9 @@
 #pragma once
 #include "Player.h"
 #include "../physics/character/CCharacterController.h"
+#include "Entity.h"
 
-class Enemy : public IGameObject
+class Enemy : public Entity
 {
 public:
 	Enemy();
@@ -17,6 +18,18 @@ public:
 
 	//状態管理。
 	virtual void StateManagement();
+
+	//! @brief 座標を取得。
+	CVector3 GetPos() const override{
+		return m_position;
+	}
+
+	//! @brief 座標を設定。
+	void SetPos( const CVector3& pos ) override{
+		m_position = pos;
+		m_characon.SetPosition( pos );
+		m_characonPos = pos;
+	}
 
 	//エネミーのアニメーション。
 	enum enAnimationClips {

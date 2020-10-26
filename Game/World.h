@@ -4,6 +4,7 @@
 #include "RandomMapMaker.h"
 #include "IntVector3.h"
 
+class Entity;
 class Player;
 
 //! @brief Block オブジェクトを保持するワールド
@@ -20,6 +21,11 @@ public:
 
 	Player* GetPlayer(){
 		return m_player;
+	}
+
+	//! @brief Entity をワールドに追加する。
+	void AddEntity( Entity* entity ){
+		m_entities.push_back( entity );
 	}
 
 	//! @brief ワールドを生成する。 
@@ -113,5 +119,7 @@ private:
 	//! プレイヤーを中心とした、コリジョンが有効化される範囲。ブロック単位。
 	int m_collisionEnableRange = 2;
 	std::unordered_set<IntVector3> m_activeCollisions;
+
+	std::vector<Entity*> m_entities;
 };
 

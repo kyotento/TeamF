@@ -26,7 +26,7 @@ void Enemy::Tracking()
 {
 	//追従処理。
 	CVector3 direction;			//Enemyから見たPlayerの向き。
-	direction = (m_player->GetPosition() - m_position);
+	direction = (m_player->GetPos() - m_position);
 	CVector3 oldDirection = direction;		//正規化する前の値を格納。
 	direction.Normalize();
 	direction.y = 0.f;

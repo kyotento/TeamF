@@ -28,6 +28,8 @@ bool Game::Start()
 	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 	m_zombie = NewGO<Zombie>();
+	m_zombie->SetPos( CVector3( 20, 15, 15 ) * Block::WIDTH );
+	m_world.AddEntity( m_zombie );
 
 	Box* box = NewGO<Box>();
 

@@ -61,7 +61,7 @@ void GameCamera::FPS()
 	//カメラをプレイヤーの正面に
 	const float front = 0.05f* Block::WIDTH;
 
-	m_position = m_player->GetPosition();
+	m_position = m_player->GetPos();
 	m_position += m_player->GetFront() * front;
 	m_position.y += height;
 	//Y軸周りに回転させる。
@@ -90,7 +90,7 @@ void GameCamera::TPS()
 	//カメラをプレイヤーより横にずらす
 	const float right = 0.20f* Block::WIDTH;
 	
-	m_target = m_player->GetPosition() + m_player->GetRight() * right;
+	m_target = m_player->GetPos() + m_player->GetRight() * right;
 	m_target.y += height;
 	//Y軸周りに回転させる。
 	CQuaternion qRot;
@@ -118,7 +118,7 @@ void GameCamera::ReverseTPS()
 	//カメラをプレイヤーの正面に
 	const float front = 0.05f* Block::WIDTH;
 
-	m_position = m_player->GetPosition();
+	m_position = m_player->GetPos();
 	m_position += m_player->GetFront() * front;
 	m_position.y += height;
 	//Y軸周りに回転させる。
