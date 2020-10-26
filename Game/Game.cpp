@@ -21,7 +21,6 @@ bool Game::Start()
 	//必要なクラスの生成。
 	m_gameMode = NewGO<GameMode>();
 	m_gameMode->SetName(L"gamemode");
-	m_world.Generate();
 
 	m_player = NewGO<Player>();
 	m_player->SetName(L"player");

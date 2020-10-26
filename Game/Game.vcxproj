@@ -47,6 +47,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />

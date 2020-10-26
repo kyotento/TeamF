@@ -11,6 +11,7 @@ class Player;
 //! @author Takayama
 class World : public IGameObject{
 public:
+	World();
 
 	//! @brief 更新関数。チャンクをストレージに退避させる処理をする。
 	void PostUpdate() override;
@@ -26,12 +27,6 @@ public:
 	//! @brief Entity をワールドに追加する。
 	void AddEntity( Entity* entity ){
 		m_entities.push_back( entity );
-	}
-
-	//! @brief ワールドを生成する。 
-	void Generate(){
-		m_mapMaker.Init(this);
-		AllChunkCulling();
 	}
 
 	//! @brief チャンクを読み込む距離を取得。
@@ -103,8 +98,9 @@ public:
 	}
 
 private:
-	//! @brief ワールド生成後に埋まっているブロックを非表示にする。
-	void AllChunkCulling();
+	//! @brief チャンクをロード。ロード済みなら何もしない。
+	void LoadChunk(int x, int z);
+
 	//! @brief チャンクごとに埋まっているブロックを非表示にする
 	void ChunkCulling(Chunk& chunk);
 
