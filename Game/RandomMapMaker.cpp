@@ -221,6 +221,7 @@ void RandomMapMaker::CreateZombie(const int x, const int y, const int z)
 	}
 
 	Enemy* zombie = NewGO<Zombie>();
-	zombie->SetPosition(CVector3(x * Block::WIDTH, (float(y) + 1.0f) * Block::WIDTH, z * Block::WIDTH));
+	zombie->SetPos(CVector3(x * Block::WIDTH, (float(y) + 1.0f) * Block::WIDTH, z * Block::WIDTH));
 	zombie->SetScale(CVector3::One() * 1.f);
+	m_world->AddEntity(zombie);
 }

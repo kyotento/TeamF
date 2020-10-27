@@ -24,7 +24,7 @@ Enemy::~Enemy()
 void Enemy::Tracking()
 {
 	//’Ç]ˆ—B
-	m_direction = (m_player->GetPosition() - m_position);
+	m_direction = (m_player->GetPos() - m_position);
 	m_oldDirection = m_direction;		//³‹K‰»‚·‚é‘O‚Ì’l‚ğŠi”[B
 	m_direction.Normalize();
 	m_direction.y = 0.f;

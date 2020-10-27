@@ -21,6 +21,11 @@ public:
 	/// </summary>
 	virtual void StateManagement();
 
+	/// <summary>
+	/// —‰ºˆ—B
+	/// </summary>
+	virtual void Fall();
+
 	//! @brief À•W‚ğæ“¾B
 	CVector3 GetPos() const override{
 		return m_position;
