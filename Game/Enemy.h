@@ -16,8 +16,15 @@ public:
 	/// プレイヤーを追従するEnemyの子クラスで呼んであげてください。
 	virtual void Tracking();
 
-	//状態管理。
+	/// <summary>
+	/// 状態管理。
+	/// </summary>
 	virtual void StateManagement();
+
+	/// <summary>
+	/// 落下処理。
+	/// </summary>
+	virtual void Fall();
 
 	//エネミーのアニメーション。
 	enum enAnimationClips {
@@ -53,6 +60,7 @@ protected:
 	const float m_characonHeight = 160.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
 	const float m_animSpeed = 1.0f;					//アニメーションの速度。
+	float m_fallSpeed = 0.8f;						//落下速度。
 
 	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。

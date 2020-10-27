@@ -39,9 +39,15 @@ void Enemy::Tracking()
 	else {
 		m_enemyState = enEnemy_attack;				//攻撃状態に。
 	}
+
 	//プレイヤーの方向を向く処理。
 	m_rot.SetRotation(CVector3::AxisY(), atan2f(m_direction.x, m_direction.z));
 	m_skinModelRender->SetRot(m_rot);
+}
+
+void Enemy::Fall()
+{
+
 }
 
 //エネミーの状態管理。

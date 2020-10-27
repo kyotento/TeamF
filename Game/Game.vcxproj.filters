@@ -1,131 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="World.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Chunk.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>Block</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="BlockFactory.cpp">
-      <Filter>Block</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugTimer.cpp">
-      <Filter>ForTest</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Mob\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Zombie.cpp">
-      <Filter>Mob\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Drop.cpp" />
-    <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Player.cpp">
-      <Filter>Mob\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GameCamera.cpp">
-      <Filter>Mob\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMode.cpp" />
-    <ClCompile Include="ChunkFiler.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Mob.cpp">
-      <Filter>Mob</Filter>
-    </ClCompile>
+    <ClCompile Include="ChunkFiler.cpp" />
     <ClCompile Include="CreateOre.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="World.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Chunk.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="BlockFactory.h">
-      <Filter>Block</Filter>
-    </ClInclude>
-    <ClInclude Include="BlockType.h">
-      <Filter>Block</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugTimer.h">
-      <Filter>ForTest</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Mob\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Mob\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Drop.h" />
-    <ClInclude Include="ItemData.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Player.h">
-      <Filter>Mob\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="GameCamera.h">
-      <Filter>Mob\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMode.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="ChunkFiler.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="ChunkFlags.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Mob.h">
-      <Filter>Mob</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateOre.h" />
-    <ClInclude Include="IntVector3.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="ForTest">
-      <UniqueIdentifier>{9b1a111d-7133-40d8-a041-116e45fff757}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="World">
-      <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Block">
-      <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mob">
-      <UniqueIdentifier>{32b447d9-28f4-41dd-8d81-f570ba88f44d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mob\Player">
-      <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mob\Enemy">
-      <UniqueIdentifier>{cd3e36e7-3201-43a7-af48-d00a10f72a22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Util">
-      <UniqueIdentifier>{e9c33e82-fb73-484a-a508-eaa68b4af968}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="Drop.cpp" />
+    <ClCompile Include="BlockFactory.cpp" />
+    <ClCompile Include="DebugTimer.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Chunk.cpp" />
+    <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="Mob.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="BlockFactory.h" />
+    <ClInclude Include="BlockType.h" />
+    <ClInclude Include="ChunkFiler.h" />
+    <ClInclude Include="ChunkFlags.h" />
+    <ClInclude Include="CreateOre.h" />
+    <ClInclude Include="DebugTimer.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="Drop.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntVector3.h" />
+    <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="RandomMapMaker.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="Chunk.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="Mob.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Zombie.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
