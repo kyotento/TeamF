@@ -1,7 +1,7 @@
 #pragma once
 #include "Block.h"
 #include "../physics/character/CCharacterController.h"
-#include "Mob.h"
+#include "Entity.h"
 
 class World;
 class GameCamera;
@@ -12,7 +12,7 @@ struct Inventory {
 	int s_number = 0;
 };
 
-class Player : public Mob
+class Player : public Entity
 {
 public:
 	Player();
@@ -23,7 +23,7 @@ public:
 	CFont font;
 	void HUDRender( int HUDNum ) override{
 		std::wstringstream str;
-		CVector3 pos = GetPosition() / Block::WIDTH;
+		CVector3 pos = GetPos() / Block::WIDTH;
 		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
 		font.Draw( str.str().c_str(), { 0.5f , 0.3f }, CVector4::White(), CVector2::One(), {0.5f, 0.5f} );
 	}
@@ -69,13 +69,15 @@ public:
 		return m_front;
 	}
 	
-	/// <summary>
-	/// プレイヤーの座標を取得。
-	/// </summary>
-	/// <returns>プレイヤーの座標</returns>
-	const CVector3& GetPosition()
-	{
+	//! @brief 座標を取得。
+	CVector3 GetPos() const override{
 		return m_position;
+	}
+
+	//! @brief 座標を設定。
+	void SetPos( const CVector3& pos ) override{
+		m_position = pos;
+		m_characon.SetPosition( pos );
 	}
 
 	/// <summary>

@@ -32,7 +32,7 @@ void Drop::Distance()
 
 	const float distance = 2.0f * 2.0f;
 
-	CVector3 diff = m_player->GetPosition() - m_position;
+	CVector3 diff = m_player->GetPos() - m_position;
 	if (diff.LengthSq() <= distance) {
 		int number = m_box->AddItem(m_state, m_number);
 		if (number == 0) {

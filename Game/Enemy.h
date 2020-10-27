@@ -1,9 +1,9 @@
 #pragma once
 #include "Player.h"
 #include "../physics/character/CCharacterController.h"
-#include "Mob.h"
+#include "Entity.h"
 
-class Enemy : public Mob
+class Enemy : public Entity
 {
 public:
 	Enemy();
@@ -21,10 +21,17 @@ public:
 	/// </summary>
 	virtual void StateManagement();
 
-	/// <summary>
-	/// 落下処理。
-	/// </summary>
-	virtual void Fall();
+	//! @brief 座標を取得。
+	CVector3 GetPos() const override{
+		return m_position;
+	}
+
+	//! @brief 座標を設定。
+	void SetPos( const CVector3& pos ) override{
+		m_position = pos;
+		m_characon.SetPosition( pos );
+		m_characonPos = pos;
+	}
 
 	//エネミーのアニメーション。
 	enum enAnimationClips {
@@ -45,10 +52,7 @@ public:
 		enEnemy_fan,					//煽り。		
 		enEnemy_num,					//エネミーの状態の数。
 	};
-	void SetPosition(const CVector3& pos)
-	{
-		m_position = pos;
-	}
+
 	void SetScale(const CVector3& scale)
 	{
 		m_scale = scale;

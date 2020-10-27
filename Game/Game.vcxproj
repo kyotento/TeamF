@@ -42,6 +42,7 @@
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Block.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Drop.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />

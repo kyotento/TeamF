@@ -4,6 +4,7 @@ struct IntVector3{
 	int x, y, z;
 
 	IntVector3( int x, int y, int z ) : x( x ), y( y ), z( z ){}
+	explicit IntVector3(const CVector3& v) : x(std::floor(v.x)), y( std::floor( v.y ) ), z( std::floor( v.z ) ){}
 
 	bool operator==( const IntVector3& rhs ) const{
 		return rhs.x == x && rhs.y == y && rhs.z == z;

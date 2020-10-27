@@ -4,9 +4,9 @@
 #include "Player.h"
 
 void World::PostUpdate(){
-	const CVector3 pPosV = m_player->GetPosition() / Block::WIDTH;
 
 	{
+		const CVector3 pPosV = m_player->GetPos() / Block::WIDTH;
 		const int pPosX = CalcChunkCoord( (int)pPosV.x );
 		const int pPosZ = CalcChunkCoord( (int)pPosV.z );
 		const int cl = m_chunkLoadRange;
@@ -55,35 +55,48 @@ void World::PostUpdate(){
 
 	{
 		//範囲内のブロックのコリジョンを有効化する。範囲外は無効化する。
-		const int pPosX = int( std::floorf( pPosV.x ) );
-		const int pPosY = int( std::floorf( pPosV.y ) );
-		const int pPosZ = int( std::floorf( pPosV.z ) );
 		const int colR = m_collisionEnableRange;
 
 		//無効化ループ
 		for( auto itr = m_activeCollisions.begin(); itr != m_activeCollisions.end(); ){
 			const IntVector3& p = *itr;
-			if( p.x < pPosX - colR || pPosX + colR < p.x ||
-				p.y < pPosY - colR || pPosY + colR < p.y ||
-				p.z < pPosZ - colR || pPosZ + colR < p.z ){
+			bool disable = true;
+			//全エンティティをループ
+			for( Entity* e : m_entities ){
+				const IntVector3 ePos( e->GetPos() / Block::WIDTH );
 
+				if( p.x >= ePos.x - colR && ePos.x + colR >= p.x &&
+					p.y >= ePos.y - colR && ePos.y + colR >= p.y &&
+					p.z >= ePos.z - colR && ePos.z + colR >= p.z ){
+
+					//1体でもエンティティが範囲内なら無効化しない。
+					itr++;
+					disable = false;
+					break;
+				}
+			}
+
+			if( disable ){
+				//誰の範囲内でもなければ無効化。
 				Block* b = GetBlock( p.x, p.y, p.z );
 				if( b )b->DisableCollision();
-
 				itr = m_activeCollisions.erase( itr );
-			} else{
-				itr++;
 			}
 		}
 
-		//有効化ループ。
-		for( int x = pPosX - colR; x <= pPosX + colR; x++ ){
-			for( int y = pPosY - colR; y <= pPosY + colR; y++ ){
-				for( int z = pPosZ - colR; z <= pPosZ + colR; z++ ){
-					Block* b = GetBlock( x, y, z );
-					if( b && !b->IsCollisionEnabled()){
-						b->EnableCollision();
-						m_activeCollisions.emplace( x, y, z );
+		//全エンティティをループ
+		for( Entity* e : m_entities ){
+			const IntVector3 ePos( e->GetPos() / Block::WIDTH );
+
+			//有効化ループ。
+			for( int x = ePos.x - colR; x <= ePos.x + colR; x++ ){
+				for( int y = ePos.y - colR; y <= ePos.y + colR; y++ ){
+					for( int z = ePos.z - colR; z <= ePos.z + colR; z++ ){
+						Block* b = GetBlock( x, y, z );
+						if( b && !b->IsCollisionEnabled() ){
+							b->EnableCollision();
+							m_activeCollisions.emplace( x, y, z );
+						}
 					}
 				}
 			}
@@ -93,6 +106,7 @@ void World::PostUpdate(){
 
 void World::SetPlayer( Player* player, bool recursive ){
 	m_player = player;
+	AddEntity( player );
 	if( recursive )
 		player->SetWorld( this, false );
 }
