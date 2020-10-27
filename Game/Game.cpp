@@ -27,7 +27,6 @@ bool Game::Start()
 	m_player->SetName(L"player");
 	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
-//	m_zombie = NewGO<Zombie>();
 
 	Box* box = NewGO<Box>();
 
