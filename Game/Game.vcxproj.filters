@@ -41,6 +41,7 @@
     <ClCompile Include="Mob.cpp">
       <Filter>Mob</Filter>
     </ClCompile>
+    <ClCompile Include="CreateOre.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="Mob.h">
       <Filter>Mob</Filter>
     </ClInclude>
+    <ClInclude Include="CreateOre.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
