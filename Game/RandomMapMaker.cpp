@@ -8,6 +8,11 @@
 #include "Enemy.h"
 #include "Block.h"
 #include "CreateOre.h"
+#include "BiomeManager.h"
+
+namespace {
+	std::mt19937 random((std::random_device())());
+}
 
 void RandomMapMaker::Init( World* world ){
 	m_world = world;
@@ -34,10 +39,16 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 	const int zStart = chunk.CalcWorldCoordZ( 0 );
 	const int zEnd = chunk.CalcWorldCoordZ( Chunk::WIDTH );
 
+
 	//wx,wz <- ワールド座標。cx,cz <- チャンク内座標。
 	//チャンク内のx,z座標をループ。
 	for( int wx = xStart, cx = 0; wx < xEnd; wx++, cx++ ){
 		for( int wz = zStart, cz = 0; wz < zEnd; wz++, cz++ ){
+
+			//どのバイオームに属するか決定。
+			enBiome state = GetBiomeManager().DecideBiome(wx, 0, wz);
+
+
 
 			//地表の高さを決定。
 			CVector3 pos = CVector3( float(wx), 0, float(wz) );
@@ -100,8 +111,15 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 float RandomMapMaker::SetY( const CVector3& pos ){
 	float y = 0;
 
-	float xSample = ( pos.x + m_seedX ) / m_relief;
-	float zSample = ( pos.z + m_seedZ ) / m_relief;
+	int r = random() % 2;
+
+	float relief = m_relief + float(r);
+
+	float xSample = (pos.x + m_seedX) / relief;
+	float zSample = (pos.z + m_seedZ) / relief;
+
+	//float xSample = ( pos.x + m_seedX ) / m_relief;
+	//float zSample = ( pos.z + m_seedZ ) / m_relief;
 
 	float noise = GetPerlin().PerlinNoise( xSample * 2, 0.0f, zSample * 2 );
 	noise += GetPerlin().PerlinNoise( xSample, 0.0f, zSample ) * 3;

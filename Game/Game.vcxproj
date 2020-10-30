@@ -35,6 +35,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Biome.cpp" />
+    <ClCompile Include="BiomeManager.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
     <ClCompile Include="CreateOre.cpp" />
@@ -64,6 +66,8 @@
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Biome.h" />
+    <ClInclude Include="BiomeManager.h" />
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="ChunkFiler.h" />

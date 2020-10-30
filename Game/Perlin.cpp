@@ -89,7 +89,7 @@ float Perlin::PerlinNoise(float x, float y, float z)
 
 float Perlin::OctavePerlin(float x, float y, float z, int octaves, float persistence)
 {
-    float total = 0;
+    /*float total = 0;
     float frequency = 1;
     float amplitude = 1;
     float maxValue = 0;
@@ -103,7 +103,21 @@ float Perlin::OctavePerlin(float x, float y, float z, int octaves, float persist
         frequency *= 2;
     }
 
-    return total / maxValue;
+    return total / maxValue;*/
+
+	float noise{};
+	float amp{ 1.0 };
+	float sum = 0.0f;
+	for (std::size_t i{}; i < octaves; ++i) {
+		sum += amp;
+		noise += PerlinNoise(x, y, z) * amp;
+		x *= 2.0;
+		y *= 2.0;
+		z *= 2.0f;
+		amp *= 0.5;
+	}
+
+	return noise / sum;
 }
 
 float Perlin::Grad(int hash, float x, float y, float z)

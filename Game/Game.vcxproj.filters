@@ -60,6 +60,12 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="BiomeManager.cpp">
+      <Filter>Biome</Filter>
+    </ClCompile>
+    <ClCompile Include="Biome.cpp">
+      <Filter>Biome</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
@@ -115,6 +121,12 @@
     <ClInclude Include="Entity.h">
       <Filter>Entity</Filter>
     </ClInclude>
+    <ClInclude Include="BiomeManager.h">
+      <Filter>Biome</Filter>
+    </ClInclude>
+    <ClInclude Include="Biome.h">
+      <Filter>Biome</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -137,6 +149,9 @@
     </Filter>
     <Filter Include="Entity\Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Biome">
+      <UniqueIdentifier>{77a7d1ec-934a-4fb9-ba45-299be3f1194f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
