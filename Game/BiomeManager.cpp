@@ -2,17 +2,7 @@
 #include "BiomeManager.h"
 #include "Perlin.h"
 
-BiomeManager::BiomeManager()
-{
-	std::random_device randDevice;
-
-	//シード値を初期化する。
-	m_seedX = randDevice() % 101;
-	m_seedZ = randDevice() % 101;
-
-	m_seedX2 = m_seedX + randDevice() % 101 + 51;
-	m_seedZ2 = m_seedZ + randDevice() % 101 + 51;
-}
+BiomeManager::BiomeManager(){}
 
 enBiome BiomeManager::DecideBiome(const int x,const int y,const int z)
 {
@@ -65,4 +55,13 @@ enBiome BiomeManager::DecideBiome(const int x,const int y,const int z)
 	}
 
 	return state;
+}
+
+void BiomeManager::GenerateSeed( std::mt19937 & generater ){
+	//シード値を初期化する。
+	m_seedX = generater() % 101;
+	m_seedZ = generater() % 101;
+
+	m_seedX2 = m_seedX + generater() % 101 + 51;
+	m_seedZ2 = m_seedZ + generater() % 101 + 51;
 }

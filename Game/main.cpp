@@ -13,12 +13,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 {
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);
 
-	if (isStart == false)
-	{
-		NewGO<Game>();
-		isStart = true;
-	}
-
 	//エンジンの初期化設定
 	InitEngineParameter initparam;	
 
@@ -44,6 +38,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//判定表示
 
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
+
+
+	if( isStart == false ){
+		NewGO<Game>();
+		isStart = true;
+	}
 
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);

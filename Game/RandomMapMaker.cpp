@@ -14,7 +14,7 @@ namespace {
 	std::mt19937 random((std::random_device())());
 }
 
-void RandomMapMaker::Init( World* world ){
+void RandomMapMaker::Init( World* world, std::mt19937& seedGenerator ){
 	m_world = world;
 
 	int loadEdge = m_world->GetChunkLoadRange() * 2 * Chunk::WIDTH;
@@ -22,15 +22,14 @@ void RandomMapMaker::Init( World* world ){
 	//ブロックファクトリを初期化
 	BlockFactory::LoadInstancingModels(loadEdge * loadEdge * ( int(m_maxHeight) + 1 ) );
 
-	std::random_device rand;
 	//同じマップを生成しないようにシード生成
-	m_seedX = rand() % 101;
-	m_seedZ = rand() % 101;
-	m_seedY = rand() % 101;
+	m_seedX = seedGenerator() % 101;
+	m_seedZ = seedGenerator() % 101;
+	m_seedY = seedGenerator() % 101;
 
-	m_seedX2 = rand() % 101 + 50;
-	m_seedY2 = rand() % 101 + 50;
-	m_seedZ2 = rand() % 101 + 50;
+	m_seedX2 = seedGenerator() % 101 + 50;
+	m_seedY2 = seedGenerator() % 101 + 50;
+	m_seedZ2 = seedGenerator() % 101 + 50;
 }
 
 void RandomMapMaker::GenerateChunk( Chunk & chunk ){

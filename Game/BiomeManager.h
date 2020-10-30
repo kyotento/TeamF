@@ -22,9 +22,12 @@ public:
 	}
 	//座標によりどのバイオームに属するか決定する。
 	enBiome DecideBiome(const int x,const int y,const int z);
+
+	//! @brief シード値を乱数発生器から設定する。
+	void GenerateSeed( std::mt19937& generater );
 private:
-	int m_seedX, m_seedZ, m_seedY;		//シード値。
-	int m_seedX2, m_seedZ2, m_seedY2;
+	int m_seedX, m_seedZ;		//シード値。
+	int m_seedX2, m_seedZ2;
 };
 
 static inline BiomeManager& GetBiomeManager()

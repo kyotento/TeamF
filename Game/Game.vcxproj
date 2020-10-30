@@ -63,6 +63,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldInfoFile.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldInfoFile.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>

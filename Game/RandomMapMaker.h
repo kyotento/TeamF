@@ -8,7 +8,7 @@ class RandomMapMaker
 {
 public:
 	//初期化
-	void Init( World* world );
+	void Init( World* world, std::mt19937& seedGenerator );
 
 	//! @brief チャンクの地形を生成する。
 	//! @param[in,out] chunk このチャンクに生成する。

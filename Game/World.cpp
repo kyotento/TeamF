@@ -2,6 +2,21 @@
 #include "World.h"
 #include "ChunkFiler.h"
 #include "Player.h"
+#include "BiomeManager.h"
+
+World::World(){
+	bool result = infoFile.Read();
+
+	if( result == false ){
+		//ファイルが存在しない場合に新しく作成する。
+		infoFile.SetRandomSeed();
+		infoFile.Write();
+	}
+
+	//シード値をそれぞれに設定する。
+	BiomeManager::GetInstance().GenerateSeed( infoFile.GetSeedGenerator() );
+	m_mapMaker.Init( this, infoFile.GetSeedGenerator() );
+}
 
 void World::PostUpdate(){
 
