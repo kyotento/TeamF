@@ -7,10 +7,6 @@ class World;
 class GameCamera;
 class Item;
 class GameMode;
-struct Inventory {
-	Item* s_item = nullptr;
-	int s_number = 0;
-};
 
 class Player : public Entity
 {

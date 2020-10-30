@@ -3,7 +3,7 @@
 #include "GameCamera.h"
 #define _USE_MATH_DEFINES //M_PI ‰~ü—¦ŒÄ‚Ño‚µ
 #include <math.h> 
-#include "ItemData.h"
+#include "Item.h"
 #include "GameMode.h"
 #include "World.h"
 

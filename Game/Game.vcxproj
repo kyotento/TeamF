@@ -35,9 +35,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
-    <ClCompile Include="Drop.cpp" />
+    <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -48,7 +48,8 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
-    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemDictionary.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -69,15 +70,17 @@
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Drop.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="DropItem.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
-    <ClInclude Include="ItemData.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemDictionary.h" />
+    <ClInclude Include="ItemStack.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMapMaker.h" />

@@ -25,9 +25,6 @@
     <ClCompile Include="Zombie.cpp">
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Drop.cpp" />
-    <ClCompile Include="ItemData.cpp" />
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Player.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
@@ -43,6 +40,18 @@
     </ClCompile>
     <ClCompile Include="IntRect.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="DropItem.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDictionary.cpp">
+      <Filter>Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +81,6 @@
     <ClInclude Include="Zombie.h">
       <Filter>Entity\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Drop.h" />
-    <ClInclude Include="ItemData.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="Player.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
@@ -98,6 +104,21 @@
     <ClInclude Include="IntRect.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="DropItem.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDictionary.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -120,6 +141,12 @@
     </Filter>
     <Filter Include="Entity\Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{ca01cd1e-0ea2-44a7-83e9-8b24d99b5edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inventory">
+      <UniqueIdentifier>{01c63c21-3522-4818-8c65-326f2e0b4a98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

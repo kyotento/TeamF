@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Box.h"
-#include "Drop.h"
+#include "Inventory.h"
+#include "DropItem.h"
 #include "Game.h"
 #include "GameCamera.h"
 #include "Player.h"
