@@ -1,10 +1,13 @@
+//! @file
 #pragma once
 #include "Item.h"
 
+//! @brief アイテムとその数を持つクラス。
+//! @author Takayama
 class ItemStack{
 public:
 
-	ItemStack(){}
+	ItemStack(const Item& item , int number = 1) : m_item(item), m_number(number){}
 
 	//! @brief 個数を設定。
 	void SetNumber( int num ){
@@ -12,17 +15,27 @@ public:
 	}
 
 	//! @brief 個数を取得。
-	int GetNumber(){
+	int GetNumber() const{
 		return m_number;
 	}
 
 	//! @brief アイテム情報を取得。
-	Item& GetItem(){
+	const Item& GetItem() const{
 		return m_item;
 	}
 
+	//! @brief アイテムidを取得。
+	unsigned GetID() const{
+		return m_item.GetID();
+	}
+
+	//! @brief スタック上限を取得。
+	int GetStackLimit() const{
+		return m_item.GetStackLimit();
+	}
+
 private:
-	Item& m_item;
+	const Item& m_item;
 	int m_number = 0;
 };
 

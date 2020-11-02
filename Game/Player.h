@@ -2,6 +2,7 @@
 #include "Block.h"
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
+#include "Inventory.h"
 
 class World;
 class GameCamera;
@@ -181,7 +182,7 @@ private:
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 
-	std::vector<Inventory*> m_inventoryList;					//インベントリ。
+	Inventory m_inventory;
 
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 

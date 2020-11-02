@@ -30,10 +30,10 @@ bool Game::Start()
 	m_zombie->SetPos( CVector3( 20, 15, 15 ) * Block::WIDTH );
 	m_world.AddEntity( m_zombie );
 
-	Box* box = NewGO<Box>();
+	//Box* box = NewGO<Box>();
 
 	//todo âΩÇ±ÇÍÅHÅHbyç≤îåÅB
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
 			std::random_device rand;
 			Drop* drop = NewGO<Drop>();
@@ -41,7 +41,7 @@ bool Game::Start()
 			drop->SetPosition(CVector3(i, 15, j));
 			drop->SetNumber((rand() % 10) + 1);
 		}
-	}
+	}*/
 
 	return true;
 }

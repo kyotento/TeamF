@@ -3,53 +3,113 @@
 #include "Item.h"
 #include "ItemStack.h"
 
-Inventory::Inventory()
-{
-	for (int i = 0; i < m_inventryWidth; i++) {
-		m_inventoryList.push_back(new Inventory());
-		m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
-	}
+Inventory::Inventory(unsigned size){
+	m_slotArray.resize( size );
 }
 
 Inventory::~Inventory(){}
 
-int Inventory::AddItem( std::unique_ptr<ItemStack> item)
-{
+void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
+	//スタック上限
+	const int stackLimit = item->GetStackLimit();
 
-	for (auto& slot : m_inventoryList) {
+	for( auto& slot : m_slotArray ){
 		//空いているスロットがあればそこに入れて終了。
 		if( !slot ){
 			slot.swap( item );
-			break;
+			return;
 		}
 
 		//同じ種類のアイテムが入ってたら
-		if( slot-> ) == enCube ){
+		if( slot->GetID() == item->GetID() ){
+			int tempNum = slot->GetNumber() + item->GetNumber();
 
-		//if (n == 0 || itr->s_number == itr->s_item->GetLimit())
-		//	continue;
-		////何もアイテム入ってなかったら
-		//if (itr->s_item->GetBlockType() == enCube_None) {
-		//	itr->s_item = GetItemData().GetItem(enCube);
-		//	itr->s_number = n;
-		//	n = 0;
-		//}
-		////同じ種類のアイテムが入ってたら
-		//else if (itr->s_item->GetBlockType() == enCube) {
-		//	int temNumber = itr->s_number + n;
-		//	//アイテム溢れたら
-		//	if (temNumber >= itr->s_item->GetLimit()) {
-		//		itr->s_number = itr->s_item->GetLimit();
-		//		n = temNumber - itr->s_item->GetLimit();
-		//	}
-		//	//溢れなかったら
-		//	else {
-		//		itr->s_number = temNumber;
-		//		n = 0;
-		//	}
-		//}
+			//アイテム溢れたら
+			if( tempNum > stackLimit ){
+				slot->SetNumber( stackLimit );
+				item->SetNumber( tempNum - stackLimit );
+			} else{
+				//溢れなかったら
+				slot->SetNumber( tempNum );
+				item.reset();
+				return;
+			}
+		}
 	}
-	return n;
+}
+
+void Inventory::LClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
+	auto& slot = m_slotArray[slotNo];
+
+	//スロットが空か、アイテムIDが異なる場合は、両者を入れ替える。
+	if( !slot || slot->GetID() != item->GetID() ){
+		slot.swap( item );
+		return;
+	}
+
+	//同じ種類のアイテムが入ってたら
+	int tempNum = slot->GetNumber() + item->GetNumber();
+	const int stackLimit = slot->GetStackLimit();
+
+	//アイテム溢れたら
+	if( tempNum > stackLimit ){
+		slot->SetNumber( stackLimit );
+		item->SetNumber( tempNum - stackLimit );
+	} else{
+		//溢れなかったら
+		slot->SetNumber( tempNum );
+		item.reset();
+	}
+}
+
+void Inventory::RClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
+	auto& slot = m_slotArray[slotNo];
+
+	//どっちにも何もなければ何もしない。
+	if( !item && !slot ){
+		return;
+	}
+
+	//カーソルが何も掴んでなくて、スロットにアイテムがある場合、半分だけ取る。
+	if( !item && slot){
+		int num = slot->GetNumber();
+		int half = num / 2;
+
+		item = std::make_unique<ItemStack>( slot->GetItem(), num - half );
+		slot->SetNumber( half );
+		return;
+	}
+
+	//カーソルにアイテムがあって、スロットにアイテムがない場合、1個だけ置く。
+	if( item && !slot ){
+		int num = item->GetNumber() - 1;
+		if( num > 0 ){
+			item->SetNumber( num );
+		} else{
+			item.reset();
+		}
+		slot = std::make_unique<ItemStack>( item->GetItem(), 1 );
+		return;
+	}
+
+	//カーソルとスロットが同じアイテムなら1個だけ置く。
+	if( item->GetID() == slot->GetID() ){
+		if( slot->GetNumber() == slot->GetStackLimit() ){
+			return;
+		}
+
+		int num = item->GetNumber() - 1;
+		if( num > 0 ){
+			item->SetNumber( num );
+		} else{
+			item.reset();
+		}
+		slot->SetNumber( slot->GetNumber() + 1 );
+		return;
+	}
+
+	//カーソルとスロットが違うアイテムなら両者を交換する。
+	item.swap( slot );
 }
 
 //void Inventory::PostRender()

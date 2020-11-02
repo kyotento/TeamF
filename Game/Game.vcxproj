@@ -49,7 +49,6 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="ItemDictionary.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -79,8 +78,8 @@
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="ItemDictionary.h" />
     <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ItemType.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomMapMaker.h" />

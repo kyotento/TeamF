@@ -25,7 +25,7 @@ void DropItem::Update()
 
 void DropItem::Distance()
 {
-	if (m_box == nullptr) {
+	/*if (m_box == nullptr) {
 		m_box = FindGO<Box>();
 		return;
 	}
@@ -41,5 +41,5 @@ void DropItem::Distance()
 		else {
 			m_number = number;
 		}
-	}
+	}*/
 }

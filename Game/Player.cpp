@@ -21,7 +21,7 @@ namespace {
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 }
 
-Player::Player()
+Player::Player() : m_inventory(36)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");

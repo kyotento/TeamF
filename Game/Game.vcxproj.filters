@@ -50,9 +50,6 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="ItemDictionary.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -116,7 +113,7 @@
     <ClInclude Include="ItemStack.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemDictionary.h">
+    <ClInclude Include="ItemType.h">
       <Filter>Item</Filter>
     </ClInclude>
   </ItemGroup>
