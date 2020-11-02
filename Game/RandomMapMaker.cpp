@@ -110,12 +110,8 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 float RandomMapMaker::SetY( const CVector3& pos ){
 	float y = 0;
 
-	int r = random() % 2;
-
-	float relief = m_relief + float(r);
-
-	float xSample = (pos.x + m_seedX) / relief;
-	float zSample = (pos.z + m_seedZ) / relief;
+	float xSample = (pos.x + m_seedX) / m_relief;
+	float zSample = (pos.z + m_seedZ) / m_relief;
 
 	//float xSample = ( pos.x + m_seedX ) / m_relief;
 	//float zSample = ( pos.z + m_seedZ ) / m_relief;

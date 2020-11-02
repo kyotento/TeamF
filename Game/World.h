@@ -37,21 +37,30 @@ public:
 	}
 
 	Block* GetBlock( const CVector3& pos ){
-		int x = (int)std::roundf( pos.x );
-		int y = (int)std::roundf( pos.y );
-		int z = (int)std::roundf( pos.z );
+		int x = (int)std::floorf( pos.x );
+		int y = (int)std::floorf( pos.y );
+		int z = (int)std::floorf( pos.z );
 		return GetBlock( x, y, z );
 	}
 	Block* GetBlock( int x, int y, int z );
 
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
-		int x = (int)std::roundf( pos.x );
-		int y = (int)std::roundf( pos.y );
-		int z = (int)std::roundf( pos.z );
+		int x = (int)std::floorf( pos.x );
+		int y = (int)std::floorf( pos.y );
+		int z = (int)std::floorf( pos.z );
 		SetBlock( x, y, z, std::move(block) );
 	}
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block );
 
+	//ワールド座標でブロックを設置、プレイヤー用。
+	//設置に成功したらtrue。
+	bool PlaceBlock(const CVector3& pos, std::unique_ptr<Block> block);
+
+	//ブロックを削除　ワールド座標を指定。
+	void DeleteBlock(const CVector3& pos);
+
+	//一つのブロックの周りのブロックのカリング処理をする。
+	void AroundBlock(const CVector3& pos);
 	//=========チャンクの取得に関する関数。==============
 
 	//! @brief チャンクを取得。

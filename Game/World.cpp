@@ -224,3 +224,82 @@ void World::ChunkCulling( Chunk& chunk ){
 		}
 	}
 }
+
+void World::DeleteBlock(const CVector3& pos)
+{
+	int x = (int)std::floorf(pos.x);
+	int y = (int)std::floorf(pos.y);
+	int z = (int)std::floorf(pos.z);
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+
+	if (!chunk) {
+		chunk = CreateChunkFromWorldPos(x, z);
+	}
+
+	x = Chunk::CalcInChunkCoord(x);
+	z = Chunk::CalcInChunkCoord(z);
+	chunk->DeleteBlock(x, y, z);
+	//AroundBlock(pos);
+}
+
+bool World::PlaceBlock(const CVector3& pos, std::unique_ptr<Block> block)
+{
+	int x = (int)std::floorf(pos.x);
+	int y = (int)std::floorf(pos.y);
+	int z = (int)std::floorf(pos.z);
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+
+	if (!chunk) {
+		chunk = CreateChunkFromWorldPos(x, z);
+	}
+
+	x = Chunk::CalcInChunkCoord(x);
+	z = Chunk::CalcInChunkCoord(z);
+
+	if (!chunk->PlaceBlock(x, y, z, std::move(block))) {
+		return false;
+	}
+	AroundBlock(pos);
+
+	return true;
+}
+
+void World::AroundBlock(const CVector3& pos)
+{
+	const int posSize = 6;
+
+	CVector3 posList[posSize];
+	posList[0] = CVector3(1.f, 0.f, 0.f);
+	posList[1] = CVector3(-1.f, 0.f, 0.f);
+	posList[2] = CVector3(0.f, 1.f, 0.f);
+	posList[3] = CVector3(0.f, -1.f, 0.f);
+	posList[4] = CVector3(0.f, 0.f, 1.f);
+	posList[5] = CVector3(0.f, 0.f, -1.f);
+
+	for (int i = 0; i < posSize; i++) {
+		CVector3 pos2 = CVector3::Zero();
+		pos2.x = pos.x + posList[i].x;
+		pos2.y = pos.y + posList[i].y;
+		pos2.z = pos.z + posList[i].z;
+
+		Block* block = GetBlock(pos2);
+		if (block == nullptr)
+			continue;
+
+		bool doNotCulling = false;
+		for (int j = 0; j < posSize; j++) {
+			CVector3 pos3 = CVector3::Zero();
+			pos3.x = pos2.x + posList[j].x;
+			pos3.y = pos2.y + posList[j].y;
+			pos3.z = pos2.z + posList[j].z;
+
+			if (GetBlock(pos3) == nullptr) {
+				doNotCulling = true;
+				break;
+			}
+		}
+
+		block->SetIsDraw(doNotCulling);
+	}
+}

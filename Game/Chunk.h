@@ -30,9 +30,9 @@ public:
 	}
 	//! @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( const CVector3& pos ){
-		int x = (int)std::roundf( pos.x );
-		int y = (int)std::roundf( pos.y );
-		int z = (int)std::roundf( pos.z );
+		int x = (int)std::floorf( pos.x );
+		int y = (int)std::floorf( pos.y );
+		int z = (int)std::floorf( pos.z );
 		return GetBlock( x, y, z );
 	}
 
@@ -44,10 +44,27 @@ public:
 
 	//! @brief チャンク内の座標でブロックを設定
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
-		int x = (int)std::roundf( pos.x );
-		int y = (int)std::roundf( pos.y );
-		int z = (int)std::roundf( pos.z );
+		int x = (int)std::floorf( pos.x );
+		int y = (int)std::floorf( pos.y );
+		int z = (int)std::floorf( pos.z );
 		SetBlock( x, y, z, std::move( block ) );
+	}
+
+	//チャンク内座標でブロックを設置、プレイヤー用。
+	bool PlaceBlock(const int x, const int y, const int z, std::unique_ptr<Block> block)
+	{
+		
+		if (m_blockArray[x][y][z] == nullptr) {
+			m_blockArray[x][y][z] = std::move(block);
+			m_blockArray[x][y][z]->SetPos(CalcWorldCoordX(x), y, CalcWorldCoordZ(z));
+			return true;
+		}
+		return false;
+	}
+	
+	//ブロックを削除 チャンク座標でブロックを削除。
+	void DeleteBlock(const int x, const int y, const int z) {
+		m_blockArray[x][y][z].reset();
 	}
 
 	//! @brief チャンク内座標を計算
