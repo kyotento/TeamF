@@ -166,6 +166,11 @@ private:
 	void Headbang();
 
 	/// <summary>
+	/// インベントリを開く。
+	/// </summary>
+	void OpenInventory();
+
+	/// <summary>
 	/// 移動方法の切り替え(クリエイティブ)。
 	/// </summary>
 	void ChangeMovemontC();
@@ -219,8 +224,8 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
-	CFont m_font;												//フォント。
 	Bone* m_bone;												//骨。
+	CSpriteRender* m_sp = nullptr;								//画像
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。

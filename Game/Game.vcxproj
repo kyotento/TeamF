@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\KariInventory.png" />
     <ImageContentTask Include="Resource\sprite\HP_Half.png" />
     <ImageContentTask Include="Resource\sprite\HP_Max.png" />
     <ImageContentTask Include="Resource\sprite\stamina_Half.png" />

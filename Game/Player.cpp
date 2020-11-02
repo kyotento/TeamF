@@ -74,6 +74,8 @@ void Player::Update()
 	Move();
 	//回転処理。
 	Turn();
+	//インベントリを開く。
+	OpenInventory();
 	//プレイヤーの状態管理。0
 	StateManagement();
 
@@ -359,6 +361,29 @@ void Player::Headbang()
 	m_bone->SetRotationOffset(m_headBoneRot);
 }
 
+bool a = false;
+
+//インベントリを開く。
+void Player::OpenInventory()
+{
+	if (GetKeyDown('E')){		//Eボタンを押したとき。
+
+		if (!a) {
+			m_sp = NewGO<CSpriteRender>();
+			m_sp->Init(L"Resource/spriteData/KariInventory.dds");
+			m_sp->SetPos({ 0.2, 0.2 });
+			a = true;
+			MouseCursor().SetLockMouseCursor(false);
+			return;
+		}
+		if (a) {
+			DeleteGO(m_sp);
+			a = false;
+			MouseCursor().SetLockMouseCursor(true);
+		}
+	}
+}
+
 //プレイヤーの状態管理。
 void Player::StateManagement()
 {
@@ -398,6 +423,7 @@ void Player::StateManagement()
 	}
 }
 
+//todo Debug専用。
 void Player::Test()
 {
 	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。

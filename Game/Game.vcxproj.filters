@@ -166,16 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
-    <Image Include="Resource\sprite\stamina_Half.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\stamina_Max.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\HP_Half.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\HP_Max.png">
+    <Image Include="Resource\sprite\KariInventory.png">
       <Filter>sprite</Filter>
     </Image>
   </ItemGroup>
@@ -187,5 +178,9 @@
     <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
     <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
     <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Half.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Max.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png" />
   </ItemGroup>
 </Project>
