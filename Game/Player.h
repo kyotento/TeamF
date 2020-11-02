@@ -20,6 +20,8 @@ public:
 	bool Start() override;
 	void Update() override;
 
+	void Test();//todo　リリースのときに消します。
+
 	CFont font;
 	void HUDRender( int HUDNum ) override{
 		std::wstringstream str;
@@ -78,6 +80,24 @@ public:
 	void SetPos( const CVector3& pos ) override{
 		m_position = pos;
 		m_characon.SetPosition( pos );
+	}
+
+	/// <summary>
+	/// HPを取得する。
+	/// </summary>
+	/// <returns>HP</returns>
+	const int& GetHP()
+	{
+		return m_hp;
+	}
+
+	/// <summary>
+	/// スタミナを取得する。
+	/// </summary>
+	/// <returns>スタミナ</returns>
+	const int& GetStamina()
+	{
+		return m_stamina;
 	}
 
 	/// <summary>
@@ -181,6 +201,10 @@ private:
 	const float m_characonHeight = 160.f;					//キャラコンの高さ。
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
+
+	int m_hp = 20;					//体力。
+	int m_stamina = 20;				//スタミナ。
+	int m_defensePower = 0;			//防御力。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。

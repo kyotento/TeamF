@@ -53,6 +53,7 @@
     <ClCompile Include="Mob.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerParameter.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -82,6 +83,7 @@
     <ClInclude Include="Mob.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerParameter.h" />
     <ClInclude Include="RandomMapMaker.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
@@ -95,6 +97,17 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\HP_Half.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Max.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png" />
+    <ImageContentTask Include="Resource\sprite\star.png" />
+    <ImageContentTask Include="Resource\sprite\HP_fond.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Left.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Right.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

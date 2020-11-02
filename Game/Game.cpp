@@ -5,6 +5,7 @@
 #include "GameCamera.h"
 #include "Player.h"
 #include "Zombie.h"
+#include "PlayerParameter.h"
 
 Game::Game()
 {
@@ -27,6 +28,9 @@ bool Game::Start()
 	m_player->SetName(L"player");
 	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
+
+	m_playerParameter = NewGO<PlayerParameter>();
+	m_playerParameter->SetPlayerIns(m_player);
 
 	Box* box = NewGO<Box>();
 

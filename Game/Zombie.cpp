@@ -21,7 +21,6 @@ bool Zombie::Start()
 
 	//スキンモデル　の初期化。
 	m_skinModelRender->Init(L"Resource/modelData/zombie.tkm", m_animationClips, enAnimationClip_num);
-	//m_position = { 35.f,15.f,35.f };
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetScale(m_scale);
 	m_skinModelRender->SetRot(m_rot);
@@ -33,6 +32,10 @@ bool Zombie::Start()
 
 void Zombie::Update()
 {
+	//todo 仮。
+	if (m_position.y <= 3.f) {
+		return;
+	}
 	Tracking();				//プレイヤーを追跡する処理。
 	StateManagement();		//状態管理。
 }

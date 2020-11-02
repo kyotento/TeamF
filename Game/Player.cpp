@@ -13,9 +13,8 @@ namespace {
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
-	const float gravitationalAcceleration = 0.3f;		//重力加速度。
+	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;		//ダブルクリック判定になる間合い。
-
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
@@ -77,6 +76,8 @@ void Player::Update()
 	Turn();
 	//プレイヤーの状態管理。0
 	StateManagement();
+
+	Test();
 }
 
 void Player::SetWorld(World* world, bool recursive) {
@@ -162,6 +163,7 @@ void Player::ChangeMovemontC()
 //走る処理。
 void Player::Dash()
 {
+	//Wダブルクリック。
 	if (GetKeyUp('W')) {
 		m_doubleCilckFlag = true;
 	}
@@ -188,6 +190,17 @@ void Player::Dash()
 			m_doubleCilckFlag = false;
 		}
 	}
+
+	//Ctrl+W。
+	if (GetKeyInput('W') && GetKeyInput(VK_CONTROL)) {
+		m_playerState = enPlayerState_run;
+	}
+	if (m_playerState == enPlayerState_run) {
+		if (GetKeyUp('W') || GetKeyUp(VK_CONTROL)) {
+			m_playerState = enPlayerState_move;
+		}
+	}
+
 }
 
 //移動処理。
@@ -238,7 +251,7 @@ void Player::Jump()
 {
 	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival		//サバイバルのときか。
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
-		if (GetKeyDown(VK_SPACE) && m_characon.IsOnGround()) {		//スペースを押したら。
+		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround()) {			//スペースが押されていたら&&地面にいたら。
 			m_isJump = true;			//ジャンプフラグを返す。
 		}
 		//ジャンプ中の処理。
@@ -382,5 +395,21 @@ void Player::StateManagement()
 		break;
 	default:
 		break;
+	}
+}
+
+void Player::Test()
+{
+	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
+		m_hp -= 1;
+	}
+	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
+		m_hp += 1;
+	}
+	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
+		m_stamina += 1;
+	}
+	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
+		m_stamina -= 1;
 	}
 }

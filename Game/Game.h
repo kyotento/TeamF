@@ -1,15 +1,11 @@
 #pragma once
 #include "World.h"
-
-
-
 #include "GameMode.h"
 
 class Player;
 class GameCamera;
 class Zombie;
-
-
+class PlayerParameter;
 class Game :public IGameObject
 {
 public:
@@ -26,6 +22,7 @@ private:
 	GameCamera* m_gameCamera = nullptr;		//ゲームカメラ。
 	Zombie* m_zombie = nullptr;				//ゾンビ。
 	GameMode* m_gameMode = nullptr;			//ゲームモード。
+	PlayerParameter* m_playerParameter = nullptr;		//プレイヤーのパラメーター。
 
 };
 

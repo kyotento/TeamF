@@ -19,12 +19,6 @@
     <ClCompile Include="DebugTimer.cpp">
       <Filter>ForTest</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Zombie.cpp">
-      <Filter>Entity\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Drop.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="Box.cpp" />
@@ -36,9 +30,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
-    <ClCompile Include="Player.cpp">
-      <Filter>Entity\Player</Filter>
-    </ClCompile>
     <ClCompile Include="GameCamera.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
@@ -60,6 +51,18 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParameter.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
@@ -80,12 +83,6 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ForTest</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Entity\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Drop.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntVector3.h" />
@@ -95,9 +92,6 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="Player.h">
-      <Filter>Entity\Player</Filter>
-    </ClInclude>
     <ClInclude Include="GameCamera.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
@@ -114,6 +108,18 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerParameter.h">
+      <Filter>Entity\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +144,9 @@
     <Filter Include="Entity\Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sprite">
+      <UniqueIdentifier>{75034c3b-e4ad-4cbb-805f-9beddfb42edc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
@@ -157,5 +166,26 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <Image Include="Resource\sprite\stamina_Half.png">
+      <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\stamina_Max.png">
+      <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\HP_Half.png">
+      <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\HP_Max.png">
+      <Filter>sprite</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resource\sprite\star.png" />
+    <ImageContentTask Include="Resource\sprite\HP_fond.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Left.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Right.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
   </ItemGroup>
 </Project>
