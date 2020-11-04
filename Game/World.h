@@ -52,11 +52,13 @@ public:
 	}
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block );
 
-	//ワールド座標でブロックを設置、プレイヤー用。
+	//ワールド座標をBlock::WIDTHで割ったものを元に。
+	//ブロックを設置、プレイヤー用。
 	//設置に成功したらtrue。
 	bool PlaceBlock(const CVector3& pos, std::unique_ptr<Block> block);
 
-	//ブロックを削除　ワールド座標を指定。
+	//ワールド座標をBlock::WIDTHで割ったものを元に。
+	//ブロックを破壊、プレイヤー用。
 	void DeleteBlock(const CVector3& pos);
 
 	//一つのブロックの周りのブロックのカリング処理をする。
