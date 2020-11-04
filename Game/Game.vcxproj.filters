@@ -70,6 +70,9 @@
     <ClCompile Include="World.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="RandomMapMaker.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
@@ -90,7 +93,6 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntVector3.h" />
     <ClInclude Include="Perlin.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="GameCamera.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
@@ -108,12 +110,50 @@
     <ClInclude Include="Entity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-
     <ClInclude Include="ItemStack.h">
       <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemType.h">
       <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateOre.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="DropItem.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomMapMaker.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerParameter.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="IntRect.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,35 +190,55 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
-    <ClCompile Include="RandomMapMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Zombie.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\mc2.ico" />
-    <Image Include="Resource\sprite\KariInventory.png">
+    <ImageContentTask Include="Resource\sprite\star.png">
       <Filter>sprite</Filter>
-    </Image>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_fond.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Left.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Right.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\KariInventory.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Resource\sprite\star.png" />
-    <ImageContentTask Include="Resource\sprite\HP_fond.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Left.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Right.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Half.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Max.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Half.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Max.png" />
+    <Image Include="Assets\mc2.ico">
+      <Filter>sprite</Filter>
+    </Image>
   </ItemGroup>
 </Project>
