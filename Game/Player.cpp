@@ -361,25 +361,24 @@ void Player::Headbang()
 	m_bone->SetRotationOffset(m_headBoneRot);
 }
 
-bool a = false;
-
 //インベントリを開く。
 void Player::OpenInventory()
 {
 	if (GetKeyDown('E')){		//Eボタンを押したとき。
-
-		if (!a) {
+		//インベントリを開く。
+		if (!m_openInventory) {			
 			m_sp = NewGO<CSpriteRender>();
 			m_sp->Init(L"Resource/spriteData/KariInventory.dds");
 			m_sp->SetPos({ 0.2, 0.2 });
-			a = true;
-			MouseCursor().SetLockMouseCursor(false);
+			m_openInventory = true;
+			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
 			return;
 		}
-		if (a) {
+		//インベントリを閉じる。
+		if (m_openInventory) { 
 			DeleteGO(m_sp);
-			a = false;
-			MouseCursor().SetLockMouseCursor(true);
+			m_openInventory = false;
+			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
 		}
 	}
 }

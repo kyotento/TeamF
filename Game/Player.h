@@ -192,6 +192,7 @@ private:
 	bool m_flyingMode = true;				//クリエイティブの際、飛行モードかどうか。
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
+	bool m_openInventory = false;			//インベントリを開いたか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
