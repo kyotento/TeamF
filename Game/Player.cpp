@@ -28,8 +28,6 @@ Player::Player() : m_inventory(36)
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_move].Load(L"Resource/animData/player_move.tka");
 	m_animationClip[enAnimationClip_move].SetLoopFlag(true);
-	m_animationClip[enAnimationClip_shift].Load(L"Resource/animData/player_shift.tka");
-	m_animationClip[enAnimationClip_shift].SetLoopFlag(true);
 	m_animationClip[enAnimationClip_excavate].Load(L"Resource/animData/player_Excavate.tka");
 	m_animationClip[enAnimationClip_excavate].SetLoopFlag(true);
 }
@@ -69,22 +67,24 @@ void Player::Update()
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
 
-	if( GetKeyDown( 'C' ) ){
+	if( GetKeyDown( 'C' ) ){			//マウスカーソルを固定(解除)。
 		static bool lock = true;
 		MouseCursor().SetLockMouseCursor( lock = !lock );
 	}
-
+	//移動処理。
 	Move();
 	//回転処理。
 	Turn();
 	//プレイヤーの状態管理。0
 	StateManagement();
 }
+
 void Player::SetWorld(World* world, bool recursive) {
 	m_world = world;
 	if (recursive)
 		world->SetPlayer(this, false);
 }
+
 //キーボードの入力情報管理。
 void Player::KeyBoardInput()
 {
@@ -295,6 +295,8 @@ void Player::Turn()
 
 	m_skinModelRender->SetRot(modelRot);
 
+	Headbang();
+
 	//右方向と正面方向のベクトルの計算。
 	m_right = { -1.0f,0.0f,0.0f };
 	m_rotation.Multiply(m_right);
@@ -305,10 +307,43 @@ void Player::Turn()
 //しゃがみの処理。
 void Player::Shift()
 {
+	CQuaternion bodyRot;			//体の骨の回転。
+	CQuaternion rightLegRot;		//右足の骨の回転。
+	CQuaternion leftLegRot;			//左足の骨の回転。
+	Bone* bodyBone = m_skinModelRender->FindBone(L"Bone010");		//胴体の骨。
+	Bone* rightLegBone = m_skinModelRender->FindBone(L"Bone015");	//右足の骨。
+	Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
+	const float shiftDir = 30.f;			//しゃがむ角度。
+
+	//しゃがみの処理。
 	if (GetKeyInput(VK_SHIFT)) {
-		m_playerState = enPlayerState_shift;
 		//todo ブロックから落ちない処理を追加する。
+		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
+		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
+		leftLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir);
+
+		bodyBone->SetRotationOffset(bodyRot);
+		rightLegBone->SetRotationOffset(rightLegRot);
+		leftLegBone->SetRotationOffset(leftLegRot);
 	}
+	//元に戻る処理。
+	if (GetKeyUp(VK_SHIFT)) {
+		bodyRot.SetRotationDeg(CVector3::AxisZ(), -shiftDir* 0.5f);
+		rightLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir* 0.5f);
+		leftLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir* 0.5f);
+
+		bodyBone->SetRotationOffset(bodyRot);
+		rightLegBone->SetRotationOffset(rightLegRot);
+		leftLegBone->SetRotationOffset(leftLegRot);
+	}
+}
+
+//頭の回転処理。
+void Player::Headbang()
+{
+	m_bone = m_skinModelRender->FindBone(L"Bone002");
+	m_headBoneRot.SetRotationDeg(CVector3::AxisZ(), m_degreeXZ);
+	m_bone->SetRotationOffset(m_headBoneRot);
 }
 
 //プレイヤーの状態管理。
@@ -337,14 +372,6 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
 		m_skinModelRender->GetAnimCon().SetSpeed(1.5f);
 		m_runSpeedDouble = 2.f;
-
-		break;
-	case Player::enPlayerState_shift:	//しゃがみ。
-
-		//アニメーションの再生。
-		m_skinModelRender->GetAnimCon().Play(enAnimationClip_shift, 0.0f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
-		m_runSpeedDouble = 0.5f;
 
 		break;
 	case Player::enPlayerState_excavate:	//物を掘る。

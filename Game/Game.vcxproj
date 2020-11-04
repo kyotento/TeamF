@@ -37,6 +37,7 @@
   <ItemGroup>
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
+    <ClCompile Include="CreateOre.cpp" />
     <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
+    <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Inventory.h" />

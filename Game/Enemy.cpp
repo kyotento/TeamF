@@ -12,7 +12,6 @@ Enemy::Enemy()
 	if (m_player == nullptr) {			//プレイヤーのインスタンスが取得されていないとき。
 		m_player = FindGO<Player>(L"player");		//プレイヤーのインスタンスを取得。
 	}
-
 }
 
 
@@ -25,14 +24,13 @@ Enemy::~Enemy()
 void Enemy::Tracking()
 {
 	//追従処理。
-	CVector3 direction;			//Enemyから見たPlayerの向き。
-	direction = (m_player->GetPos() - m_position);
-	CVector3 oldDirection = direction;		//正規化する前の値を格納。
-	direction.Normalize();
-	direction.y = 0.f;
-	if (oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
+	m_direction = (m_player->GetPos() - m_position);
+	m_oldDirection = m_direction;		//正規化する前の値を格納。
+	m_direction.Normalize();
+	m_direction.y = 0.f;
+	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
 
-		m_characonMove = direction * m_moveSpeed;
+		m_characonMove = m_direction * m_moveSpeed;
 		m_position = m_characon.Execute(m_characonMove);
 		m_skinModelRender->SetPos(m_position);
 
@@ -41,9 +39,15 @@ void Enemy::Tracking()
 	else {
 		m_enemyState = enEnemy_attack;				//攻撃状態に。
 	}
+
 	//プレイヤーの方向を向く処理。
-	m_rot.SetRotation(CVector3::AxisY(), atan2f(direction.x, direction.z));
+	m_rot.SetRotation(CVector3::AxisY(), atan2f(m_direction.x, m_direction.z));
 	m_skinModelRender->SetRot(m_rot);
+}
+
+void Enemy::Fall()
+{
+
 }
 
 //エネミーの状態管理。

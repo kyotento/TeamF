@@ -3,35 +3,25 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="World.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Chunk.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>Block</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="BlockFactory.cpp">
-      <Filter>Block</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugTimer.cpp">
-      <Filter>ForTest</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Zombie.cpp">
-      <Filter>Entity\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Entity\Player</Filter>
-    </ClCompile>
+    <ClCompile Include="ChunkFiler.cpp" />
+    <ClCompile Include="BlockFactory.cpp" />
+    <ClCompile Include="DebugTimer.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameCamera.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Perlin.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ChunkFiler.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -50,18 +40,43 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockFactory.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateOre.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugTimer.cpp">
+      <Filter>ForTest</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomMapMaker.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="World.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Chunk.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Block</Filter>
-    </ClInclude>
+    <ClInclude Include="BlockFactory.h" />
+    <ClInclude Include="BlockType.h" />
+    <ClInclude Include="ChunkFiler.h" />
+    <ClInclude Include="ChunkFlags.h" />
+    <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="BlockFactory.h">
       <Filter>Block</Filter>
@@ -72,15 +87,10 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ForTest</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Entity\Player</Filter>
-    </ClInclude>
+    <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntVector3.h" />
+    <ClInclude Include="Perlin.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="GameCamera.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
@@ -115,6 +125,30 @@
     </ClInclude>
     <ClInclude Include="ItemType.h">
       <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateOre.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomMapMaker.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -152,8 +186,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Perlin.h" />
-    <ClInclude Include="RandomMapMaker.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Zombie.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

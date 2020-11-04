@@ -9,6 +9,7 @@ enum EnCube
 	enCube_Soil,
 	enCube_Stone,
 	enCube_Leaf,
-	enCube_Ore,
+	enCube_IronOre,
+	enCube_GoldOre,
 	enCube_Num
 };

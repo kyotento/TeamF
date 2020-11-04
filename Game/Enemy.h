@@ -16,8 +16,15 @@ public:
 	/// プレイヤーを追従するEnemyの子クラスで呼んであげてください。
 	virtual void Tracking();
 
-	//状態管理。
+	/// <summary>
+	/// 状態管理。
+	/// </summary>
 	virtual void StateManagement();
+
+	/// <summary>
+	/// 落下処理。
+	/// </summary>
+	virtual void Fall();
 
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
@@ -51,6 +58,10 @@ public:
 		enEnemy_num,					//エネミーの状態の数。
 	};
 
+	void SetScale(const CVector3& scale)
+	{
+		m_scale = scale;
+	}
 protected:
 
 	const float m_moveSpeed = 100.0f;					//移動速度。
@@ -58,11 +69,14 @@ protected:
 	const float m_characonHeight = 160.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
 	const float m_animSpeed = 1.0f;					//アニメーションの速度。
+	float m_fallSpeed = 0.8f;						//落下速度。
 
 	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。
 	CVector3 m_characonPos = CVector3::Zero();		//キャラコンの座標。
 	CVector3 m_characonMove = CVector3::Zero();		//キャラコンの移動量(向き持)。
+	CVector3 m_direction = CVector3::Zero();		//Enemyから見たPlayerの向き。
+	CVector3 m_oldDirection = CVector3::Zero();		//正規化する前の値を格納。
 
 	CQuaternion m_rot = CQuaternion::Identity();	//回転情報。
 

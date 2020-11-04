@@ -2,7 +2,7 @@
 #include "BlockFactory.h"
 
 
-static const wchar_t* FILE_PATH_ARRAY[enCube_Num - 1]{};
+static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -10,6 +10,8 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_Soil] = L"Resource/modelData/soilBlock.tkm";
 	FILE_PATH_ARRAY[enCube_Stone] = L"Resource/modelData/stoneBlock.tkm";
 	FILE_PATH_ARRAY[enCube_Leaf] = L"Resource/modelData/leafBlock.tkm";
+	FILE_PATH_ARRAY[enCube_IronOre] = L"Resource/modelData/ironOre.tkm";
+	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
