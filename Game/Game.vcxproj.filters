@@ -73,6 +73,18 @@
     <ClCompile Include="RandomMapMaker.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ClickEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="ClickEvent.cpp">
+      <Filter>GUI\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
@@ -155,6 +167,18 @@
     <ClInclude Include="Inventory.h">
       <Filter>Inventory</Filter>
     </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -186,6 +210,12 @@
     </Filter>
     <Filter Include="sprite">
       <UniqueIdentifier>{75034c3b-e4ad-4cbb-805f-9beddfb42edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{95b4a211-1593-4665-8f5e-b9a17b04ee1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Event">
+      <UniqueIdentifier>{0c4b3464-e033-4937-a7f1-5bc15583b460}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
