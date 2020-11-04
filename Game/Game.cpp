@@ -5,6 +5,7 @@
 #include "GameCamera.h"
 #include "Player.h"
 #include "Zombie.h"
+#include "PlayerParameter.h"
 
 Game::Game()
 {
@@ -27,9 +28,11 @@ bool Game::Start()
 	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 
-	//Box* box = NewGO<Box>();
+	m_playerParameter = NewGO<PlayerParameter>();
+	m_playerParameter->SetPlayerIns(m_player);
 
 	//プレイヤーのインベントリを確認するためのアイテム生成だったり。
+
 	/*for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
 			std::random_device rand;

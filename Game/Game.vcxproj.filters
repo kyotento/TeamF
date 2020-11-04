@@ -40,6 +40,9 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>Inventory</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerParameter.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
     <ClCompile Include="Block.cpp">
       <Filter>Block</Filter>
     </ClCompile>
@@ -65,9 +68,6 @@
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="RandomMapMaker.cpp">
       <Filter>World</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,47 +108,12 @@
     <ClInclude Include="Entity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="IntRect.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="DropItem.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Inventory</Filter>
-    </ClInclude>
+
     <ClInclude Include="ItemStack.h">
       <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemType.h">
       <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Chunk.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="CreateOre.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Entity\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Entity\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomMapMaker.h">
-      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +144,9 @@
     <Filter Include="Inventory">
       <UniqueIdentifier>{01c63c21-3522-4818-8c65-326f2e0b4a98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sprite">
+      <UniqueIdentifier>{75034c3b-e4ad-4cbb-805f-9beddfb42edc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
@@ -196,5 +164,21 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <Image Include="Resource\sprite\KariInventory.png">
+      <Filter>sprite</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageContentTask Include="Resource\sprite\star.png" />
+    <ImageContentTask Include="Resource\sprite\HP_fond.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Left.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Right.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Half.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Max.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png" />
   </ItemGroup>
 </Project>
