@@ -110,9 +110,10 @@ public:
 	}
 
 private:
-	//! ワールド生成後に埋まっているブロックを非表示にする。
-	void AllChunkCulling();
-	//! チャンクごとに埋まっているブロックを非表示にする
+	//! @brief チャンクをロード。ロード済みなら何もしない。
+	void LoadChunk(int x, int z);
+
+	//! @brief チャンクごとに埋まっているブロックを非表示にする
 	void ChunkCulling(Chunk& chunk);
 
 	RandomMapMaker m_mapMaker;

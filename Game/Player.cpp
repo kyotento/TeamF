@@ -3,7 +3,7 @@
 #include "GameCamera.h"
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
-#include "ItemData.h"
+#include "Item.h"
 #include "GameMode.h"
 #include "World.h"
 
@@ -13,15 +13,14 @@ namespace {
 	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
-	const float gravitationalAcceleration = 0.3f;		//重力加速度。
+	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;		//ダブルクリック判定になる間合い。
-
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 }
 
-Player::Player()
+Player::Player() : m_inventory(36)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -75,8 +74,12 @@ void Player::Update()
 	Move();
 	//回転処理。
 	Turn();
+	//インベントリを開く。
+	OpenInventory();
 	//プレイヤーの状態管理。0
 	StateManagement();
+
+	Test();
 }
 
 void Player::SetWorld(World* world, bool recursive) {
@@ -162,6 +165,7 @@ void Player::ChangeMovemontC()
 //走る処理。
 void Player::Dash()
 {
+	//Wダブルクリック。
 	if (GetKeyUp('W')) {
 		m_doubleCilckFlag = true;
 	}
@@ -188,6 +192,17 @@ void Player::Dash()
 			m_doubleCilckFlag = false;
 		}
 	}
+
+	//Ctrl+W。
+	if (GetKeyInput('W') && GetKeyInput(VK_CONTROL)) {
+		m_playerState = enPlayerState_run;
+	}
+	if (m_playerState == enPlayerState_run) {
+		if (GetKeyUp('W') || GetKeyUp(VK_CONTROL)) {
+			m_playerState = enPlayerState_move;
+		}
+	}
+
 }
 
 //移動処理。
@@ -238,7 +253,7 @@ void Player::Jump()
 {
 	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival		//サバイバルのときか。
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
-		if (GetKeyDown(VK_SPACE) && m_characon.IsOnGround()) {		//スペースを押したら。
+		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround()) {			//スペースが押されていたら&&地面にいたら。
 			m_isJump = true;			//ジャンプフラグを返す。
 		}
 		//ジャンプ中の処理。
@@ -346,6 +361,28 @@ void Player::Headbang()
 	m_bone->SetRotationOffset(m_headBoneRot);
 }
 
+//インベントリを開く。
+void Player::OpenInventory()
+{
+	if (GetKeyDown('E')){		//Eボタンを押したとき。
+		//インベントリを開く。
+		if (!m_openInventory) {			
+			m_sp = NewGO<CSpriteRender>();
+			m_sp->Init(L"Resource/spriteData/KariInventory.dds");
+			m_sp->SetPos({ 0.2, 0.2 });
+			m_openInventory = true;
+			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
+			return;
+		}
+		//インベントリを閉じる。
+		if (m_openInventory) { 
+			DeleteGO(m_sp);
+			m_openInventory = false;
+			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
+		}
+	}
+}
+
 //プレイヤーの状態管理。
 void Player::StateManagement()
 {
@@ -382,5 +419,22 @@ void Player::StateManagement()
 		break;
 	default:
 		break;
+	}
+}
+
+//todo Debug専用。
+void Player::Test()
+{
+	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
+		m_hp -= 1;
+	}
+	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
+		m_hp += 1;
+	}
+	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
+		m_stamina += 1;
+	}
+	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
+		m_stamina -= 1;
 	}
 }

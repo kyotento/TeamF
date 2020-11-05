@@ -1,10 +1,11 @@
 #include "stdafx.h"
-#include "Box.h"
-#include "Drop.h"
+#include "Inventory.h"
+#include "DropItem.h"
 #include "Game.h"
 #include "GameCamera.h"
 #include "Player.h"
 #include "Zombie.h"
+#include "PlayerParameter.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
 
@@ -29,10 +30,12 @@ bool Game::Start()
 	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 
-	Box* box = NewGO<Box>();
+	m_playerParameter = NewGO<PlayerParameter>();
+	m_playerParameter->SetPlayerIns(m_player);
 
 	//プレイヤーのインベントリを確認するためのアイテム生成だったり。
-	for (int i = 0; i < 20; i++) {
+
+	/*for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
 			std::random_device rand;
 			Drop* drop = NewGO<Drop>();
@@ -40,7 +43,7 @@ bool Game::Start()
 			drop->SetPosition(CVector3(i, 15, j));
 			drop->SetNumber((rand() % 10) + 1);
 		}
-	}
+	}*/
 
 	return true;
 }

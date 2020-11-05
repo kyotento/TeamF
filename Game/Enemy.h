@@ -26,6 +26,11 @@ public:
 	/// </summary>
 	virtual void Fall();
 
+	/// <summary>
+	/// ジャンプ処理。
+	/// </summary>
+	virtual void Jump();
+
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
 		return m_position;
@@ -64,12 +69,17 @@ public:
 	}
 protected:
 
+	bool flag = false;//かり。
+
 	const float m_moveSpeed = 100.0f;					//移動速度。
 	const float m_characonRadius = 40.f;			//キャラコンの半径。
 	const float m_characonHeight = 160.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
 	const float m_animSpeed = 1.0f;					//アニメーションの速度。
 	float m_fallSpeed = 0.8f;						//落下速度。
+	float m_jumpSpeed = 1.f;						//ジャンプ速度。
+	float m_jmpInitialVelocity = 13.f;				//ジャンプの初速度。
+	float m_gravity = 0.65f;						//重力。
 
 	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。

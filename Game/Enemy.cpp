@@ -28,6 +28,9 @@ void Enemy::Tracking()
 	m_oldDirection = m_direction;		//正規化する前の値を格納。
 	m_direction.Normalize();
 	m_direction.y = 0.f;
+
+	Jump();		//ジャンプ処理。
+
 	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
 
 		m_characonMove = m_direction * m_moveSpeed;
@@ -45,9 +48,43 @@ void Enemy::Tracking()
 	m_skinModelRender->SetRot(m_rot);
 }
 
-void Enemy::Fall()
-{
+float a = 0;
 
+//落下処理。
+void Enemy::Fall()    
+{
+	//自由落下。
+	if (!m_characon.IsOnGround()) {
+		m_fallSpeed += 0.5f;
+	}
+	else
+	{
+		m_fallSpeed = 1.f;
+	}
+
+	m_direction.y -= m_fallSpeed;
+}
+
+
+void Enemy::Jump()
+{
+	if (m_characon.IsContactWall() && m_characon.IsOnGround())
+	{
+		flag = true;
+	}
+
+	if (flag) {
+		m_direction.y += m_jmpInitialVelocity;
+		m_jmpInitialVelocity -= m_gravity;
+
+		if (m_characon.IsOnGround() && m_jmpInitialVelocity < m_gravity) {
+			flag = false;
+			m_jmpInitialVelocity = 13.f;
+		}
+	}
+	else {
+		Fall();
+	}
 }
 
 //エネミーの状態管理。

@@ -38,9 +38,10 @@
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
     <ClCompile Include="CreateOre.cpp" />
-    <ClCompile Include="Drop.cpp" />
+    <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -50,11 +51,12 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
-    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="IntRect.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mob.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerParameter.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -76,17 +78,20 @@
     <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Drop.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="DropItem.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
-    <ClInclude Include="ItemData.h" />
-    <ClInclude Include="Mob.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ItemType.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerParameter.h" />
     <ClInclude Include="RandomMapMaker.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
@@ -101,6 +106,18 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\KariInventory.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Half.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Max.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png" />
+    <ImageContentTask Include="Resource\sprite\star.png" />
+    <ImageContentTask Include="Resource\sprite\HP_fond.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Left.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Right.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

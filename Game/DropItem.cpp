@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "Drop.h"
-#include "Box.h"
+#include "DropItem.h"
+#include "Inventory.h"
 #include "Player.h"
 
 
 
-bool Drop::Start()
+bool DropItem::Start()
 {
 	m_model = NewGO<GameObj::CSkinModelRender>();
 	m_model->Init(L"Resource/modelData/GrassBlock.tkm");
@@ -13,7 +13,7 @@ bool Drop::Start()
 	return true;
 }
 
-void Drop::Update()
+void DropItem::Update()
 {
 	if (m_player == nullptr) {
 		m_player = FindGO<Player>();
@@ -23,9 +23,9 @@ void Drop::Update()
 	Distance();
 }
 
-void Drop::Distance()
+void DropItem::Distance()
 {
-	if (m_box == nullptr) {
+	/*if (m_box == nullptr) {
 		m_box = FindGO<Box>();
 		return;
 	}
@@ -41,5 +41,5 @@ void Drop::Distance()
 		else {
 			m_number = number;
 		}
-	}
+	}*/
 }
