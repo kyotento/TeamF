@@ -181,6 +181,16 @@ private:
 	void StateManagement();
 
 	/// <summary>
+	/// オブジェクトの設置と破壊。
+	/// </summary>
+	void InstallAndDestruct();
+
+	/// <summary>
+	/// プレイヤーの前方にレイを飛ばす。
+	/// </summary>
+	void FlyTheRay();
+
+	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
 	/// <returns>doubleClickFlag</returns>
@@ -225,11 +235,12 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
-	Bone* m_bone;												//骨。
+	Bone* m_headBone;												//頭の骨。
 	CSpriteRender* m_sp = nullptr;								//画像
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+
 };
 

@@ -20,6 +20,12 @@ public:
 	{
 		return m_mode;
 	}
+
+	//À•W‚ğæ“¾B
+	CVector3 GetPos() const
+	{
+		return m_position;
+	}
 private:
 	//TPS
 	void TPS();

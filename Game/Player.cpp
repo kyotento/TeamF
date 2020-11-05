@@ -70,6 +70,10 @@ void Player::Update()
 		static bool lock = true;
 		MouseCursor().SetLockMouseCursor( lock = !lock );
 	}
+
+	//頭の骨を取得。
+	m_headBone = m_skinModelRender->FindBone(L"Bone002");
+
 	//移動処理。
 	Move();
 	//回転処理。
@@ -78,6 +82,8 @@ void Player::Update()
 	OpenInventory();
 	//プレイヤーの状態管理。0
 	StateManagement();
+	//オブジェクトの設置と破壊。
+	InstallAndDestruct();
 
 	Test();
 }
@@ -356,9 +362,8 @@ void Player::Shift()
 //頭の回転処理。
 void Player::Headbang()
 {
-	m_bone = m_skinModelRender->FindBone(L"Bone002");
 	m_headBoneRot.SetRotationDeg(CVector3::AxisZ(), m_degreeXZ);
-	m_bone->SetRotationOffset(m_headBoneRot);
+	m_headBone->SetRotationOffset(m_headBoneRot);
 }
 
 //インベントリを開く。
@@ -369,7 +374,8 @@ void Player::OpenInventory()
 		if (!m_openInventory) {			
 			m_sp = NewGO<CSpriteRender>();
 			m_sp->Init(L"Resource/spriteData/KariInventory.dds");
-			m_sp->SetPos({ 0.2, 0.2 });
+			m_sp->SetPos({ 0.5, 0.5 });
+			m_sp->SetScale(1.5f);
 			m_openInventory = true;
 			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
 			return;
@@ -419,6 +425,39 @@ void Player::StateManagement()
 		break;
 	default:
 		break;
+	}
+}
+
+//オブジェクトの設置と破壊。
+void Player::InstallAndDestruct()
+{
+	if (GetKeyDown(VK_RBUTTON)) {		//右クリックした時。
+		FlyTheRay();
+	}
+}
+
+//レイを前方に飛ばす。
+void Player::FlyTheRay()
+{
+	const int installableBlockNum = 5;		//設置可能距離(ブロック距離)。
+	int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。
+	CVector3 frontAddRot = m_front;
+	CQuaternion rot;
+	rot.SetRotationDeg(m_right, m_degreeXZ);
+	rot.Multiply(frontAddRot);
+		 
+	btVector3 startPoint(m_gameCamera->GetPos());			//レイの視点。
+	btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
+
+	//todo Ray描画用。
+	CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
+	CVector3 kariY = kariX + frontAddRot * reyLength;
+	DrawLine3D(kariX, kariY, CVector4::Green());
+
+	btCollisionWorld::ClosestRayResultCallback rayRC(startPoint, endPoint);		//レイ情報。
+	GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
+	if(rayRC.hasHit()){
+
 	}
 }
 

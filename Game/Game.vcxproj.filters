@@ -166,21 +166,41 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
-    <Image Include="Resource\sprite\KariInventory.png">
-      <Filter>sprite</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
-    <ImageContentTask Include="Resource\sprite\star.png" />
-    <ImageContentTask Include="Resource\sprite\HP_fond.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Left.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Right.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Found.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Left.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Right.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Half.png" />
-    <ImageContentTask Include="Resource\sprite\HP_Max.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Half.png" />
-    <ImageContentTask Include="Resource\sprite\stamina_Max.png" />
+    <ImageContentTask Include="Resource\sprite\KariInventory.png" />
+    <ImageContentTask Include="Resource\sprite\HP_Right.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_fond.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Left.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\star.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
 </Project>
