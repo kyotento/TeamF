@@ -21,9 +21,8 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ChunkFiler.cpp">
-      <Filter>World</Filter>
+      <Filter>World\Filer</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Entity</Filter>
@@ -73,11 +72,11 @@
     <ClCompile Include="RandomMapMaker.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="WorldInfoFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
-    <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Game.h" />
@@ -116,9 +115,6 @@
     <ClInclude Include="ItemType.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Block</Filter>
-    </ClInclude>
     <ClInclude Include="Chunk.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -155,6 +151,16 @@
     <ClInclude Include="Inventory.h">
       <Filter>Inventory</Filter>
     </ClInclude>
+    <ClCompile Include="BiomeManager.cpp">
+      <Filter>Biome</Filter>
+    </ClCompile>
+    <ClCompile Include="Biome.cpp">
+      <Filter>Biome</Filter>
+    </ClCompile>
+    <ClInclude Include="Biome.h" />
+    <ClInclude Include="BiomeManager.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="WorldInfoFile.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -162,9 +168,6 @@
     </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Block">
-      <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{e9c33e82-fb73-484a-a508-eaa68b4af968}</UniqueIdentifier>
@@ -186,6 +189,9 @@
     </Filter>
     <Filter Include="sprite">
       <UniqueIdentifier>{75034c3b-e4ad-4cbb-805f-9beddfb42edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Biome">
+      <UniqueIdentifier>{77a7d1ec-934a-4fb9-ba45-299be3f1194f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
