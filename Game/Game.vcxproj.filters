@@ -4,12 +4,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="ChunkFiler.cpp" />
-    <ClCompile Include="BlockFactory.cpp" />
-    <ClCompile Include="DebugTimer.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameCamera.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
@@ -17,11 +11,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="World.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ChunkFiler.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -79,19 +69,14 @@
     <ClCompile Include="GUIManager.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="ClickEvent.h">
-      <Filter>GUI\Event</Filter>
-    </ClCompile>
     <ClCompile Include="ClickEvent.cpp">
       <Filter>GUI\Event</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlockFactory.h" />
-    <ClInclude Include="BlockType.h" />
-    <ClInclude Include="ChunkFiler.h" />
-    <ClInclude Include="ChunkFlags.h" />
-    <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="BlockFactory.h">
       <Filter>Block</Filter>
@@ -103,7 +88,6 @@
       <Filter>ForTest</Filter>
     </ClInclude>
     <ClInclude Include="GameMode.h" />
-    <ClInclude Include="IntVector3.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="GameCamera.h">
       <Filter>Entity\Player</Filter>
@@ -179,6 +163,9 @@
     <ClInclude Include="KeyEvent.h">
       <Filter>GUI\Event</Filter>
     </ClInclude>
+    <ClCompile Include="ClickEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

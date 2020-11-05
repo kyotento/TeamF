@@ -52,6 +52,7 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
+    <ClCompile Include="InventoryGUI.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />

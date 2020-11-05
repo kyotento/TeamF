@@ -9,6 +9,10 @@ class GameCamera;
 class Item;
 class GameMode;
 
+namespace GUI{
+	class InventoryGUI;
+}
+
 class Player : public Entity
 {
 public:
@@ -189,7 +193,6 @@ private:
 	bool m_flyingMode = true;				//クリエイティブの際、飛行モードかどうか。
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
-	bool m_openInventory = false;			//インベントリを開いたか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -216,14 +219,15 @@ private:
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
 
-	Inventory m_inventory;
+
+	Inventory m_inventory; //アイテムを保管するインベントリ。
+	std::unique_ptr<GUI::InventoryGUI> m_inventoryGUI; //インベントリの描画などを行う。
 
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
 	Bone* m_bone;												//骨。
-	CSpriteRender* m_sp = nullptr;								//画像
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。

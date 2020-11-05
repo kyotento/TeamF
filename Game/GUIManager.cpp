@@ -5,32 +5,18 @@
 #include "KeyEvent.h"
 
 namespace{
-	const int NEED_OBSERVE_KEYS[]{'E'};
 	const int MOUSE_BUTTONS[]{ VK_LBUTTON, VK_RBUTTON };
 }
 
 namespace GUI{
 
 	void GUIManager::Update(){
+		using namespace GUI::Event;
 
-		for( int key : NEED_OBSERVE_KEYS ){
-
-			if( GetKeyDown( key ) ){
-
-				for( auto& r : m_roots ){
-					
-					//r->ReciveKeyDownEvent( keyEvent );
-				}
-			}
-		}
-
-		for( int button : MOUSE_BUTTONS ){
-
-			if( GetKeyDown( button ) ){
-
-				for( auto& r : m_roots ){
-					using namespace GUI::Event;
-
+		//クリックイベントを発行。
+		for( auto& r : m_roots ){
+			for( int button : MOUSE_BUTTONS ){
+				if( GetKeyDown( button ) ){
 					ClickEvent::ClickType type;
 
 					switch( button ){
@@ -42,13 +28,21 @@ namespace GUI{
 						break;
 					}
 
-					CVector2 pos = MouseCursor().GetMouseCursorClientPos();
+					//マウス座標の作成。
+					CVector2 pos = MouseCursor().GetMouseCursorPos();
+					auto& grEn = GetGraphicsEngine();
+					pos.x *= grEn.GetFrameBuffer_W();
+					pos.y *= grEn.GetFrameBuffer_H();
 
 					r->ReciveClickEvent( ClickEvent( type, pos ) );
 				}
-
 			}
+		}
+	}
 
+	void GUIManager::PostRender(){
+		for( auto& r : m_roots ){
+			r->RecursiveDraw( {0, 0}, {1, 1} );
 		}
 	}
 

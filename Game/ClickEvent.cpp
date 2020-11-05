@@ -4,11 +4,11 @@
 
 namespace GUI::Event{
 	ClickEvent::ClickEvent( const ClickEvent & e, const Node & node ) :
-		mousePos( e.mousePos - node.GetPos() ), clickType( e.clickType ), isConsume( e.isConsume ){}
+		mousePos( node.GetPosOnThis(e.mousePos) ), clickType( e.clickType ), isConsume( e.isConsume ){}
 
 
 	bool ClickEvent::IsOnNode( const Node & node ) const{
-		const CVector2 pos = mousePos - node.GetPos();
+		const CVector2 pos = mousePos - node.GetUpperLeftPos();
 
 		const CVector3 size = node.GetSize();
 

@@ -8,41 +8,48 @@ namespace GUI{
 
 	Node::Node(){}
 
-	Node::~Node(){
-		GUIManager::Instance().RemoveRoot( this );
-	}
+	Node::~Node(){}
 
-	void Node::ReciveKeyDownEvent( Event::KeyEvent && event ){
-		OnKeyDown( event );
+	void Node::RecursiveDraw( const CVector2& parentsZero, const CVector2& parentScale ){
+		const CVector2 grobalScale{ parentScale.x * m_scale.x, parentScale.y * m_scale.y };
 
-		//イベントを消費していたらここで終わり。
-		if( event.IsConsumed() ){
-			return;
-		}
 
-		//イベントが消費されなかったら子ノードにまわす。
+		Draw( parentsZero + (m_pos * parentScale), grobalScale);
+
 		for( auto& childe : m_children ){
-			childe->ReciveKeyDownEvent( std::move(event) );
+			childe->RecursiveDraw( parentsZero + (GetUpperLeftPos() * parentScale ), grobalScale);
 		}
 	}
 
-	void Node::ReciveClickEvent( Event::ClickEvent && event ){
+	CVector2 Node::GetUpperLeftPos() const{
+		CVector2 pivotSize = m_pivot;
+		const CVector2 size = GetSize();
+		pivotSize.x *= size.x;
+		pivotSize.y *= size.y;
+		return m_pos - pivotSize;
+	}
+
+	void Node::ReciveClickEvent(const Event::ClickEvent& event ){
 		//クリックが自分の上で起こった場合にだけ実行。
 		if( !event.IsOnNode( *this ) ){
 			return;
 		}
 
+		//自分の座標系に変更。
+		Event::ClickEvent eventOnMe = event.CreateEventOnNode( *this );
+
 		//イベントを処理。
-		OnClick( event );
+		OnClick( eventOnMe );
 
 		//イベントを消費していたらここで終わり。
-		if( event.IsConsumed() ){
+		if( eventOnMe.IsConsumed() ){
 			return;
 		}
 
 		//イベントが消費されなかったら子ノードにまわす。
 		for( auto& childe : m_children ){
-			childe->ReciveClickEvent( event.CreateEventOnNode( *this ) );
+			childe->ReciveClickEvent( eventOnMe );
 		}
 
 	}
+}
