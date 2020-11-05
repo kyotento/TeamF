@@ -85,3 +85,6 @@ obj/
 
 #file of chunk
 *.regi
+
+#World info
+*.winfo

@@ -15,7 +15,7 @@ void Block::SetPos( int x, int y, int z ){
 
 	if( m_collision ){
 		pos.y += half;
-		m_collision->SetPosition( pos );
+		m_collision->SetPosition( pos * 100 );
 	}
 }
 
@@ -29,6 +29,6 @@ void Block::EnableCollision(){
 		CVector3 pos = m_model.GetPos();
 		pos.y += WIDTH * 0.5f;
 
-		m_collision->SetPosition( pos );
+		m_collision->SetPosition( pos * 100);
 	}
 }

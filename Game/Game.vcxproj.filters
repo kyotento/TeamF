@@ -3,28 +3,8 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="World.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Chunk.cpp">
-      <Filter>World</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>Block</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="BlockFactory.cpp">
-      <Filter>Block</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugTimer.cpp">
-      <Filter>ForTest</Filter>
-    </ClCompile>
-    <ClCompile Include="Drop.cpp" />
-    <ClCompile Include="ItemData.cpp" />
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
-    <ClCompile Include="CreateOre.cpp" />
-    <ClCompile Include="Drop.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -34,45 +14,71 @@
       <Filter>Entity\Player</Filter>
     </ClCompile>
     <ClCompile Include="GameMode.cpp" />
-    <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
-    <ClCompile Include="RandomMapMaker.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="World.cpp" />
-    <ClCompile Include="Mob.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="ChunkFiler.cpp">
-      <Filter>World</Filter>
+      <Filter>World\Filer</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Zombie.cpp">
+    <ClCompile Include="IntRect.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="DropItem.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParameter.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockFactory.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateOre.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugTimer.cpp">
+      <Filter>ForTest</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Zombie.cpp">
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerParameter.cpp">
-      <Filter>Entity\Player</Filter>
+    <ClCompile Include="World.cpp">
+      <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="RandomMapMaker.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldInfoFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
-    <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
-    <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Drop.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="BlockFactory.h">
       <Filter>Block</Filter>
@@ -83,15 +89,9 @@
     <ClInclude Include="DebugTimer.h">
       <Filter>ForTest</Filter>
     </ClInclude>
-    <ClInclude Include="Drop.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntVector3.h" />
-    <ClInclude Include="ItemData.h" />
     <ClInclude Include="Perlin.h" />
-    <ClInclude Include="RandomMapMaker.h" />
-    <ClInclude Include="Block.h" />
-    <ClInclude Include="Chunk.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="GameCamera.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
@@ -109,11 +109,32 @@
     <ClInclude Include="Entity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Entity\Enemy</Filter>
+    <ClInclude Include="ItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemType.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="CreateOre.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="DropItem.h">
+      <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomMapMaker.h">
+      <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Entity\Player</Filter>
@@ -121,6 +142,25 @@
     <ClInclude Include="PlayerParameter.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
+    <ClInclude Include="IntRect.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Inventory</Filter>
+    </ClInclude>
+    <ClCompile Include="BiomeManager.cpp">
+      <Filter>Biome</Filter>
+    </ClCompile>
+    <ClCompile Include="Biome.cpp">
+      <Filter>Biome</Filter>
+    </ClCompile>
+    <ClInclude Include="Biome.h" />
+    <ClInclude Include="BiomeManager.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="WorldInfoFile.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -128,9 +168,6 @@
     </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Block">
-      <UniqueIdentifier>{95081f37-c424-42a0-aa68-85eb0be28bec}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{e9c33e82-fb73-484a-a508-eaa68b4af968}</UniqueIdentifier>
@@ -144,28 +181,66 @@
     <Filter Include="Entity\Player">
       <UniqueIdentifier>{e5bdf1f4-2cbf-473b-95bd-fd525449a869}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{ca01cd1e-0ea2-44a7-83e9-8b24d99b5edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inventory">
+      <UniqueIdentifier>{01c63c21-3522-4818-8c65-326f2e0b4a98}</UniqueIdentifier>
+    </Filter>
     <Filter Include="sprite">
       <UniqueIdentifier>{75034c3b-e4ad-4cbb-805f-9beddfb42edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Biome">
+      <UniqueIdentifier>{77a7d1ec-934a-4fb9-ba45-299be3f1194f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
-    <ClCompile Include="RandomMapMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="World.h" />
-    <ClInclude Include="Mob.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Zombie.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\star.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_fond.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Left.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\HP_Right.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\KariInventory.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Found.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Left.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\stamina_Right.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <ImageContentTask Include="Resource\sprite\KariInventory.png" />

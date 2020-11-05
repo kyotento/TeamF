@@ -17,7 +17,7 @@ private:
   
 public:
     float PerlinNoise(float x, float y, float z);
-    float OctavePerlin(float x, float y, float z, int octaves, float persistence);
+    float OctavePerlin(float x, float y, float z, int octaves, float persistence = 0.0f);
     void SetRepeat(int repeat)
     {
         m_repeat = repeat;

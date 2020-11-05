@@ -3,7 +3,7 @@
 struct IntVector3{
 	int x, y, z;
 
-	IntVector3( int x, int y, int z ) : x( x ), y( y ), z( z ){}
+	constexpr IntVector3( int x, int y, int z ) : x( x ), y( y ), z( z ){}
 	explicit IntVector3(const CVector3& v) : x(std::floor(v.x)), y( std::floor( v.y ) ), z( std::floor( v.z ) ){}
 
 	bool operator==( const IntVector3& rhs ) const{
@@ -11,6 +11,44 @@ struct IntVector3{
 	}
 	bool operator!=( const IntVector3& rhs ) const{
 		return !operator==( rhs );
+	}
+
+	const IntVector3& operator+=( const IntVector3& v ){
+		x += v.x; y += v.y; z += v.z;
+		return *this;
+	}
+
+	IntVector3 operator+( IntVector3 v )const{
+		v.operator+=( *this );
+		return v;
+	}
+
+	IntVector3 operator-()const{
+		IntVector3 v = *this;
+		v.x *= -1; v.y *= -1; v.z *= -1;
+		return v;
+	}
+
+	const IntVector3& operator-=( const IntVector3& v ){
+		x -= v.x; y -= v.y; z -= v.z;
+		return *this;
+	}
+
+	IntVector3 operator-( const IntVector3& v )const{
+		IntVector3 vec = *this;
+		vec -= v;
+		return vec;
+	}
+
+	const IntVector3& operator*=( int v ){
+		x *= v; y *= v; z *= v;
+		return *this;
+	}
+
+	IntVector3 operator*( int v )const{
+		IntVector3 vec = *this;
+		vec *= v;
+		return vec;
 	}
 };
 

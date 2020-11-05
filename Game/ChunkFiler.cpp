@@ -91,11 +91,11 @@ bool ChunkFiler::Read( Chunk & chunk ){
 	for( int x = 0; x < chunk.WIDTH; x++ ){
 		for( int y = 0; y < chunk.HEIGHT; y++ ){
 			for( int z = 0; z < chunk.WIDTH; z++ ){
-				uint16_t bt;
+				int16_t bt;
 
 				ifs.read( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
 
-				if( bt == 0xffff ){
+				if( bt == EnCube::enCube_None ){
 					continue;
 				}
 
@@ -149,12 +149,12 @@ void ChunkFiler::Write( const Chunk & chunk ){
 				auto& block = data[x][y][z];
 
 				if( !block ){
-					uint16_t air = 0xffff;
+					int16_t air = EnCube::enCube_None;
 					fs.write( reinterpret_cast<char*>( &air ), sizeof( air ) );
 					continue;
 				}
 
-				uint16_t bt = static_cast<uint16_t>( block->GetBlockType() );
+				int16_t bt = static_cast<uint16_t>( block->GetBlockType() );
 
 				fs.write( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
 

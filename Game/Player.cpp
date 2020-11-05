@@ -3,7 +3,7 @@
 #include "GameCamera.h"
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
-#include "ItemData.h"
+#include "Item.h"
 #include "GameMode.h"
 #include "World.h"
 
@@ -20,7 +20,7 @@ namespace {
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 }
 
-Player::Player()
+Player::Player() : m_inventory(36)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");

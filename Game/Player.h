@@ -2,15 +2,12 @@
 #include "Block.h"
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
+#include "Inventory.h"
 
 class World;
 class GameCamera;
 class Item;
 class GameMode;
-struct Inventory {
-	Item* s_item = nullptr;
-	int s_number = 0;
-};
 
 class Player : public Entity
 {
@@ -229,7 +226,7 @@ private:
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
 
-	std::vector<Inventory*> m_inventoryList;					//インベントリ。
+	Inventory m_inventory;
 
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 

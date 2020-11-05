@@ -35,10 +35,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Biome.cpp" />
+    <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
     <ClCompile Include="CreateOre.cpp" />
-    <ClCompile Include="Drop.cpp" />
+    <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="BlockFactory.cpp" />
     <ClCompile Include="DebugTimer.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -48,9 +50,9 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
-    <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="IntRect.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mob.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParameter.cpp" />
@@ -62,9 +64,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldInfoFile.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Biome.h" />
+    <ClInclude Include="BiomeManager.h" />
     <ClInclude Include="BlockFactory.h" />
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="ChunkFiler.h" />
@@ -72,15 +77,17 @@
     <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Drop.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="DropItem.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameMode.h" />
+    <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
-    <ClInclude Include="ItemData.h" />
-    <ClInclude Include="Mob.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemStack.h" />
+    <ClInclude Include="ItemType.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerParameter.h" />
@@ -90,6 +97,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldInfoFile.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>

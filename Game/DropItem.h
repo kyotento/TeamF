@@ -4,11 +4,11 @@
 
 class Player;
 class Box;
-class Drop : public IGameObject
+class DropItem : public IGameObject
 {
 public:
-	Drop() {}
-	~Drop() 
+	DropItem() {}
+	~DropItem() 
 	{
 		DeleteGO(m_model);
 	}
