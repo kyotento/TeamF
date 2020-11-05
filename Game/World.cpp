@@ -115,6 +115,10 @@ void World::SetPlayer( Player* player, bool recursive ){
 }
 
 Block * World::GetBlock( int x, int y, int z ){
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
 	if( chunk ){
 		x = Chunk::CalcInChunkCoord( x );
