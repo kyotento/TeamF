@@ -222,10 +222,8 @@ void World::ChunkCulling( Chunk& chunk ){
 			}
 		}
 
-				if( doCulling )b->SetIsDraw( false );
-			}
-		}
-	}
+		if( doCulling )b->SetIsDraw( false );
+	});
 }
 
 void World::DeleteBlock(const CVector3& pos)
