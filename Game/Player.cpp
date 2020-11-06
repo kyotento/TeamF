@@ -7,6 +7,7 @@
 #include "GameMode.h"
 #include "World.h"
 #include "BlockFactory.h"
+#include "InventoryGUI.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -372,19 +373,15 @@ void Player::OpenInventory()
 {
 	if (GetKeyDown('E')){		//Eボタンを押したとき。
 		//インベントリを開く。
-		if (!m_openInventory) {			
-			m_sp = NewGO<CSpriteRender>();
-			m_sp->Init(L"Resource/spriteData/KariInventory.dds");
-			m_sp->SetPos({ 0.5, 0.5 });
-			m_sp->SetScale(1.5f);
-			m_openInventory = true;
+
+		if (!m_inventoryGUI) {
+			m_inventoryGUI = std::make_unique<GUI::InventoryGUI>(m_inventory);
 			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
-			return;
-		}
+
+		}else{
 		//インベントリを閉じる。
-		if (m_openInventory) { 
-			DeleteGO(m_sp);
-			m_openInventory = false;
+
+			m_inventoryGUI.reset();
 			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
 		}
 	}

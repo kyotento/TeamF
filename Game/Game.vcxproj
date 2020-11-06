@@ -37,6 +37,9 @@
   <ItemGroup>
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClInclude Include="ClickEvent.h" />
+    <ClCompile Include="ClickEvent.cpp" />
+    <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
     <ClCompile Include="CreateOre.cpp" />
@@ -51,8 +54,10 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
+    <ClCompile Include="InventoryGUI.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParameter.cpp" />
@@ -74,9 +79,11 @@
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
+    <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GUIManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Entity.h" />
@@ -85,9 +92,11 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
+    <ClInclude Include="InventoryGUI.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemStack.h" />
     <ClInclude Include="ItemType.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Perlin.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerParameter.h" />
