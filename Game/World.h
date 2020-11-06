@@ -3,6 +3,7 @@
 #include "Chunk.h"
 #include "RandomMapMaker.h"
 #include "IntVector3.h"
+#include "WorldInfoFile.h"
 
 class Entity;
 class Player;
@@ -36,21 +37,32 @@ public:
 	}
 
 	Block* GetBlock( const CVector3& pos ){
-		int x = (int)std::roundf( pos.x );
-		int y = (int)std::roundf( pos.y );
-		int z = (int)std::roundf( pos.z );
+		int x = (int)std::floorf( pos.x );
+		int y = (int)std::floorf( pos.y );
+		int z = (int)std::floorf( pos.z );
 		return GetBlock( x, y, z );
 	}
 	Block* GetBlock( int x, int y, int z );
 
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
-		int x = (int)std::roundf( pos.x );
-		int y = (int)std::roundf( pos.y );
-		int z = (int)std::roundf( pos.z );
+		int x = (int)std::floorf( pos.x );
+		int y = (int)std::floorf( pos.y );
+		int z = (int)std::floorf( pos.z );
 		SetBlock( x, y, z, std::move(block) );
 	}
 	void SetBlock( int x, int y, int z, std::unique_ptr<Block> block );
 
+	//ワールド座標をBlock::WIDTHで割ったものを元に。
+	//ブロックを設置、プレイヤー用。
+	//設置に成功したらtrue。
+	bool PlaceBlock(const CVector3& pos, std::unique_ptr<Block> block);
+
+	//ワールド座標をBlock::WIDTHで割ったものを元に。
+	//ブロックを破壊、プレイヤー用。
+	void DeleteBlock(const CVector3& pos);
+
+	//一つのブロックの周りのブロックのカリング処理をする。
+	void AroundBlock(const CVector3& pos);
 	//=========チャンクの取得に関する関数。==============
 
 	//! @brief チャンクを取得。
@@ -116,6 +128,10 @@ private:
 	int m_collisionEnableRange = 2;
 	std::unordered_set<IntVector3> m_activeCollisions;
 
+	//! エンティティ(ブロック以外の動く物)を入れておく配列。
 	std::vector<Entity*> m_entities;
+
+	//!シード値などの情報を保存。
+	WorldInfoFile infoFile;
 };
 

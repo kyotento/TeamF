@@ -182,6 +182,18 @@ private:
 	void StateManagement();
 
 	/// <summary>
+	/// プレイヤーの設置と破壊。
+	/// </summary>
+	/// <param name="ray">当たったオブジェクトの判定</param>
+	/// <param name="frontRotAdd">プレイヤーの回転</param>
+	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray , CVector3 frontRotAdd);
+
+	/// <summary>
+	/// プレイヤーの前方にレイを飛ばす。
+	/// </summary>
+	void FlyTheRay();
+
+	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
 	/// <returns>doubleClickFlag</returns>
@@ -193,6 +205,7 @@ private:
 	bool m_flyingMode = true;				//クリエイティブの際、飛行モードかどうか。
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
+
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -227,10 +240,13 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
-	Bone* m_bone;												//骨。
+
+	Bone* m_headBone;												//頭の骨。
+
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+
 };
 
