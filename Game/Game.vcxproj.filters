@@ -56,14 +56,26 @@
     <ClCompile Include="WorldInfoFile.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
     <ClCompile Include="BiomeManager.cpp">
       <Filter>Biome</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="Biome.cpp">
       <Filter>Biome</Filter>
     </ClCompile>
+    <ClCompile Include="ClickEvent.cpp">
+      <Filter>GUI\Event</Filter>
+    </ClCompile>
     <ClCompile Include="Block.cpp">
       <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryGUI.cpp">
+      <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="BlockFactory.cpp">
       <Filter>Block</Filter>
@@ -73,12 +85,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+
     <ClInclude Include="Game.h" />
     <ClInclude Include="DebugTimer.h">
       <Filter>ForTest</Filter>
     </ClInclude>
     <ClInclude Include="GameMode.h" />
+
     <ClInclude Include="Perlin.h" />
+
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ChunkFiler.h">
@@ -135,6 +150,21 @@
     <ClInclude Include="Inventory.h">
       <Filter>Inventory</Filter>
     </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClInclude>
+    <ClCompile Include="ClickEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClCompile>
     <ClInclude Include="WorldInfoFile.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -164,6 +194,7 @@
     <Filter Include="World">
       <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
     </Filter>
+
     <Filter Include="Util">
       <UniqueIdentifier>{e9c33e82-fb73-484a-a508-eaa68b4af968}</UniqueIdentifier>
     </Filter>
@@ -194,12 +225,19 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{fc59a94e-4b08-4565-8c8a-b3aef36a21ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{95b4a211-1593-4665-8f5e-b9a17b04ee1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Event">
+      <UniqueIdentifier>{0c4b3464-e033-4937-a7f1-5bc15583b460}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
@@ -223,6 +261,7 @@
     <ImageContentTask Include="Resource\sprite\HP_Right.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+
     <ImageContentTask Include="Resource\sprite\stamina_Found.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
