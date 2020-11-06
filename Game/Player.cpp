@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "GameMode.h"
 #include "World.h"
+#include "BlockFactory.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -80,10 +81,10 @@ void Player::Update()
 	Turn();
 	//インベントリを開く。
 	OpenInventory();
-	//プレイヤーの状態管理。0
+	//プレイヤーの状態管理。
 	StateManagement();
-	//オブジェクトの設置と破壊。
-	InstallAndDestruct();
+	//前方にRayを飛ばす。
+	FlyTheRay();
 
 	Test();
 }
@@ -429,35 +430,39 @@ void Player::StateManagement()
 }
 
 //オブジェクトの設置と破壊。
-void Player::InstallAndDestruct()
+void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray)
 {
-	if (GetKeyDown(VK_RBUTTON)) {		//右クリックした時。
-		FlyTheRay();
+	if (GetKeyDown(VK_LBUTTON)) {
+		CVector3 installPos;
+		installPos = (ray.m_hitPointWorld - m_front) / Block::WIDTH;
+		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_GoldOre));
 	}
 }
 
 //レイを前方に飛ばす。
 void Player::FlyTheRay()
 {
-	const int installableBlockNum = 5;		//設置可能距離(ブロック距離)。
-	int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。
-	CVector3 frontAddRot = m_front;
-	CQuaternion rot;
-	rot.SetRotationDeg(m_right, m_degreeXZ);
-	rot.Multiply(frontAddRot);
-		 
-	btVector3 startPoint(m_gameCamera->GetPos());			//レイの視点。
-	btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
+	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
+		const int installableBlockNum = 5;		//設置可能距離(ブロック距離)。
+		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。
+		CVector3 frontAddRot = m_front;
+		CQuaternion rot;
+		rot.SetRotationDeg(m_right, m_degreeXZ);
+		rot.Multiply(frontAddRot);
 
-	//todo Ray描画用。
-	CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
-	CVector3 kariY = kariX + frontAddRot * reyLength;
-	DrawLine3D(kariX, kariY, CVector4::Green());
+		btVector3 startPoint(m_gameCamera->GetPos());			//レイの視点。
+		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
 
-	btCollisionWorld::ClosestRayResultCallback rayRC(startPoint, endPoint);		//レイ情報。
-	GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
-	if(rayRC.hasHit()){
+		//todo Ray描画用。
+		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
+		CVector3 kariY = kariX + frontAddRot * reyLength;
+		DrawLine3D(kariX, kariY, CVector4::Green());
 
+		btCollisionWorld::ClosestRayResultCallback rayRC(startPoint, endPoint);		//レイ情報。
+		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
+		if (rayRC.hasHit()) {
+			InstallAndDestruct(rayRC);
+		}
 	}
 }
 

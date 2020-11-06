@@ -180,7 +180,8 @@ private:
 	/// <summary>
 	/// オブジェクトの設置と破壊。
 	/// </summary>
-	void InstallAndDestruct();
+	/// <param name="ray">当たったオブジェクトの判定</param>
+	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray);
 
 	/// <summary>
 	/// プレイヤーの前方にレイを飛ばす。
