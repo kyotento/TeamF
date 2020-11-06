@@ -452,12 +452,12 @@ void Player::FlyTheRay()
 	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
 		const int installableBlockNum = 5;		//設置可能距離(ブロック距離)。
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
-		CVector3 frontAddRot = m_front;
-		CQuaternion rot;
+		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
+		CQuaternion rot;						//計算用使い捨て。
 		rot.SetRotationDeg(m_right, m_degreeXZ);
 		rot.Multiply(frontAddRot);
 
-		btVector3 startPoint(m_gameCamera->GetPos());			//レイの視点。
+		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
 
 		//todo Ray描画用。
@@ -467,7 +467,7 @@ void Player::FlyTheRay()
 
 		btCollisionWorld::ClosestRayResultCallback rayRC(startPoint, endPoint);		//レイ情報。
 		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
-		if (rayRC.hasHit()) {
+		if (rayRC.hasHit()) {		//衝突。
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}

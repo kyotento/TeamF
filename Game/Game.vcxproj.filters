@@ -278,4 +278,10 @@
       <Filter>sprite</Filter>
     </ImageContentTask>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\mc2.ico" />
+    <Image Include="Resource\sprite\OnHandInventory.png">
+      <Filter>sprite</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

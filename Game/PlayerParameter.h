@@ -48,6 +48,7 @@ private:
 
 	CSpriteRender m_spriteRenderHP[m_paramNum];				//HP画像。
 	CSpriteRender m_spriteRenderStamina[m_paramNum];		//スタミナ画像。
+	CSpriteRender* m_spriteRenderOnHand = nullptr;			//手持ちアイテム画像基盤。
 
 	Player* m_player = nullptr;			//プレイヤー。
 };
