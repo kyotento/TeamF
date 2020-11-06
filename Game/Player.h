@@ -178,10 +178,11 @@ private:
 	void StateManagement();
 
 	/// <summary>
-	/// オブジェクトの設置と破壊。
+	/// プレイヤーの設置と破壊。
 	/// </summary>
 	/// <param name="ray">当たったオブジェクトの判定</param>
-	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray);
+	/// <param name="frontRotAdd">プレイヤーの回転</param>
+	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray , CVector3 frontRotAdd);
 
 	/// <summary>
 	/// プレイヤーの前方にレイを飛ばす。

@@ -430,12 +430,19 @@ void Player::StateManagement()
 }
 
 //オブジェクトの設置と破壊。
-void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray)
+void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, CVector3 frontRotAdd)
 {
-	if (GetKeyDown(VK_LBUTTON)) {
+	frontRotAdd.Normalize();
+
+	//設置。
+	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;
-		installPos = (ray.m_hitPointWorld - m_front) / Block::WIDTH;
+		installPos = (ray.m_hitPointWorld - frontRotAdd) / Block::WIDTH;
 		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_GoldOre));
+	}
+	//破壊。
+	if (GetKeyDown(VK_LBUTTON)) {
+		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;
 	}
 }
 
@@ -444,7 +451,7 @@ void Player::FlyTheRay()
 {
 	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
 		const int installableBlockNum = 5;		//設置可能距離(ブロック距離)。
-		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。
+		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;
 		CQuaternion rot;
 		rot.SetRotationDeg(m_right, m_degreeXZ);
@@ -461,7 +468,7 @@ void Player::FlyTheRay()
 		btCollisionWorld::ClosestRayResultCallback rayRC(startPoint, endPoint);		//レイ情報。
 		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
 		if (rayRC.hasHit()) {
-			InstallAndDestruct(rayRC);
+			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}
 }
