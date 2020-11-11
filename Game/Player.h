@@ -102,6 +102,24 @@ public:
 	}
 
 	/// <summary>
+	/// 防御力を取得。
+	/// </summary>
+	/// <returns>防御力</returns>
+	const int& GetDefPow()
+	{
+		return m_defensePower;
+	}
+
+	/// <summary>
+	/// 経験値を取得する。
+	/// </summary>
+	/// <returns>経験値</returns>
+	const int& GetExp()
+	{
+		return m_exp;
+	}
+
+	/// <summary>
 	/// プレイヤーのY軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのY軸の回転</returns>
@@ -223,7 +241,8 @@ private:
 
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。
-	int m_defensePower = 0;			//防御力。
+	int m_defensePower = 15;		//防御力。
+	int m_exp = 5;				//経験値。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。

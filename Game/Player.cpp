@@ -403,7 +403,7 @@ void Player::StateManagement()
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
+		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
 
 		break;
@@ -411,7 +411,7 @@ void Player::StateManagement()
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.5f);
+		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
 
 		break;
@@ -475,9 +475,11 @@ void Player::Test()
 {
 	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
 		m_hp -= 1;
+		m_defensePower -= 1;
 	}
 	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
 		m_hp += 1;
+		m_defensePower += 1;
 	}
 	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
 		m_stamina += 1;

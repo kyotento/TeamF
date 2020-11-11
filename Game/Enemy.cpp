@@ -48,8 +48,6 @@ void Enemy::Tracking()
 	m_skinModelRender->SetRot(m_rot);
 }
 
-float a = 0;
-
 //落下処理。
 void Enemy::Fall()    
 {
@@ -65,7 +63,7 @@ void Enemy::Fall()
 	m_direction.y -= m_fallSpeed;
 }
 
-
+//ジャンプ。
 void Enemy::Jump()
 {
 	if (m_characon.IsContactWall() && m_characon.IsOnGround())
