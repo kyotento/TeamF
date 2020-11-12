@@ -148,6 +148,12 @@ public:
 	//インベントリの長さ
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
+
+	/// <summary>
+	/// 被ダメージ
+	/// </summary>
+	/// <param name="AttackePow">攻撃力</param>
+	void TakenDamage(int AttackePow);
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -211,6 +217,7 @@ private:
 	/// </summary>
 	void FlyTheRay();
 
+
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
@@ -259,9 +266,9 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
+	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	Bone* m_headBone;												//頭の骨。
-
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。
