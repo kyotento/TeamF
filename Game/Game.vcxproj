@@ -121,6 +121,7 @@
     <Image Include="Assets\mc2.ico" />
     <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
     <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
+    <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
     <ImageContentTask Include="Resource\sprite\KariInventory.png" />
     <ImageContentTask Include="Resource\sprite\HP_Half.png" />
     <ImageContentTask Include="Resource\sprite\HP_Max.png" />
