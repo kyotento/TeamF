@@ -243,7 +243,6 @@ private:
 
 	Bone* m_headBone;												//頭の骨。
 
-
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。

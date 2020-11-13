@@ -39,7 +39,11 @@ public:
 		return m_item.GetStackLimit();
 	}
 
+	//! @brief •`‰æŠÖ”
+	void Draw( const CVector2& pos, const CVector2& parentScale );
+
 private:
+	CFont m_font;
 	Item& m_item;
 	int m_number = 0;
 };

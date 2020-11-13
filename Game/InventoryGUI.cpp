@@ -8,8 +8,8 @@
 #include "InventoryController.h"
 
 namespace GUI{
-	InventoryGUI::InventoryGUI( Inventory& inventory):
-		m_inventory(inventory){
+	InventoryGUI::InventoryGUI( Inventory& inventory ) :
+		m_inventory( inventory ){
 		//画像をロード。
 		m_sprite.Init( L"Resource/spriteData/KariInventory.dds" );
 
@@ -20,24 +20,20 @@ namespace GUI{
 
 		SetPos( { bufW * 0.5f, bufH * 0.5f } );
 		SetPivot( { 0.5f, 0.5f } );
-		SetScale( {1.5f, 1.5f} );
+		SetScale( { 1.5f, 1.5f } );
 
 		//コントローラーを作成。
-		m_controller = std::make_unique<Controller::InventoryController>(inventory);
+		m_controller = std::make_unique<Controller::InventoryController>( inventory );
 
 		//スロットを充填。
-		const CVector2 slotStart{ 32, 184 };
-		for( int x = 0; x < 9; x++ ){
-			for( int y = 0; y < 3; y++ ){
-
-				CVector2 pos = slotStart;
-				pos.x += x * InventorySlot::WIDTH;
-				pos.y += y * InventorySlot::WIDTH;
-
-				AddChilde( std::make_unique<InventorySlot>(inventory, *m_controller.get() ,x + y*9, pos ) );
-
-			}
-		}
+		//ホットバー
+		const CVector2 hotBarStart{ 14, 282 };
+		AddChilde( std::make_unique<InventorySlots>( inventory, *m_controller.get(), 0,
+													 hotBarStart, 9, 1 ) );
+		//上段の9*3のアイテム入れるところ。
+		const CVector2 upperStart{ 14, 166 };
+		AddChilde( std::make_unique<InventorySlots>( inventory, *m_controller.get(), 9,
+													 upperStart, 9, 3) );
 
 		GUIManager::Instance().AddRoot( this );
 	}
@@ -46,8 +42,8 @@ namespace GUI{
 		GUIManager::Instance().RemoveRoot( this );
 	}
 
-	void InventoryGUI::Draw( const CVector2& pos, const CVector2& scale ){
-		m_sprite.DrawScreenPos( pos, scale, GetPivot() );
+	void InventoryGUI::Draw( const CVector2& pos, const CVector2& parentScale ){
+		m_sprite.DrawScreenPos( pos, parentScale * GetScale(), GetPivot() );
 	}
 
 	void InventoryGUI::DrawForeground(){
@@ -58,13 +54,13 @@ namespace GUI{
 			auto& grEn = GetGraphicsEngine();
 			mouse.x *= grEn.GetFrameBuffer_W();
 			mouse.y *= grEn.GetFrameBuffer_H();
-			grab->GetItem().Draw( mouse, GetScale() );
+			grab->Draw( mouse, GetScale() );
 		}
 	}
 
 	CVector2 InventoryGUI::GetSize() const{
-		CVector2 size{ static_cast<float>(m_sprite.GetWidth()),
-						static_cast<float>(m_sprite.GetHeight()) };
+		CVector2 size{ static_cast<float>( m_sprite.GetWidth() ),
+						static_cast<float>( m_sprite.GetHeight() ) };
 		const CVector2 scale = GetScale();
 
 		size.x *= scale.x;
@@ -73,23 +69,46 @@ namespace GUI{
 		return size;
 	}
 
-	InventorySlot::InventorySlot( Inventory& inventory, Controller::InventoryController& controller,
-								  unsigned slotNo, const CVector2 & pos ):
-		m_slotNo(slotNo), m_inventory( inventory ), m_controller(controller){
-		SetPos( pos );
-		SetPivot( { 0.5f, 0.5f } );
+	InventorySlots::InventorySlots(
+		Inventory& inventory, Controller::InventoryController& controller,
+		unsigned slotNoStart, const CVector2& posUpperLeft, unsigned widthNum, unsigned heightNum ) :
+
+		m_slotNoStart( slotNoStart ), m_inventory( inventory ), m_controller( controller ),
+		m_widthNum( widthNum ), m_heightNum( heightNum ){
+
+		SetPos( posUpperLeft );
+		SetPivot( { 0, 0 } );
 	}
 
-	InventorySlot::~InventorySlot(){}
+	InventorySlots::~InventorySlots(){}
 
-	void InventorySlot::OnClick( GUI::Event::ClickEvent & event ){
-		m_controller.OnClickSlot( event, m_slotNo );
+	void InventorySlots::OnClick( GUI::Event::ClickEvent & event ){
+		CVector2 pos = event.GetPos();
+
+		int x = int( std::floorf( pos.x / (float( SLOT_WIDTH )) ) );
+		int y = int( std::floorf( pos.y / (float( SLOT_WIDTH )) ) );
+		//列と行からスロット番号を算出。
+		m_controller.OnClickSlot( event, m_slotNoStart + x + y * m_widthNum );
 	}
 
-	void InventorySlot::Draw( const CVector2 & pos, const CVector2 & scale ){
-		ItemStack* itemStack = m_inventory.GetItem( m_slotNo );
-		if( itemStack ){
-			itemStack->GetItem().Draw( pos, scale );
+	void InventorySlots::Draw( const CVector2 & pos, const CVector2 & parentScale ){
+		const int width = m_widthNum;
+		const int height = m_heightNum;
+
+		//アイテムのピボットぶんだけ開始位置をずらす。
+		const CVector2 startPos = pos + (CVector2{ 0.5f, 0.5f } * SLOT_WIDTH * parentScale);
+
+		//自分に含まれるすべてのスロットのアイテムを描画。
+		for( int y = 0; y < height; y++ ){
+			for( int x = 0; x < width; x++ ){
+				//列と行からスロット番号を算出。
+				ItemStack* itemStack = m_inventory.GetItem( m_slotNoStart + x + y * m_widthNum );
+				if( itemStack ){
+					CVector2 plusPos{ float(x * SLOT_WIDTH) , float(y * SLOT_WIDTH) };
+					plusPos *= parentScale;
+					itemStack->Draw( startPos + plusPos, parentScale * GetScale() );
+				}
+			}
 		}
 	}
 }

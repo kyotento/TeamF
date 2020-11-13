@@ -15,7 +15,7 @@ Item& Item::GetItem( unsigned id ){
 			m_array[enItem_GoldenPickaxe] = 
 				Item( enItem_GoldenPickaxe, L"金のツルハシ", 1, sprite(L"Resource/spriteData/Golden_Pickaxe.dds") );
 			m_array[enItem_DiamondHoe] =
-				Item( enItem_DiamondHoe, L"ダイヤのクワ", 1, sprite( L"Resource/spriteData/Diamond_Hoe.dds" ) );
+				Item( enItem_DiamondHoe, L"ダイヤのクワ", 16, sprite( L"Resource/spriteData/Diamond_Hoe.dds" ) );
 		}
 
 		Item& operator[]( int n ){

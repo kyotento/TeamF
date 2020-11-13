@@ -4,11 +4,11 @@
 #include "ItemStack.h"
 #include "ItemType.h"
 
-Inventory::Inventory(unsigned size){
+Inventory::Inventory( unsigned size ){
 	m_slotArray.resize( size );
 
-	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_GoldenPickaxe) );
-	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_DiamondHoe ) );
+	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_GoldenPickaxe ) );
+	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_DiamondHoe ), 16 );
 	AddItem( item );
 	AddItem( item2 );
 }
@@ -28,7 +28,7 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	const int stackLimit = item->GetStackLimit();
 
 	for( auto& slot : m_slotArray ){
-		//空いているスロットがあればそこに入れて終了。
+		//空いているスロットがあればそこに入れる。
 		if( !slot ){
 			slot.swap( item );
 			return;
@@ -52,7 +52,7 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	}
 }
 
-void Inventory::LClickSlot( unsigned slotNo){
+void Inventory::LClickSlot( unsigned slotNo ){
 	auto& slot = m_slotArray[slotNo];
 	auto& item = m_grabedItem;
 
@@ -92,24 +92,29 @@ void Inventory::RClickSlot( unsigned slotNo ){
 	}
 
 	//カーソルが何も掴んでなくて、スロットにアイテムがある場合、半分だけ取る。
-	if( !item && slot){
+	if( !item && slot ){
 		int num = slot->GetNumber();
 		int half = num / 2;
 
 		item = std::make_unique<ItemStack>( slot->GetItem(), num - half );
-		slot->SetNumber( half );
+
+		if( half == 0 ){
+			slot.reset();
+		} else{
+			slot->SetNumber( half );
+		}
 		return;
 	}
 
 	//カーソルにアイテムがあって、スロットにアイテムがない場合、1個だけ置く。
 	if( item && !slot ){
+		slot = std::make_unique<ItemStack>( item->GetItem(), 1 );
 		int num = item->GetNumber() - 1;
 		if( num > 0 ){
 			item->SetNumber( num );
 		} else{
 			item.reset();
 		}
-		slot = std::make_unique<ItemStack>( item->GetItem(), 1 );
 		return;
 	}
 

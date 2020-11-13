@@ -16,7 +16,7 @@ namespace GUI{
 		//クリックイベントを発行。
 		for( auto& r : m_roots ){
 			for( int button : MOUSE_BUTTONS ){
-				if( GetKeyDown( button ) ){
+				if( GetKeyUp( button ) ){
 					ClickEvent::ClickType type;
 
 					switch( button ){

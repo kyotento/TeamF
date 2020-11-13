@@ -20,11 +20,10 @@ namespace GUI{
 
 	private:
 		//! @brief 描画関数。
-		virtual void Draw( const CVector2& pos, const CVector2& scale ){};
+		virtual void Draw( const CVector2& pos, const CVector2& parentScale ){};
 	public:
 
 		//! @brief 最前面に描画する関数。ルートノードしか呼ばれない。
-		//! @details #RecursiveDraw のような外側の関数が無いためスケーリングは実装側が行う。
 		virtual void DrawForeground(){};
 
 		//! @brief 位置を設定

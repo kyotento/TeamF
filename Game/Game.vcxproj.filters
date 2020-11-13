@@ -89,6 +89,9 @@
     <ClCompile Include="InventoryController.cpp">
       <Filter>GUI\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="ItemStack.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />

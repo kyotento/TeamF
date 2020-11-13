@@ -19,7 +19,7 @@ namespace GUI{
 		~InventoryGUI();
 
 		//! @brief GUIManager が呼ぶ描画関数。
-		void Draw( const CVector2& pos, const CVector2& scale ) override;
+		void Draw( const CVector2& pos, const CVector2& parentScale ) override;
 
 		//! @brief 最前面に描画する関数。
 		void DrawForeground() override;
@@ -36,33 +36,31 @@ namespace GUI{
 	//! @brief インベントリスロットごとのアイテム表示を行うクラス。
 	//! @details クリックを感知してコントローラーへ処理を回すことも行う。
 	//! @author Takayama
-	class InventorySlot : public Node{
+	class InventorySlots : public Node{
 	public:
-		InventorySlot(Inventory& inventory, Controller::InventoryController& controller,
-					   unsigned slotNo , const CVector2& pos );
-		~InventorySlot();
+		InventorySlots(Inventory& inventory, Controller::InventoryController& controller,
+					   unsigned slotNoStart , const CVector2& posUpperLeft, unsigned widthNum, unsigned heightNum );
+		~InventorySlots();
 
 		//! @return GUIのサイズ。
 		CVector2 GetSize() const override{
-			return CVector2{ float(WIDTH), float(WIDTH) } * GetScale();
+			return CVector2{ float( m_widthNum * SLOT_WIDTH ), float( m_heightNum * SLOT_WIDTH ) } * GetScale();
 		}
 
 		//! @brief GUIManager が呼ぶクリックイベント関数。
 		void OnClick( GUI::Event::ClickEvent& event ) override;
 
 		//! @brief GUIManager が呼ぶ描画関数。
-		void Draw( const CVector2& pos, const CVector2& scale ) override;
-
-		//! @return インベントリのスロット番号。
-		unsigned GetSlotNo() const{
-			return m_slotNo;
-		}
+		void Draw( const CVector2& pos, const CVector2& parentScale ) override;
 
 		//! @brief スロット1個の正方形の幅。
-		static constexpr unsigned WIDTH = 36;
+		static constexpr unsigned SLOT_WIDTH = 36;
 
 	private:
-		const unsigned m_slotNo;
+		const unsigned m_slotNoStart;
+		const unsigned m_widthNum;
+		const unsigned m_heightNum;
+
 		Inventory& m_inventory;
 		Controller::InventoryController& m_controller;
 	};
