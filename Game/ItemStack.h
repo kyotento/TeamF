@@ -7,7 +7,7 @@
 class ItemStack{
 public:
 
-	ItemStack(const Item& item , int number = 1) : m_item(item), m_number(number){}
+	ItemStack(Item& item , int number = 1) : m_item(item), m_number(number){}
 
 	//! @brief 個数を設定。
 	void SetNumber( int num ){
@@ -24,6 +24,11 @@ public:
 		return m_item;
 	}
 
+	//! @brief アイテム情報を取得。
+	Item& GetItem(){
+		return m_item;
+	}
+
 	//! @brief アイテムidを取得。
 	unsigned GetID() const{
 		return m_item.GetID();
@@ -35,7 +40,7 @@ public:
 	}
 
 private:
-	const Item& m_item;
+	Item& m_item;
 	int m_number = 0;
 };
 

@@ -4,12 +4,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Game.cpp" />
-
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Perlin.cpp" />
     <ClCompile Include="stdafx.cpp" />
-
     <ClCompile Include="ChunkFiler.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -31,7 +29,6 @@
     <ClCompile Include="PlayerParameter.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
-
     <ClCompile Include="Chunk.cpp">
       <Filter>World</Filter>
     </ClCompile>
@@ -86,21 +83,20 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="ItemImage.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-
-
     <ClInclude Include="Game.h" />
-
     <ClInclude Include="DebugTimer.h">
       <Filter>ForTest</Filter>
     </ClInclude>
     <ClInclude Include="GameMode.h" />
-
-
     <ClInclude Include="Perlin.h" />
-
-
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ChunkFiler.h">
@@ -121,7 +117,6 @@
     <ClInclude Include="ItemType.h">
       <Filter>Item</Filter>
     </ClInclude>
-
     <ClInclude Include="Chunk.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -170,9 +165,6 @@
     <ClInclude Include="KeyEvent.h">
       <Filter>GUI\Event</Filter>
     </ClInclude>
-    <ClCompile Include="ClickEvent.h">
-      <Filter>GUI\Event</Filter>
-    </ClCompile>
     <ClInclude Include="WorldInfoFile.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -194,6 +186,15 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Camera</Filter>
     </ClInclude>
+    <ClInclude Include="ItemImage.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryController.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ClickEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -202,8 +203,6 @@
     <Filter Include="World">
       <UniqueIdentifier>{ba80f24f-b690-4b0f-8bc9-b5fde5a6eed9}</UniqueIdentifier>
     </Filter>
-
-
     <Filter Include="Util">
       <UniqueIdentifier>{e9c33e82-fb73-484a-a508-eaa68b4af968}</UniqueIdentifier>
     </Filter>
@@ -240,14 +239,15 @@
     <Filter Include="GUI\Event">
       <UniqueIdentifier>{0c4b3464-e033-4937-a7f1-5bc15583b460}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\Controller">
+      <UniqueIdentifier>{5ffd04d2-de9b-4e3f-9789-c30fcc0eda45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-
-
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />
@@ -271,8 +271,6 @@
     <ImageContentTask Include="Resource\sprite\HP_Right.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-
-
     <ImageContentTask Include="Resource\sprite\stamina_Found.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
@@ -291,6 +289,8 @@
     <ImageContentTask Include="Resource\sprite\KariInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
+    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

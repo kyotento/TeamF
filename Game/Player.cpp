@@ -373,17 +373,11 @@ void Player::OpenInventory()
 {
 	if (GetKeyDown('E')){		//Eボタンを押したとき。
 		//インベントリを開く。
-
-
 		if (!m_inventoryGUI) {
 			m_inventoryGUI = std::make_unique<GUI::InventoryGUI>(m_inventory);
 			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
-
-
 		}else{
 		//インベントリを閉じる。
-
-
 			m_inventoryGUI.reset();
 			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
 		}

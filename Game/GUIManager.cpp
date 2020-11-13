@@ -44,6 +44,9 @@ namespace GUI{
 		for( auto& r : m_roots ){
 			r->RecursiveDraw( {0, 0}, {1, 1} );
 		}
+		for( auto& r : m_roots ){
+			r->DrawForeground();
+		}
 	}
 
 	GUIManager::GUIManager(){}
