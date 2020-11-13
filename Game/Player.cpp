@@ -448,7 +448,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;
 		installPos = (ray.m_hitPointWorld - frontRotAdd) / Block::WIDTH;
-		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_GoldOre));
+		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_CraftingTable));
 	}
 	//破壊。
 	if (GetKeyDown(VK_LBUTTON)) {
@@ -514,5 +514,11 @@ void Player::Test()
 	}
 	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
 		m_stamina -= 1;
+	}
+	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
+		m_exp -= 1;			
+	}
+	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
+		m_exp += 1;
 	}
 }

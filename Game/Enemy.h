@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
+#include "GameMode.h"
 
 class Enemy : public Entity
 {
@@ -98,10 +99,11 @@ protected:
 
 	enEnemyState m_enemyState = enEnemy_num;					//エネミーの状態。
 
-	CCharacterControllerType2 m_characon;							//キャラコン。
+	CCharacterControllerType2 m_characon;						//キャラコン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
-	Player* m_player = nullptr;
+	Player* m_player = nullptr;									//プレイヤー。
+	GameMode* m_gameMode = nullptr;								//ゲームモード。
 
 };
 

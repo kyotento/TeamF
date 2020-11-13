@@ -52,15 +52,15 @@ void CreateOre::Awake(Chunk& chunk)
 	m_oreDataList[enCube_GoldOre].s_prob = 30;
 	m_oreDataList[enCube_GoldOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_GoldOre].s_oreDiffHeight;
 
-	m_oreDataList[enCube_Soil] = OreData();
-	m_oreDataList[enCube_Soil].s_oreMaxHeight = 7;
-	m_oreDataList[enCube_Soil].s_oreMinHeight = 0;
-	m_oreDataList[enCube_Soil].s_oreDiffHeight = m_oreDataList[enCube_GoldOre].s_oreMaxHeight - m_oreDataList[enCube_GoldOre].s_oreMinHeight;
-	m_oreDataList[enCube_Soil].s_oreMaxNumber = 3;
-	m_oreDataList[enCube_Soil].s_prob = 53;
-	m_oreDataList[enCube_Soil].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_GoldOre].s_oreDiffHeight;
-	m_oreDataList[enCube_Soil].s_atten = 16;
-	m_oreDataList[enCube_Soil].s_isDig = false;
+	m_oreDataList[enCube_CoalOre] = OreData();
+	m_oreDataList[enCube_CoalOre].s_oreMaxHeight = 7;
+	m_oreDataList[enCube_CoalOre].s_oreMinHeight = 0;
+	m_oreDataList[enCube_CoalOre].s_oreDiffHeight = m_oreDataList[enCube_CoalOre].s_oreMaxHeight - m_oreDataList[enCube_CoalOre].s_oreMinHeight;
+	m_oreDataList[enCube_CoalOre].s_oreMaxNumber = 3;
+	m_oreDataList[enCube_CoalOre].s_prob = 53;
+	m_oreDataList[enCube_CoalOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_CoalOre].s_oreDiffHeight;
+	m_oreDataList[enCube_CoalOre].s_atten = 16;
+	m_oreDataList[enCube_CoalOre].s_isDig = false;
 
 	//生成した鉱石の個数を計る
 	int oreNumber = 0;
@@ -132,7 +132,7 @@ void CreateOre::CreateAround(const int x, const int y, const int z, EnCube enCub
 		posList.push_back(CVector3(0, 0, -1));	
 		posList.push_back(CVector3(0, 0, 1));
 
-		//ちょっとコメント書くのめんどい
+		//todo おい　ちょっとコメント書くのめんどい
 		for (int i = 0; i < posList.size(); i++) {
 			int xx = x + int(posList[i].x);
 			int yy = y + int(posList[i].y);

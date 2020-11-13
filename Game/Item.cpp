@@ -8,7 +8,7 @@ Item& Item::GetItem( unsigned id ){
 			m_array[enCube_Grass] = Item( enCube_Grass, L"‘", 64 );
 			m_array[enCube_Soil] = Item( enCube_Soil, L"“y", 64 );
 			m_array[enCube_Stone] = Item( enCube_Stone, L"Î", 64 );
-			m_array[enCube_Leaf] = Item( enCube_Leaf, L"—t", 64 );
+			m_array[enCube_OakLeaf] = Item(enCube_OakLeaf, L"—t", 64 );
 			m_array[enCube_IronOre] = Item( enCube_IronOre, L"zÎ", 64 );
 		}
 

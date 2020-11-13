@@ -27,7 +27,7 @@ bool Zombie::Start()
 
 	m_characon.SetPosition(m_position);
 
-	m_attackPow = 1;
+	m_attackPow = 1;			//攻撃力の設定。
 
 	return true;
 }
@@ -38,9 +38,14 @@ void Zombie::Update()
 	if (m_position.y <= 3.f) {
 		return;
 	}
+
 	Tracking();				//プレイヤーを追跡する処理。
 	StateManagement();		//状態管理。
-	Attack();				//攻撃。
+
+	//サバイバルのとき。
+	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+		Attack();				//攻撃。
+	}
 }
 
 void Zombie::Attack()

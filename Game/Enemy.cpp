@@ -9,8 +9,13 @@ Enemy::Enemy()
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos);
 
-	if (m_player == nullptr) {			//プレイヤーのインスタンスが取得されていないとき。
-		m_player = FindGO<Player>(L"player");		//プレイヤーのインスタンスを取得。
+	//プレイヤーのインスタンスを取得。
+	if (m_player == nullptr) {			
+		m_player = FindGO<Player>(L"player");		
+	}
+	//ゲームモードのインスタンスを取得。
+	if (m_gameMode == nullptr) {
+		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
 }
 

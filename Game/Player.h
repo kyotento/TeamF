@@ -28,7 +28,7 @@ public:
 		std::wstringstream str;
 		CVector3 pos = GetPos() / Block::WIDTH;
 		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
-		font.Draw( str.str().c_str(), { 0.5f , 0.3f }, CVector4::White(), CVector2::One(), {0.5f, 0.5f} );
+		font.Draw( str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, {0.5f, 0.5f} );
 	}
 
 	/// <summary>
