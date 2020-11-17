@@ -11,13 +11,12 @@ namespace GUI{
 	Node::~Node(){}
 
 	void Node::RecursiveDraw( const CVector2& parentsZero, const CVector2& parentScale ){
-		const CVector2 grobalScale{ parentScale.x * m_scale.x, parentScale.y * m_scale.y };
 
+		Draw( parentsZero + (m_pos * parentScale), parentScale);
 
-		Draw( parentsZero + (m_pos * parentScale), grobalScale);
-
+		const CVector2 inMeScale{ parentScale.x * m_scale.x, parentScale.y * m_scale.y };
 		for( auto& childe : m_children ){
-			childe->RecursiveDraw( parentsZero + (GetUpperLeftPos() * parentScale ), grobalScale);
+			childe->RecursiveDraw( parentsZero + (GetUpperLeftPos() * parentScale ), inMeScale);
 		}
 	}
 

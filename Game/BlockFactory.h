@@ -12,6 +12,9 @@ public:
 	//! @details インスタンシング描画に使用するモデルを読み込む。CreateBlockより前に呼ばれていなければならない。
 	static void LoadInstancingModels(int instanceMax);
 
+	//! @brief モデルパスを取得。 Item クラスが使用する。
+	static const wchar_t* GetModelPath( EnCube blockType );
+
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
 	static std::unique_ptr<Block> CreateBlock( EnCube blockType );

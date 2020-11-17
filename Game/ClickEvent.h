@@ -27,7 +27,7 @@ namespace GUI::Event{
 		}
 
 		//! @retval true イベントは消費済み。
-		bool IsConsumed(){
+		bool IsConsumed() const{
 			return isConsume;
 		}
 
@@ -37,8 +37,13 @@ namespace GUI::Event{
 		}
 
 		//! @brief マウスのボタンを返す。
-		ClickType GetClickType(){
+		ClickType GetClickType() const{
 			return clickType;
+		}
+
+		//! @brief クリック位置を返す。
+		const CVector2 GetPos() const{
+			return mousePos;
 		}
 
 		//! @retval true 指定したノード上でのクリックである。
