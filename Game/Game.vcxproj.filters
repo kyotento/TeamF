@@ -83,6 +83,15 @@
     <ClCompile Include="GameCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="ItemImage.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemStack.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -182,6 +191,15 @@
     </ClInclude>
     <ClInclude Include="ClickEvent.h" />
     <ClInclude Include="CollisionIndex.h" />
+    <ClInclude Include="ItemImage.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryController.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ClickEvent.h">
+      <Filter>GUI\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -225,6 +243,9 @@
     </Filter>
     <Filter Include="GUI\Event">
       <UniqueIdentifier>{0c4b3464-e033-4937-a7f1-5bc15583b460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Controller">
+      <UniqueIdentifier>{5ffd04d2-de9b-4e3f-9789-c30fcc0eda45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +307,8 @@
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
+    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

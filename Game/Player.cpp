@@ -6,8 +6,8 @@
 #include "Item.h"
 #include "GameMode.h"
 #include "World.h"
-#include "BlockFactory.h"
 #include "InventoryGUI.h"
+#include "BlockFactory.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -386,14 +386,11 @@ void Player::OpenInventory()
 {
 	if (GetKeyDown('E')){		//Eボタンを押したとき。
 		//インベントリを開く。
-
 		if (!m_inventoryGUI) {
 			m_inventoryGUI = std::make_unique<GUI::InventoryGUI>(m_inventory);
 			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
-
 		}else{
 		//インベントリを閉じる。
-
 			m_inventoryGUI.reset();
 			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
 		}

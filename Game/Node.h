@@ -18,8 +18,13 @@ namespace GUI{
 		//! @brief 末端の子ノードまで再帰的に描画。
 		void RecursiveDraw( const CVector2& pos, const CVector2& scale );
 
+	private:
 		//! @brief 描画関数。
-		virtual void Draw( const CVector2& pos, const CVector2& scale ){};
+		virtual void Draw( const CVector2& pos, const CVector2& parentScale ){};
+	public:
+
+		//! @brief 最前面に描画する関数。ルートノードしか呼ばれない。
+		virtual void DrawForeground(){};
 
 		//! @brief 位置を設定
 		void SetPos( const CVector2& pos ){

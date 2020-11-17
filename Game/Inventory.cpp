@@ -2,19 +2,33 @@
 #include "Inventory.h"
 #include "Item.h"
 #include "ItemStack.h"
+#include "ItemType.h"
 
-Inventory::Inventory(unsigned size){
+Inventory::Inventory( unsigned size ){
 	m_slotArray.resize( size );
+
+	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_GoldenPickaxe ) );
+	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_DiamondHoe ), 16 );
+	AddItem( item );
+	AddItem( item2 );
 }
 
 Inventory::~Inventory(){}
+
+void Inventory::SetItem( unsigned slotNo, std::unique_ptr<ItemStack> item ){
+	m_slotArray[slotNo] = std::move( item );
+}
+
+void Inventory::SetGrabItem( std::unique_ptr<ItemStack> item ){
+	m_grabedItem = std::move( item );
+}
 
 void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	//スタック上限
 	const int stackLimit = item->GetStackLimit();
 
 	for( auto& slot : m_slotArray ){
-		//空いているスロットがあればそこに入れて終了。
+		//空いているスロットがあればそこに入れる。
 		if( !slot ){
 			slot.swap( item );
 			return;
@@ -38,11 +52,17 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	}
 }
 
-void Inventory::LClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
+void Inventory::LClickSlot( unsigned slotNo ){
 	auto& slot = m_slotArray[slotNo];
+	auto& item = m_grabedItem;
 
-	//スロットが空か、アイテムIDが異なる場合は、両者を入れ替える。
-	if( !slot || slot->GetID() != item->GetID() ){
+	//どっちにも何もなければ何もしない。
+	if( !item && !slot ){
+		return;
+	}
+
+	//スロットが空か、カーソルが空か、アイテムIDが異なる場合は、両者を入れ替える。
+	if( !slot || !item || slot->GetID() != item->GetID() ){
 		slot.swap( item );
 		return;
 	}
@@ -62,8 +82,9 @@ void Inventory::LClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
 	}
 }
 
-void Inventory::RClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
+void Inventory::RClickSlot( unsigned slotNo ){
 	auto& slot = m_slotArray[slotNo];
+	auto& item = m_grabedItem;
 
 	//どっちにも何もなければ何もしない。
 	if( !item && !slot ){
@@ -71,24 +92,29 @@ void Inventory::RClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
 	}
 
 	//カーソルが何も掴んでなくて、スロットにアイテムがある場合、半分だけ取る。
-	if( !item && slot){
+	if( !item && slot ){
 		int num = slot->GetNumber();
 		int half = num / 2;
 
 		item = std::make_unique<ItemStack>( slot->GetItem(), num - half );
-		slot->SetNumber( half );
+
+		if( half == 0 ){
+			slot.reset();
+		} else{
+			slot->SetNumber( half );
+		}
 		return;
 	}
 
 	//カーソルにアイテムがあって、スロットにアイテムがない場合、1個だけ置く。
 	if( item && !slot ){
+		slot = std::make_unique<ItemStack>( item->GetItem(), 1 );
 		int num = item->GetNumber() - 1;
 		if( num > 0 ){
 			item->SetNumber( num );
 		} else{
 			item.reset();
 		}
-		slot = std::make_unique<ItemStack>( item->GetItem(), 1 );
 		return;
 	}
 
@@ -111,16 +137,3 @@ void Inventory::RClickItem( unsigned slotNo, std::unique_ptr<ItemStack>& item ){
 	//カーソルとスロットが違うアイテムなら両者を交換する。
 	item.swap( slot );
 }
-
-//void Inventory::PostRender()
-//{
-//	wchar_t output[256];
-//	swprintf_s(output, L"  %ls %d\n  %ls %d\n  %ls %d\n  %ls %d\n  %ls %d\n  %ls %d\n  %ls %d\n  %ls %d\n  %ls %d\n",m_inventoryList[0]->s_item->GetItemName(),m_inventoryList[0]->s_number, m_inventoryList[1]->s_item->GetItemName(), m_inventoryList[1]->s_number, m_inventoryList[2]->s_item->GetItemName(), m_inventoryList[2]->s_number, m_inventoryList[3]->s_item->GetItemName(), m_inventoryList[3]->s_number,
-//		m_inventoryList[4]->s_item->GetItemName(), m_inventoryList[4]->s_number, m_inventoryList[5]->s_item->GetItemName(), m_inventoryList[5]->s_number, m_inventoryList[6]->s_item->GetItemName(), m_inventoryList[6]->s_number, m_inventoryList[7]->s_item->GetItemName(), m_inventoryList[7]->s_number, m_inventoryList[8]->s_item->GetItemName(), m_inventoryList[8]->s_number);
-//	m_font.DrawScreenPos(output, { 500.0f,300.0f }, CVector4::White(), { 0.6f,0.6f },
-//		CVector2::Zero(),
-//		0.0f,
-//		DirectX::SpriteEffects_None,
-//		0.7f
-//	);
-//}

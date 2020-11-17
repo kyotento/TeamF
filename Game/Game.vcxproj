@@ -54,8 +54,11 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
+    <ClCompile Include="InventoryController.cpp" />
     <ClCompile Include="InventoryGUI.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemImage.cpp" />
+    <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Perlin.cpp" />
@@ -80,6 +83,8 @@
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
+    <ClInclude Include="InventoryController.h" />
+    <ClInclude Include="ItemImage.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
@@ -119,6 +124,8 @@
     <ImageContentTask Include="Resource\sprite\Armor_Found.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Half.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Max.png" />
+    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
+    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
     <ImageContentTask Include="Resource\sprite\KariInventory.png" />
     <ImageContentTask Include="Resource\sprite\HP_Half.png" />

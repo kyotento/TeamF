@@ -3,11 +3,16 @@
 
 #include "ItemType.h"
 
+class ItemImage;
+
 //! @brief アイテムの種類を表すクラス。 #GetItem(unsigned) で取得する。
 //! @details あくまで種類を表すもので、実際のアイテムは ItemStack で扱う。
 //! @author Takayama
 class Item{
 public:
+	~Item();
+
+	const Item& operator=( Item&& item );
 
 	//! @brief アイテムidからアイテムを取得。
 	//! @details ブロックidもアイテムidとして扱うことができる。
@@ -28,12 +33,14 @@ public:
 		return m_itemName;
 	}
 
+	//! @brief GUI用のアイテムの描画。
+	void Draw( const CVector2& pos, const CVector2& scale );
+
 private:
-	Item(){}
-	Item( EnCube enCube, const wchar_t* itemName, int limitNumber )
-		:m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ){}
-	Item( EnItem enItem, const wchar_t* itemName, int limitNumber )
-		:m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ){}
+	Item();
+	Item( Item&& item );
+	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, std::unique_ptr<ItemImage> image = nullptr );
+	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, std::unique_ptr<ItemImage> image = nullptr );
 
 	//! アイテムID
 	unsigned m_id = enCube_None;
@@ -43,4 +50,7 @@ private:
 
 	//! アイテム名
 	const wchar_t* m_itemName = nullptr;
+
+	//アイテム画像、またはモデル。
+	std::unique_ptr<ItemImage> m_image;
 };

@@ -27,6 +27,10 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	}
 }
 
+const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
+	return FILE_PATH_ARRAY[blockType];
+}
+
 std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	auto block = std::make_unique<Block>();
 	//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
