@@ -14,6 +14,9 @@ public:
 	}
 	bool Start() override;
 	void Update() override;
+
+	void Drop();		//アイテムドロップ。
+
 	void SetPosition(const CVector3& position)
 	{
 		m_position = position;

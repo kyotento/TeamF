@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "IntRect.h"
 #include "BiomeManager.h"
+#include "DropItem.h"
 
 World::World(){
 	bool result = infoFile.Read();
@@ -244,6 +245,16 @@ void World::DeleteBlock(const CVector3& pos)
 
 	x = Chunk::CalcInChunkCoord(x);
 	z = Chunk::CalcInChunkCoord(z);
+
+	//ブロックをポップ。
+//	GetBlock(x, y, z)->GetBlockType();		//ブロックの種類を取得。
+	if (m_dropItem == nullptr) {
+		m_dropItem = NewGO<DropItem>();		//ドロップアイテムクラスを取得。
+	
+//	m_dropItem->SetEnCube(GetBlock(x, y, z)->GetBlockType());		//ブロックの種類を代入。
+	m_dropItem->Drop();
+	m_dropItem->SetPosition(pos);
+	}
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
 }

@@ -181,6 +181,7 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="ClickEvent.h" />
+    <ClInclude Include="CollisionIndex.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

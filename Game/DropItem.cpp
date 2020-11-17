@@ -7,9 +7,6 @@
 
 bool DropItem::Start()
 {
-	m_model = NewGO<GameObj::CSkinModelRender>();
-	m_model->Init(L"Resource/modelData/GrassBlock.tkm");
-	m_model->SetScale(CVector3::One() * 0.001f);
 	return true;
 }
 
@@ -19,8 +16,18 @@ void DropItem::Update()
 		m_player = FindGO<Player>();
 		return;
 	}
-	m_model->SetPos(m_position);
-	Distance();
+//	m_model->SetPos(m_position * Block::WIDTH);
+	m_model->SetPos(m_player->GetPos());
+//	m_model->SetScale(/*CVector3::One() * Block::WIDTH * 5.f*/CVector3::One() * 0.5f);
+//	Distance();
+}
+
+//アイテムドロップ。
+void DropItem::Drop()
+{
+	m_model = NewGO<GameObj::CSkinModelRender>();
+	m_model->Init(L"Resource/modelData/GrassBlock.tkm");
+	m_model->SetScale(CVector3::One() * 0.5f);
 }
 
 void DropItem::Distance()

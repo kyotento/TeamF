@@ -452,7 +452,8 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。
 	if (GetKeyDown(VK_LBUTTON)) {
-		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;
+//		m_world->GetBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH)->GetBlockType();		//ブロックの種類を取得。
+		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 }
 

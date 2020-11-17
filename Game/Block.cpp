@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Block.h"
+#include "CollisionIndex.h"
 
 Block::Block(){
 }
@@ -25,6 +26,8 @@ void Block::EnableCollision(){
 		m_collision->SetIsStaticObject( true );
 		m_collision->CreateBox( CVector3::Zero(), CQuaternion::Identity(), CVector3::One() * Block::WIDTH );
 		m_collision->SetTimer( enNoTimer );
+		m_collision->GetCollisionObject().setUserIndex(enBlock);
+		m_collision->GetCollisionObject().setUserPointer(this);
 
 		CVector3 pos = m_model.GetPos();
 		pos.y += WIDTH * 0.5f;
