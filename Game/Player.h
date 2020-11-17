@@ -28,7 +28,7 @@ public:
 		std::wstringstream str;
 		CVector3 pos = GetPos() / Block::WIDTH;
 		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
-		font.Draw( str.str().c_str(), { 0.5f , 0.3f }, CVector4::White(), CVector2::One(), {0.5f, 0.5f} );
+		font.Draw( str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, {0.5f, 0.5f} );
 	}
 
 	/// <summary>
@@ -102,6 +102,24 @@ public:
 	}
 
 	/// <summary>
+	/// 防御力を取得。
+	/// </summary>
+	/// <returns>防御力</returns>
+	const int& GetDefPow()
+	{
+		return m_defensePower;
+	}
+
+	/// <summary>
+	/// 経験値を取得する。
+	/// </summary>
+	/// <returns>経験値</returns>
+	const int& GetExp()
+	{
+		return m_exp;
+	}
+
+	/// <summary>
 	/// プレイヤーのY軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのY軸の回転</returns>
@@ -130,6 +148,12 @@ public:
 	//インベントリの長さ
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
+
+	/// <summary>
+	/// 被ダメージ
+	/// </summary>
+	/// <param name="AttackePow">攻撃力</param>
+	void TakenDamage(int AttackePow);
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -193,6 +217,7 @@ private:
 	/// </summary>
 	void FlyTheRay();
 
+
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
@@ -223,7 +248,8 @@ private:
 
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。
-	int m_defensePower = 0;			//防御力。
+	int m_defensePower = 15;		//防御力。
+	int m_exp = 5;				//経験値。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。
@@ -240,6 +266,7 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
+	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	Bone* m_headBone;												//頭の骨。
 

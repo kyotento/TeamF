@@ -189,6 +189,8 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Camera</Filter>
     </ClInclude>
+    <ClInclude Include="ClickEvent.h" />
+    <ClInclude Include="CollisionIndex.h" />
     <ClInclude Include="ItemImage.h">
       <Filter>Item</Filter>
     </ClInclude>
@@ -292,6 +294,19 @@
     <ImageContentTask Include="Resource\sprite\KariInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Experience_Found.png" />
+    <ImageContentTask Include="Resource\sprite\Armor_Max.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Armor_Found.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Armor_Half.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
     <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
   </ItemGroup>
@@ -302,8 +317,5 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
-    <Image Include="Resource\sprite\OnHandInventory.png">
-      <Filter>sprite</Filter>
-    </Image>
   </ItemGroup>
 </Project>

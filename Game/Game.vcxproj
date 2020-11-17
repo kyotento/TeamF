@@ -82,6 +82,7 @@
     <ClInclude Include="BlockType.h" />
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
+    <ClInclude Include="CollisionIndex.h" />
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="KeyEvent.h" />
@@ -119,6 +120,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\Experience_Found.png" />
+    <ImageContentTask Include="Resource\sprite\Armor_Found.png" />
+    <ImageContentTask Include="Resource\sprite\Armor_Half.png" />
+    <ImageContentTask Include="Resource\sprite\Armor_Max.png" />
     <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
     <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />

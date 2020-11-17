@@ -9,7 +9,7 @@ Item& Item::GetItem( unsigned id ){
 			m_array[enCube_Grass] = Item( enCube_Grass, L"‘", 64, model(enCube_Grass));
 			m_array[enCube_Soil] = Item( enCube_Soil, L"“y", 64, model(enCube_Soil) );
 			m_array[enCube_Stone] = Item( enCube_Stone, L"Î", 64, model(enCube_Stone) );
-			m_array[enCube_Leaf] = Item( enCube_Leaf, L"—t", 64 , model(enCube_Leaf));
+			m_array[enCube_OakLeaf] = Item(enCube_OakLeaf, L"—t", 64 , model(enCube_OakLeaf));
 			m_array[enCube_IronOre] = Item( enCube_IronOre, L"“SzÎ", 64 , model(enCube_IronOre));
 			m_array[enCube_GoldOre] = Item( enCube_GoldOre, L"‹àzÎ", 64, model( enCube_GoldOre ) );
 			m_array[enItem_GoldenPickaxe] = 

@@ -25,7 +25,7 @@ public:
 	{
 		m_state = enCube;
 	}
-	//! @brief ブロックの種類を設定。
+	//! @brief ブロックの種類を取得。
 	EnCube GetBlockType() const
 	{
 		return m_state;

@@ -7,6 +7,7 @@
 
 class Entity;
 class Player;
+class DropItem;
 
 //! @brief Block オブジェクトを保持するワールド
 //! @author Takayama
@@ -120,6 +121,7 @@ private:
 	std::map<std::pair<int, int>, Chunk> m_chunkMap;
 
 	Player* m_player = nullptr;
+	DropItem* m_dropItem = nullptr;		//アイテムをドロップ。
 
 	//! 読み込み範囲を指定。チャンク単位。
 	int m_chunkLoadRange = 1;

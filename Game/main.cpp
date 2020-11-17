@@ -16,6 +16,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//エンジンの初期化設定
 	InitEngineParameter initparam;	
 
+	initparam.SDUnityChanScale = 2.5f;//スケール設定
+
 	//解像度
 	//initparam.screenWidth = initparam.frameBufferWidth = initparam.frameBufferWidth3D = 1920;
 	//initparam.screenHeight = initparam.frameBufferHeight = initparam.frameBufferHeight3D = 1080;

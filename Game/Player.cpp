@@ -49,6 +49,15 @@ bool Player::Start()
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
 
+	//被弾判定用コリジョン。
+	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
+	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
+	m_damageCollision->CreateCapsule(colPos, m_rotation, m_characonRadius, m_characonHeight);
+	m_damageCollision->SetTimer(enNoTimer);				//寿命無し。
+	m_damageCollision->SetName(L"CPlayer");
+	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
+	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
+
 	//インベントリ―の初期化。
 	for (int i = 0; i < inventryWidth; i++) {
 		//m_inventoryList[i] = new Inventory();
@@ -67,7 +76,7 @@ void Player::Update()
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
-
+	//todo Debug専用。
 	if( GetKeyDown( 'C' ) ){			//マウスカーソルを固定(解除)。
 		static bool lock = true;
 		MouseCursor().SetLockMouseCursor( lock = !lock );
@@ -240,6 +249,10 @@ void Player::Move()
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
 
+	//ダメージ当たり判定移動。
+	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
+	m_damageCollision->SetPosition(colPos);
+
 	//プレイヤーの状態の変更。
 	if (m_playerState != enPlayerState_run) {
 		if (stickL.Length() > 0.001f) {
@@ -400,7 +413,7 @@ void Player::StateManagement()
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
+		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
 
 		break;
@@ -408,7 +421,7 @@ void Player::StateManagement()
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.5f);
+		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
 
 		break;
@@ -432,11 +445,12 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;
 		installPos = (ray.m_hitPointWorld - frontRotAdd) / Block::WIDTH;
-		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_GoldOre));
+		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_CraftingTable));
 	}
 	//破壊。
 	if (GetKeyDown(VK_LBUTTON)) {
-		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;
+//		m_world->GetBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH)->GetBlockType();		//ブロックの種類を取得。
+		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 }
 
@@ -454,7 +468,7 @@ void Player::FlyTheRay()
 		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
 
-		//todo Ray描画用。
+		//todo Debug Ray描画用。
 		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
 		CVector3 kariY = kariX + frontAddRot * reyLength;
 		DrawLine3D(kariX, kariY, CVector4::Green());
@@ -467,19 +481,42 @@ void Player::FlyTheRay()
 	}
 }
 
+//被ダメ－ジ。
+void Player::TakenDamage(int AttackPow)
+{
+	if (m_hp > 0) {			//被弾する。
+		m_hp -= AttackPow;
+	}
+	if(m_hp <= 0){			//HPを0未満にしない。
+		m_hp = 0;
+	}
+}
+
 //todo Debug専用。
 void Player::Test()
 {
 	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
 		m_hp -= 1;
+		if (m_defensePower > 0) {
+			m_defensePower -= 1;				//防御力減少。
+		}
 	}
 	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
 		m_hp += 1;
+		if (m_defensePower < 20) {
+			m_defensePower += 1;				//防御力上昇。
+		}
 	}
 	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
 		m_stamina += 1;
 	}
 	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
 		m_stamina -= 1;
+	}
+	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
+		m_exp -= 1;			
+	}
+	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
+		m_exp += 1;
 	}
 }

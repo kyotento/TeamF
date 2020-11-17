@@ -148,7 +148,7 @@ bool RandomMapMaker::Tree(const int x, const int y, const int z)
 	int height = rand() * int(noise) % 3 + 3;
 	//木の幹をつくっていく。
 	for (int i = 0; i < height; i++) {
-		m_world->SetBlock(xx, yy, zz, BlockFactory::CreateBlock(enCube_Soil));
+		m_world->SetBlock(xx, yy, zz, BlockFactory::CreateBlock(enCube_OakLog));
 		yy += 1;
 	}
 
@@ -210,7 +210,7 @@ bool RandomMapMaker::Tree(const int x, const int y, const int z)
 				//木の中心のノイズとの差が一定以内なら葉を生成する。
 				if (abs(noise - noise2) > a || abs(noise - noise3) > a || abs(noise - noise4) > a || abs(noise - noise5) > a)
 					continue;
-				m_world->SetBlock(xx + j, yy + i, zz + p, BlockFactory::CreateBlock(enCube_Leaf));
+				m_world->SetBlock(xx + j, yy + i, zz + p, BlockFactory::CreateBlock(enCube_OakLeaf));
 			}
 		}
 	}

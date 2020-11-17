@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
+#include "GameMode.h"
 
 class Enemy : public Entity
 {
@@ -63,15 +64,19 @@ public:
 		enEnemy_num,					//エネミーの状態の数。
 	};
 
+	//スケールの指定。
 	void SetScale(const CVector3& scale)
 	{
 		m_scale = scale;
 	}
+
 protected:
 
 	bool flag = false;//かり。
 
-	const float m_moveSpeed = 100.0f;					//移動速度。
+	int m_attackPow = 0;
+
+	const float m_moveSpeed = 100.0f;				//移動速度。
 	const float m_characonRadius = 40.f;			//キャラコンの半径。
 	const float m_characonHeight = 160.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
@@ -94,10 +99,11 @@ protected:
 
 	enEnemyState m_enemyState = enEnemy_num;					//エネミーの状態。
 
-	CCharacterControllerType2 m_characon;							//キャラコン。
+	CCharacterControllerType2 m_characon;						//キャラコン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
-	Player* m_player = nullptr;
+	Player* m_player = nullptr;									//プレイヤー。
+	GameMode* m_gameMode = nullptr;								//ゲームモード。
 
 };
 
