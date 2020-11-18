@@ -32,6 +32,6 @@ void Block::EnableCollision(){
 		CVector3 pos = m_model.GetPos();
 		pos.y += WIDTH * 0.5f;
 
-		m_collision->SetPosition( pos);
+		m_collision->SetPosition(pos);
 	}
 }
