@@ -251,9 +251,9 @@ void World::DeleteBlock(const CVector3& pos)
 	if (m_dropItem == nullptr) {
 		m_dropItem = NewGO<DropItem>();		//ドロップアイテムクラスを取得。
 	
-//	m_dropItem->SetEnCube(GetBlock(x, y, z)->GetBlockType());		//ブロックの種類を代入。
-	m_dropItem->Drop();
-	m_dropItem->SetPosition(pos);
+		m_dropItem->SetEnCube(GetBlock(x, y, z)->GetBlockType());		//ブロックの種類を代入。
+		m_dropItem->SetPosition(pos);
+		m_dropItem->Drop();
 	}
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);

@@ -39,7 +39,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	//”»’è•\Ž¦
 
-//	SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
+	SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
 	if (isStart == false)
 	{

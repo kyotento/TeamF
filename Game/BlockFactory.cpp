@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "BlockFactory.h"
 
-
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
