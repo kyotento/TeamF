@@ -318,6 +318,9 @@
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
     </Image>
+    <Image Include="Resource\sprite\SelectInventory.png">
+      <Filter>sprite</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />

@@ -23,6 +23,7 @@ void PlayerParameter::Update()
 	ChangeHP();				//体力を変更する。	
 	ChangeStamina();		//スタミナを変更する。
 	ChangeArmor();			//防御力を変更する。
+	SelectItem();			//アイテムを変更する。
 }
 
 // パラメータ画像の基盤を生成。
@@ -64,6 +65,13 @@ void PlayerParameter::SetParamFound()
 	m_spriteRenderExp->Init(L"Resource/spriteData/Experience_Found.dds");
 	m_spriteRenderExp->SetPos({ 0.5f,0.89f });
 	m_spriteRenderExp->SetScale(1.5f);
+	//アイテムセレクト画像。
+	m_spriteRenderSelectItem = NewGO<CSpriteRender>();
+	m_spriteRenderSelectItem->Init(L"Resource/spriteData/SelectInventory.dds");
+	m_selectNum = 1;					//一番目のアイテムを選択している。
+	m_sItemPos = { 0.308f,0.95f };		//todo メモ　一つ移動するごとに0.048。
+	m_spriteRenderSelectItem->SetPos(m_sItemPos);
+	m_spriteRenderSelectItem->SetScale(1.7f);
 }
 
 //体力を変更する。
@@ -137,8 +145,45 @@ void PlayerParameter::ChangeArmor()
 	m_oldArmor = ramainArmor;
 }
 
+//アイテムを選択する。
+void PlayerParameter::SelectItem()
+{
+	float moveX = 0.048f;		//アイテム欄一つの移動量X。
+
+	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。。
+	KariItemS();								//キーボードによる指定。
+
+	if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
+		//超過した時の修正。	
+		if (m_selectNum > 9) {
+			m_selectNum = 1;
+		}
+		if (m_selectNum < 1) {
+			m_selectNum = 9;	
+		}
+		//座標の変更。
+		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
+		m_spriteRenderSelectItem->SetPos(m_sItemPos);	
+	}
+	m_selectNumOld = m_selectNum;		//現在のアイテム番号を格納。
+}
+
+void PlayerParameter::KariItemS()
+{
+	if (GetKeyDown('1')) { m_selectNum = 1;}
+	if (GetKeyDown('2')) { m_selectNum = 2;}
+	if (GetKeyDown('3')) { m_selectNum = 3;}
+	if (GetKeyDown('4')) { m_selectNum = 4;}
+	if (GetKeyDown('5')) { m_selectNum = 5;}
+	if (GetKeyDown('6')) { m_selectNum = 6;}
+	if (GetKeyDown('7')) { m_selectNum = 7;}
+	if (GetKeyDown('8')) { m_selectNum = 8;}
+	if (GetKeyDown('9')) { m_selectNum = 9;}
+}
+
 void PlayerParameter::PostRender()
 {
+	//経験値。
 	wchar_t font[256];
 	swprintf_s(font, L"%d", m_player->GetExp());
 	m_font.DrawScreenPos(font, { 631.f,610.f }, CVector4::Green(), { 0.5f,0.5f },
