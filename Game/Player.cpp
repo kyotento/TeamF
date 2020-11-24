@@ -514,9 +514,9 @@ void Player::Test()
 		m_stamina -= 1;
 	}
 	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
-		m_exp -= 1;			
+		m_exp -= 0.3f;			
 	}
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
-		m_exp += 1;
+		m_exp += 0.3f;
 	}
 }

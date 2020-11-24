@@ -26,6 +26,7 @@ void PlayerParameter::Update()
 	ChangeHP();				//体力を変更する。	
 	ChangeStamina();		//スタミナを変更する。
 	ChangeArmor();			//防御力を変更する。
+	ChangeExp();			//経験値ゲージを変更する。
 	SelectItem();			//アイテムを変更する。
 }
 
@@ -67,7 +68,14 @@ void PlayerParameter::SetParamFound()
 	m_spriteRenderExp = NewGO<CSpriteRender>();
 	m_spriteRenderExp->Init(L"Resource/spriteData/Experience_Found.dds");
 	m_spriteRenderExp->SetPos({ 0.5f,0.89f });
-	m_spriteRenderExp->SetScale(1.5f);
+	m_spriteRenderExp->SetScale(m_expScale);
+	//経験値ゲージ。
+	m_spriteRenderExpGauge = NewGO<CSpriteRender>();
+	m_spriteRenderExpGauge->Init(L"Resource/spriteData/Experience_Gauge.dds");
+	m_spriteRenderExpGauge->SetPos({ 0.288f,0.89f });
+	m_spriteRenderExpGauge->SetScale(m_expScale);
+	m_spriteRenderExpGauge->SetPivot({ 0.f, 0.5f });
+	m_spriteRenderExpGauge->SetColor({ 0.000000000f, 0.501960814f, 0.000000000f, 0.20000000f });		//緑色の半透明画像に。
 	//アイテムセレクト画像。
 	m_spriteRenderSelectItem = NewGO<CSpriteRender>();
 	m_spriteRenderSelectItem->Init(L"Resource/spriteData/SelectInventory.dds");
@@ -148,6 +156,13 @@ void PlayerParameter::ChangeArmor()
 	m_oldArmor = ramainArmor;
 }
 
+//経験値ゲージを変更する。
+void PlayerParameter::ChangeExp()
+{
+	float expGaugeScaleX = m_player->GetExp() - (int)m_player->GetExp();
+	m_spriteRenderExpGauge->SetScale({ expGaugeScaleX * m_expScale , m_expScale });
+}
+
 //アイテムを選択する。
 void PlayerParameter::SelectItem()
 {
@@ -172,6 +187,7 @@ void PlayerParameter::SelectItem()
 	m_selectNumOld = m_selectNum;				//現在のアイテム番号を格納。
 }
 
+//1~9ボタンによるアイテムセレクト(ごり押しの極み)。
 void PlayerParameter::KariItemS()
 {
 	if (GetKeyDown('1')) { m_selectNum = 1;}
@@ -189,7 +205,7 @@ void PlayerParameter::PostRender()
 {
 	//経験値。
 	wchar_t font[256];
-	swprintf_s(font, L"%d", m_player->GetExp());
+	swprintf_s(font, L"%d", (int)m_player->GetExp());
 	m_font.DrawScreenPos(font, { 631.f,610.f }, CVector4::Green(), { 0.5f,0.5f },
 		CVector2::Zero(),
 		0.0f,

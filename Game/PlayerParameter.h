@@ -52,12 +52,17 @@ private:
 	void ChangeArmor();
 
 	/// <summary>
+	/// 経験値ゲージを変更する。
+	/// </summary>
+	void ChangeExp();
+
+	/// <summary>
 	/// 手持ちのアイテムを指定する。
 	/// </summary>
 	void SelectItem();
 
 	/// <summary>
-	//todo  ごり押しのため後で直したい
+	//todo  1~9ボタンによるアイテムセレクト(ごり押しの極み)。
 	/// </summary>
 	void KariItemS();
 
@@ -70,6 +75,7 @@ private:
 
 	const float m_scale = 3.f;						//HPとスタミナのスケール。
 	const float m_selectPosX = 0.260f;				//アイテムセレクト0番目のX座標。
+	const float m_expScale = 1.5f;					//経験値系画像のスケール。
 
 	CVector2 m_hpPosition[m_paramNum] = { CVector2::Zero() };		//HP画像の座標。
 	CVector2 m_staminaPosition[m_paramNum] = { CVector2::Zero() };	//スタミナ画像の座標。
@@ -81,6 +87,7 @@ private:
 	CSpriteRender m_spriteRenderArmor[m_paramNum];			//防御力画像。
 	CSpriteRender* m_spriteRenderOnHand = nullptr;			//手持ちアイテム画像基盤。
 	CSpriteRender* m_spriteRenderExp = nullptr;				//経験値。
+	CSpriteRender* m_spriteRenderExpGauge = nullptr;		//経験値(ゲージの増減)。
 	CSpriteRender* m_spriteRenderSelectItem = nullptr;		//度のアイテムを選択しているか。
 
 	Player* m_player = nullptr;			//プレイヤー。

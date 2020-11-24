@@ -114,7 +114,7 @@ public:
 	/// 経験値を取得する。
 	/// </summary>
 	/// <returns>経験値</returns>
-	const int& GetExp()
+	const float& GetExp()
 	{
 		return m_exp;
 	}
@@ -266,7 +266,7 @@ private:
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。
 	int m_defensePower = 15;		//防御力。
-	int m_exp = 5;					//経験値。
+	float m_exp = 5.50f;				//経験値。
 	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
