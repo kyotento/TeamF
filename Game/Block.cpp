@@ -10,7 +10,7 @@ Block::~Block(){}
 void Block::SetPos( int x, int y, int z ){
 	constexpr float half = WIDTH * 0.5f;
 
-	CVector3 pos{ x * WIDTH + half, y * WIDTH /*+ half*/, z * WIDTH + half };
+	CVector3 pos{ x * WIDTH + half, y * WIDTH, z * WIDTH + half };
 
 	m_model.SetPos( pos );
 

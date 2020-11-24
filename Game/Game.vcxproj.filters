@@ -92,6 +92,9 @@
     <ClCompile Include="ItemStack.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMoveObj.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -200,6 +203,9 @@
     <ClInclude Include="ClickEvent.h">
       <Filter>GUI\Event</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleMoveObj.h">
+      <Filter>physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -246,6 +252,9 @@
     </Filter>
     <Filter Include="GUI\Controller">
       <UniqueIdentifier>{5ffd04d2-de9b-4e3f-9789-c30fcc0eda45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{271bfa03-67b2-4e12-8c5f-c11e6b28ee56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -313,12 +322,10 @@
     <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\SelectInventory.png">
       <Filter>sprite</Filter>
     </Image>
   </ItemGroup>

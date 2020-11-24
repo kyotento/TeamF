@@ -65,6 +65,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParameter.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
+    <ClCompile Include="SimpleMoveObj.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DX12_Debug|x64'">Create</PrecompiledHeader>
@@ -110,6 +111,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SimpleMoveObj.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldInfoFile.h" />

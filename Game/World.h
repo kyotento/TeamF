@@ -28,7 +28,12 @@ public:
 
 	//! @brief Entity をワールドに追加する。
 	void AddEntity( Entity* entity ){
-		m_entities.push_back( entity );
+		m_entities.insert( entity );
+	}
+
+	//! @brief Entity をワールドから取り除く。
+	void RemoveEntity( Entity* entity ){
+		m_entities.erase( entity );
 	}
 
 	//! @brief チャンクを読み込む距離を取得。
@@ -101,7 +106,6 @@ public:
 	}
 
 
-
 	//! @briefチャンク座標を計算
 	//! @param ワールド座標のxかz。
 	//! @return チャンク座標のxかz。
@@ -121,7 +125,6 @@ private:
 	std::map<std::pair<int, int>, Chunk> m_chunkMap;
 
 	Player* m_player = nullptr;
-	DropItem* m_dropItem = nullptr;		//アイテムをドロップ。
 
 	//! 読み込み範囲を指定。チャンク単位。
 	int m_chunkLoadRange = 1;
@@ -131,7 +134,7 @@ private:
 	std::unordered_set<IntVector3> m_activeCollisions;
 
 	//! エンティティ(ブロック以外の動く物)を入れておく配列。
-	std::vector<Entity*> m_entities;
+	std::unordered_set<Entity*> m_entities;
 
 	//!シード値などの情報を保存。
 	WorldInfoFile infoFile;
