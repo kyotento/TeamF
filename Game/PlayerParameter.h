@@ -65,7 +65,7 @@ private:
 	int m_oldHP = 0;								//プレイヤーの1フレーム前のHPを格納。
 	int m_oldStamina = 0;							//プレイヤーの1フレーム前のスタミナを格納。
 	int m_oldArmor = 0;								//プレイヤーの1フレーム前の防御力を格納。
-	int m_selectNum = 0;							//何番目のアイテムをセレクトしているか 1~9。
+	int m_selectNum = 0;							//何番目のアイテムをセレクトしているか 1~9(プレイヤー格納用)。
 	int m_selectNumOld = 0;							//１フレーム前の↑。
 
 	const float m_scale = 3.f;						//HPとスタミナのスケール。

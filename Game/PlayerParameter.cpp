@@ -71,7 +71,7 @@ void PlayerParameter::SetParamFound()
 	//アイテムセレクト画像。
 	m_spriteRenderSelectItem = NewGO<CSpriteRender>();
 	m_spriteRenderSelectItem->Init(L"Resource/spriteData/SelectInventory.dds");
-	m_selectNum = 1;					//一番目のアイテムを選択している。
+	m_player->SetSelectItemNum(1);					//一番目のアイテムを選択している。
 	m_sItemPos = { 0.308f,0.95f };		//todo メモ　一つ移動するごとに0.048。
 	m_spriteRenderSelectItem->SetPos(m_sItemPos);
 	m_spriteRenderSelectItem->SetScale(1.7f);
@@ -168,7 +168,8 @@ void PlayerParameter::SelectItem()
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
 		m_spriteRenderSelectItem->SetPos(m_sItemPos);	
 	}
-	m_selectNumOld = m_selectNum;		//現在のアイテム番号を格納。
+	m_player->SetSelectItemNum(m_selectNum);	//プレイヤークラスに格納。	
+	m_selectNumOld = m_selectNum;				//現在のアイテム番号を格納。
 }
 
 void PlayerParameter::KariItemS()
