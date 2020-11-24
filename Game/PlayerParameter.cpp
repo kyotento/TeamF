@@ -10,6 +10,9 @@ PlayerParameter::PlayerParameter()
 
 PlayerParameter::~PlayerParameter()
 {
+	DeleteGO(m_spriteRenderOnHand);
+	DeleteGO(m_spriteRenderExp);
+	DeleteGO(m_spriteRenderSelectItem);
 }
 
 bool PlayerParameter::Start()
