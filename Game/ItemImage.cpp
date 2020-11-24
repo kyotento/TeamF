@@ -1,19 +1,19 @@
 #include "stdafx.h"
 #include "ItemImage.h"
 
-ItemModelImage::ItemModelImage( const wchar_t * modelpath ){
-	m_model.Init( modelpath );
+ItemImage::ItemImage( bool isModel, const wchar_t * filepath ){
+	if( isModel ){
+		SkinModel model;
+		model.Init( filepath );
+		CQuaternion rot = CQuaternion( CVector3::AxisX(), CMath::PI_HALF );
+		rot.Concatenate( CQuaternion( CVector3::AxisY(), CMath::PI_QUARTER ) );
+		rot.Concatenate( CQuaternion( CVector3::AxisX(), CMath::PI_QUARTER ) );
+		m_sprite.Init( filepath, model, 130, rot );
+	} else{
+		m_sprite.Init( filepath );
+	}
 }
 
-void ItemModelImage::Draw( const CVector2 & pos, const CVector2 & parentScale ){
-	m_model.UpdateWorldMatrix( pos, CQuaternion::Identity(), parentScale * st_initialScale );
-	m_model.Draw( false, 1 );
-}
-
-ItemSpriteImage::ItemSpriteImage( const wchar_t * spritePath ){
-	m_sprite.Init( spritePath );
-}
-
-void ItemSpriteImage::Draw( const CVector2 & pos, const CVector2 & parentScale ){
-	m_sprite.DrawScreenPos( pos, parentScale * st_initialScale, m_pivot);
+void ItemImage::Draw( const CVector2 & pos, const CVector2 & parentScale ){
+	m_sprite.DrawScreenPos( pos, parentScale * st_initialScale, m_pivot );
 }

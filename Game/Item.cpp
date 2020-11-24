@@ -13,9 +13,9 @@ Item& Item::GetItem( unsigned id ){
 			m_array[enCube_IronOre] = Item( enCube_IronOre, L"鉄鉱石", 64 , model(enCube_IronOre));
 			m_array[enCube_GoldOre] = Item( enCube_GoldOre, L"金鉱石", 64, model( enCube_GoldOre ) );
 			m_array[enItem_GoldenPickaxe] = 
-				Item( enItem_GoldenPickaxe, L"金のツルハシ", 1, sprite(L"Resource/spriteData/Golden_Pickaxe.dds") );
+				Item( enItem_GoldenPickaxe, L"金のツルハシ", 1, L"Resource/spriteData/Golden_Pickaxe.dds");
 			m_array[enItem_DiamondHoe] =
-				Item( enItem_DiamondHoe, L"ダイヤのクワ", 16, sprite( L"Resource/spriteData/Diamond_Hoe.dds" ) );
+				Item( enItem_DiamondHoe, L"ダイヤのクワ", 16, L"Resource/spriteData/Diamond_Hoe.dds" );
 		}
 
 		Item& operator[]( int n ){
@@ -25,11 +25,8 @@ Item& Item::GetItem( unsigned id ){
 	private:
 		std::array<Item, enAllItem_Num> m_array{};
 
-		static std::unique_ptr<ItemModelImage> model( EnCube blockType ){
-			return std::make_unique<ItemModelImage>( BlockFactory::GetModelPath(blockType) );
-		}
-		static std::unique_ptr<ItemSpriteImage> sprite( const wchar_t* path ){
-			return std::make_unique<ItemSpriteImage>( path );
+		static const wchar_t* model( EnCube blockType ){
+			return BlockFactory::GetModelPath(blockType);
 		}
 	};
 
@@ -57,8 +54,10 @@ Item::Item(){}
 Item::Item( Item&& item ) : m_id( item.m_id ), m_limitNumber( item.m_limitNumber ), m_itemName( item.m_itemName ),
 m_image( std::move( item.m_image ) ){}
 
-Item::Item( EnCube enCube, const wchar_t* itemName, int limitNumber, std::unique_ptr<ItemImage> image )
-	:m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ), m_image( std::move( image ) ){}
+Item::Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const wchar_t* modelPath )
+	:m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ),
+	m_image( std::make_unique<ItemImage>(true, modelPath) ){}
 
-Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, std::unique_ptr<ItemImage> image )
-	:m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ), m_image( std::move( image ) ){}
+Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const wchar_t* spritePath )
+	:m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ),
+	m_image( std::make_unique<ItemImage>( false, spritePath ) ){}

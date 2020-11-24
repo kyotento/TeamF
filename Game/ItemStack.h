@@ -2,12 +2,20 @@
 #pragma once
 #include "Item.h"
 
-//! @brief アイテムとその数を持つクラス。
+//! @brief アイテムとその数を持つクラス。コピー可能。
 //! @author Takayama
 class ItemStack{
 public:
 
 	ItemStack(Item& item , int number = 1) : m_item(item), m_number(number){}
+
+	bool operator==( const ItemStack& rhs ){
+		return m_number == rhs.m_number && &m_item == &( rhs.m_item );
+	}
+
+	bool operator!=( const ItemStack& rhs ){
+		return !( operator==( rhs ) );
+	}
 
 	//! @brief 個数を設定。
 	void SetNumber( int num ){

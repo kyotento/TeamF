@@ -39,8 +39,8 @@ public:
 private:
 	Item();
 	Item( Item&& item );
-	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, std::unique_ptr<ItemImage> image = nullptr );
-	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, std::unique_ptr<ItemImage> image = nullptr );
+	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const wchar_t* modelPath );
+	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const wchar_t* spritePath );
 
 	//! ƒAƒCƒeƒ€ID
 	unsigned m_id = enCube_None;

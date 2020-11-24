@@ -9,8 +9,12 @@ Inventory::Inventory( unsigned size ){
 
 	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_GoldenPickaxe ) );
 	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_DiamondHoe ), 16 );
+	auto item3 = std::make_unique<ItemStack>( Item::GetItem( enCube_Grass ), 5 );
+	auto item4 = std::make_unique<ItemStack>( Item::GetItem( enCube_GoldOre ), 5 );
 	AddItem( item );
 	AddItem( item2 );
+	AddItem( item3 );
+	AddItem( item4 );
 }
 
 Inventory::~Inventory(){}
