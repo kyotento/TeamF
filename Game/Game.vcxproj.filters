@@ -92,6 +92,9 @@
     <ClCompile Include="ItemStack.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMoveObj.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
     <ClCompile Include="Title.cpp">
       <Filter>Title</Filter>
     </ClCompile>
@@ -212,6 +215,9 @@
     <ClInclude Include="TitleSelect.h">
       <Filter>Title</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleMoveObj.h">
+      <Filter>physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -264,6 +270,9 @@
     </Filter>
     <Filter Include="sprite\title">
       <UniqueIdentifier>{1d8c0f05-1cca-4e7e-8ee7-345e5d21aa29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{271bfa03-67b2-4e12-8c5f-c11e6b28ee56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -335,6 +344,7 @@
     <ImageContentTask Include="Resource\sprite\Title.png">
       <Filter>sprite\title</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
