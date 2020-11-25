@@ -351,7 +351,7 @@ void Player::Shift()
 	Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
 	const float shiftDir = 30.f;			//しゃがむ角度。
 
-	//しゃがみの処理。
+	//しゃがみの処理(Boneの回転処理)。
 	if (GetKeyInput(VK_SHIFT)) {
 		//todo ブロックから落ちない処理を追加する。
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
