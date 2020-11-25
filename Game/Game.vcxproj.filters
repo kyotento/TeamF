@@ -101,6 +101,9 @@
     <ClCompile Include="TitleSelect.cpp">
       <Filter>Title</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMoveObj.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -264,6 +267,9 @@
     </Filter>
     <Filter Include="GUI\Controller">
       <UniqueIdentifier>{5ffd04d2-de9b-4e3f-9789-c30fcc0eda45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{271bfa03-67b2-4e12-8c5f-c11e6b28ee56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Title">
       <UniqueIdentifier>{5e01a742-bb49-4ecf-8666-409a83bda44d}</UniqueIdentifier>

@@ -1,22 +1,22 @@
 #pragma once
 #include "BlockType.h"
-
+#include "Entity.h"
+#include "SimpleMoveObj.h"
 
 class Player;
 class Box;
 class BlockFactory;
-class DropItem : public IGameObject
+class World;
+
+class DropItem : public Entity
 {
 public:
 	DropItem() {}
-	~DropItem() 
-	{
-		DeleteGO(m_model);
-	}
+	~DropItem();
 	bool Start() override;
 	void Update() override;
 
-	void Drop();		//アイテムドロップ。
+	void Drop(World* world);		//アイテムドロップ。
 
 	/// <summary>
 	/// 落下処理。
@@ -28,10 +28,12 @@ public:
 	/// </summary>
 	void Rotation();
 
-	void SetPosition(const CVector3& position)
-	{
-		m_position = position;
+	void SetPos( const CVector3& position ) override;
+
+	CVector3 GetPos() const override{
+		return m_position;
 	}
+
 	void SetNumber(int number)
 	{
 		m_number = number;
@@ -55,9 +57,12 @@ private:
 	CQuaternion m_rot = CQuaternion::Identity();	//回転。
 
 	EnCube m_state = enCube_None;
-	Player* m_player = nullptr;
 	Box* m_box = nullptr;
 
-	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;		//当たり判定。
+	CVector3 m_velocity; //速度
+
+	World* m_world = nullptr; //自分が存在するワールド
+
+	SimpleMoveObj m_collision;//当たり判定。
 };
 

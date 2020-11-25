@@ -243,18 +243,17 @@ void World::DeleteBlock(const CVector3& pos)
 		chunk = CreateChunkFromWorldPos(x, z);
 	}
 
+	//ブロックをポップ。
+	{
+		DropItem* dropItem = NewGO<DropItem>();		//ドロップアイテムクラスを取得。
+
+		dropItem->SetEnCube( GetBlock( x, y, z )->GetBlockType() );		//ブロックの種類を代入。
+		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) );
+		dropItem->Drop( this );
+	}
 	x = Chunk::CalcInChunkCoord(x);
 	z = Chunk::CalcInChunkCoord(z);
 
-	//ブロックをポップ。
-//	GetBlock(x, y, z)->GetBlockType();		//ブロックの種類を取得。
-	if (m_dropItem == nullptr) {
-		m_dropItem = NewGO<DropItem>();		//ドロップアイテムクラスを取得。
-	
-		m_dropItem->SetEnCube(GetBlock(x, y, z)->GetBlockType());		//ブロックの種類を代入。
-		m_dropItem->SetPosition(pos);
-		m_dropItem->Drop();
-	}
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
 }
