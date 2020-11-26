@@ -92,6 +92,15 @@
     <ClCompile Include="ItemStack.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="Recipe.cpp">
+      <Filter>Crafting</Filter>
+    </ClCompile>
+    <ClCompile Include="RecipeFiler.cpp">
+      <Filter>Crafting</Filter>
+    </ClCompile>
+    <ClCompile Include="RecipeManager.cpp">
+      <Filter>Crafting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -200,6 +209,15 @@
     <ClInclude Include="ClickEvent.h">
       <Filter>GUI\Event</Filter>
     </ClInclude>
+    <ClInclude Include="Recipe.h">
+      <Filter>Crafting</Filter>
+    </ClInclude>
+    <ClInclude Include="RecipeFiler.h">
+      <Filter>Crafting</Filter>
+    </ClInclude>
+    <ClInclude Include="RecipeManager.h">
+      <Filter>Crafting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -246,6 +264,9 @@
     </Filter>
     <Filter Include="GUI\Controller">
       <UniqueIdentifier>{5ffd04d2-de9b-4e3f-9789-c30fcc0eda45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Crafting">
+      <UniqueIdentifier>{4180d74c-7850-4907-bf46-70a8fe51d34a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -294,7 +315,6 @@
     <ImageContentTask Include="Resource\sprite\KariInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Experience_Found.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Max.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
@@ -304,11 +324,19 @@
     <ImageContentTask Include="Resource\sprite\Armor_Half.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
+    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Experience_Found.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
+    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
