@@ -17,7 +17,6 @@ TitleSelect::TitleSelect()
 	}
 
 //	GUIManager::Instance().AddRoot(this);
-
 	
 }
 
