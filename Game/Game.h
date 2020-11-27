@@ -26,7 +26,5 @@ private:
 	Title* m_title = nullptr;				//タイトル。
 	PlayerParameter* m_playerParameter = nullptr;		//プレイヤーのパラメーター。
 
-
-
 };
 
