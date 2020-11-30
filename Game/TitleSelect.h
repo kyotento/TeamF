@@ -1,20 +1,35 @@
 #pragma once
 #include "Node.h"
 
-class TitleSelect : public GUI::Node
+class TitleSelect : public IGameObject// GUI::Node
 {
 public:
 	TitleSelect();
 	~TitleSelect();
 
-//	void Draw(const CVector2& pos, const CVector2& parentScale) override:
+	bool Start()override;
+	void Update()override;
 
-	CVector2 GetSize() const override;
+	void GetScPos();		//スクリーン空間上の画像の範囲取得。
+
+	int Click();			//マウスをクリックしたときの判定。
+
+	//ボタンのState。
+	enum ButtonType {
+		en_buttonType_GameStart,	
+		en_buttonType_GameEnd,
+		en_buttonType_Config,
+		en_buttonType_num
+	};
+
+	ButtonType m_buttonType = en_buttonType_num;		//ボタンの種類を格納。
+
+//	CVector2 GetSize() const override;
 
 	//! @brief ルートノードを追加。
-	void AddRoot(Node* root) {
-		m_buttons.insert(root);
-	}
+	//void AddRoot(Node* root) {
+	//	m_buttons.insert(root);
+	//}
 
 private:
 
@@ -23,10 +38,12 @@ private:
 	float m_scale = 2.f;				//ボタンのスケール。
 
 	CVector2 m_position[m_buttonNum] = { CVector2::Zero() };
+	CVector2 m_scPos[m_buttonNum] = {CVector2::Zero()};		//スクリーン空間座標左上。
+	CVector2 m_scPos2[m_buttonNum] = {CVector2::Zero()};		//スクリーン空間座標右下。
 
 	CSpriteRender m_spriteRneder[m_buttonNum];
 
 	//ボタンのノードリスト。
-	std::unordered_set<Node*> m_buttons;
+//	std::unordered_set<Node*> m_buttons;
 };
 

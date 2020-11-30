@@ -10,6 +10,10 @@ public:
 	bool Start()override;
 	void Update()override;
 
+	/// <summary>
+	/// 画像をクリックしたときの処理。
+	/// </summary>
+	void ClickProcess();
 
 private:
 

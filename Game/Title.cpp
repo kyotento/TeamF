@@ -46,11 +46,25 @@ bool Title::Start()
 
 void Title::Update()
 {
-	//todo 実際はスタートボタンがクリックされたとき。
-	if (GetKeyDown('G')) {
+	ClickProcess();		//画像をクリックしたときの処理。
+}
 
+//画像をクリックしたときの処理。
+void Title::ClickProcess()
+{
+	int clickNum = m_titleSelect2->Click();		//クリックされたボタンの番号。
+
+	//GameStartを選択した時。
+	if (clickNum == m_titleSelect2->en_buttonType_GameStart) {
 		NewGO<Game>();
-
 		DeleteGO(this);
+	}
+	//GameEndボタンを選択した時。
+	if (clickNum == m_titleSelect2->en_buttonType_GameEnd) {
+		GetEngine().BreakGameLoop();
+	}
+	//Configを選択した時。
+	if (clickNum == m_titleSelect2->en_buttonType_Config) {
+		MessageBox(nullptr, "ブラキオサウルスのように首を長くして待っててね", "まだ実装されてないよ", MB_ICONASTERISK);
 	}
 }
