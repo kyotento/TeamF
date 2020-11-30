@@ -12,7 +12,12 @@ public:
 
 	void GetScPos();		//スクリーン空間上の画像の範囲取得。
 
-	int Click();			//マウスをクリックしたときの判定。
+	void ChangeColor();		//選択された画像の色を変更。
+
+	/// <summary>
+	/// マウスをクリックしたときの判定。
+	/// </summary>
+	int Click();			
 
 	//ボタンのState。
 	enum ButtonType {
