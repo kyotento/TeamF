@@ -351,22 +351,14 @@
       <Filter>sprite\title</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
+    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Experience_Gauge.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\GameStartButton.png">
-      <Filter>sprite\title</Filter>
-    </Image>
-    <Image Include="Resource\sprite\ConfigurationButton.png">
-      <Filter>sprite\title</Filter>
-    </Image>
-    <Image Include="Resource\sprite\GameEndButton.png">
-      <Filter>sprite\title</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
