@@ -33,6 +33,7 @@ bool Game::Start()
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(m_player);
 
+	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 	//プレイヤーのインベントリを確認するためのアイテム生成だったり。
 
 	/*for (int i = 0; i < 20; i++) {
@@ -50,19 +51,4 @@ bool Game::Start()
 
 void Game::Update()
 {
-	//以下ブロックの設置と破壊のお試し。
-	if (GetKeyDown('R')) {
-		m_world.DeleteBlock((m_player->GetPos() / Block::WIDTH) + m_player->GetFront() * 2);
-	}
-	else if (GetKeyDown('F')) {
-		CVector3 pos = m_player->GetPos() / Block::WIDTH + m_player->GetFront() * 2;
-		/*for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				for (int o = 0; o < 5; o++) {
-					m_world.PlaceBlock(CVector3(pos.x + i, pos.y + j, pos.z + o), BlockFactory::CreateBlock(enCube_Grass));
-				}
-			}
-		}*/
-		m_world.PlaceBlock(pos,BlockFactory::CreateBlock(enCube_Grass));
-	}
 }

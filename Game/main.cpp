@@ -4,6 +4,7 @@
 #include "RandomMapMaker.h"
 #include "Game.h"
 #include "World.h"
+#include "Title.h"
 
 namespace {
 	bool isStart = false;		//ゲームが実行されて一度だけ呼ばれる。
@@ -43,7 +44,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	if (isStart == false)
 	{
-		NewGO<Game>();
+		NewGO<Title>();
 		isStart = true;
 	}
 

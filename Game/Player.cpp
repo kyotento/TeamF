@@ -351,7 +351,7 @@ void Player::Shift()
 	Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
 	const float shiftDir = 30.f;			//しゃがむ角度。
 
-	//しゃがみの処理。
+	//しゃがみの処理(Boneの回転処理)。
 	if (GetKeyInput(VK_SHIFT)) {
 		//todo ブロックから落ちない処理を追加する。
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
@@ -514,9 +514,9 @@ void Player::Test()
 		m_stamina -= 1;
 	}
 	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
-		m_exp -= 1;			
+		m_exp -= 0.3f;			
 	}
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
-		m_exp += 1;
+		m_exp += 0.3f;
 	}
 }

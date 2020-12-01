@@ -92,6 +92,18 @@
     <ClCompile Include="ItemStack.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleMoveObj.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>Title</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleSelect.cpp">
+      <Filter>Title</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMoveObj.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
     <ClCompile Include="Recipe.cpp">
       <Filter>Crafting</Filter>
     </ClCompile>
@@ -209,6 +221,15 @@
     <ClInclude Include="ClickEvent.h">
       <Filter>GUI\Event</Filter>
     </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>Title</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleSelect.h">
+      <Filter>Title</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMoveObj.h">
+      <Filter>physics</Filter>
+    </ClInclude>
     <ClInclude Include="Recipe.h">
       <Filter>Crafting</Filter>
     </ClInclude>
@@ -264,6 +285,18 @@
     </Filter>
     <Filter Include="GUI\Controller">
       <UniqueIdentifier>{5ffd04d2-de9b-4e3f-9789-c30fcc0eda45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{271bfa03-67b2-4e12-8c5f-c11e6b28ee56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Title">
+      <UniqueIdentifier>{5e01a742-bb49-4ecf-8666-409a83bda44d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sprite\title">
+      <UniqueIdentifier>{1d8c0f05-1cca-4e7e-8ee7-345e5d21aa29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="physics">
+      <UniqueIdentifier>{271bfa03-67b2-4e12-8c5f-c11e6b28ee56}</UniqueIdentifier>
     </Filter>
     <Filter Include="Crafting">
       <UniqueIdentifier>{4180d74c-7850-4907-bf46-70a8fe51d34a}</UniqueIdentifier>
@@ -334,13 +367,37 @@
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
     <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Experience_Found.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
+    <ImageContentTask Include="Resource\sprite\Title.png">
+      <Filter>sprite\title</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Experience_Gauge.png">
+      <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\GameStartButton.png">
+      <Filter>sprite\title</Filter>
+    </Image>
+    <Image Include="Resource\sprite\ConfigurationButton.png">
+      <Filter>sprite\title</Filter>
+    </Image>
+    <Image Include="Resource\sprite\GameEndButton.png">
+      <Filter>sprite\title</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

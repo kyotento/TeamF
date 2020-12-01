@@ -65,6 +65,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerParameter.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
+    <ClCompile Include="SimpleMoveObj.cpp" />
     <ClCompile Include="Recipe.cpp" />
     <ClCompile Include="RecipeFiler.cpp" />
     <ClCompile Include="RecipeManager.cpp" />
@@ -74,6 +75,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TitleSelect.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldInfoFile.cpp" />
     <ClCompile Include="Zombie.cpp" />
@@ -116,7 +119,10 @@
     <ClInclude Include="RecipeFiler.h" />
     <ClInclude Include="RecipeManager.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SimpleMoveObj.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="TitleSelect.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="WorldInfoFile.h" />
     <ClInclude Include="Zombie.h" />
@@ -126,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
+    <ImageContentTask Include="Resource\sprite\Title.png" />
+    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
+    <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
     <ImageContentTask Include="Resource\sprite\Experience_Found.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Found.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Half.png" />
@@ -305,11 +317,13 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DemolisherWeapon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies>jansson_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -329,6 +343,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>DW_DX12;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -397,12 +412,14 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>DW_MASTER;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;DemolisherWeapon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies>jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -425,6 +442,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>

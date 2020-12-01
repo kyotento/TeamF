@@ -114,9 +114,27 @@ public:
 	/// 経験値を取得する。
 	/// </summary>
 	/// <returns>経験値</returns>
-	const int& GetExp()
+	const float& GetExp()
 	{
 		return m_exp;
+	}
+
+	/// <summary>
+	/// 選択するアイテムを指定。
+	/// </summary>
+	/// <param name="selItem">選択したアイテム番号</param>
+	void SetSelectItemNum(int selItem)
+	{
+		m_selItemNum = selItem;
+	}
+
+	/// <summary>
+	/// 選択されているアイテム番号を取得。
+	/// </summary>
+	/// <returns>選択中のアイテム番号</returns>
+	const int& GetSelectItemNum()
+	{
+		return m_selItemNum;
 	}
 
 	/// <summary>
@@ -231,7 +249,6 @@ private:
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
 
-
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
 	float m_radianY = 0.0f;									//Y軸の回転(ラジアン)。
@@ -249,7 +266,8 @@ private:
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。
 	int m_defensePower = 15;		//防御力。
-	int m_exp = 5;				//経験値。
+	float m_exp = 5.50f;			//経験値。
+	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。
