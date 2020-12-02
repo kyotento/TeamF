@@ -6,7 +6,7 @@
 #include "Item.h"
 #include "GameMode.h"
 #include "World.h"
-#include "InventoryGUI.h"
+#include "PlayerInventory.h"
 #include "BlockFactory.h"
 
 namespace {
@@ -85,16 +85,26 @@ void Player::Update()
 	//頭の骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
 
-	//移動処理。
+	//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
 	Move();
-	//回転処理。
-	Turn();
-	//インベントリを開く。
-	OpenInventory();
+
+	//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
+	if( m_openedGUI == nullptr ){
+
+		//回転処理。
+		Turn();
+		//インベントリを開く。
+		OpenInventory();
+		//前方にRayを飛ばす。
+		FlyTheRay();
+
+	} else if( GetKeyDown( 'E' ) ){
+		//GUIが開かれているときに、Eが押されたらGUIを閉じる。
+		CloseGUI();
+	}
+
 	//プレイヤーの状態管理。
 	StateManagement();
-	//前方にRayを飛ばす。
-	FlyTheRay();
 
 	Test();
 }
@@ -105,9 +115,25 @@ void Player::SetWorld(World* world, bool recursive) {
 		world->SetPlayer(this, false);
 }
 
+inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
+	m_openedGUI = std::move( gui );
+	MouseCursor().SetLockMouseCursor( false );		//マウスカーソルの固定を外す。
+}
+
+inline void Player::CloseGUI(){
+	m_openedGUI.reset();
+	MouseCursor().SetLockMouseCursor( true );		//マウスカーソルを固定する。
+}
+
 //キーボードの入力情報管理。
 void Player::KeyBoardInput()
 {
+	//開いているGUIがあれば入力を遮断する。
+	if( m_openedGUI ){
+		stickL = CVector3::Zero();
+		return;
+	}
+
 	Dash();		//走る処理。
 
 	//各キー入力により移動量を計算
@@ -274,7 +300,7 @@ void Player::Jump()
 {
 	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival		//サバイバルのときか。
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
-		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround()) {			//スペースが押されていたら&&地面にいたら。
+		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
 		}
 		//ジャンプ中の処理。
@@ -351,8 +377,8 @@ void Player::Shift()
 	Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
 	const float shiftDir = 30.f;			//しゃがむ角度。
 
-	//しゃがみの処理(Boneの回転処理)。
-	if (GetKeyInput(VK_SHIFT)) {
+	//しゃがみの処理(Boneの回転処理)。GUI表示中は行わない。
+	if (GetKeyInput(VK_SHIFT) && m_openedGUI == nullptr) {
 		//todo ブロックから落ちない処理を追加する。
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
 		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
@@ -384,16 +410,9 @@ void Player::Headbang()
 //インベントリを開く。
 void Player::OpenInventory()
 {
-	if (GetKeyDown('E')){		//Eボタンを押したとき。
-		//インベントリを開く。
-		if (!m_inventoryGUI) {
-			m_inventoryGUI = std::make_unique<GUI::InventoryGUI>(m_inventory);
-			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
-		}else{
-		//インベントリを閉じる。
-			m_inventoryGUI.reset();
-			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
-		}
+	//Eボタンを押したとき。
+	if (GetKeyDown('E')){
+		OpenGUI( std::make_unique<GUI::PlayerInventory>( m_inventory ) );
 	}
 }
 
@@ -444,8 +463,15 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;
-		installPos = (ray.m_hitPointWorld - frontRotAdd) / Block::WIDTH;
-		m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(enCube_CraftingTable));
+		installPos = (ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH;
+
+		//ブロックに設定された右クリック時のアクションを実行する。(作業台を開くだとか、そんなもの)
+		bool isClickActionDone = m_world->GetBlock( installPos )->OnClick( this );
+		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
+		if( isClickActionDone == false ){
+			installPos -= frontRotAdd * 2 / Block::WIDTH;
+			m_world->PlaceBlock( installPos, BlockFactory::CreateBlock( enCube_CraftingTable ) );
+		}
 	}
 	//破壊。
 	if (GetKeyDown(VK_LBUTTON)) {

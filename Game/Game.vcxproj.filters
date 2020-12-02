@@ -56,9 +56,6 @@
     <ClCompile Include="WorldInfoFile.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="BiomeManager.cpp">
       <Filter>Biome</Filter>
     </ClCompile>
@@ -73,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="Block.cpp">
       <Filter>Block</Filter>
-    </ClCompile>
-    <ClCompile Include="InventoryGUI.cpp">
-      <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="BlockFactory.cpp">
       <Filter>Block</Filter>
@@ -112,6 +106,18 @@
     </ClCompile>
     <ClCompile Include="RecipeManager.cpp">
       <Filter>Crafting</Filter>
+    </ClCompile>
+    <ClCompile Include="CraftingTable.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="InventorySlot.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInventory.cpp">
+      <Filter>GUI\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,12 +183,6 @@
     <ClInclude Include="Inventory.h">
       <Filter>Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="InventoryGUI.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="GUIManager.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -238,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="RecipeManager.h">
       <Filter>Crafting</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingTable.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="InventorySlot.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInventory.h">
+      <Filter>GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +312,9 @@
     </Filter>
     <Filter Include="Crafting">
       <UniqueIdentifier>{4180d74c-7850-4907-bf46-70a8fe51d34a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\View">
+      <UniqueIdentifier>{9abd8ce1-698b-4bf9-9b52-2d5e95c62285}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -382,22 +397,14 @@
       <Filter>sprite\title</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
+    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Experience_Gauge.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\GameStartButton.png">
-      <Filter>sprite\title</Filter>
-    </Image>
-    <Image Include="Resource\sprite\ConfigurationButton.png">
-      <Filter>sprite\title</Filter>
-    </Image>
-    <Image Include="Resource\sprite\GameEndButton.png">
-      <Filter>sprite\title</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

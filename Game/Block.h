@@ -2,17 +2,19 @@
 #pragma once
 #include "../BlockType.h"
 
+class Player;
+
 //! @brief ブロックの情報とモデルレンダーを持つクラス。
 //! @details 生成には BlockFactory を使用してほしい。
+//! @details これの派生クラスを作ったら BlockFactory::CreateBlock 関数に追加する。
 //! @author Takayama
 class Block{
 public:
 	Block();
-	~Block();
+	virtual ~Block();
 
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
-
 	void SetPos( int x, int y, int z );
 
 	GameObj::CInstancingModelRender& GetModel(){
@@ -39,6 +41,13 @@ public:
 
 	bool IsCollisionEnabled() const{
 		return m_collision.operator bool();
+	}
+
+	//! @brief ブロックを右クリックしたときの動作。
+	//! @return true 何かを実行した。(ブロックの設置をしない)
+	//! @return false 何も実行しなかった。(ブロックの設置をする)
+	virtual bool OnClick( Player* player ){
+		return false;
 	}
 
 	void EnableCollision();

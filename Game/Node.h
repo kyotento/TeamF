@@ -93,5 +93,11 @@ namespace GUI{
 		std::vector<std::unique_ptr<Node>> m_children;
 	};
 
+	//! @brief Node ‚ÌªBGUIManager ‚Ì AddRoot ‚Æ RemoveRoot ‚ğ‚â‚Á‚Ä‚­‚ê‚é‚¾‚¯B
+	class RootNode : public Node{
+	public:
+		RootNode();
+		~RootNode();
+	};
 }
 

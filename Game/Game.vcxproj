@@ -39,6 +39,7 @@
     <ClCompile Include="BiomeManager.cpp" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
+    <ClCompile Include="CraftingTable.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
@@ -55,7 +56,8 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="InventoryController.cpp" />
-    <ClCompile Include="InventoryGUI.cpp" />
+    <ClCompile Include="PlayerInventory.cpp" />
+    <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemImage.cpp" />
     <ClCompile Include="ItemStack.cpp" />
@@ -89,7 +91,9 @@
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
+    <ClInclude Include="CraftingTable.h" />
     <ClInclude Include="InventoryController.h" />
+    <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
@@ -104,7 +108,7 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
-    <ClInclude Include="InventoryGUI.h" />
+    <ClInclude Include="PlayerInventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemStack.h" />
     <ClInclude Include="ItemType.h" />

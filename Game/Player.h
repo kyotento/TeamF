@@ -10,7 +10,7 @@ class Item;
 class GameMode;
 
 namespace GUI{
-	class InventoryGUI;
+	class RootNode;
 }
 
 class Player : public Entity
@@ -167,6 +167,21 @@ public:
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
 
+	Inventory& GetInventory(){
+		return m_inventory;
+	}
+
+	/// <summary>
+	/// GUIを開かせる。
+	/// </summary>
+	/// <param name="gui">開かせるGUI</param>
+	void OpenGUI( std::unique_ptr<GUI::RootNode>&& gui );
+
+	/// <summary>
+	/// GUIを閉じさせる。
+	/// </summary>
+	void CloseGUI();
+
 	/// <summary>
 	/// 被ダメージ
 	/// </summary>
@@ -278,7 +293,7 @@ private:
 
 
 	Inventory m_inventory; //アイテムを保管するインベントリ。
-	std::unique_ptr<GUI::InventoryGUI> m_inventoryGUI; //インベントリの描画などを行う。
+	std::unique_ptr<GUI::RootNode> m_openedGUI; //現在開いているGUI
 
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 

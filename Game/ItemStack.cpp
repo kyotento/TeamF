@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ItemStack.h"
-#include "InventoryGUI.h"
+#include "InventorySlot.h"
 
 void ItemStack::Draw( const CVector2 & pos, const CVector2 & parentScale ){
 	m_item.Draw( pos, parentScale );

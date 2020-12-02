@@ -18,11 +18,11 @@ namespace std{
 //@brief レシピ読み込みでエラーメッセージを出して強制終了する関数オブジェクト。
 class RecipeError{
 public:
-	void SetFileName(const std::string& name ){
+	void SetFileName( const std::string& name ){
 		m_fileName = "file: " + name + '\n';
 	}
 
-	void operator()(const char* message){
+	void operator()( const char* message ){
 		std::string text = m_fileName + message;
 
 		MessageBox( NULL, text.c_str(), "レシピファイル読み込み失敗。", MB_OK );
@@ -47,7 +47,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 			path file = ( *itr ).path();
 
 			//大文字小文字を区別せずに拡張子がjsonだと確認。
-			if(_wcsicmp( file.extension().c_str(), L"json")){
+			if( _wcsicmp( file.extension().c_str(), L"json" ) ){
 
 				//エラーのダイアログを出すオブジェクト。
 				RecipeError error;
@@ -55,7 +55,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 
 				//json読み込み。
 				json_error_t jerror;
-				std::unique_ptr<json_t> jObjPtr(json_load_file( file.string().c_str(), 0, &jerror ));
+				std::unique_ptr<json_t> jObjPtr( json_load_file( file.string().c_str(), 0, &jerror ) );
 
 				if( !jObjPtr ){
 					std::stringstream str;
@@ -129,7 +129,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 							error( "キーには半角1文字を指定してください。" );
 						}
 
-						keyMap.emplace( key[0], json_integer_value(value) );
+						keyMap.emplace( key[0], json_integer_value( value ) );
 					}
 				}
 
@@ -144,7 +144,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 					if( json_is_array( pattern ) == false ){
 						error( "パターンには文字列の配列を指定してください。" );
 					}
-					
+
 					size_t index;
 					json_t* value;
 					const int tableWidth = 3;
