@@ -119,6 +119,15 @@
     <ClCompile Include="PlayerInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="CraftingInventory.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryView.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="CraftingController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -250,6 +259,15 @@
     </ClInclude>
     <ClInclude Include="PlayerInventory.h">
       <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingInventory.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryView.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingController.h">
+      <Filter>GUI\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +422,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
+      <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\CraftingBox.png">
       <Filter>sprite</Filter>
     </Image>
   </ItemGroup>

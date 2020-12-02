@@ -14,17 +14,17 @@ public:
 	//! @brief アイテムをスロットにセット。スロットを上書きします。
 	void SetItem( unsigned slotNo, std::unique_ptr<ItemStack> item );
 
-	//! @brief カーソルの手中にアイテムをセット。元から掴んでいる物を上書きします。
-	void SetGrabItem( std::unique_ptr<ItemStack> item );
-
 	//! @brief アイテムを取得。
-	ItemStack* GetItem( unsigned slotNo ){
-		return m_slotArray[slotNo].get();
+	std::unique_ptr<ItemStack>& GetItem( unsigned slotNo ){
+		return m_slotArray[slotNo];
 	}
 
-	//! @brief カーソルが掴んでいるアイテムを取得。
-	ItemStack* GetGrabItem(){
-		return m_grabedItem.get();
+	auto begin(){
+		return m_slotArray.begin();
+	}
+
+	auto end(){
+		return m_slotArray.end();
 	}
 
 	//! @brief アイテムを追加する。アイテムを拾う操作に使用する。
@@ -33,19 +33,19 @@ public:
 
 	//! @brief スロットに対して左クリックしたときの操作。
 	//! @param slotNo スロット番号
-	void LClickSlot( unsigned slotNo );
+	//! @param cursor[in, out] カーソルが持っているアイテム。
+	void LClickSlot( unsigned slotNo, std::unique_ptr<ItemStack>& cursor );
 
 	//! @brief スロットに対して右クリックしたときの操作。
 	//! @param slotNo スロット番号
-	void RClickSlot( unsigned slotNo );
+	//! @param cursor[in, out] カーソルが持っているアイテム。
+	void RClickSlot( unsigned slotNo, std::unique_ptr<ItemStack>& cursor );
 
 private:
 	//! インベントリの長さ。
 	static const unsigned m_inventryWidth = 9;
 	std::vector<std::unique_ptr<ItemStack>>  m_slotArray;
 
-	//! カーソルが掴んでいるアイテム。
-	std::unique_ptr<ItemStack> m_grabedItem;
 	CFont m_font;
 };
 

@@ -39,6 +39,8 @@
     <ClCompile Include="BiomeManager.cpp" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
+    <ClCompile Include="CraftingController.cpp" />
+    <ClCompile Include="CraftingInventory.cpp" />
     <ClCompile Include="CraftingTable.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -56,6 +58,7 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="InventoryController.cpp" />
+    <ClCompile Include="InventoryView.cpp" />
     <ClCompile Include="PlayerInventory.cpp" />
     <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -91,9 +94,12 @@
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
+    <ClInclude Include="CraftingController.h" />
+    <ClInclude Include="CraftingInventory.h" />
     <ClInclude Include="CraftingTable.h" />
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="InventorySlot.h" />
+    <ClInclude Include="InventoryView.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
@@ -136,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\CraftingBox.png" />
     <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
     <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
