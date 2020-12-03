@@ -24,6 +24,8 @@ bool Zombie::Start()
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetScale(m_scale);
 	m_skinModelRender->SetRot(m_rot);
+	//ƒŒƒCƒgƒŒƒ‚ƒfƒ‹‰Šú‰»
+	m_raytraceModel.Init(*m_skinModelRender);
 
 	m_characon.SetPosition(m_position);
 

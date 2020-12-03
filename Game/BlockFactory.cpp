@@ -34,10 +34,10 @@ const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
 
 std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	auto block = std::make_unique<Block>();
-	//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
-	block->GetModel().Init( 0, FILE_PATH_ARRAY[blockType] );
-
+	
+	block->InitModel(FILE_PATH_ARRAY[blockType]);
 	block->SetBlockType( blockType );
 	//block->GetCollision().SetIsHurtCollision(true);
+
 	return std::move( block );
 }

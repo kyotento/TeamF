@@ -12,11 +12,13 @@ public:
 
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
-
 	void SetPos( int x, int y, int z );
 
-	GameObj::CInstancingModelRender& GetModel(){
-		return m_model;
+	//! @brief モデルを初期化
+	void InitModel(const wchar_t* filePath) {
+		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
+		m_model.Init(0, filePath);
+		m_raytraceModel.Init(m_model);
 	}
 
 	//! @brief ブロックの種類を設定。
@@ -51,6 +53,8 @@ public:
 	static constexpr float WIDTH = 140;
 private:
 	GameObj::CInstancingModelRender m_model;
+	CRayTracingModelRender m_raytraceModel;
+
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 

@@ -33,6 +33,8 @@ void DropItem::Drop(World* world)
 	m_model = NewGO<GameObj::CSkinModelRender>();
 	m_model->Init(BlockFactory::GetModelPath(m_state));		//モデルの初期化。
 	m_model->SetScale(CVector3::One() * 0.25f);
+	//レイトレモデル。
+	m_raytraceModel.Init(*m_model);
 
 	//当たり判定。
 	m_colScale = CVector3::One() * Block::WIDTH * 0.25f;	//スケールをブロックの1/4に。

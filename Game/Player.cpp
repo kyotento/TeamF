@@ -45,6 +45,8 @@ bool Player::Start()
 	m_skinModelRender->Init(L"Resource/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetRot(m_rotation);
+	//レイトレモデル初期化
+	m_raytraceModel.Init(*m_skinModelRender);
 
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);

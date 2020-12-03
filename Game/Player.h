@@ -283,6 +283,7 @@ private:
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
+	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
