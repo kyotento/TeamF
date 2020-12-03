@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Node.h"
-#include "GUIManager.h"
 #include "ClickEvent.h"
 #include "KeyEvent.h"
+#include "GUIManager.h"
 
 namespace GUI{
 
@@ -50,5 +50,11 @@ namespace GUI{
 			childe->ReciveClickEvent( eventOnMe );
 		}
 
+	}
+	RootNode::RootNode(){
+		GUIManager::Instance().AddRoot( this );
+	}
+	RootNode::~RootNode(){
+		GUIManager::Instance().RemoveRoot( this );
 	}
 }

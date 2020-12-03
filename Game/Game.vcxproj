@@ -55,6 +55,7 @@
     <ClCompile Include="BiomeManager.cpp" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
+    <ClCompile Include="CraftingTable.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
@@ -71,7 +72,8 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="InventoryController.cpp" />
-    <ClCompile Include="InventoryGUI.cpp" />
+    <ClCompile Include="PlayerInventory.cpp" />
+    <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemImage.cpp" />
     <ClCompile Include="ItemStack.cpp" />
@@ -82,6 +84,9 @@
     <ClCompile Include="PlayerParameter.cpp" />
     <ClCompile Include="RandomMapMaker.cpp" />
     <ClCompile Include="SimpleMoveObj.cpp" />
+    <ClCompile Include="Recipe.cpp" />
+    <ClCompile Include="RecipeFiler.cpp" />
+    <ClCompile Include="RecipeManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DX12_Debug|x64'">Create</PrecompiledHeader>
@@ -104,7 +109,9 @@
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
+    <ClInclude Include="CraftingTable.h" />
     <ClInclude Include="InventoryController.h" />
+    <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
@@ -119,7 +126,7 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
-    <ClInclude Include="InventoryGUI.h" />
+    <ClInclude Include="PlayerInventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemStack.h" />
     <ClInclude Include="ItemType.h" />
@@ -130,6 +137,9 @@
     <ClInclude Include="RandomMapMaker.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Chunk.h" />
+    <ClInclude Include="Recipe.h" />
+    <ClInclude Include="RecipeFiler.h" />
+    <ClInclude Include="RecipeManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimpleMoveObj.h" />
     <ClInclude Include="stdafx.h" />
@@ -350,10 +360,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ImageContentTask>
       <ContentOutput>Resource\spriteData\%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <Link>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>jansson_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX12_Debug|Win32'">
     <ClCompile>
@@ -361,10 +376,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ImageContentTask>
       <ContentOutput>Resource\spriteData\%(Filename).dds</ContentOutput>
     </ImageContentTask>
+    <Link>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -375,11 +394,14 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DemolisherWeapon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>jansson_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <MeshContentTask>
       <ContentOutput>$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
@@ -398,11 +420,13 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>DW_DX12;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;DemolisherWeapon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <MeshContentTask>
       <ContentOutput>$(ProjectDir)\Resource\modelData\%(Filename).cmo</ContentOutput>
@@ -421,10 +445,13 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DW_MASTER;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ImageContentTask>
       <ContentOutput>Resource\spriteData\%(Filename).dds</ContentOutput>
@@ -457,10 +484,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DW_MASTER;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ImageContentTask>
       <ContentOutput>Resource\spriteData\%(Filename).dds</ContentOutput>
@@ -496,12 +525,15 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>DW_MASTER;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;DemolisherWeapon.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>jansson.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)\Resource\spriteData\%(Filename).dds</ContentOutput>
@@ -550,6 +582,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\Include;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Photon-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/LoadBalancing-cpp/inc;..\..\DemolisherWeapon/DemolisherWeapon/Photon/;..\..\DemolisherWeapon/DemolisherWeapon/Photon/Common-cpp/inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\jansson_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SupportJustMyCode>false</SupportJustMyCode>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -560,6 +593,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxguid.lib;DemolisherWeapon.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>.\library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ImageContentTask>
       <ContentOutput>$(ProjectDir)\Resource\spriteData\%(Filename).dds</ContentOutput>

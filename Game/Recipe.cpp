@@ -1,0 +1,17 @@
+#include "stdafx.h"
+#include "Recipe.h"
+
+Recipe::Recipe( int width, int height, const std::vector<int>& itemArray, const ItemStack& result ):
+	m_widthHeight(width, height), m_itemArray(itemArray), m_result(result){}
+
+Recipe::~Recipe(){}
+
+bool Recipe::operator==( const Recipe & rhs ){
+	return m_widthHeight == rhs.m_widthHeight && m_result == rhs.m_result && LightEquals(rhs);
+}
+
+bool Recipe::LightEquals( const Recipe & rhs ){
+	const auto& l = m_itemArray;
+	const auto& r = rhs.m_itemArray;
+	return std::equal( l.begin(), l.end(), r.begin(), r.end() );
+}
