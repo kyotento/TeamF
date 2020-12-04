@@ -6,26 +6,18 @@
 namespace GUI::Controller{
 	CraftingController::CraftingController(
 		Inventory & inventory, Inventory& craftingSlots, std::unique_ptr<ItemStack>& grabed ) :
-		m_playerInventory( inventory ), m_craftingSlots(craftingSlots), m_grabed( grabed ){
+		InventoryController(craftingSlots, grabed), m_playerInventory( inventory ){
 
 	}
 
 	CraftingController::~CraftingController(){
-		for( auto& item : m_craftingSlots ){
+		//GUIを閉じたときにクラフトテーブルのアイテムを返却する。
+		for( auto& item : m_inventory ){
 			m_playerInventory.AddItem( item );
 		}
 	}
 
 	void CraftingController::OnClickSlot( Event::ClickEvent & event, unsigned slotNo ){
-		using ClickType = Event::ClickEvent::ClickType;
-
-		switch( event.GetClickType() ){
-		case ClickType::LEFT:
-			m_craftingSlots.LClickSlot( slotNo, m_grabed );
-			break;
-		case ClickType::RIGHT:
-			m_craftingSlots.RClickSlot( slotNo, m_grabed );
-			break;
-		}
+		InventoryController::OnClickSlot( event, slotNo );
 	}
 }

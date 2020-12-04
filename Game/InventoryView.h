@@ -16,7 +16,7 @@ namespace GUI{
 	public:
 		InventoryView( Inventory& playerInventory, const wchar_t* spritePath);
 
-		~InventoryView();
+		virtual ~InventoryView();
 
 		//! @brief GUIManager ‚ªŒÄ‚Ô•`‰æŠÖ”B
 		void Draw( const CVector2& pos, const CVector2& parentScale ) override;

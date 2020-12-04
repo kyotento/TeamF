@@ -1,4 +1,5 @@
 #pragma once
+#include "InventoryController.h"
 
 class Inventory;
 class ItemStack;
@@ -10,10 +11,10 @@ namespace GUI{
 	}
 
 	namespace Controller{
-		//TODO このクラスはあのクラスから継承すべき
+
 		//! @brief クラフトインベントリの操作を行うクラス。
 		//! @author Takayama
-		class CraftingController{
+		class CraftingController : public InventoryController{
 		public:
 			CraftingController( Inventory& inventory, Inventory& craftingSlots,
 								std::unique_ptr<ItemStack>& grabed );
@@ -23,11 +24,7 @@ namespace GUI{
 			void OnClickSlot( Event::ClickEvent& event, unsigned slotNo );
 
 		private:
-			std::unique_ptr<ItemStack>& m_grabed;
 			Inventory& m_playerInventory;
-
-			//クラフト用の3×3マスと成果物の1マス。
-			Inventory& m_craftingSlots;
 		};
 
 	}

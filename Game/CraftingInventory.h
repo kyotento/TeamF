@@ -12,7 +12,9 @@ namespace GUI{
 
 	private:
 		//クラフト用の3×3マスと成果物の1マス。
-		Inventory m_craftingSlot;
+		Inventory m_craftingSlots;
+
+		std::unique_ptr<Controller::InventoryController> m_controller;
 	};
 
 }
