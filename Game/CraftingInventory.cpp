@@ -14,7 +14,7 @@ namespace GUI{
 			);
 
 		//上部分のスロットを追加。
-		const CVector2 craftingSlotPoint( 58, 37 );
+		/*const CVector2 craftingSlotPoint( 58, 37 );
 		AddChilde(
 			std::make_unique<InventorySlots>( m_craftingSlot, *controller, 0, craftingSlotPoint, 3, 3 )
 		);
@@ -22,7 +22,7 @@ namespace GUI{
 		AddChilde(
 			std::make_unique<InventorySlots>( m_craftingSlot, *controller, 9, resultSlotPoint, 1, 1 )
 		);
-		InventorySlots( m_craftingSlot, *controller, 9, resultSlotPoint, 1, 1 );
+		InventorySlots( m_craftingSlot, *controller, 9, resultSlotPoint, 1, 1 );*/
 	}
 
 	CraftingInventory::~CraftingInventory(){}

@@ -55,6 +55,14 @@ public:
 	};
 
 	/// <summary>
+	/// プレイヤーの状態を取得。
+	/// </summary>
+	/// <returns>プレイヤーの状態</returns>
+	enPlayerState GetplayerState()const {
+		return m_playerState;
+	}
+
+	/// <summary>
 	/// プレイヤーの右方向を取得。
 	/// </summary>
 	/// <returns>プレイヤーの右方向</returns>
@@ -298,6 +306,7 @@ private:
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
+	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 

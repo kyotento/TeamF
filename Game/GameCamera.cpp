@@ -4,6 +4,13 @@
 #include <math.h> 
 #include "Player.h"
 
+namespace {
+	constexpr float NORMAL_VIEW_ANGLE_DEG = 90.0f;//通常時の視野角(度)
+	constexpr float DASH_VIEW_ANGLE_DEG = 110.0f;//ダッシュ時の視野角(度)
+	constexpr float VIEW_ANGLE_CHANGE_DEG_PER_SEC = 80.0f;//視野角が変化する一秒間の角度
+	constexpr float ROLL_MODORI_DEG_PER_SEC = 300.0f;//ロール回転がもとに戻る一秒間の角度
+}
+
 bool GameCamera::Start()
 {
 	m_position = CVector3(00.0f, 20.0f, 10.0f);
@@ -13,6 +20,7 @@ bool GameCamera::Start()
 	m_camera->SetTarget(m_target);
 	m_camera->SetNear(10.f);
 	m_camera->SetFar( 50000 );
+	m_camera->SetViewAngleDeg(m_viewAngleDeg = NORMAL_VIEW_ANGLE_DEG);
 	SetMainCamera(m_camera);
 	return true;
 }
@@ -27,6 +35,35 @@ void GameCamera::Update()
 	//プレイヤーの回転を持ってくる
 	m_radianY = m_player->GetRadianY();
 	m_radianXZ = m_player->GetRadianXZ();
+
+	//ダッシュ中は視野角が広がる
+	if (m_player->GetplayerState() == Player::enPlayerState::enPlayerState_run) {
+		m_viewAngleDeg = min(m_viewAngleDeg + GetDeltaTimeSec() * VIEW_ANGLE_CHANGE_DEG_PER_SEC, DASH_VIEW_ANGLE_DEG);
+	}
+	else {
+		m_viewAngleDeg = max(m_viewAngleDeg - GetDeltaTimeSec() * VIEW_ANGLE_CHANGE_DEG_PER_SEC * 2.0f, NORMAL_VIEW_ANGLE_DEG);
+	}
+	m_camera->SetViewAngleDeg(m_viewAngleDeg);
+
+	//カメラロール回転
+	if (!m_isRollLock) {
+		//減衰
+		float rollPow = ROLL_MODORI_DEG_PER_SEC * GetDeltaTimeSec();
+		if (abs(m_rollDeg) <= rollPow) {
+			m_rollDeg = 0.0f;
+		}
+		else {
+			m_rollDeg = (abs(m_rollDeg) - rollPow) * (m_rollDeg < 0.0f ? -1.0f : 1.0f);
+		}
+	}
+	{
+		//回転
+		CQuaternion rot;
+		rot.SetRotationDeg(m_camera->GetFront(), m_rollDeg);
+		CVector3 up = CVector3::Up();
+		rot.Multiply(up);
+		m_camera->SetUp(up);
+	}
 
 	//カメラのモードに応じて処理を分岐
 	switch (m_mode)

@@ -8,6 +8,7 @@
 #include "World.h"
 #include "PlayerInventory.h"
 #include "BlockFactory.h"
+#include "DamegeScreenEffect.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -45,6 +46,8 @@ bool Player::Start()
 	m_skinModelRender->Init(L"Resource/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetRot(m_rotation);
+	//レイトレモデル初期化
+	m_raytraceModel.Init(*m_skinModelRender);
 
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
@@ -512,6 +515,30 @@ void Player::TakenDamage(int AttackPow)
 {
 	if (m_hp > 0) {			//被弾する。
 		m_hp -= AttackPow;
+
+		//カメラ回転
+		if (m_hp <= 0) {
+			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
+		}
+		else {
+			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 25.0f : -25.0f);
+		}
+
+		//ダメージエフェクト
+		NewGO<DamegeScreenEffect>();
+
+		//ダメージボイス
+		SuicideObj::CSE* voice;
+		if (m_hp <= 0) {
+			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
+		}
+		else if (CMath::RandomZeroToOne() > 0.5f) {
+			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
+		}
+		else {
+			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
+		}
+		voice->Play();
 	}
 	if(m_hp <= 0){			//HPを0未満にしない。
 		m_hp = 0;

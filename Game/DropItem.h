@@ -46,6 +46,7 @@ private:
 	void Distance();
 private:
 	GameObj::CSkinModelRender* m_model;
+	CRayTracingModelRender m_raytraceModel;
 
 	int m_number = 0;
 	int m_rotAmount = 0;			//âÒì]ó ÅB

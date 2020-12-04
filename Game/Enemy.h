@@ -102,6 +102,7 @@ protected:
 	CCharacterControllerType2 m_characon;						//キャラコン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
+	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
 	Player* m_player = nullptr;									//プレイヤー。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 

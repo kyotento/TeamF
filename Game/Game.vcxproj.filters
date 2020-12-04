@@ -119,6 +119,9 @@
     <ClCompile Include="PlayerInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="DamegeScreenEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
     <ClCompile Include="CraftingInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
@@ -260,6 +263,9 @@
     <ClInclude Include="PlayerInventory.h">
       <Filter>GUI\View</Filter>
     </ClInclude>
+    <ClInclude Include="DamegeScreenEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
     <ClInclude Include="CraftingInventory.h">
       <Filter>GUI\View</Filter>
     </ClInclude>
@@ -333,6 +339,9 @@
     </Filter>
     <Filter Include="GUI\View">
       <UniqueIdentifier>{9abd8ce1-698b-4bf9-9b52-2d5e95c62285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{a7abecb8-28fc-49d8-94af-40a773d1f8b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

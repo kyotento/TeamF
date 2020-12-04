@@ -46,7 +46,7 @@ private:
 	CVector2 m_scPos[m_buttonNum] = {CVector2::Zero()};		//スクリーン空間座標左上。
 	CVector2 m_scPos2[m_buttonNum] = {CVector2::Zero()};		//スクリーン空間座標右下。
 
-	CSpriteRender m_spriteRneder[m_buttonNum];
+	GameObj::CSpriteRender m_spriteRneder[m_buttonNum];
 
 	//ボタンのノードリスト。
 //	std::unordered_set<Node*> m_buttons;
