@@ -55,6 +55,14 @@ public:
 	};
 
 	/// <summary>
+	/// プレイヤーの状態を取得。
+	/// </summary>
+	/// <returns>プレイヤーの状態</returns>
+	enPlayerState GetplayerState()const {
+		return m_playerState;
+	}
+
+	/// <summary>
 	/// プレイヤーの右方向を取得。
 	/// </summary>
 	/// <returns>プレイヤーの右方向</returns>

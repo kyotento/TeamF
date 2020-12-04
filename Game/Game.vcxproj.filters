@@ -119,6 +119,7 @@
     <ClCompile Include="PlayerInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="DamegeScreenEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -251,6 +252,7 @@
     <ClInclude Include="PlayerInventory.h">
       <Filter>GUI\View</Filter>
     </ClInclude>
+    <ClInclude Include="DamegeScreenEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

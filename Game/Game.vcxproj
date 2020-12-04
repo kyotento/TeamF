@@ -56,6 +56,7 @@
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
     <ClCompile Include="CraftingTable.cpp" />
+    <ClCompile Include="DamegeScreenEffect.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="ChunkFiler.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
     <ClInclude Include="CraftingTable.h" />
+    <ClInclude Include="DamegeScreenEffect.h" />
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="ItemImage.h" />
