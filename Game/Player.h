@@ -8,7 +8,7 @@ class World;
 class GameCamera;
 class Item;
 class GameMode;
-
+class ItemDisplay;
 namespace GUI{
 	class InventoryGUI;
 }
@@ -75,6 +75,11 @@ public:
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
 		return m_position;
+	}
+
+	//! @brief 回転を取得。
+	CQuaternion GetRot() const {
+		return m_rotation;
 	}
 
 	//! @brief 座標を設定。
@@ -235,6 +240,10 @@ private:
 	/// </summary>
 	void FlyTheRay();
 
+	/// <summary>
+	/// 右手表示の更新してます。
+	/// </summary>
+	void ItemDisplayUpdate();
 
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
@@ -291,6 +300,6 @@ private:
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
 	World* m_world = nullptr;                                   //ワールド。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
-
+	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
 };
 

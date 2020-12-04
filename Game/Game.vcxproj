@@ -57,6 +57,7 @@
     <ClCompile Include="InventoryController.cpp" />
     <ClCompile Include="InventoryGUI.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemDisplay.cpp" />
     <ClCompile Include="ItemImage.cpp" />
     <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="main.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
     <ClInclude Include="InventoryController.h" />
+    <ClInclude Include="ItemDisplay.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
