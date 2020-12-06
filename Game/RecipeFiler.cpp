@@ -34,9 +34,10 @@ private:
 };
 
 void RecipeFiler::LoadRecipe( RecipeManager & rm ){
+
 	using namespace std::filesystem;
 
-	path recipeDir( "./Recipes" );
+	path recipeDir = m_folder;
 
 	//レシピファイルをすべて処理。
 	for( directory_iterator itr( recipeDir ), end; itr != end; itr++ ){
@@ -97,9 +98,9 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 						error( "typeには文字列を指定してください。" );
 					}
 
-					const char* typeStr = json_string_value( jObj );
+					const char* typeStr = json_string_value( type );
 
-					if( strcmp( typeStr, "crafting_shaped" ) ){
+					if( strcmp( typeStr, "crafting_shaped" ) == 0 ){
 						//TODO クラフトタイプを設定する。
 					} else{
 						error( "typeが不正です。" );
@@ -122,7 +123,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 					json_t *value;
 					//全キーをループ。
 					json_object_foreach( keyObj, key, value ){
-						if( json_is_integer( value ) ){
+						if( json_is_integer( value ) == false ){
 							error( "キーの値は整数を指定してください。" );
 						}
 						if( key[0] == '\0' || key[1] != '\0' ){
@@ -176,11 +177,11 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 							}
 						}
 						//レシピの幅を更新。
-						width = max( width, col + 1 );
+						width = max( width, col);
 					}
 
 					//レシピの高さを更新。
-					height = max( height, index + 1 );
+					height = max( height, index );
 				}
 
 				//成果物の読み込み
@@ -203,4 +204,5 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 			}
 		}
 	}
+
 }

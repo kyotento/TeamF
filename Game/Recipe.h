@@ -18,8 +18,8 @@ public:
 		return !(operator==( rhs ));
 	}
 
-	//! @brief 幅、高さ、成果物は無視して、アイテム配列だけを比較して同じかどうかを返す。
-	bool LightEquals( const Recipe& rhs );
+	//! @brief アイテム配列が同じかどうか比較する。
+	bool ArrayEquals(const std::vector<int>& array );
 
 	//! @brief レシピの幅と高さを取得。
 	//! @details std::pair の第1要素が幅、第2要素が高さ。

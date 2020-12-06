@@ -13,7 +13,7 @@ Item& Item::GetItem( unsigned id ){
 			m_array[enCube_IronOre] = Item( enCube_IronOre, L"鉄鉱石", 64 , model(enCube_IronOre));
 			m_array[enCube_GoldOre] = Item( enCube_GoldOre, L"金鉱石", 64, model( enCube_GoldOre ) );
 			m_array[enItem_GoldenPickaxe] = 
-				Item( enItem_GoldenPickaxe, L"金のツルハシ", 1, L"Resource/spriteData/Golden_Pickaxe.dds");
+				Item( enItem_GoldenPickaxe, L"金のツルハシ", 16, L"Resource/spriteData/Golden_Pickaxe.dds");
 			m_array[enItem_DiamondHoe] =
 				Item( enItem_DiamondHoe, L"ダイヤのクワ", 16, L"Resource/spriteData/Diamond_Hoe.dds" );
 		}

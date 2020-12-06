@@ -6,14 +6,8 @@
     " # "
   ],
   "key": {
-    "#": {
-      "item": "minecraft:stick"
-    },
-    "X": {
-      "item": "minecraft:dirt"
-    }
+    "#": 11,
+    "X": 12
   },
-  "result": {
-    "item": "minecraft:diamond_pickaxe"
-  }
+  "result": 12
 }

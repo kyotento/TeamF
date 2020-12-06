@@ -64,7 +64,7 @@ bool Player::Start()
 
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
-	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_GoldenPickaxe ) );
+	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_GoldenPickaxe ) ,16);
 	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_DiamondHoe ), 16 );
 	auto item3 = std::make_unique<ItemStack>( Item::GetItem( enCube_Grass ), 5 );
 	auto item4 = std::make_unique<ItemStack>( Item::GetItem( enCube_GoldOre ), 5 );

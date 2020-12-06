@@ -3,6 +3,7 @@
 class RecipeManager;
 
 class RecipeFiler{
+public:
 
 	void SetFolder( std::filesystem::path folderPath ){
 		std::filesystem::create_directories( folderPath );
