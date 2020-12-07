@@ -60,24 +60,24 @@ void PlayerParameter::SetParamFound()
 		m_spriteRenderArmor[i].SetScale(m_scale);
 	}
 	//手持ちアイテム基盤。
-	m_spriteRenderOnHand = NewGO<CSpriteRender>();
+	m_spriteRenderOnHand = NewGO<GameObj::CSpriteRender>();
 	m_spriteRenderOnHand->Init(L"Resource/spriteData/OnHandInventory.dds");
 	m_spriteRenderOnHand->SetPos({ 0.5f, 0.95f });
 	m_spriteRenderOnHand->SetScale(1.7f);
 	//経験値基盤。
-	m_spriteRenderExp = NewGO<CSpriteRender>();
+	m_spriteRenderExp = NewGO<GameObj::CSpriteRender>();
 	m_spriteRenderExp->Init(L"Resource/spriteData/Experience_Found.dds");
 	m_spriteRenderExp->SetPos({ 0.5f,0.89f });
 	m_spriteRenderExp->SetScale(m_expScale);
 	//経験値ゲージ。
-	m_spriteRenderExpGauge = NewGO<CSpriteRender>();
+	m_spriteRenderExpGauge = NewGO<GameObj::CSpriteRender>();
 	m_spriteRenderExpGauge->Init(L"Resource/spriteData/Experience_Gauge.dds");
 	m_spriteRenderExpGauge->SetPos({ 0.288f,0.89f });
 	m_spriteRenderExpGauge->SetScale(m_expScale);
 	m_spriteRenderExpGauge->SetPivot({ 0.f, 0.5f });
 	m_spriteRenderExpGauge->SetColor({ 0.000000000f, 0.501960814f, 0.000000000f, 0.20000000f });		//緑色の半透明画像に。
 	//アイテムセレクト画像。
-	m_spriteRenderSelectItem = NewGO<CSpriteRender>();
+	m_spriteRenderSelectItem = NewGO<GameObj::CSpriteRender>();
 	m_spriteRenderSelectItem->Init(L"Resource/spriteData/SelectInventory.dds");
 	m_player->SetSelectItemNum(1);					//一番目のアイテムを選択している。
 	m_sItemPos = { 0.308f,0.95f };		//todo メモ　一つ移動するごとに0.048。

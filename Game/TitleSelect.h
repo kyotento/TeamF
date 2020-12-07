@@ -24,7 +24,7 @@ private:
 
 	CVector2 m_position[m_buttonNum] = { CVector2::Zero() };
 
-	CSpriteRender m_spriteRneder[m_buttonNum];
+	GameObj::CSpriteRender m_spriteRneder[m_buttonNum];
 
 	//ボタンのノードリスト。
 	std::unordered_set<Node*> m_buttons;

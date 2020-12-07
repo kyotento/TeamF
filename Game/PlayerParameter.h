@@ -82,13 +82,13 @@ private:
 	CVector2 m_armorPos[m_paramNum] = { CVector2::Zero() };			//防御力画像の座標。
 	CVector2 m_sItemPos = CVector2::Zero();							//アイテムセレクト座標。
 
-	CSpriteRender m_spriteRenderHP[m_paramNum];				//HP画像。
-	CSpriteRender m_spriteRenderStamina[m_paramNum];		//スタミナ画像。
-	CSpriteRender m_spriteRenderArmor[m_paramNum];			//防御力画像。
-	CSpriteRender* m_spriteRenderOnHand = nullptr;			//手持ちアイテム画像基盤。
-	CSpriteRender* m_spriteRenderExp = nullptr;				//経験値。
-	CSpriteRender* m_spriteRenderExpGauge = nullptr;		//経験値(ゲージの増減)。
-	CSpriteRender* m_spriteRenderSelectItem = nullptr;		//度のアイテムを選択しているか。
+	GameObj::CSpriteRender m_spriteRenderHP[m_paramNum];				//HP画像。
+	GameObj::CSpriteRender m_spriteRenderStamina[m_paramNum];		//スタミナ画像。
+	GameObj::CSpriteRender m_spriteRenderArmor[m_paramNum];			//防御力画像。
+	GameObj::CSpriteRender* m_spriteRenderOnHand = nullptr;			//手持ちアイテム画像基盤。
+	GameObj::CSpriteRender* m_spriteRenderExp = nullptr;				//経験値。
+	GameObj::CSpriteRender* m_spriteRenderExpGauge = nullptr;		//経験値(ゲージの増減)。
+	GameObj::CSpriteRender* m_spriteRenderSelectItem = nullptr;		//度のアイテムを選択しているか。
 
 	Player* m_player = nullptr;			//プレイヤー。
 	CFont m_font;						//フォント。

@@ -13,7 +13,7 @@ public:
 
 private:
 
-	CSpriteRender* m_spriteRender = nullptr;
+	GameObj::CSpriteRender* m_spriteRender = nullptr;
 
 //	TitleSelect* m_titleSelect = nullptr;		//タイトルのボタン。
 	std::unique_ptr<TitleSelect> m_titleSelect2;

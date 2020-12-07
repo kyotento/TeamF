@@ -6,6 +6,7 @@
 namespace {
 	const float m_pulsPosY = 75.0f;				//Yは別で足してずらします。
 	const float m_playerPulsPosX = 1.0f;		//Xはプレイヤーのほうに足します。
+	const float m_pulsPosZ = 50.0f;			//こいつを実験台にしてます。
 	const float m_mullPos = 50.0f;				//ひとまず前ベクトルの数値を大きくする変数。
 	float m_degreeY = 0.0f;
 	const float maxDegreeY = 70.0f;				//Y軸の回転の最大値。
@@ -72,17 +73,18 @@ void ItemDisplay::Follow()
 	else if (m_degreeY > maxDegreeY) {
 		m_degreeY = maxDegreeY;
 	}
-	m_forward = m_gameCamera->GetPos();
-	auto m_rot = CMatrix::Identity();
-	m_rot.MakeRotationFromQuaternion(m_rotation);
-	m_forward.x = m_rot.m[2][0];
-	m_forward.y = m_rot.m[2][1];
-	m_forward.z = m_rot.m[2][2];
+	//m_forward = m_gameCamera->GetPos();
+	//auto m_rot = CMatrix::Identity();
+	//m_rot.MakeRotationFromQuaternion(m_rotation);
+	//m_forward.x = m_rot.m[2][0];
+	//m_forward.y = m_rot.m[2][1];
+	//m_forward.z = m_rot.m[2][2];
 
 	//みぎ前方に置きたい。
-	//m_forward = m_player->GetFront();
+	m_forward = m_player->GetFront();
 	m_forward *= m_mullPos;
 	m_forward.y += m_pulsPosY;
+	m_forward.z += m_pulsPosZ;
 	//足してます。
 	m_position = m_position + m_forward;
 	//座標をモデルへ。

@@ -49,6 +49,6 @@ private:
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//モデルを回転させる。
 	Player* m_player = nullptr;									//プレイヤーのインスタンス。
-	GameCamera* m_gameCamera;									//ゲームカメライェア。
+	GameCamera* m_gameCamera = nullptr;									//ゲームカメライェア。
 };
 

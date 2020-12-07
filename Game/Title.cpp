@@ -14,7 +14,7 @@ Title::~Title()
 
 bool Title::Start()
 {
-	m_spriteRender = NewGO<CSpriteRender>();
+	m_spriteRender = NewGO<GameObj::CSpriteRender>();
 	m_spriteRender->Init(L"Resource/spriteData/Title.dds");
 	m_spriteRender->SetPos(CVector3::Zero());
 	m_spriteRender->SetPivot(CVector2::Zero());
