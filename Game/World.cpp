@@ -110,7 +110,6 @@ void World::PostUpdate(){
 
 void World::SetPlayer( Player* player, bool recursive ){
 	m_player = player;
-	AddEntity( player );
 	if( recursive )
 		player->SetWorld( this, false );
 }
@@ -245,11 +244,11 @@ void World::DeleteBlock(const CVector3& pos)
 
 	//ブロックをポップ。
 	{
-		DropItem* dropItem = NewGO<DropItem>();		//ドロップアイテムクラスを取得。
+		DropItem* dropItem = NewGO<DropItem>(this);		//ドロップアイテムクラスを取得。
 
 		dropItem->SetEnCube( GetBlock( x, y, z )->GetBlockType() );		//ブロックの種類を代入。
 		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) );
-		dropItem->Drop( this );
+		dropItem->Drop();
 	}
 	x = Chunk::CalcInChunkCoord(x);
 	z = Chunk::CalcInChunkCoord(z);

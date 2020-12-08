@@ -1,11 +1,12 @@
 //! @file
 #pragma once
 
+class World;
 //! @brief ブロックではない、動物や、アイテム、矢などの基底クラス。
 //! @author Takayama
 class Entity : public IGameObject{
 public:
-	Entity();
+	Entity(World* world);
 
 	virtual ~Entity();
 
@@ -14,5 +15,10 @@ public:
 
 	//! @brief 座標を設定。
 	virtual void SetPos( const CVector3& pos ) = 0;
+
+protected:
+
+	World* m_world = nullptr;
+
 };
 

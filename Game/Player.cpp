@@ -9,6 +9,7 @@
 #include "PlayerInventory.h"
 #include "BlockFactory.h"
 #include "DamegeScreenEffect.h"
+#include "Enemy.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -23,8 +24,9 @@ namespace {
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 }
 
-Player::Player() : m_inventory(36)
+Player::Player(World* world) : Entity(world), m_inventory(36)
 {
+	world->SetPlayer(this);
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
@@ -100,6 +102,8 @@ void Player::Update()
 		OpenInventory();
 		//前方にRayを飛ばす。
 		FlyTheRay();
+		//攻撃。
+		Attack();
 
 	} else if( GetKeyDown( 'E' ) ){
 		//GUIが開かれているときに、Eが押されたらGUIを閉じる。
@@ -112,6 +116,7 @@ void Player::Update()
 	Test();
 }
 
+//とりまのこす。
 void Player::SetWorld(World* world, bool recursive) {
 	m_world = world;
 	if (recursive)
@@ -410,6 +415,34 @@ void Player::Headbang()
 	m_headBone->SetRotationOffset(m_headBoneRot);
 }
 
+//攻撃処理。
+void Player::Attack()
+{
+	if (GetKeyDown(VK_LBUTTON)) {
+		//攻撃判定の座標。
+		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
+		CQuaternion rot;						//計算用使い捨て。
+		rot.SetRotationDeg(m_right, m_degreeXZ);
+		rot.Multiply(frontAddRot);
+
+		//CVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
+		//CVector3 endPoint(startPoint + frontAddRot * Block::WIDTH * 2);		//レイの終点。
+
+		CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
+
+		//攻撃判定用の当たり判定を作成。
+		SuicideObj::CCollisionObj* attackCol = NewGO<SuicideObj::CCollisionObj>();
+		attackCol->CreateBox(colPos, m_rotation, Block::WIDTH);
+		attackCol->SetTimer(0);		//寿命１フレーム。
+		attackCol->SetCallback([&](SuicideObj::CCollisionObj::SCallbackParam& param) {
+			if (param.EqualName(L"CEnemy")) {			//名前検索。
+				Enemy* enemy = param.GetClass<Enemy>();
+				enemy->TakenDamage(m_attackPower);
+			}
+		});
+	}
+}
+
 //インベントリを開く。
 void Player::OpenInventory()
 {
@@ -478,7 +511,6 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。
 	if (GetKeyDown(VK_LBUTTON)) {
-//		m_world->GetBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH)->GetBlockType();		//ブロックの種類を取得。
 		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 }

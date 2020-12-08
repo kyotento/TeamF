@@ -5,8 +5,12 @@
 #include "BlockFactory.h"
 #include "World.h"
 
+DropItem::DropItem(World* world) : Entity(world)
+{
+
+}
+
 DropItem::~DropItem(){
-	m_world->RemoveEntity( this );
 	DeleteGO( m_model );
 }
 
@@ -27,7 +31,7 @@ void DropItem::Update()
 }
 
 //アイテムドロップ。
-void DropItem::Drop(World* world)
+void DropItem::Drop()
 {
 	//モデル。
 	m_model = NewGO<GameObj::CSkinModelRender>();
@@ -43,9 +47,6 @@ void DropItem::Drop(World* world)
 
 	// TODO: アイテムが出現時に跳ねる方向。Fall()とあわせて調整してください。(ランダムな方向に跳ねるとか)
 	m_velocity = CVector3( 0, 1000, 0 );
-
-	m_world = world;
-	world->AddEntity( this );
 }
 
 //落下処理。

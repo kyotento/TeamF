@@ -2,7 +2,7 @@
 #include "Zombie.h"
 
 
-Zombie::Zombie()
+Zombie::Zombie(World* world) : Enemy(world)
 {
 }
 
@@ -29,6 +29,7 @@ bool Zombie::Start()
 
 	m_characon.SetPosition(m_position);
 
+	m_hp = 20;					//‘Ì—Í‚Ìİ’èB
 	m_attackPow = 1;			//UŒ‚—Í‚Ìİ’èB
 
 	return true;
@@ -48,8 +49,10 @@ void Zombie::Update()
 	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
 		Attack();				//UŒ‚B
 	}
+	Death();		//€–S”»’èB
 }
 
+//UŒ‚ˆ—B
 void Zombie::Attack()
 {
 	if (m_enemyState == enEnemy_attack) {	//UŒ‚ó‘Ô‚Ì‚Æ‚«B
@@ -71,6 +74,15 @@ void Zombie::Attack()
 	}	
 	else {			//UŒ‚ó‘Ô‚Å‚È‚¢‚Æ‚«B
 		m_damageTimer = 0;
+	}
+}
+
+//€–S”»’èB
+void Zombie::Death()
+{
+	if (m_hp <= 0) {
+		MessageBox(nullptr, "€", "•ñ", MB_ICONASTERISK);
+		DeleteGO(this);
 	}
 }
 

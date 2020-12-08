@@ -1,14 +1,21 @@
 #include "stdafx.h"
 #include "Enemy.h"
 
-Enemy::Enemy()
+Enemy::Enemy(World* world) : Entity(world)
 {
 	//スキンモデルを生成。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_characonPos = m_position;
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos);
-
+	//被弾判定用コリジョン。
+	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
+	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
+	m_damageCollision->CreateCapsule(colPos, m_rot, m_characonRadius, m_characonHeight);
+	m_damageCollision->SetTimer(enNoTimer);				//寿命無し。
+	m_damageCollision->SetName(L"CEnemy");
+	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
+	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
 	//プレイヤーのインスタンスを取得。
 	if (m_player == nullptr) {			
 		m_player = FindGO<Player>(L"player");		
@@ -38,9 +45,12 @@ void Enemy::Tracking()
 
 	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
 
+		//モデル、キャラコン、当たり判定用の座標を更新。
 		m_characonMove = m_direction * m_moveSpeed;
 		m_position = m_characon.Execute(m_characonMove);
 		m_skinModelRender->SetPos(m_position);
+		CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
+		m_damageCollision->SetPosition(colPos);
 
 		m_enemyState = enEnemy_tracking;			//追跡状態に。
 	}
@@ -87,6 +97,19 @@ void Enemy::Jump()
 	}
 	else {
 		Fall();
+	}
+}
+
+//被ダメージ処理。
+void Enemy::TakenDamage(int attackDamage)
+{
+	if (m_hp >= 0) {		//HPがあるとき。
+		m_hp -= attackDamage;
+		//体力を0未満にしない。
+		if (m_hp <= 0) {
+			m_hp = 0;
+		}
+		MessageBox(nullptr, "残りHP%d", "攻撃された", MB_ICONASTERISK);
 	}
 }
 

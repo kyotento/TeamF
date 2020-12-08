@@ -16,7 +16,7 @@ namespace GUI{
 class Player : public Entity
 {
 public:
-	Player();
+	Player(World* world);
 	~Player();
 	bool Start() override;
 	void Update() override;
@@ -232,6 +232,11 @@ private:
 	void Headbang();
 
 	/// <summary>
+	/// 攻撃処理。
+	/// </summary>
+	void Attack();
+
+	/// <summary>
 	/// インベントリを開く。
 	/// </summary>
 	void OpenInventory();
@@ -288,6 +293,7 @@ private:
 
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。
+	int m_attackPower = 5;			//攻撃力。
 	int m_defensePower = 15;		//防御力。
 	float m_exp = 5.50f;			//経験値。
 	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
@@ -312,9 +318,7 @@ private:
 
 	Bone* m_headBone;												//頭の骨。
 
-	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
-	World* m_world = nullptr;                                   //ワールド。
+	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 
 };
-

@@ -20,7 +20,7 @@ public:
 
 	//! @brief Player をセットする。
 	//! @param recursive trueなら Player::SetWorld(this, false) も呼び出す。
-	void SetPlayer( Player* player, bool recursive );
+	void SetPlayer( Player* player, bool recursive = false );
 
 	Player* GetPlayer(){
 		return m_player;

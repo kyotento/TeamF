@@ -3,11 +3,11 @@
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
 #include "GameMode.h"
-
+class World;
 class Enemy : public Entity
 {
 public:
-	Enemy();
+	Enemy(World* world);
 	virtual ~Enemy();
 
 	/// <summary>
@@ -31,6 +31,12 @@ public:
 	/// ジャンプ処理。
 	/// </summary>
 	virtual void Jump();
+
+	/// <summary>
+	/// 被ダメージ処理。
+	/// </summary>
+	/// <param name="attackDamage">攻撃力</param>
+	virtual void TakenDamage(int attackDamage);
 
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
@@ -74,7 +80,8 @@ protected:
 
 	bool flag = false;//かり。
 
-	int m_attackPow = 0;
+	int m_hp = 0;				//体力。
+	int m_attackPow = 0;		//攻撃力。
 
 	const float m_moveSpeed = 100.0f;				//移動速度。
 	const float m_characonRadius = 40.f;			//キャラコンの半径。

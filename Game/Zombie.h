@@ -1,15 +1,17 @@
 #pragma once
 #include "Enemy.h"
 
+class World;
 class Zombie : public Enemy
 {
 public:
-	Zombie();
+	Zombie(World* world);
 	~Zombie();
 
 	bool Start();
 	void Update();
 	void Attack();		//UŒ‚B
+	void Death();		//€–SB
 
 private:
 

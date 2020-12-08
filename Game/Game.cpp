@@ -25,9 +25,8 @@ bool Game::Start()
 	m_gameMode = NewGO<GameMode>();
 	m_gameMode->SetName(L"gamemode");
 
-	m_player = NewGO<Player>();
+	m_player = NewGO<Player>(&m_world);
 	m_player->SetName(L"player");
-	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 
 	m_playerParameter = NewGO<PlayerParameter>();

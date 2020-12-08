@@ -11,12 +11,12 @@ class World;
 class DropItem : public Entity
 {
 public:
-	DropItem() {}
+	DropItem(World* world);
 	~DropItem();
 	bool Start() override;
 	void Update() override;
 
-	void Drop(World* world);		//アイテムドロップ。
+	void Drop();		//アイテムドロップ。
 
 	/// <summary>
 	/// 落下処理。
@@ -61,8 +61,6 @@ private:
 	Box* m_box = nullptr;
 
 	CVector3 m_velocity; //速度
-
-	World* m_world = nullptr; //自分が存在するワールド
 
 	SimpleMoveObj m_collision;//当たり判定。
 };
