@@ -173,8 +173,6 @@
     <ImageContentTask Include="Resource\sprite\Armor_Found.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Half.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Max.png" />
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
     <ImageContentTask Include="Resource\sprite\KariInventory.png" />
     <ImageContentTask Include="Resource\sprite\HP_Half.png" />
@@ -194,7 +192,7 @@
     <ProjectGuid>{6EC7D143-E193-4785-BD3E-BF31C4E185D0}</ProjectGuid>
     <RootNamespace>Game</RootNamespace>
     <ProjectName>Game</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -508,7 +508,7 @@ void Player::FlyTheRay()
 		CVector3 kariY = kariX + frontAddRot * reyLength;
 		DrawLine3D(kariX, kariY, CVector4::Green());
 
-		btCollisionWorld::ClosestRayResultCallback rayRC(startPoint, endPoint);		//レイ情報。
+		ClosestRayResultCallbackForCCollisionObj rayRC(startPoint, endPoint, L"Block");		//レイ情報(ブロックとのみ判定)。
 		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
 		if (rayRC.hasHit()) {		//衝突。
 			InstallAndDestruct(rayRC , frontAddRot);
