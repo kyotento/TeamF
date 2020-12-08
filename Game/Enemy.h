@@ -100,6 +100,7 @@ protected:
 	enEnemyState m_enemyState = enEnemy_num;					//エネミーの状態。
 
 	CCharacterControllerType2 m_characon;						//キャラコン。
+	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
 	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
