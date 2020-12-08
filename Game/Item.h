@@ -19,6 +19,11 @@ public:
 	//! @details ブロックidもアイテムidとして扱うことができる。
 	static Item& GetItem( unsigned id );
 
+	//! @briefアイテムの文字列idからアイテムを取得。
+	//! @param strId EnItem、EnCubeをそのまま文字列にしたもの。
+	//! @exception std::out_of_range 指定されたid文字列が存在しない場合。
+	static Item& GetItem( const std::string& strId ) noexcept(false);
+
 	//! @brief このアイテムのidを取得。
 	unsigned GetID() const{
 		return m_id;

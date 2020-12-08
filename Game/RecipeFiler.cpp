@@ -48,7 +48,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 			path file = ( *itr ).path();
 
 			//大文字小文字を区別せずに拡張子がjsonだと確認。
-			if( _wcsicmp( file.extension().c_str(), L"json" ) ){
+			if( _wcsicmp( file.extension().c_str(), L".json" ) == 0 ){
 
 				//エラーのダイアログを出すオブジェクト。
 				RecipeError error;
@@ -123,14 +123,23 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 					json_t *value;
 					//全キーをループ。
 					json_object_foreach( keyObj, key, value ){
-						if( json_is_integer( value ) == false ){
-							error( "キーの値は整数を指定してください。" );
+						if( json_is_string( value ) == false ){
+							error( "キーの値は文字列を指定してください。" );
 						}
 						if( key[0] == '\0' || key[1] != '\0' ){
 							error( "キーには半角1文字を指定してください。" );
 						}
 
-						keyMap.emplace( key[0], json_integer_value( value ) );
+						//文字列IDを数値IDに変換する。
+						const char* itemStrID = json_string_value( value );
+						int itemIntID;
+						try{
+							itemIntID = Item::GetItem( itemStrID ).GetID();
+						} catch( std::out_of_range ){
+							error( "キーに存在しないアイテムIDが指定されています。" );
+						}
+
+						keyMap.emplace( key[0], itemIntID );
 					}
 				}
 
@@ -191,11 +200,17 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 					if( result == nullptr ){
 						error( "成果物がありません。" );
 					}
-					if( json_is_integer( result ) == false ){
-						error( "成果物には整数を指定してください。" );
+					if( json_is_string( result ) == false ){
+						error( "成果物には文字列を指定してください。" );
 					}
 
-					resultItem = json_integer_value( result );
+					//文字列IDを数値IDに変換する。
+					const char* itemStrID = json_string_value( result );
+					try{
+						resultItem = Item::GetItem( itemStrID ).GetID();
+					} catch( std::out_of_range ){
+						error( "成果物に存在しないアイテムIDが指定されています。" );
+					}
 				}
 
 				//レシピ生成。

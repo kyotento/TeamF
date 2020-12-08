@@ -7,6 +7,10 @@ Item& Item::GetItem( unsigned id ){
 	return ItemDictionary::Instance().GetItem( id );
 }
 
+Item & Item::GetItem( const std::string & strId ){
+	return ItemDictionary::Instance().GetItem( strId );
+}
+
 void Item::Draw( const CVector2 & pos, const CVector2 & scale ){
 	m_image->Draw( pos, scale );
 }

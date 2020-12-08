@@ -64,13 +64,14 @@ namespace GUI::Controller{
 					}
 				}
 			}
-			return;
 		}
 
-		//通常のクリック操作。
-		InventoryController::OnClickSlot( event, slotNo );
+		if( slotNo != resultSlot ){
+			//通常のクリック操作。
+			InventoryController::OnClickSlot( event, slotNo );
+		}
 
-		//クラフト結果を検索。
+		//クラフト結果を検索。成果物スロットを更新する。
 		auto& rm = RecipeManager::Instance();
 
 		int itemArray[9];
@@ -90,6 +91,5 @@ namespace GUI::Controller{
 		auto result = rm.GetResult( itemArray );
 
 		m_inventory.SetItem( 9, std::move( result ) );
-
 	}
 }
