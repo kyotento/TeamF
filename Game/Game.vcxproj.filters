@@ -382,9 +382,6 @@
       <Filter>sprite</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Experience_Found.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
