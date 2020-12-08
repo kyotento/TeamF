@@ -2,7 +2,7 @@
 
 class ItemImage{
 public:
-	ItemImage(bool isModel, const wchar_t* filepath );
+	ItemImage(bool isModel, const std::filesystem::path& filepath );
 
 	void Draw(const CVector2& pos, const CVector2& parentScale );
 

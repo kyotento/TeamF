@@ -76,6 +76,7 @@
     <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="InventoryController.cpp" />
     <ClCompile Include="InventoryView.cpp" />
+    <ClCompile Include="ItemDicitionary.cpp" />
     <ClCompile Include="PlayerInventory.cpp" />
     <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="InventoryView.h" />
     <ClInclude Include="ItemImage.h" />
+    <ClInclude Include="ItemDictionary.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />

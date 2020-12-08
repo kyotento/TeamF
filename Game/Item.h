@@ -9,6 +9,7 @@ class ItemImage;
 //! @details あくまで種類を表すもので、実際のアイテムは ItemStack で扱う。
 //! @author Takayama
 class Item{
+	friend class ItemDictionary;
 public:
 	~Item();
 
@@ -16,7 +17,7 @@ public:
 
 	//! @brief アイテムidからアイテムを取得。
 	//! @details ブロックidもアイテムidとして扱うことができる。
-	static Item& GetItem(unsigned id);
+	static Item& GetItem( unsigned id );
 
 	//! @brief このアイテムのidを取得。
 	unsigned GetID() const{
@@ -39,8 +40,8 @@ public:
 private:
 	Item();
 	Item( Item&& item );
-	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const wchar_t* modelPath );
-	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const wchar_t* spritePath );
+	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const std::filesystem::path& modelPath );
+	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath );
 
 	//! アイテムID
 	unsigned m_id = enCube_None;

@@ -131,6 +131,9 @@
     <ClCompile Include="CraftingController.cpp">
       <Filter>GUI\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="ItemDicitionary.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -275,6 +278,9 @@
     <ClInclude Include="CraftingController.h">
       <Filter>GUI\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="ItemDictionary.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -343,9 +349,6 @@
     <Filter Include="sprite\inventory">
       <UniqueIdentifier>{4e61f4f7-fe08-4c6b-a4f8-91d3ffb6bf9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sprite\items">
-      <UniqueIdentifier>{82d3e195-7fa2-4eea-824f-ae31babb8f39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Block">
       <UniqueIdentifier>{22d57d72-19f3-40d7-bbf8-fdf904499635}</UniqueIdentifier>
     </Filter>
@@ -408,13 +411,7 @@
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Experience_Found.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Title.png">
