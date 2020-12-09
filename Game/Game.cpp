@@ -8,6 +8,8 @@
 #include "PlayerParameter.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
+#include "RecipeFiler.h"
+#include "RecipeManager.h"
 
 Game::Game()
 {
@@ -21,6 +23,11 @@ Game::~Game()
 
 bool Game::Start()
 {
+	//レシピ読み込み
+	RecipeFiler recipeFiler;
+	recipeFiler.SetFolder( L"Resource/recipeData/" );
+	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
 	//必要なクラスの生成。
 	m_gameMode = NewGO<GameMode>();
 	m_gameMode->SetName(L"gamemode");
@@ -33,17 +40,6 @@ bool Game::Start()
 	m_playerParameter->SetPlayerIns(m_player);
 
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
-	//プレイヤーのインベントリを確認するためのアイテム生成だったり。
-
-	/*for (int i = 0; i < 20; i++) {
-		for (int j = 0; j < 20; j++) {
-			std::random_device rand;
-			Drop* drop = NewGO<Drop>();
-			drop->SetEnCube(EnCube(rand() % enCube_Num));
-			drop->SetPosition(CVector3(i, 15, j));
-			drop->SetNumber((rand() % 10) + 1);
-		}
-	}*/
 
 	return true;
 }

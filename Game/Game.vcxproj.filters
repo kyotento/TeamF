@@ -122,6 +122,18 @@
     <ClCompile Include="DamegeScreenEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="CraftingInventory.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryView.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="CraftingController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDicitionary.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -257,6 +269,18 @@
     <ClInclude Include="DamegeScreenEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
+    <ClInclude Include="CraftingInventory.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryView.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingController.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDictionary.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -288,9 +312,6 @@
     </Filter>
     <Filter Include="Biome">
       <UniqueIdentifier>{77a7d1ec-934a-4fb9-ba45-299be3f1194f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Block">
-      <UniqueIdentifier>{22d57d72-19f3-40d7-bbf8-fdf904499635}</UniqueIdentifier>
     </Filter>
     <Filter Include="Camera">
       <UniqueIdentifier>{fc59a94e-4b08-4565-8c8a-b3aef36a21ad}</UniqueIdentifier>
@@ -324,6 +345,12 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{a7abecb8-28fc-49d8-94af-40a773d1f8b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sprite\inventory">
+      <UniqueIdentifier>{4e61f4f7-fe08-4c6b-a4f8-91d3ffb6bf9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Block">
+      <UniqueIdentifier>{22d57d72-19f3-40d7-bbf8-fdf904499635}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -369,9 +396,6 @@
     <ImageContentTask Include="Resource\sprite\stamina_Right.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\KariInventory.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Armor_Max.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
@@ -381,35 +405,49 @@
     <ImageContentTask Include="Resource\sprite\Armor_Half.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Experience_Found.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Experience_Found.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
     <ImageContentTask Include="Resource\sprite\Title.png">
       <Filter>sprite\title</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
-    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
-    <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
-    <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
-    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png">
+      <Filter>sprite</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
+      <Filter>sprite\inventory</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\KariInventory.png">
+      <Filter>sprite\inventory</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\SelectInventory.png">
+      <Filter>sprite\inventory</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\CraftingBox.png">
+      <Filter>sprite\inventory</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
+      <Filter>sprite\items</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
+      <Filter>sprite\items</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

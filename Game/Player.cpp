@@ -41,6 +41,7 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 }
 
+#include "ItemStack.h"
 bool Player::Start()
 {
 	//プレイヤークラスの初期化。
@@ -63,11 +64,16 @@ bool Player::Start()
 	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
 	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
 
-	//インベントリ―の初期化。
-	for (int i = 0; i < inventryWidth; i++) {
-		//m_inventoryList[i] = new Inventory();
-		//m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
-	}
+	//TODO: デバッグ専用
+	//プレイヤーにテスト用アイテムを持たせる。
+	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_Rod ) ,16);
+	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_Gold_Ingot ), 16 );
+	auto item3 = std::make_unique<ItemStack>( Item::GetItem( enCube_Grass ), 5 );
+	auto item4 = std::make_unique<ItemStack>( Item::GetItem( enCube_GoldOre ), 5 );
+	m_inventory.AddItem( item );
+	m_inventory.AddItem( item2 );
+	m_inventory.AddItem( item3 );
+	m_inventory.AddItem( item4 );
 
 	return true;
 }

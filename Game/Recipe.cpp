@@ -7,11 +7,11 @@ Recipe::Recipe( int width, int height, const std::vector<int>& itemArray, const 
 Recipe::~Recipe(){}
 
 bool Recipe::operator==( const Recipe & rhs ){
-	return m_widthHeight == rhs.m_widthHeight && m_result == rhs.m_result && LightEquals(rhs);
+	return m_widthHeight == rhs.m_widthHeight && m_result == rhs.m_result && ArrayEquals(rhs.m_itemArray);
 }
 
-bool Recipe::LightEquals( const Recipe & rhs ){
+bool Recipe::ArrayEquals( const std::vector<int>& array ){
 	const auto& l = m_itemArray;
-	const auto& r = rhs.m_itemArray;
+	const auto& r = array;
 	return std::equal( l.begin(), l.end(), r.begin(), r.end() );
 }

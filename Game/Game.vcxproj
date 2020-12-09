@@ -55,6 +55,8 @@
     <ClCompile Include="BiomeManager.cpp" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
+    <ClCompile Include="CraftingController.cpp" />
+    <ClCompile Include="CraftingInventory.cpp" />
     <ClCompile Include="CraftingTable.cpp" />
     <ClCompile Include="DamegeScreenEffect.cpp" />
     <ClCompile Include="GUIManager.cpp" />
@@ -73,6 +75,8 @@
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="IntRect.cpp" />
     <ClCompile Include="InventoryController.cpp" />
+    <ClCompile Include="InventoryView.cpp" />
+    <ClCompile Include="ItemDicitionary.cpp" />
     <ClCompile Include="PlayerInventory.cpp" />
     <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -110,11 +114,15 @@
     <ClInclude Include="ChunkFiler.h" />
     <ClInclude Include="ChunkFlags.h" />
     <ClInclude Include="CollisionIndex.h" />
+    <ClInclude Include="CraftingController.h" />
+    <ClInclude Include="CraftingInventory.h" />
     <ClInclude Include="CraftingTable.h" />
     <ClInclude Include="DamegeScreenEffect.h" />
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="InventorySlot.h" />
+    <ClInclude Include="InventoryView.h" />
     <ClInclude Include="ItemImage.h" />
+    <ClInclude Include="ItemDictionary.h" />
     <ClInclude Include="KeyEvent.h" />
     <ClInclude Include="CreateOre.h" />
     <ClInclude Include="DebugTimer.h" />
@@ -156,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\CraftingBox.png" />
     <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
     <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
@@ -166,8 +175,6 @@
     <ImageContentTask Include="Resource\sprite\Armor_Found.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Half.png" />
     <ImageContentTask Include="Resource\sprite\Armor_Max.png" />
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png" />
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png" />
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png" />
     <ImageContentTask Include="Resource\sprite\KariInventory.png" />
     <ImageContentTask Include="Resource\sprite\HP_Half.png" />

@@ -1,38 +1,14 @@
 #include "stdafx.h"
 #include "Item.h"
 #include "ItemImage.h"
-#include "BlockFactory.h"
+#include "ItemDictionary.h"
 
 Item& Item::GetItem( unsigned id ){
-	struct ItemArray{
-		ItemArray(){
-			m_array[enCube_Grass] = Item( enCube_Grass, L"ëê", 64, model(enCube_Grass));
-			m_array[enCube_Soil] = Item( enCube_Soil, L"ìy", 64, model(enCube_Soil) );
-			m_array[enCube_Stone] = Item( enCube_Stone, L"êŒ", 64, model(enCube_Stone) );
-			m_array[enCube_OakLeaf] = Item(enCube_OakLeaf, L"ót", 64 , model(enCube_OakLeaf));
-			m_array[enCube_IronOre] = Item( enCube_IronOre, L"ìSçzêŒ", 64 , model(enCube_IronOre));
-			m_array[enCube_GoldOre] = Item( enCube_GoldOre, L"ã‡çzêŒ", 64, model( enCube_GoldOre ) );
-			m_array[enItem_GoldenPickaxe] = 
-				Item( enItem_GoldenPickaxe, L"ã‡ÇÃÉcÉãÉnÉV", 1, L"Resource/spriteData/Golden_Pickaxe.dds");
-			m_array[enItem_DiamondHoe] =
-				Item( enItem_DiamondHoe, L"É_ÉCÉÑÇÃÉNÉè", 16, L"Resource/spriteData/Diamond_Hoe.dds" );
-		}
+	return ItemDictionary::Instance().GetItem( id );
+}
 
-		Item& operator[]( int n ){
-			return m_array[n];
-		}
-
-	private:
-		std::array<Item, enAllItem_Num> m_array{};
-
-		static const wchar_t* model( EnCube blockType ){
-			return BlockFactory::GetModelPath(blockType);
-		}
-	};
-
-	static ItemArray st_itemArray;
-
-	return st_itemArray[id];
+Item & Item::GetItem( const std::string & strId ){
+	return ItemDictionary::Instance().GetItem( strId );
 }
 
 void Item::Draw( const CVector2 & pos, const CVector2 & scale ){
@@ -54,10 +30,10 @@ Item::Item(){}
 Item::Item( Item&& item ) : m_id( item.m_id ), m_limitNumber( item.m_limitNumber ), m_itemName( item.m_itemName ),
 m_image( std::move( item.m_image ) ){}
 
-Item::Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const wchar_t* modelPath )
-	:m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ),
-	m_image( std::make_unique<ItemImage>(true, modelPath) ){}
+Item::Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const std::filesystem::path& modelPath )
+	: m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ),
+	m_image( std::make_unique<ItemImage>( true, modelPath ) ){}
 
-Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const wchar_t* spritePath )
-	:m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ),
+Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath )
+	: m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ),
 	m_image( std::make_unique<ItemImage>( false, spritePath ) ){}

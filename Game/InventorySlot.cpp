@@ -41,7 +41,7 @@ namespace GUI{
 		for( int y = 0; y < height; y++ ){
 			for( int x = 0; x < width; x++ ){
 				//列と行からスロット番号を算出。
-				ItemStack* itemStack = m_inventory.GetItem( m_slotNoStart + x + y * m_widthNum );
+				auto& itemStack = m_inventory.GetItem( m_slotNoStart + x + y * m_widthNum );
 				if( itemStack ){
 					CVector2 plusPos{ float( x * SLOT_WIDTH ) , float( y * SLOT_WIDTH ) };
 					plusPos *= parentScale;
