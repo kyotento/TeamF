@@ -290,6 +290,7 @@ private:
 	const float m_characonHeight = 160.f;					//キャラコンの高さ。
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
+	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
 
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。

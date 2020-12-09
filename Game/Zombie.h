@@ -11,7 +11,6 @@ public:
 	bool Start();
 	void Update();
 	void Attack();		//UŒ‚B
-	void Death();		//€–SB
 
 private:
 

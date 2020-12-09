@@ -38,6 +38,11 @@ public:
 	/// <param name="attackDamage">攻撃力</param>
 	virtual void TakenDamage(int attackDamage);
 
+	/// <summary>
+	/// 死亡時の処理。
+	/// </summary>
+	virtual void Death();
+
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
 		return m_position;
@@ -67,6 +72,7 @@ public:
 		enEnemy_tracking,				//追跡。
 		enEnemy_attack,					//攻撃。
 		enEnemy_fan,					//煽り。		
+		enEnemy_death,					//死んだとき。
 		enEnemy_num,					//エネミーの状態の数。
 	};
 
@@ -78,7 +84,7 @@ public:
 
 protected:
 
-	bool flag = false;//かり。
+	bool m_jumpFlag = false;		//ジャンプするどうか。
 
 	int m_hp = 0;				//体力。
 	int m_attackPow = 0;		//攻撃力。
@@ -92,6 +98,7 @@ protected:
 	float m_jumpSpeed = 1.f;						//ジャンプ速度。
 	float m_jmpInitialVelocity = 13.f;				//ジャンプの初速度。
 	float m_gravity = 0.65f;						//重力。
+	float m_deathAddRot = 0;						//死亡じの回転総数。				
 
 	CVector3 m_position = CVector3::Zero();			//エネミーの座標。
 	CVector3 m_scale = CVector3::One();				//プレイヤーのスケール。

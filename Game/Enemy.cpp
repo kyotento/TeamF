@@ -83,15 +83,15 @@ void Enemy::Jump()
 {
 	if (m_characon.IsContactWall() && m_characon.IsOnGround())
 	{
-		flag = true;
+		m_jumpFlag = true;
 	}
 
-	if (flag) {
+	if (m_jumpFlag) {
 		m_direction.y += m_jmpInitialVelocity;
 		m_jmpInitialVelocity -= m_gravity;
 
 		if (m_characon.IsOnGround() && m_jmpInitialVelocity < m_gravity) {
-			flag = false;
+			m_jumpFlag = false;
 			m_jmpInitialVelocity = 13.f;
 		}
 	}
@@ -103,13 +103,41 @@ void Enemy::Jump()
 //被ダメージ処理。
 void Enemy::TakenDamage(int attackDamage)
 {
-	if (m_hp >= 0) {		//HPがあるとき。
+	if (m_hp > 0) {		//HPがあるとき。
 		m_hp -= attackDamage;
 		//体力を0未満にしない。
 		if (m_hp <= 0) {
 			m_hp = 0;
+			m_enemyState = enEnemy_death;		//死亡状態に。
 		}
-		MessageBox(nullptr, "残りHP%d", "攻撃された", MB_ICONASTERISK);
+	}
+}
+
+//死亡時の処理。
+void Enemy::Death()
+{
+	float maxRot = 90.f;							//回転の上限値。
+	float rotEndTime = 0.5f;						//回転終了までにかかる時間。
+	float oneFrameRot = maxRot / 60.f/*frameLate*// rotEndTime;			//1フレームの回転量。
+
+	//死んだとき。
+	if (m_enemyState == enEnemy_death) {
+		//死亡時の回転処理。
+		if (m_deathAddRot <= maxRot) {
+			CQuaternion deathRot;		//加算する回転量。
+			deathRot.SetRotationDeg(CVector3::AxisZ(), oneFrameRot);
+			m_rot.Multiply(deathRot);
+			m_skinModelRender->SetRot(m_rot);
+			m_deathAddRot += oneFrameRot;
+		}
+		else {		//回転し終わったら敵を消す。
+			DeleteGO(this);
+		}
+
+		//モデルの色を赤みがかったようにする。
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+			mat->SetAlbedoScale({ CVector4::Red() });
+		});
 	}
 }
 
@@ -152,6 +180,11 @@ void Enemy::StateManagement()
 		m_skinModelRender->GetAnimCon().Play(enAniamtionClip_fan, m_interpolateTimeSec);
 		m_skinModelRender->GetAnimCon().SetSpeed(m_animSpeed);
 
+		break;
+	case enEnemy_death:
+		//アニメーションの再生。
+		m_skinModelRender->GetAnimCon().Play(enAnimationClip_idle, m_interpolateTimeSec);
+		m_skinModelRender->GetAnimCon().SetSpeed(m_animSpeed);
 		break;
 	default:
 

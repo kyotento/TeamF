@@ -519,7 +519,6 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 void Player::FlyTheRay()
 {
 	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
-		const int installableBlockNum = 5;		//設置可能距離(ブロック距離)。
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -561,9 +560,10 @@ void Player::TakenDamage(int AttackPow)
 
 		//ダメージボイス
 		SuicideObj::CSE* voice;
-		if (m_hp <= 0) {
+		if (m_hp <= 0) {		//死亡した時。
 			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 		}
+		//死亡してない場合は２種類からランダムで音が鳴る。
 		else if (CMath::RandomZeroToOne() > 0.5f) {
 			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
 		}

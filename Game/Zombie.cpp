@@ -41,13 +41,15 @@ void Zombie::Update()
 	if (m_position.y <= 3.f) {
 		return;
 	}
+	//エネミーが存在しているときのみ。
+	if (m_enemyState != enEnemy_death) {
+		Tracking();				//プレイヤーを追跡する処理。
+		StateManagement();		//状態管理。
 
-	Tracking();				//プレイヤーを追跡する処理。
-	StateManagement();		//状態管理。
-
-	//サバイバルのとき。
-	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-		Attack();				//攻撃。
+		//サバイバルのとき。
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+			Attack();				//攻撃。
+		}
 	}
 	Death();		//死亡判定。
 }
@@ -74,15 +76,6 @@ void Zombie::Attack()
 	}	
 	else {			//攻撃状態でないとき。
 		m_damageTimer = 0;
-	}
-}
-
-//死亡判定。
-void Zombie::Death()
-{
-	if (m_hp <= 0) {
-		MessageBox(nullptr, "死", "報告", MB_ICONASTERISK);
-		DeleteGO(this);
 	}
 }
 
