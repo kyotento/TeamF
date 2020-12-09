@@ -105,6 +105,9 @@ void Enemy::TakenDamage(int attackDamage)
 {
 	if (m_hp > 0) {		//HPがあるとき。
 		m_hp -= attackDamage;
+
+		//ノックバック処理。
+
 		//体力を0未満にしない。
 		if (m_hp <= 0) {
 			m_hp = 0;
