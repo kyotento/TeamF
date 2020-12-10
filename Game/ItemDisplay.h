@@ -1,5 +1,10 @@
 #pragma once
 
+/// <summary>
+/// アイテムディスプレイクラス
+/// </summary>
+/// アイテムを表示するクラスですよねこれ
+/// 実はなんかうまくいかないんですよねｗｗｗｗｗｗｗｗ(諦め）
 class Player;
 class GameCamera;
 class ItemDisplay : public IGameObject
@@ -25,6 +30,13 @@ public:
 	{
 		m_rotation = rot;
 	}
+	/// <summary>
+	/// 頭に合わせて上下させるよう
+	/// <summary>
+	void SetHeadRot(const CQuaternion& h_rot)
+	{
+		m_headRot = h_rot;
+	}
 private:
 	/// <summary>
 	/// モデルの生成。
@@ -34,7 +46,6 @@ private:
 	/// 追従
 	/// </summary>
 	void Follow();
-	/// <summary>
 	/// モデルの切り替え
 	/// </summary>
 	void Switching();
@@ -43,12 +54,17 @@ private:
 	/// </summary>
 	void Rotation();
 private:
-	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
-	CVector3 m_position = CVector3::Zero();						//モデルを表示する座標。
-	CVector3 m_forward = CVector3::Zero();						//前方。
+	GameObj::CSkinModelRender* m_skinModelRender = nullptr;	//モデル。
+	CVector3 m_position = CVector3::Zero();					//モデルを表示する座標。
+	CVector3 m_forward = CVector3::Zero();					//前方。
+	CVector3 m_scale = CVector3::One();						//大きさ。
 
-	CQuaternion m_rotation = CQuaternion::Identity();			//モデルを回転させる。
-	Player* m_player = nullptr;									//プレイヤーのインスタンス。
-	GameCamera* m_gameCamera = nullptr;									//ゲームカメライェア。
+	float m_radianY = 0.0f;									//Y軸の回転(ラジアン)
+	float m_radianXZ = 0.0f;								//XZ軸の回転(ラジアン)
+
+	CQuaternion m_rotation = CQuaternion::Identity();		//モデルを回転させる。
+	CQuaternion m_headRot = CQuaternion::Identity();
+	Player* m_player = nullptr;								//プレイヤーのインスタンス。
+	GameCamera* m_gameCamera = nullptr;						//ゲームカメライェア。
 };
 

@@ -337,9 +337,7 @@ void Player::Turn()
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
 	CQuaternion modelRot;
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
-
 	m_skinModelRender->SetRot(modelRot);
-	//m_rightHandDisplay->SetRot(modelRot);
 	Headbang();
 
 	//右方向と正面方向のベクトルの計算。

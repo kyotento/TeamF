@@ -2,17 +2,10 @@
 #include "ItemDisplay.h"
 #include "GameCamera.h"
 #include "Player.h"
+#include "BlockFactory.h"
 
 namespace {
-	const float m_pulsPosY = 75.0f;				//Yは別で足してずらします。
-	const float m_playerPulsPosX = 1.0f;		//Xはプレイヤーのほうに足します。
-	const float m_pulsPosZ = 50.0f;			//こいつを実験台にしてます。
-	const float m_mullPos = 50.0f;				//ひとまず前ベクトルの数値を大きくする変数。
-	float m_degreeY = 0.0f;
-	const float maxDegreeY = 70.0f;				//Y軸の回転の最大値。
-	const float minDegreeY = -50.0f;			//Y軸の回転の最小値。
 
-	CVector3 neerPosition = CVector3::Zero();	//仮pos。
 }
 
 ItemDisplay::ItemDisplay()
@@ -26,6 +19,7 @@ ItemDisplay::~ItemDisplay()
 
 bool ItemDisplay::Start()
 {
+	m_position = {0.0f,175.0f,0.0f};
 	//モデル生成
 	InitModel();
 	return true;
@@ -41,6 +35,9 @@ void ItemDisplay::Update()
 		m_player = FindGO<Player>();
 		return;
 	}
+
+	//MouseFollow();
+
 	//追従処理。
 	Follow();
 
@@ -49,6 +46,8 @@ void ItemDisplay::Update()
 
 	//切り替えの処理。
 	Switching();
+
+	m_skinModelRender->SetScale(m_scale);
 }
 
 //モデル生成。
@@ -56,38 +55,38 @@ void ItemDisplay::InitModel()
 {
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
+	m_scale = { 0.35f,0.35f,0.35f };
+	m_position = { 0.0f,175.0f,0.0f };
 }
 
 //モデルの追従。
 void ItemDisplay::Follow()
-{
-	//マウスの移動量を取得。
-	const float turnMult = 20.0f;
-	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetDeltaTimeSec();
-	//回転処理
-	m_degreeY += mouseCursorMovePow.x;
-	//XZ軸の回転を制限。
-	if (m_degreeY < minDegreeY) {
-		m_degreeY = minDegreeY;
-	}
-	else if (m_degreeY > maxDegreeY) {
-		m_degreeY = maxDegreeY;
-	}
-	//m_forward = m_gameCamera->GetPos();
-	//auto m_rot = CMatrix::Identity();
-	//m_rot.MakeRotationFromQuaternion(m_rotation);
-	//m_forward.x = m_rot.m[2][0];
-	//m_forward.y = m_rot.m[2][1];
-	//m_forward.z = m_rot.m[2][2];
+{	
+	const float pulsPosY = 40;					//Yは別で足してずらします。
+	const float mullFornt = 15.0f;				//前ベクトルの数値を大きくする変数。
+	const float mullCrossProduct = 30.0f;		//外積の数値を大きくする変数
 
-	//みぎ前方に置きたい。
+	//次にプレイヤーの正面取得。
 	m_forward = m_player->GetFront();
-	m_forward *= m_mullPos;
-	m_forward.y += m_pulsPosY;
-	m_forward.z += m_pulsPosZ;
-	//足してます。
-	m_position = m_position + m_forward;
-	//座標をモデルへ。
+	m_forward *= mullFornt;
+
+	//右方向にずらす。
+	CVector3 right = m_player->GetRight();
+	m_forward += (right * mullCrossProduct);
+	
+	//下方向にずらす。
+	m_forward.y -= pulsPosY;
+
+	//上下方向に回転させる。
+	CQuaternion upDownRot;
+	upDownRot.SetRotation(right, m_player->GetRadianXZ());
+	upDownRot.Multiply(m_forward);
+
+	//カメラの座標取得。
+	m_position = m_gameCamera->GetPos();
+	m_position += m_forward;
+
+	////座標をモデルへ。
 	m_skinModelRender->SetPos(m_position);
 }
 
@@ -100,9 +99,20 @@ void ItemDisplay::Switching()
 //腕の回転処理
 void ItemDisplay::Rotation()
 {
-	//モデルを回転させるよ。
+	const float m_rotX = 25.0f;					//前に倒すための変数。
+
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+
+	//ここで斜めにずらします。
 	m_rotation = m_player->GetRot();
-	//m_rotation.SetRotationDeg(CVector3::AxisY(),45.0f);
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(),-m_rotX);
+	m_rotation.Multiply(m_rotationX);
+	//ここでプレイヤーの上下にそってずらします。
+	CQuaternion upDownRot;
+	upDownRot.SetRotation(CVector3::AxisX(), -m_player->GetRadianXZ());
+	m_rotation.Multiply(upDownRot);
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
 }
