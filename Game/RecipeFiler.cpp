@@ -40,7 +40,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 	path recipeDir = m_folder;
 
 	//レシピファイルをすべて処理。
-	for( directory_iterator itr( recipeDir ), end; itr != end; itr++ ){
+	for( recursive_directory_iterator itr( recipeDir ), end; itr != end; itr++ ){
 
 		//通常のファイルだけを対象にする。
 		if( ( *itr ).is_regular_file() ){
