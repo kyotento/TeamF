@@ -21,6 +21,9 @@ public:
 	//! @brief アイテム配列が同じかどうか比較する。
 	bool ArrayEquals(const std::vector<int>& array );
 
+	//! @brief レシピを左右反転した状態で、アイテム配列が同じかどうか比較する。
+	bool ArrayEqualsMirror( const std::vector<int>& array );
+
 	//! @brief レシピの幅と高さを取得。
 	//! @details std::pair の第1要素が幅、第2要素が高さ。
 	std::pair<int, int> GetWH(){
