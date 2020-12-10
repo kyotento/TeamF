@@ -22,9 +22,7 @@ public:
 	//! @param recursive trueなら Player::SetWorld(this, false) も呼び出す。
 	void SetPlayer( Player* player, bool recursive = false );
 
-	Player* GetPlayer(){
-		return m_player;
-	}
+	Player* GetPlayer();
 
 	//! @brief Entity をワールドに追加する。
 	void AddEntity( Entity* entity ){
