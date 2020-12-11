@@ -4,7 +4,7 @@
 /// アイテムディスプレイクラス
 /// </summary>
 /// アイテムを表示するクラスですよねこれ
-/// 実はなんかうまくいかないんですよねｗｗｗｗｗｗｗｗ(諦め）
+/// 
 class Player;
 class GameCamera;
 class ItemDisplay : public IGameObject
@@ -53,6 +53,10 @@ private:
 	/// アイテムを斜め上に表示するために。
 	/// </summary>
 	void Rotation();
+	/// <summary>
+	/// カメラのモードに合わせて表示させるための関数。
+	/// </summary>
+	void CameraModeChangeToDisplay();
 private:
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;	//モデル。
 	CVector3 m_position = CVector3::Zero();					//モデルを表示する座標。
@@ -61,6 +65,8 @@ private:
 
 	float m_radianY = 0.0f;									//Y軸の回転(ラジアン)
 	float m_radianXZ = 0.0f;								//XZ軸の回転(ラジアン)
+
+	int m_cameraDisplayMode = 0;									//カメラのモード。
 
 	CQuaternion m_rotation = CQuaternion::Identity();		//モデルを回転させる。
 	CQuaternion m_headRot = CQuaternion::Identity();
