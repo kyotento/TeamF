@@ -22,8 +22,9 @@ World::World(){
 
 void World::PostUpdate(){
 
-	{
-		const CVector3 pPosV = m_player->GetPos() / Block::WIDTH;
+	Player* player = GetPlayer();
+	if( player ){
+		const CVector3 pPosV = player->GetPos() / Block::WIDTH;
 
 		//チャンク読み込み範囲正方形。
 		IntRect chunkSquare = IntRect::CreateWithCenter(
@@ -114,8 +115,15 @@ void World::SetPlayer( Player* player, bool recursive ){
 		player->SetWorld( this, false );
 }
 
+Player * World::GetPlayer(){
+	if( m_entities.count( m_player ) != 0 ){
+		return  m_player;
+	}
+	return nullptr;
+}
+
 Block * World::GetBlock( int x, int y, int z ){
-	if (y < 0 || Chunk::HEIGHT <= y) {
+	if( y < 0 || Chunk::HEIGHT <= y ){
 		return nullptr;
 	}
 
@@ -201,7 +209,7 @@ void World::ChunkCulling( Chunk& chunk ){
 	IntRect chunkRect( { 0, 0, 0 }, { chunk.WIDTH , chunk.HEIGHT, chunk.WIDTH } );
 
 	//チャンク内の全ブロックをループ。
-	chunkRect.for_each( [&](int x, int y, int z){
+	chunkRect.for_each( [&]( int x, int y, int z ){
 		Block* b = chunk.GetBlock( x, y, z );
 
 		if( !b ){
@@ -227,93 +235,91 @@ void World::ChunkCulling( Chunk& chunk ){
 		}
 
 		if( doCulling )b->SetIsDraw( false );
-	});
+	} );
 }
 
-void World::DeleteBlock(const CVector3& pos)
-{
-	int x = (int)std::floorf(pos.x);
-	int y = (int)std::floorf(pos.y);
-	int z = (int)std::floorf(pos.z);
+void World::DeleteBlock( const CVector3& pos ){
+	int x = (int)std::floorf( pos.x );
+	int y = (int)std::floorf( pos.y );
+	int z = (int)std::floorf( pos.z );
 
-	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	Chunk* chunk = GetChunkFromWorldPos( x, z );
 
-	if (!chunk) {
-		chunk = CreateChunkFromWorldPos(x, z);
+	if( !chunk ){
+		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
 	//ブロックをポップ。
 	{
-		DropItem* dropItem = NewGO<DropItem>(this);		//ドロップアイテムクラスを取得。
+		DropItem* dropItem = NewGO<DropItem>( this );		//ドロップアイテムクラスを取得。
 
 		dropItem->SetEnCube( GetBlock( x, y, z )->GetBlockType() );		//ブロックの種類を代入。
 		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) );
 		dropItem->Drop();
 	}
-	x = Chunk::CalcInChunkCoord(x);
-	z = Chunk::CalcInChunkCoord(z);
+	x = Chunk::CalcInChunkCoord( x );
+	z = Chunk::CalcInChunkCoord( z );
 
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
+	int a = 0;
 }
 
-bool World::PlaceBlock(const CVector3& pos, std::unique_ptr<Block> block)
-{
-	int x = (int)std::floorf(pos.x);
-	int y = (int)std::floorf(pos.y);
-	int z = (int)std::floorf(pos.z);
-	Chunk* chunk = GetChunkFromWorldPos(x, z);
+bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
+	int x = (int)std::floorf( pos.x );
+	int y = (int)std::floorf( pos.y );
+	int z = (int)std::floorf( pos.z );
+	Chunk* chunk = GetChunkFromWorldPos( x, z );
 
-	if (!chunk) {
-		chunk = CreateChunkFromWorldPos(x, z);
+	if( !chunk ){
+		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
-	x = Chunk::CalcInChunkCoord(x);
-	z = Chunk::CalcInChunkCoord(z);
+	x = Chunk::CalcInChunkCoord( x );
+	z = Chunk::CalcInChunkCoord( z );
 
-	if (!chunk->PlaceBlock(x, y, z, std::move(block))) {
+	if( !chunk->PlaceBlock( x, y, z, std::move( block ) ) ){
 		return false;
 	}
-	AroundBlock(pos);
+	AroundBlock( pos );
 
 	return true;
 }
 
-void World::AroundBlock(const CVector3& pos)
-{
+void World::AroundBlock( const CVector3& pos ){
 	const int posSize = 6;
 
 	CVector3 posList[posSize];
-	posList[0] = CVector3(1.f, 0.f, 0.f);
-	posList[1] = CVector3(-1.f, 0.f, 0.f);
-	posList[2] = CVector3(0.f, 1.f, 0.f);
-	posList[3] = CVector3(0.f, -1.f, 0.f);
-	posList[4] = CVector3(0.f, 0.f, 1.f);
-	posList[5] = CVector3(0.f, 0.f, -1.f);
+	posList[0] = CVector3( 1.f, 0.f, 0.f );
+	posList[1] = CVector3( -1.f, 0.f, 0.f );
+	posList[2] = CVector3( 0.f, 1.f, 0.f );
+	posList[3] = CVector3( 0.f, -1.f, 0.f );
+	posList[4] = CVector3( 0.f, 0.f, 1.f );
+	posList[5] = CVector3( 0.f, 0.f, -1.f );
 
-	for (int i = 0; i < posSize; i++) {
+	for( int i = 0; i < posSize; i++ ){
 		CVector3 pos2 = CVector3::Zero();
 		pos2.x = pos.x + posList[i].x;
 		pos2.y = pos.y + posList[i].y;
 		pos2.z = pos.z + posList[i].z;
 
-		Block* block = GetBlock(pos2);
-		if (block == nullptr)
+		Block* block = GetBlock( pos2 );
+		if( block == nullptr )
 			continue;
 
 		bool doNotCulling = false;
-		for (int j = 0; j < posSize; j++) {
+		for( int j = 0; j < posSize; j++ ){
 			CVector3 pos3 = CVector3::Zero();
 			pos3.x = pos2.x + posList[j].x;
 			pos3.y = pos2.y + posList[j].y;
 			pos3.z = pos2.z + posList[j].z;
 
-			if (GetBlock(pos3) == nullptr) {
+			if( GetBlock( pos3 ) == nullptr ){
 				doNotCulling = true;
 				break;
 			}
 		}
 
-		block->SetIsDraw(doNotCulling);
+		block->SetIsDraw( doNotCulling );
 	}
 }

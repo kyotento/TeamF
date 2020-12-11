@@ -10,6 +10,7 @@
 #include "BlockFactory.h"
 #include "DamegeScreenEffect.h"
 #include "Enemy.h"
+#include "ItemDisplay.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -22,6 +23,7 @@ namespace {
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
+	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
 }
 
 Player::Player(World* world) : Entity(world), m_inventory(36)
@@ -66,15 +68,19 @@ bool Player::Start()
 
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
-	auto item = std::make_unique<ItemStack>( Item::GetItem( enItem_Rod ) ,16);
-	auto item2 = std::make_unique<ItemStack>( Item::GetItem( enItem_Gold_Ingot ), 16 );
-	auto item3 = std::make_unique<ItemStack>( Item::GetItem( enCube_Grass ), 5 );
-	auto item4 = std::make_unique<ItemStack>( Item::GetItem( enCube_GoldOre ), 5 );
-	m_inventory.AddItem( item );
-	m_inventory.AddItem( item2 );
-	m_inventory.AddItem( item3 );
-	m_inventory.AddItem( item4 );
+	int itemArray[] = {
+		enItem_Rod, enItem_Gold_Ingot, enCube_Grass, enCube_GoldOre, enCube_CobbleStone, enItem_Iron_Ingot,
+		enCube_OakWood,enItem_Diamond
+	};
+	for( int i : itemArray ){
+		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
+		m_inventory.AddItem( item );
+	}
 
+	//右手表示のclassにゅうごー
+	m_rightHandDisplay = NewGO<ItemDisplay>();
+	m_rightHandDisplay->SetName(L"ItemDisplay");
+	m_rightHandDisplay->SetPos(m_position);
 	return true;
 }
 
@@ -120,6 +126,8 @@ void Player::Update()
 	StateManagement();
 
 	Test();
+	//右手の更新処理。
+	ItemDisplayUpdate();
 }
 
 //とりまのこす。
@@ -288,7 +296,8 @@ void Player::Move()
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
-
+	//右手も移動させる。
+	m_rightHandDisplay->SetPos(m_position);
 	//ダメージ当たり判定移動。
 	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
 	m_damageCollision->SetPosition(colPos);
@@ -368,9 +377,7 @@ void Player::Turn()
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
 	CQuaternion modelRot;
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
-
 	m_skinModelRender->SetRot(modelRot);
-
 	Headbang();
 
 	//右方向と正面方向のベクトルの計算。
@@ -535,7 +542,6 @@ void Player::FlyTheRay()
 
 		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
-
 		//todo Debug Ray描画用。
 		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
 		CVector3 kariY = kariX + frontAddRot * reyLength;
@@ -612,4 +618,12 @@ void Player::Test()
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
 		m_exp += 0.3f;
 	}
+}
+
+//右手表示の更新処理。
+void Player::ItemDisplayUpdate()
+{
+	//右手に位置と回転を送ってます。
+	//m_rightHandDisplay->SetPos(m_position);
+	//m_rightHandDisplay->SetRot(m_rotation);
 }

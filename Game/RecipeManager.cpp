@@ -48,6 +48,17 @@ std::unique_ptr<ItemStack> RecipeManager::GetResult( const int width, const int 
 			}
 		}
 
+		if( aabbW > 1 ){
+
+			//¶‰E”½“]‚Åˆê’v‚·‚éƒŒƒVƒs‚ð’²‚×‚éB
+			for( auto& recipe : recipeList ){
+				if( recipe->ArrayEqualsMirror( aabbArray ) ){
+					return recipe->GetResult();
+				}
+			}
+
+		}
+
 	} catch( std::out_of_range ){
 		return nullptr;
 	}
