@@ -37,8 +37,7 @@ void ItemDisplay::Update()
 		return;
 	}
 
-	//MouseFollow();
-
+	CameraModeChangeToDisplay();
 	//追従処理。
 	Follow();
 
@@ -114,4 +113,17 @@ void ItemDisplay::Rotation()
 	m_rotation.Multiply(upDownRot);
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
+}
+
+//カメラのモードに合わせた処理
+void ItemDisplay::CameraModeChangeToDisplay()
+{
+	if (m_gameCamera->GetCameraMode() == m_cameraDisplayMode)
+	{
+		m_skinModelRender->SetIsDraw(true);
+	}
+	else
+	{
+		m_skinModelRender->SetIsDraw(false);
+	}
 }
