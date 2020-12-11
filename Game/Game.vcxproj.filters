@@ -134,6 +134,9 @@
     <ClCompile Include="ItemDicitionary.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="ItemDisplay.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -279,6 +282,9 @@
       <Filter>GUI\Controller</Filter>
     </ClInclude>
     <ClInclude Include="ItemDictionary.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDisplay.h">
       <Filter>Item</Filter>
     </ClInclude>
   </ItemGroup>
@@ -448,6 +454,10 @@
     <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
       <Filter>sprite\items</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
+    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

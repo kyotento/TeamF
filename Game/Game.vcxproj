@@ -80,6 +80,7 @@
     <ClCompile Include="PlayerInventory.cpp" />
     <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemDisplay.cpp" />
     <ClCompile Include="ItemImage.cpp" />
     <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="main.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="InventoryView.h" />
+    <ClInclude Include="ItemDisplay.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="ItemDictionary.h" />
     <ClInclude Include="KeyEvent.h" />
