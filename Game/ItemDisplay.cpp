@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "BlockFactory.h"
 
+static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
+
 namespace {
 
 }
@@ -19,7 +21,6 @@ ItemDisplay::~ItemDisplay()
 
 bool ItemDisplay::Start()
 {
-	m_position = {0.0f,175.0f,0.0f};
 	//モデル生成
 	InitModel();
 	return true;
@@ -54,17 +55,16 @@ void ItemDisplay::Update()
 void ItemDisplay::InitModel()
 {
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
-	m_scale = { 0.35f,0.35f,0.35f };
-	m_position = { 0.0f,175.0f,0.0f };
+	m_skinModelRender->Init(L"Resource/modelData/GrassBlock.tkm");
+	m_scale = { 0.25f,0.25f,0.25f };
 }
 
 //モデルの追従。
 void ItemDisplay::Follow()
 {	
-	const float pulsPosY = 40;					//Yは別で足してずらします。
-	const float mullFornt = 15.0f;				//前ベクトルの数値を大きくする変数。
-	const float mullCrossProduct = 30.0f;		//外積の数値を大きくする変数
+	const float blockPulsPosY = 60.0;				//Yは別で足してずらします。
+	const float mullFornt = 45.0f;					//前ベクトルの数値を大きくする変数。
+	const float mullCrossProduct = 45.0f;			//外積の数値を大きくする変数
 
 	//次にプレイヤーの正面取得。
 	m_forward = m_player->GetFront();
@@ -75,7 +75,7 @@ void ItemDisplay::Follow()
 	m_forward += (right * mullCrossProduct);
 	
 	//下方向にずらす。
-	m_forward.y -= pulsPosY;
+	m_forward.y -= blockPulsPosY;
 
 	//上下方向に回転させる。
 	CQuaternion upDownRot;
@@ -99,11 +99,10 @@ void ItemDisplay::Switching()
 //腕の回転処理
 void ItemDisplay::Rotation()
 {
-	const float m_rotX = 25.0f;					//前に倒すための変数。
+	const float m_rotX = 0.0f;						//ツール系が増えたときに前に倒すための変数。
 
 	//プレイヤーの回転を持ってくる
 	m_radianY = m_player->GetRadianY();
-
 	//ここで斜めにずらします。
 	m_rotation = m_player->GetRot();
 	CQuaternion m_rotationX;

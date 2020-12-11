@@ -4,7 +4,7 @@
 /// アイテムディスプレイクラス
 /// </summary>
 /// アイテムを表示するクラスですよねこれ
-/// 実はなんかうまくいかないんですよねｗｗｗｗｗｗｗｗ(諦め）
+/// 
 class Player;
 class GameCamera;
 class ItemDisplay : public IGameObject
@@ -61,6 +61,8 @@ private:
 
 	float m_radianY = 0.0f;									//Y軸の回転(ラジアン)
 	float m_radianXZ = 0.0f;								//XZ軸の回転(ラジアン)
+
+
 
 	CQuaternion m_rotation = CQuaternion::Identity();		//モデルを回転させる。
 	CQuaternion m_headRot = CQuaternion::Identity();
