@@ -31,6 +31,7 @@ bool Zombie::Start()
 
 	m_hp = 20;					//体力の設定。
 	m_attackPow = 1;			//攻撃力の設定。
+	m_knockBack = 0.5f;			//ノックバック倍率。
 
 	return true;
 }
@@ -51,6 +52,7 @@ void Zombie::Update()
 			Attack();				//攻撃。
 		}
 	}
+	KnockBack();	//ノックバック処理。
 	Death();		//死亡判定。
 }
 
