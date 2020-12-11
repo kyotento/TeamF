@@ -110,12 +110,12 @@ void Player::Update()
 
 		//回転処理。
 		Turn();
+		//攻撃。
+		Attack();
 		//インベントリを開く。
 		OpenInventory();
 		//前方にRayを飛ばす。
 		FlyTheRay();
-		//攻撃。
-		Attack();
 
 	} else if( GetKeyDown( 'E' ) ){
 		//GUIが開かれているときに、Eが押されたらGUIを閉じる。
@@ -451,6 +451,7 @@ void Player::Attack()
 			if (param.EqualName(L"CEnemy")) {			//名前検索。
 				Enemy* enemy = param.GetClass<Enemy>();
 				enemy->TakenDamage(m_attackPower);
+				m_attackFlag = true;
 			}
 		});
 	}
@@ -523,9 +524,10 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 		}
 	}
 	//破壊。
-	if (GetKeyDown(VK_LBUTTON)) {
+	if (GetKeyDown(VK_LBUTTON) && !m_attackFlag) {
 		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
+	m_attackFlag = false;
 }
 
 //レイを前方に飛ばす。
