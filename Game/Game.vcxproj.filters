@@ -287,6 +287,7 @@
     <ClInclude Include="ItemDisplay.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="Sun.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -447,12 +448,6 @@
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\CraftingBox.png">
       <Filter>sprite\inventory</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
-      <Filter>sprite\items</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
-      <Filter>sprite\items</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />

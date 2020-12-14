@@ -155,6 +155,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimpleMoveObj.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Sun.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="TitleSelect.h" />
     <ClInclude Include="World.h" />
