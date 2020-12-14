@@ -96,11 +96,6 @@ void Player::Update()
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
-	//todo Debug専用。
-	if( GetKeyDown( 'C' ) ){			//マウスカーソルを固定(解除)。
-		static bool lock = true;
-		MouseCursor().SetLockMouseCursor( lock = !lock );
-	}
 
 	//頭の骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
