@@ -51,6 +51,7 @@ public:
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
 		enPlayerState_excavate,			//物を掘る。
+		enPlayerState_death,			//死んだとき。
 		enPlayerState_num,				//状態の数。
 	};
 
@@ -269,6 +270,11 @@ private:
 	void FlyTheRay();
 
 	/// <summary>
+	/// 死亡処理。
+	/// </summary>
+	void Death();
+
+	/// <summary>
 	/// 右手表示の更新してます。
 	/// </summary>
 	void ItemDisplayUpdate();
@@ -296,8 +302,7 @@ private:
 	float m_runSpeedDouble = 1.f;							//走るときの移動速度の倍率。(走るときは2.fになる予定)。
 	float m_doubleClickTimer = 0.0f;						//ダブルクリックの判定時間。
 	float m_doubleClickTimerC = 0.0f;						//ダブルクリックの判定時間(クリエイティブ)。
-	const float m_characonRadius = 50.f;					//キャラコンの半径。
-	const float m_characonHeight = 160.f;					//キャラコンの高さ。
+	float m_deathAddRot = 0.f;								//死亡時の回転総数。
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
 	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
