@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shaped", 
+  "pattern": [
+    "X",
+    "X",	<=====パターンのAABBが3x3じゃない場合は、こんなかんじに空白部分を削ってください。
+    "#"				空白部分をいれると、スロットの位置まで合致してないと駄目なレシピになります。
+  ],
+  "key": {
+    "#": "enItem_Rod",
+    "X": "enItem_Gold_Ingot"
+  },
+  "result": "enItem_Gold_Sword"
+}

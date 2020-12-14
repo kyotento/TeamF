@@ -3,15 +3,26 @@
 
 #include "ItemType.h"
 
+class ItemImage;
+
 //! @brief アイテムの種類を表すクラス。 #GetItem(unsigned) で取得する。
 //! @details あくまで種類を表すもので、実際のアイテムは ItemStack で扱う。
 //! @author Takayama
 class Item{
+	friend class ItemDictionary;
 public:
+	~Item();
+
+	const Item& operator=( Item&& item );
 
 	//! @brief アイテムidからアイテムを取得。
 	//! @details ブロックidもアイテムidとして扱うことができる。
-	static Item& GetItem(unsigned id);
+	static Item& GetItem( unsigned id );
+
+	//! @briefアイテムの文字列idからアイテムを取得。
+	//! @param strId EnItem、EnCubeをそのまま文字列にしたもの。
+	//! @exception std::out_of_range 指定されたid文字列が存在しない場合。
+	static Item& GetItem( const std::string& strId ) noexcept(false);
 
 	//! @brief このアイテムのidを取得。
 	unsigned GetID() const{
@@ -28,12 +39,14 @@ public:
 		return m_itemName;
 	}
 
+	//! @brief GUI用のアイテムの描画。
+	void Draw( const CVector2& pos, const CVector2& scale );
+
 private:
-	Item(){}
-	Item( EnCube enCube, const wchar_t* itemName, int limitNumber )
-		:m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ){}
-	Item( EnItem enItem, const wchar_t* itemName, int limitNumber )
-		:m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ){}
+	Item();
+	Item( Item&& item );
+	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const std::filesystem::path& modelPath );
+	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath );
 
 	//! アイテムID
 	unsigned m_id = enCube_None;
@@ -43,4 +56,7 @@ private:
 
 	//! アイテム名
 	const wchar_t* m_itemName = nullptr;
+
+	//アイテム画像、またはモデル。
+	std::unique_ptr<ItemImage> m_image;
 };

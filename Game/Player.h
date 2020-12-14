@@ -8,11 +8,15 @@ class World;
 class GameCamera;
 class Item;
 class GameMode;
+class ItemDisplay;
+namespace GUI{
+	class RootNode;
+}
 
 class Player : public Entity
 {
 public:
-	Player();
+	Player(World* world);
 	~Player();
 	bool Start() override;
 	void Update() override;
@@ -24,7 +28,7 @@ public:
 		std::wstringstream str;
 		CVector3 pos = GetPos() / Block::WIDTH;
 		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
-		font.Draw( str.str().c_str(), { 0.5f , 0.3f }, CVector4::White(), CVector2::One(), {0.5f, 0.5f} );
+		font.Draw( str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, {0.5f, 0.5f} );
 	}
 
 	/// <summary>
@@ -51,6 +55,14 @@ public:
 	};
 
 	/// <summary>
+	/// プレイヤーの状態を取得。
+	/// </summary>
+	/// <returns>プレイヤーの状態</returns>
+	enPlayerState GetplayerState()const {
+		return m_playerState;
+	}
+
+	/// <summary>
 	/// プレイヤーの右方向を取得。
 	/// </summary>
 	/// <returns>プレイヤーの右方向</returns>
@@ -71,6 +83,11 @@ public:
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
 		return m_position;
+	}
+
+	//! @brief 回転を取得。
+	CQuaternion GetRot() const {
+		return m_rotation;
 	}
 
 	//! @brief 座標を設定。
@@ -98,6 +115,42 @@ public:
 	}
 
 	/// <summary>
+	/// 防御力を取得。
+	/// </summary>
+	/// <returns>防御力</returns>
+	const int& GetDefPow()
+	{
+		return m_defensePower;
+	}
+
+	/// <summary>
+	/// 経験値を取得する。
+	/// </summary>
+	/// <returns>経験値</returns>
+	const float& GetExp()
+	{
+		return m_exp;
+	}
+
+	/// <summary>
+	/// 選択するアイテムを指定。
+	/// </summary>
+	/// <param name="selItem">選択したアイテム番号</param>
+	void SetSelectItemNum(int selItem)
+	{
+		m_selItemNum = selItem;
+	}
+
+	/// <summary>
+	/// 選択されているアイテム番号を取得。
+	/// </summary>
+	/// <returns>選択中のアイテム番号</returns>
+	const int& GetSelectItemNum()
+	{
+		return m_selItemNum;
+	}
+
+	/// <summary>
 	/// プレイヤーのY軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのY軸の回転</returns>
@@ -121,11 +174,32 @@ public:
 
 	//! @brief World をセットする。
 	//! @param recursive trueなら World::SetPlayer(this, false) も呼び出す。
-	void SetWorld( World* world , bool recursive = true);
+	void SetWorld( World* world , bool recursive = false);
 
 	//インベントリの長さ
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
+
+	Inventory& GetInventory(){
+		return m_inventory;
+	}
+
+	/// <summary>
+	/// GUIを開かせる。
+	/// </summary>
+	/// <param name="gui">開かせるGUI</param>
+	void OpenGUI( std::unique_ptr<GUI::RootNode>&& gui );
+
+	/// <summary>
+	/// GUIを閉じさせる。
+	/// </summary>
+	void CloseGUI();
+
+	/// <summary>
+	/// 被ダメージ
+	/// </summary>
+	/// <param name="AttackePow">攻撃力</param>
+	void TakenDamage(int AttackePow);
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -163,6 +237,11 @@ private:
 	void Headbang();
 
 	/// <summary>
+	/// 攻撃処理。
+	/// </summary>
+	void Attack();
+
+	/// <summary>
 	/// インベントリを開く。
 	/// </summary>
 	void OpenInventory();
@@ -178,6 +257,23 @@ private:
 	void StateManagement();
 
 	/// <summary>
+	/// プレイヤーの設置と破壊。
+	/// </summary>
+	/// <param name="ray">当たったオブジェクトの判定</param>
+	/// <param name="frontRotAdd">プレイヤーの回転</param>
+	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray , CVector3 frontRotAdd);
+
+	/// <summary>
+	/// プレイヤーの前方にレイを飛ばす。
+	/// </summary>
+	void FlyTheRay();
+
+	/// <summary>
+	/// 右手表示の更新してます。
+	/// </summary>
+	void ItemDisplayUpdate();
+
+	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
 	/// <returns>doubleClickFlag</returns>
@@ -189,7 +285,7 @@ private:
 	bool m_flyingMode = true;				//クリエイティブの際、飛行モードかどうか。
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
-	bool m_openInventory = false;			//インベントリを開いたか。
+	bool m_attackFlag = false;				//エネミーに攻撃したか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -204,10 +300,14 @@ private:
 	const float m_characonHeight = 160.f;					//キャラコンの高さ。
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
+	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
 
 	int m_hp = 20;					//体力。
 	int m_stamina = 20;				//スタミナ。
-	int m_defensePower = 0;			//防御力。
+	int m_attackPower = 5;			//攻撃力。
+	int m_defensePower = 15;		//防御力。
+	float m_exp = 5.50f;			//経験値。
+	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。
@@ -216,17 +316,21 @@ private:
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
 
-	Inventory m_inventory;
+
+	Inventory m_inventory; //アイテムを保管するインベントリ。
+	std::unique_ptr<GUI::RootNode> m_openedGUI; //現在開いているGUI
 
 	enPlayerState m_playerState = enPlayerState_num;			//プレイヤーの状態。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
+	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
 	CCharacterControllerType2 m_characon;						//キャラコン。
-	Bone* m_bone;												//骨。
-	CSpriteRender* m_sp = nullptr;								//画像
+	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
-	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
-	World* m_world = nullptr;                                   //ワールド。
+	Bone* m_headBone;												//頭の骨。
+
+	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
 };
 

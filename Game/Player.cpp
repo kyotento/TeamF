@@ -6,6 +6,11 @@
 #include "Item.h"
 #include "GameMode.h"
 #include "World.h"
+#include "PlayerInventory.h"
+#include "BlockFactory.h"
+#include "DamegeScreenEffect.h"
+#include "Enemy.h"
+#include "ItemDisplay.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -18,10 +23,12 @@ namespace {
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
+	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
 }
 
-Player::Player() : m_inventory(36)
+Player::Player(World* world) : Entity(world), m_inventory(36)
 {
+	world->SetPlayer(this);
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
@@ -36,6 +43,7 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 }
 
+#include "ItemStack.h"
 bool Player::Start()
 {
 	//プレイヤークラスの初期化。
@@ -43,16 +51,36 @@ bool Player::Start()
 	m_skinModelRender->Init(L"Resource/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetRot(m_rotation);
+	//レイトレモデル初期化
+	m_raytraceModel.Init(*m_skinModelRender);
 
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
 
-	//インベントリ―の初期化。
-	for (int i = 0; i < inventryWidth; i++) {
-		//m_inventoryList[i] = new Inventory();
-		//m_inventoryList[i]->s_item = GetItemData().GetItem(enCube_None);
+	//被弾判定用コリジョン。
+	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
+	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
+	m_damageCollision->CreateCapsule(colPos, m_rotation, m_characonRadius, m_characonHeight);
+	m_damageCollision->SetTimer(enNoTimer);				//寿命無し。
+	m_damageCollision->SetName(L"CPlayer");
+	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
+	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
+
+	//TODO: デバッグ専用
+	//プレイヤーにテスト用アイテムを持たせる。
+	int itemArray[] = {
+		enItem_Rod, enItem_Gold_Ingot, enCube_Grass, enCube_GoldOre, enCube_CobbleStone, enItem_Iron_Ingot,
+		enCube_OakWood,enItem_Diamond
+	};
+	for( int i : itemArray ){
+		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
+		m_inventory.AddItem( item );
 	}
 
+	//右手表示のclassにゅうごー
+	m_rightHandDisplay = NewGO<ItemDisplay>();
+	m_rightHandDisplay->SetName(L"ItemDisplay");
+	m_rightHandDisplay->SetPos(m_position);
 	return true;
 }
 
@@ -65,32 +93,69 @@ void Player::Update()
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
-
+	//todo Debug専用。
 	if( GetKeyDown( 'C' ) ){			//マウスカーソルを固定(解除)。
 		static bool lock = true;
 		MouseCursor().SetLockMouseCursor( lock = !lock );
 	}
-	//移動処理。
+
+	//頭の骨を取得。
+	m_headBone = m_skinModelRender->FindBone(L"Bone002");
+
+	//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
 	Move();
-	//回転処理。
-	Turn();
-	//インベントリを開く。
-	OpenInventory();
-	//プレイヤーの状態管理。0
+
+	//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
+	if( m_openedGUI == nullptr ){
+
+		//回転処理。
+		Turn();
+		//攻撃。
+		Attack();
+		//インベントリを開く。
+		OpenInventory();
+		//前方にRayを飛ばす。
+		FlyTheRay();
+
+	} else if( GetKeyDown( 'E' ) ){
+		//GUIが開かれているときに、Eが押されたらGUIを閉じる。
+		CloseGUI();
+	}
+
+	//プレイヤーの状態管理。
 	StateManagement();
 
 	Test();
+	//右手の更新処理。
+	ItemDisplayUpdate();
 }
 
+//とりまのこす。
 void Player::SetWorld(World* world, bool recursive) {
 	m_world = world;
 	if (recursive)
 		world->SetPlayer(this, false);
 }
 
+inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
+	m_openedGUI = std::move( gui );
+	MouseCursor().SetLockMouseCursor( false );		//マウスカーソルの固定を外す。
+}
+
+inline void Player::CloseGUI(){
+	m_openedGUI.reset();
+	MouseCursor().SetLockMouseCursor( true );		//マウスカーソルを固定する。
+}
+
 //キーボードの入力情報管理。
 void Player::KeyBoardInput()
 {
+	//開いているGUIがあれば入力を遮断する。
+	if( m_openedGUI ){
+		stickL = CVector3::Zero();
+		return;
+	}
+
 	Dash();		//走る処理。
 
 	//各キー入力により移動量を計算
@@ -231,6 +296,11 @@ void Player::Move()
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
+	//右手も移動させる。
+	m_rightHandDisplay->SetPos(m_position);
+	//ダメージ当たり判定移動。
+	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
+	m_damageCollision->SetPosition(colPos);
 
 	//プレイヤーの状態の変更。
 	if (m_playerState != enPlayerState_run) {
@@ -253,7 +323,7 @@ void Player::Jump()
 {
 	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival		//サバイバルのときか。
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
-		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround()) {			//スペースが押されていたら&&地面にいたら。
+		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
 		}
 		//ジャンプ中の処理。
@@ -307,9 +377,7 @@ void Player::Turn()
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
 	CQuaternion modelRot;
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
-
 	m_skinModelRender->SetRot(modelRot);
-
 	Headbang();
 
 	//右方向と正面方向のベクトルの計算。
@@ -330,8 +398,8 @@ void Player::Shift()
 	Bone* leftLegBone = m_skinModelRender->FindBone(L"Bone012");	//左足の骨。
 	const float shiftDir = 30.f;			//しゃがむ角度。
 
-	//しゃがみの処理。
-	if (GetKeyInput(VK_SHIFT)) {
+	//しゃがみの処理(Boneの回転処理)。GUI表示中は行わない。
+	if (GetKeyInput(VK_SHIFT) && m_openedGUI == nullptr) {
 		//todo ブロックから落ちない処理を追加する。
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
 		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
@@ -356,30 +424,45 @@ void Player::Shift()
 //頭の回転処理。
 void Player::Headbang()
 {
-	m_bone = m_skinModelRender->FindBone(L"Bone002");
 	m_headBoneRot.SetRotationDeg(CVector3::AxisZ(), m_degreeXZ);
-	m_bone->SetRotationOffset(m_headBoneRot);
+	m_headBone->SetRotationOffset(m_headBoneRot);
+}
+
+//攻撃処理。
+void Player::Attack()
+{
+	if (GetKeyDown(VK_LBUTTON)) {
+		//攻撃判定の座標。
+		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
+		CQuaternion rot;						//計算用使い捨て。
+		rot.SetRotationDeg(m_right, m_degreeXZ);
+		rot.Multiply(frontAddRot);
+
+		//CVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
+		//CVector3 endPoint(startPoint + frontAddRot * Block::WIDTH * 2);		//レイの終点。
+
+		CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
+
+		//攻撃判定用の当たり判定を作成。
+		SuicideObj::CCollisionObj* attackCol = NewGO<SuicideObj::CCollisionObj>();
+		attackCol->CreateBox(colPos, m_rotation, Block::WIDTH);
+		attackCol->SetTimer(0);		//寿命１フレーム。
+		attackCol->SetCallback([&](SuicideObj::CCollisionObj::SCallbackParam& param) {
+			if (param.EqualName(L"CEnemy")) {			//名前検索。
+				Enemy* enemy = param.GetClass<Enemy>();
+				enemy->TakenDamage(m_attackPower);
+				m_attackFlag = true;
+			}
+		});
+	}
 }
 
 //インベントリを開く。
 void Player::OpenInventory()
 {
-	if (GetKeyDown('E')){		//Eボタンを押したとき。
-		//インベントリを開く。
-		if (!m_openInventory) {			
-			m_sp = NewGO<CSpriteRender>();
-			m_sp->Init(L"Resource/spriteData/KariInventory.dds");
-			m_sp->SetPos({ 0.2, 0.2 });
-			m_openInventory = true;
-			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
-			return;
-		}
-		//インベントリを閉じる。
-		if (m_openInventory) { 
-			DeleteGO(m_sp);
-			m_openInventory = false;
-			MouseCursor().SetLockMouseCursor(true);		//マウスカーソルを固定する。
-		}
+	//Eボタンを押したとき。
+	if (GetKeyDown('E')){
+		OpenGUI( std::make_unique<GUI::PlayerInventory>( m_inventory ) );
 	}
 }
 
@@ -399,7 +482,7 @@ void Player::StateManagement()
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.0f);
+		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
 
 		break;
@@ -407,7 +490,7 @@ void Player::StateManagement()
 
 		//アニメーションの再生。
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
-		m_skinModelRender->GetAnimCon().SetSpeed(1.5f);
+		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
 
 		break;
@@ -422,14 +505,106 @@ void Player::StateManagement()
 	}
 }
 
+//オブジェクトの設置と破壊。
+void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, CVector3 frontRotAdd)
+{
+	frontRotAdd.Normalize();
+
+	//設置。
+	if (GetKeyDown(VK_RBUTTON)) {
+		CVector3 installPos;
+		installPos = (ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH;
+
+		//ブロックに設定された右クリック時のアクションを実行する。(作業台を開くだとか、そんなもの)
+		bool isClickActionDone = m_world->GetBlock( installPos )->OnClick( this );
+		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
+		if( isClickActionDone == false ){
+			installPos -= frontRotAdd * 2 / Block::WIDTH;
+			m_world->PlaceBlock( installPos, BlockFactory::CreateBlock( enCube_CraftingTable ) );
+		}
+	}
+	//破壊。
+	if (GetKeyDown(VK_LBUTTON) && !m_attackFlag) {
+		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
+	}
+	m_attackFlag = false;
+}
+
+//レイを前方に飛ばす。
+void Player::FlyTheRay()
+{
+	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
+		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
+		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
+		CQuaternion rot;						//計算用使い捨て。
+		rot.SetRotationDeg(m_right, m_degreeXZ);
+		rot.Multiply(frontAddRot);
+
+		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
+		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
+		//todo Debug Ray描画用。
+		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
+		CVector3 kariY = kariX + frontAddRot * reyLength;
+		DrawLine3D(kariX, kariY, CVector4::Green());
+
+		ClosestRayResultCallbackForCCollisionObj rayRC(startPoint, endPoint, L"Block");		//レイ情報(ブロックとのみ判定)。
+		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
+		if (rayRC.hasHit()) {		//衝突。
+			InstallAndDestruct(rayRC , frontAddRot);
+		}
+	}
+}
+
+//被ダメ－ジ。
+void Player::TakenDamage(int AttackPow)
+{
+	if (m_hp > 0) {			//被弾する。
+		m_hp -= AttackPow;
+
+		//カメラ回転
+		if (m_hp <= 0) {
+			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
+		}
+		else {
+			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 25.0f : -25.0f);
+		}
+
+		//ダメージエフェクト
+		NewGO<DamegeScreenEffect>();
+
+		//ダメージボイス
+		SuicideObj::CSE* voice;
+		if (m_hp <= 0) {		//死亡した時。
+			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
+		}
+		//死亡してない場合は２種類からランダムで音が鳴る。
+		else if (CMath::RandomZeroToOne() > 0.5f) {
+			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
+		}
+		else {
+			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
+		}
+		voice->Play();
+	}
+	if(m_hp <= 0){			//HPを0未満にしない。
+		m_hp = 0;
+	}
+}
+
 //todo Debug専用。
 void Player::Test()
 {
 	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
 		m_hp -= 1;
+		if (m_defensePower > 0) {
+			m_defensePower -= 1;				//防御力減少。
+		}
 	}
 	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
 		m_hp += 1;
+		if (m_defensePower < 20) {
+			m_defensePower += 1;				//防御力上昇。
+		}
 	}
 	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
 		m_stamina += 1;
@@ -437,4 +612,18 @@ void Player::Test()
 	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
 		m_stamina -= 1;
 	}
+	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
+		m_exp -= 0.3f;			
+	}
+	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
+		m_exp += 0.3f;
+	}
+}
+
+//右手表示の更新処理。
+void Player::ItemDisplayUpdate()
+{
+	//右手に位置と回転を送ってます。
+	//m_rightHandDisplay->SetPos(m_position);
+	//m_rightHandDisplay->SetRot(m_rotation);
 }

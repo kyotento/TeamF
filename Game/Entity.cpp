@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "Entity.h"
+#include "World.h"
 
-Entity::Entity(){}
+Entity::Entity(World* world) : m_world(world)
+{
+	world->AddEntity(this);
+}
 
-Entity::~Entity(){}
+Entity::~Entity()
+{
+	m_world->RemoveEntity(this);
+}

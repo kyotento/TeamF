@@ -4,6 +4,7 @@
 #include "RandomMapMaker.h"
 #include "Game.h"
 #include "World.h"
+#include "Title.h"
 
 namespace {
 	bool isStart = false;		//ゲームが実行されて一度だけ呼ばれる。
@@ -15,6 +16,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//エンジンの初期化設定
 	InitEngineParameter initparam;	
+
+	initparam.SDUnityChanScale = 2.5f;//スケール設定
 
 	//解像度
 	//initparam.screenWidth = initparam.frameBufferWidth = initparam.frameBufferWidth3D = 1920;
@@ -37,11 +40,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	
 	//判定表示
 
-	//+SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
+//	SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
 	if (isStart == false)
 	{
-		NewGO<Game>();
+		NewGO<Title>();
 		isStart = true;
 	}
 

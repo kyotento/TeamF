@@ -8,6 +8,8 @@
 #include "PlayerParameter.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
+#include "RecipeFiler.h"
+#include "RecipeManager.h"
 
 Game::Game()
 {
@@ -21,48 +23,27 @@ Game::~Game()
 
 bool Game::Start()
 {
+	//レシピ読み込み
+	RecipeFiler recipeFiler;
+	recipeFiler.SetFolder( L"Resource/recipeData/" );
+	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
 	//必要なクラスの生成。
 	m_gameMode = NewGO<GameMode>();
 	m_gameMode->SetName(L"gamemode");
 
-	m_player = NewGO<Player>();
+	m_player = NewGO<Player>(&m_world);
 	m_player->SetName(L"player");
-	m_player->SetWorld( &m_world );
 	m_gameCamera = NewGO<GameCamera>();
 
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(m_player);
 
-	//プレイヤーのインベントリを確認するためのアイテム生成だったり。
-
-	/*for (int i = 0; i < 20; i++) {
-		for (int j = 0; j < 20; j++) {
-			std::random_device rand;
-			Drop* drop = NewGO<Drop>();
-			drop->SetEnCube(EnCube(rand() % enCube_Num));
-			drop->SetPosition(CVector3(i, 15, j));
-			drop->SetNumber((rand() % 10) + 1);
-		}
-	}*/
+	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 
 	return true;
 }
 
 void Game::Update()
 {
-	//以下ブロックの設置と破壊のお試し。
-	if (GetKeyDown('R')) {
-		m_world.DeleteBlock((m_player->GetPos() / Block::WIDTH) + m_player->GetFront() * 2);
-	}
-	else if (GetKeyDown('F')) {
-		CVector3 pos = m_player->GetPos() / Block::WIDTH + m_player->GetFront() * 2;
-		/*for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				for (int o = 0; o < 5; o++) {
-					m_world.PlaceBlock(CVector3(pos.x + i, pos.y + j, pos.z + o), BlockFactory::CreateBlock(enCube_Grass));
-				}
-			}
-		}*/
-		m_world.PlaceBlock(pos,BlockFactory::CreateBlock(enCube_Grass));
-	}
 }

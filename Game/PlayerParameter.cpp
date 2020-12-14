@@ -10,6 +10,9 @@ PlayerParameter::PlayerParameter()
 
 PlayerParameter::~PlayerParameter()
 {
+	DeleteGO(m_spriteRenderOnHand);
+	DeleteGO(m_spriteRenderExp);
+	DeleteGO(m_spriteRenderSelectItem);
 }
 
 bool PlayerParameter::Start()
@@ -22,6 +25,9 @@ void PlayerParameter::Update()
 {
 	ChangeHP();				//体力を変更する。	
 	ChangeStamina();		//スタミナを変更する。
+	ChangeArmor();			//防御力を変更する。
+	ChangeExp();			//経験値ゲージを変更する。
+	SelectItem();			//アイテムを変更する。
 }
 
 // パラメータ画像の基盤を生成。
@@ -30,7 +36,7 @@ void PlayerParameter::SetParamFound()
 	for (int i = 0; i < m_paramNum; i++) {
 
 		//HPの基盤画像。
-		m_hpPosition[i] = { 0.3f,0.8f };
+		m_hpPosition[i] = { 0.3f,0.855f };
 
 		m_spriteRenderHP[i].Init(L"Resource/spriteData/HP_Max.dds");
 		m_hpPosition[i].x += 0.02f * i;
@@ -38,13 +44,45 @@ void PlayerParameter::SetParamFound()
 		m_spriteRenderHP[i].SetScale(m_scale);
 
 		//スタミナ画像の基盤を生成。
-		m_staminaPosition[i] = { 0.55f,0.8f };
+		m_staminaPosition[i] = { 0.7f,0.855f };
 
 		m_spriteRenderStamina[i].Init(L"Resource/spriteData/stamina_Max.dds");
-		m_staminaPosition[i].x += 0.02f * i;
+		m_staminaPosition[i].x -= 0.02f * i;
 		m_spriteRenderStamina[i].SetPos(m_staminaPosition[i]);
 		m_spriteRenderStamina[i].SetScale(m_scale);
+
+		//防御力画像の基盤。
+		m_armorPos[i] = { 0.3f,0.815f };
+
+		m_spriteRenderArmor[i].Init(L"Resource/spriteData/Armor_Max.dds");
+		m_armorPos[i].x += 0.02f * i;
+		m_spriteRenderArmor[i].SetPos(m_armorPos[i]);
+		m_spriteRenderArmor[i].SetScale(m_scale);
 	}
+	//手持ちアイテム基盤。
+	m_spriteRenderOnHand = NewGO<GameObj::CSpriteRender>();
+	m_spriteRenderOnHand->Init(L"Resource/spriteData/OnHandInventory.dds");
+	m_spriteRenderOnHand->SetPos({ 0.5f, 0.95f });
+	m_spriteRenderOnHand->SetScale(1.7f);
+	//経験値基盤。
+	m_spriteRenderExp = NewGO<GameObj::CSpriteRender>();
+	m_spriteRenderExp->Init(L"Resource/spriteData/Experience_Found.dds");
+	m_spriteRenderExp->SetPos({ 0.5f,0.89f });
+	m_spriteRenderExp->SetScale(m_expScale);
+	//経験値ゲージ。
+	m_spriteRenderExpGauge = NewGO<GameObj::CSpriteRender>();
+	m_spriteRenderExpGauge->Init(L"Resource/spriteData/Experience_Gauge.dds");
+	m_spriteRenderExpGauge->SetPos({ 0.288f,0.89f });
+	m_spriteRenderExpGauge->SetScale(m_expScale);
+	m_spriteRenderExpGauge->SetPivot({ 0.f, 0.5f });
+	m_spriteRenderExpGauge->SetColor({ 0.000000000f, 0.501960814f, 0.000000000f, 0.20000000f });		//緑色の半透明画像に。
+	//アイテムセレクト画像。
+	m_spriteRenderSelectItem = NewGO<GameObj::CSpriteRender>();
+	m_spriteRenderSelectItem->Init(L"Resource/spriteData/SelectInventory.dds");
+	m_player->SetSelectItemNum(1);					//一番目のアイテムを選択している。
+	m_sItemPos = { 0.308f,0.95f };		//todo メモ　一つ移動するごとに0.048。
+	m_spriteRenderSelectItem->SetPos(m_sItemPos);
+	m_spriteRenderSelectItem->SetScale(1.7f);
 }
 
 //体力を変更する。
@@ -93,4 +131,89 @@ void PlayerParameter::ChangeStamina()
 		}
 	}
 	m_oldStamina = remainStamina;
+}
+
+//防御力を変更する。
+void PlayerParameter::ChangeArmor()
+{
+	int ramainArmor = m_player->GetDefPow();		//プレイヤーの防御力。
+
+	if (ramainArmor != m_oldArmor) {
+		for (int i = 0; i < m_paramNum; i++) {
+			if (i * 2 + 1 < ramainArmor) {
+				m_spriteRenderArmor[i].Init(L"Resource/spriteData/Armor_Max.dds");
+			}
+			else{
+				if (ramainArmor % 2 == 1 && i * 2 <= ramainArmor) {
+					m_spriteRenderArmor[i].Init(L"Resource/spriteData/Armor_Half.dds");
+				}
+				else{
+					m_spriteRenderArmor[i].Init(L"Resource/spriteData/Armor_Found.dds");
+				}
+			}
+		}
+	}
+	m_oldArmor = ramainArmor;
+}
+
+//経験値ゲージを変更する。
+void PlayerParameter::ChangeExp()
+{
+	float expGaugeScaleX = m_player->GetExp() - (int)m_player->GetExp();
+	m_spriteRenderExpGauge->SetScale({ expGaugeScaleX * m_expScale , m_expScale });
+}
+
+//アイテムを選択する。
+void PlayerParameter::SelectItem()
+{
+	float moveX = 0.048f;		//アイテム欄一つの移動量X。
+
+	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。。
+	KariItemS();								//キーボードによる指定。
+
+	if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
+		//超過した時の修正。	
+		if (m_selectNum > 9) {
+			m_selectNum = 1;
+		}
+		if (m_selectNum < 1) {
+			m_selectNum = 9;	
+		}
+		//座標の変更。
+		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
+		m_spriteRenderSelectItem->SetPos(m_sItemPos);	
+	}
+	m_player->SetSelectItemNum(m_selectNum);	//プレイヤークラスに格納。	
+	m_selectNumOld = m_selectNum;				//現在のアイテム番号を格納。
+}
+
+//1~9ボタンによるアイテムセレクト(ごり押しの極み)。
+void PlayerParameter::KariItemS()
+{
+	for (int i = 1; i <= 9; i++) {
+		if (GetKeyDown('0' + i)) { m_selectNum = i; }
+	}
+
+	//if (GetKeyDown('1')) { m_selectNum = 1;}
+	//if (GetKeyDown('2')) { m_selectNum = 2;}
+	//if (GetKeyDown('3')) { m_selectNum = 3;}
+	//if (GetKeyDown('4')) { m_selectNum = 4;}
+	//if (GetKeyDown('5')) { m_selectNum = 5;}
+	//if (GetKeyDown('6')) { m_selectNum = 6;}
+	//if (GetKeyDown('7')) { m_selectNum = 7;}
+	//if (GetKeyDown('8')) { m_selectNum = 8;}
+	//if (GetKeyDown('9')) { m_selectNum = 9;}
+}
+
+void PlayerParameter::PostRender()
+{
+	//経験値。
+	wchar_t font[256];
+	swprintf_s(font, L"%d", (int)m_player->GetExp());
+	m_font.DrawScreenPos(font, { 631.f,610.f }, CVector4::Green(), { 0.5f,0.5f },
+		CVector2::Zero(),
+		0.0f,
+		DirectX::SpriteEffects_None,
+		0.7f
+	);
 }

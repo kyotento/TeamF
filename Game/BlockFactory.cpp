@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BlockFactory.h"
 
+#include "CraftingTable.h"
 
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
@@ -9,9 +10,14 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_Grass] = L"Resource/modelData/GrassBlock.tkm";
 	FILE_PATH_ARRAY[enCube_Soil] = L"Resource/modelData/soilBlock.tkm";
 	FILE_PATH_ARRAY[enCube_Stone] = L"Resource/modelData/stoneBlock.tkm";
-	FILE_PATH_ARRAY[enCube_Leaf] = L"Resource/modelData/leafBlock.tkm";
+	FILE_PATH_ARRAY[enCube_CobbleStone] = L"Resource/modelData/cobbleStone.tkm";
+	FILE_PATH_ARRAY[enCube_OakLog] = L"Resource/modelData/oakLog.tkm";
+	FILE_PATH_ARRAY[enCube_OakWood] = L"Resource/modelData/oakWood.tkm";
+	FILE_PATH_ARRAY[enCube_OakLeaf] = L"Resource/modelData/leafBlock.tkm";
+	FILE_PATH_ARRAY[enCube_CoalOre] = L"Resource/modelData/coalOre.tkm";
 	FILE_PATH_ARRAY[enCube_IronOre] = L"Resource/modelData/ironOre.tkm";
 	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
+	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
@@ -24,12 +30,22 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	}
 }
 
-std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
-	auto block = std::make_unique<Block>();
-	//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
-	block->GetModel().Init( 0, FILE_PATH_ARRAY[blockType] );
+const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
+	return FILE_PATH_ARRAY[blockType];
+}
 
+std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
+	std::unique_ptr<Block> block;
+
+	//クリック時にアクションを起こすブロックなどは別のクラス。
+	if( blockType == enCube_CraftingTable ){
+		block = std::make_unique<CraftingTable>();
+	} else{
+		block = std::make_unique<Block>();
+	}
+		
+	block->InitModel(FILE_PATH_ARRAY[blockType]);
 	block->SetBlockType( blockType );
-	//block->GetCollision().SetIsHurtCollision(true);
+
 	return std::move( block );
 }

@@ -7,6 +7,7 @@
 
 class Entity;
 class Player;
+class DropItem;
 
 //! @brief Block オブジェクトを保持するワールド
 //! @author Takayama
@@ -19,15 +20,18 @@ public:
 
 	//! @brief Player をセットする。
 	//! @param recursive trueなら Player::SetWorld(this, false) も呼び出す。
-	void SetPlayer( Player* player, bool recursive );
+	void SetPlayer( Player* player, bool recursive = false );
 
-	Player* GetPlayer(){
-		return m_player;
-	}
+	Player* GetPlayer();
 
 	//! @brief Entity をワールドに追加する。
 	void AddEntity( Entity* entity ){
-		m_entities.push_back( entity );
+		m_entities.insert( entity );
+	}
+
+	//! @brief Entity をワールドから取り除く。
+	void RemoveEntity( Entity* entity ){
+		m_entities.erase( entity );
 	}
 
 	//! @brief チャンクを読み込む距離を取得。
@@ -100,7 +104,6 @@ public:
 	}
 
 
-
 	//! @briefチャンク座標を計算
 	//! @param ワールド座標のxかz。
 	//! @return チャンク座標のxかz。
@@ -129,7 +132,7 @@ private:
 	std::unordered_set<IntVector3> m_activeCollisions;
 
 	//! エンティティ(ブロック以外の動く物)を入れておく配列。
-	std::vector<Entity*> m_entities;
+	std::unordered_set<Entity*> m_entities;
 
 	//!シード値などの情報を保存。
 	WorldInfoFile infoFile;
