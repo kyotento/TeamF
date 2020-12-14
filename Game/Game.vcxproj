@@ -77,6 +77,7 @@
     <ClCompile Include="InventoryController.cpp" />
     <ClCompile Include="InventoryView.cpp" />
     <ClCompile Include="ItemDicitionary.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerInventory.cpp" />
     <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerInventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemStack.h" />
@@ -166,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
     <ImageContentTask Include="Resource\sprite\CraftingBox.png" />
     <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />

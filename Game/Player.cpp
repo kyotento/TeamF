@@ -11,6 +11,7 @@
 #include "DamegeScreenEffect.h"
 #include "Enemy.h"
 #include "ItemDisplay.h"
+#include "PlayerDeath.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -575,7 +576,6 @@ void Player::TakenDamage(int AttackPow)
 		//HPを0未満にしない。
 		if (m_hp <= 0) {			
 			m_hp = 0;
-			m_playerState = enPlayerState_death;
 		}
 
 		//ダメージボイス
@@ -597,10 +597,15 @@ void Player::TakenDamage(int AttackPow)
 //死亡処理。
 void Player::Death()
 {
+	//死亡状態かの判定。
+	if (m_hp <= 0) {
+		m_playerState = enPlayerState_death;
+	}
+
 	//死亡した時。
 	if (m_playerState == enPlayerState_death) {
 		float maxRot = 90.f;							//回転の上限値。
-		float rotEndTime = 0.5f;						//回転終了までにかかる時間。
+		float rotEndTime = 0.5f;						//回転終了までにかかる時間。 
 		float oneFrameRot = maxRot / 60.f / rotEndTime;			//1フレームの回転量。
 
 		//プレイヤーの回転処理。
@@ -615,7 +620,28 @@ void Player::Death()
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 			mat->SetAlbedoScale({ CVector4::Red() });
 		});
+		//死亡時の画像。
+		if (m_playerDeath == nullptr) {
+			m_playerDeath = NewGO<PlayerDeath>();
+		}
+		//リスポーン。
+		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
+			Respawn();
+		}
 	}
+}
+
+//リスポーン。
+void Player::Respawn()
+{
+	m_hp = 20;								//HPの初期化。
+	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
+	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+		mat->SetAlbedoScale({ CVector4::White() });		//モデルの色の初期化。
+	});
+	m_characon.SetPosition(m_respawnPos);
+	DeleteGO(m_playerDeath);
+	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの固定。
 }
 
 

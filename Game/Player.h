@@ -9,6 +9,7 @@ class GameCamera;
 class Item;
 class GameMode;
 class ItemDisplay;
+class PlayerDeath;
 namespace GUI{
 	class RootNode;
 }
@@ -275,6 +276,11 @@ private:
 	void Death();
 
 	/// <summary>
+	/// リスポーン。
+	/// </summary>
+	void Respawn();
+
+	/// <summary>
 	/// 右手表示の更新してます。
 	/// </summary>
 	void ItemDisplayUpdate();
@@ -315,12 +321,12 @@ private:
 	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
+	CVector3 m_respawnPos = m_position;											//リスポーン座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。
 	CVector3 m_front = CVector3(0.0f, 0.0f, 1.0f);				//正面。	
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
-
 
 	Inventory m_inventory; //アイテムを保管するインベントリ。
 	std::unique_ptr<GUI::RootNode> m_openedGUI; //現在開いているGUI
@@ -337,5 +343,6 @@ private:
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
+	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 };
 
