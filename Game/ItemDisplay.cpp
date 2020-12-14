@@ -7,7 +7,8 @@
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 namespace {
-	int DownPosY = 0;			
+	int DownPosY = 0;
+	int DownPosZ = 0;
 	bool swich_flag = false;
 	bool initItem_flag = false;
 }
@@ -87,10 +88,10 @@ void ItemDisplay::Follow()
 	m_position += m_forward;
 
 	m_position.y += DownPosY;
+	m_position.z -= DownPosZ;
 	////座標をモデルへ。
 	m_skinModelRender->SetPos(m_position);
 }
-
 //切り替え
 void ItemDisplay::Switching()
 {
@@ -101,9 +102,11 @@ void ItemDisplay::Switching()
 	{
 		//下に落とすよ。
 		DownPosY--;
+		DownPosZ--;
 		if (DownPosY >= minDownPos)
 		{
 			DownPosY = minDownPos-1;
+			DownPosZ = minDownPos-1;
 			initItem_flag = true;
 			swich_flag = true;
 		}
@@ -111,16 +114,17 @@ void ItemDisplay::Switching()
 	else if (swich_flag)
 	{
 		DownPosY++;
+		DownPosZ++;
 		BuildAgain();
 		//元の位置へ。
 		if (DownPosY >= maxDownPos)
 		{
 			DownPosY = maxDownPos;
+			DownPosZ = maxDownPos;
 			swich_flag = false;
 		}
 	}
 }
-
 //腕の回転処理
 void ItemDisplay::Rotation()
 {
@@ -137,7 +141,6 @@ void ItemDisplay::Rotation()
 		break;
 	}
 }
-
 //カメラのモードに合わせた処理
 void ItemDisplay::CameraModeChangeToDisplay()
 {
