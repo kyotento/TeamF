@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Game.h"
 #include "GameCamera.h"
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
@@ -44,6 +45,7 @@ Player::~Player()
 {
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
+	DeleteGO(m_playerDeath);
 }
 
 #include "ItemStack.h"
@@ -639,12 +641,17 @@ void Player::Death()
 		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
 			Respawn();
 		}
+		//タイトルへ戻る。
+		else if (m_playerDeath->Click() == m_playerDeath->enButtonRerturnToTitle) {
+			m_game->TransToTitle();
+		}
 	}
 }
 
 //リスポーン。
 void Player::Respawn()
 {
+	m_deathAddRot = 0.f;					//プレイヤーの回転量の取得。
 	m_hp = 20;								//HPの初期化。
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
@@ -654,7 +661,6 @@ void Player::Respawn()
 	DeleteGO(m_playerDeath);
 	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの固定。
 }
-
 
 //todo Debug専用。
 void Player::Test()

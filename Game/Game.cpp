@@ -10,6 +10,7 @@
 #include "RecipeFiler.h"
 #include "RecipeManager.h"
 #include "Sun.h"
+#include "Title.h"
 
 Game::Game()
 {
@@ -35,6 +36,7 @@ bool Game::Start()
 
 	m_player = NewGO<Player>(&m_world);
 	m_player->SetName(L"player");
+	m_player->SetGameIns(this);
 
 	m_gameCamera = NewGO<GameCamera>();
 
@@ -49,7 +51,9 @@ void Game::Update()
 {
 }
 
-void Game::GameEnd()
+//タイトルへの遷移。
+void Game::TransToTitle()
 {
-
+	DeleteGO(this);
+	NewGO<Title>();		
 }

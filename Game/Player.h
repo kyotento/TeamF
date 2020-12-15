@@ -11,6 +11,7 @@ class GameMode;
 class ItemDisplay;
 class PlayerParameter;
 class PlayerDeath;
+class Game;
 namespace GUI{
 	class RootNode;
 }
@@ -203,6 +204,15 @@ public:
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
 	void TakenDamage(int AttackePow);
+
+	/// <summary>
+	/// ゲームのインスタンスを設定する。
+	/// </summary>
+	/// <param name="game"></param>
+	void SetGameIns(Game* game)
+	{
+		m_game = game;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -346,5 +356,6 @@ private:
 	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
+	Game* m_game = nullptr;										//Gameクラス。
 };
 

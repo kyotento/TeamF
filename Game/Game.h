@@ -18,9 +18,9 @@ public:
 	void Update();
 
 	/// <summary>
-	/// ゲームを終了する。
+	/// タイトルへの遷移。
 	/// </summary>
-	void GameEnd();
+	void TransToTitle();
 
 
 private:
