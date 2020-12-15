@@ -52,7 +52,7 @@ public:
 	/// ブロックか、ツールかを取得する。
 	/// </summary>
 	/// <returns>trueならブロック</returns>
-	bool GetIsBlock() {
+	bool GetIsBlock() override{
 		return m_item.GetIsBlock();
 	}
 

@@ -23,6 +23,14 @@ public:
 		return enCube_None;
 	}
 
+	/// <summary>
+	/// ブロックか、ツールかを取得する。
+	/// </summary>
+	/// <returns>trueならブロック</returns>
+	virtual bool GetIsBlock(){
+		return false;
+	}
+
 	//! @brief 描画関数
 	virtual void Draw( const CVector2& pos, const CVector2& parentScale ){}
 
