@@ -38,6 +38,11 @@ public:
 		return m_item;
 	}
 
+	//! @brief アイテムの3Dモデルのパスを取得。
+	std::filesystem::path GetModelPath() const{
+		return m_item.GetModelPath();
+	}
+
 	//! @brief アイテムidを取得。
 	unsigned GetID() const override{
 		return m_item.GetID();
