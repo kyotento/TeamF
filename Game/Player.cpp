@@ -529,12 +529,10 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
 		if( isClickActionDone == false ){
 
-			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//aにアイテムの参照が。
-			if (item != nullptr) {
-				if (item->GetIsBlock()) {		//ブロック。
-					installPos -= frontRotAdd * 2 / Block::WIDTH;
-					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
-				}
+			auto& item = m_inventory.GetNullableItem(m_selItemNum - 1);		//itemにアイテムの参照が。
+			if (item.GetIsBlock()) {		//ブロック。
+				installPos -= frontRotAdd * 2 / Block::WIDTH;
+				m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item.GetID())));
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 //! @file
 #pragma once
 
+class NullableItemStack;
 class ItemStack;
 
 //! @brief インベントり。アイテムを入れる倉庫。
@@ -18,6 +19,9 @@ public:
 	std::unique_ptr<ItemStack>& GetItem( unsigned slotNo ){
 		return m_slotArray[slotNo];
 	}
+
+	//! @brief アイテムを取得。指定したスロットがnullなら、nullオブジェクトを返す。
+	NullableItemStack& GetNullableItem( unsigned slotNo );
 
 	auto begin(){
 		return m_slotArray.begin();

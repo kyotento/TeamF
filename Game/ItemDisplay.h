@@ -38,6 +38,14 @@ public:
 		m_headRot = h_rot;
 	}
 private:
+
+	enum EnType
+	{
+		enHand,
+		enBlock,
+		enTool
+	};
+
 	/// <summary>
 	/// モデルの生成。
 	/// </summary>
@@ -57,6 +65,22 @@ private:
 	/// カメラのモードに合わせて表示させるための関数。
 	/// </summary>
 	void CameraModeChangeToDisplay();
+	/// <summary>
+	/// 切り替えたときに再度生成。
+	/// </summary>
+	void BuildAgain();
+	/// <summary>
+	/// 手の回転処理
+	/// </summary>
+	void HandRotation();
+	/// <summary>
+	/// ブロック系の回転処理
+	/// </summary>
+	void BlockRotation();
+	/// <summary>
+	/// ツール系の回転処理
+	/// </summary>
+	void ToolRotation();
 private:
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;	//モデル。
 	CVector3 m_position = CVector3::Zero();					//モデルを表示する座標。
@@ -66,11 +90,13 @@ private:
 	float m_radianY = 0.0f;									//Y軸の回転(ラジアン)
 	float m_radianXZ = 0.0f;								//XZ軸の回転(ラジアン)
 
-	int m_cameraDisplayMode = 0;									//カメラのモード。
+	int m_cameraDisplayMode = 0;							//カメラのモード。
 
 	CQuaternion m_rotation = CQuaternion::Identity();		//モデルを回転させる。
 	CQuaternion m_headRot = CQuaternion::Identity();
 	Player* m_player = nullptr;								//プレイヤーのインスタンス。
 	GameCamera* m_gameCamera = nullptr;						//ゲームカメライェア。
+
+	EnType type;											//タイプ
 };
 

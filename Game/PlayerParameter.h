@@ -85,10 +85,10 @@ private:
 	GameObj::CSpriteRender m_spriteRenderHP[m_paramNum];			//HP画像。
 	GameObj::CSpriteRender m_spriteRenderStamina[m_paramNum];		//スタミナ画像。
 	GameObj::CSpriteRender m_spriteRenderArmor[m_paramNum];			//防御力画像。
-	GameObj::CSpriteRender* m_spriteRenderOnHand = nullptr;			//手持ちアイテム画像基盤。
-	GameObj::CSpriteRender* m_spriteRenderExp = nullptr;			//経験値。
-	GameObj::CSpriteRender* m_spriteRenderExpGauge = nullptr;		//経験値(ゲージの増減)。
-	GameObj::CSpriteRender* m_spriteRenderSelectItem = nullptr;		//度のアイテムを選択しているか。
+	GameObj::CSpriteRender m_spriteRenderOnHand;					//手持ちアイテム画像基盤。
+	GameObj::CSpriteRender m_spriteRenderExp;						//経験値。
+	GameObj::CSpriteRender m_spriteRenderExpGauge;					//経験値(ゲージの増減)。
+	GameObj::CSpriteRender m_spriteRenderSelectItem;				//度のアイテムを選択しているか。
 
 	Player* m_player = nullptr;			//プレイヤー。
 	CFont m_font;						//フォント。
