@@ -293,6 +293,7 @@
     <ClInclude Include="PlayerDeath.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Sun.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
