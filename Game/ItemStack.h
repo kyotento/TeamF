@@ -1,10 +1,11 @@
 //! @file
 #pragma once
+#include "NullableItemStack.h"
 #include "Item.h"
 
 //! @brief アイテムとその数を持つクラス。コピー可能。
 //! @author Takayama
-class ItemStack{
+class ItemStack : public NullableItemStack{
 public:
 
 	ItemStack(Item& item , int number = 1) : m_item(item), m_number(number){}
@@ -23,7 +24,7 @@ public:
 	}
 
 	//! @brief 個数を取得。
-	int GetNumber() const{
+	int GetNumber() const override{
 		return m_number;
 	}
 
@@ -38,7 +39,7 @@ public:
 	}
 
 	//! @brief アイテムidを取得。
-	unsigned GetID() const{
+	unsigned GetID() const override{
 		return m_item.GetID();
 	}
 
@@ -56,7 +57,7 @@ public:
 	}
 
 	//! @brief 描画関数
-	void Draw( const CVector2& pos, const CVector2& parentScale );
+	void Draw( const CVector2& pos, const CVector2& parentScale ) override;
 
 private:
 	CFont m_font;

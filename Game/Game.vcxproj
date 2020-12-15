@@ -139,6 +139,7 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
+    <ClInclude Include="NullableItemStack.h" />
     <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerInventory.h" />
     <ClInclude Include="Item.h" />

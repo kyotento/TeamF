@@ -294,6 +294,9 @@
       <Filter>Entity\Player</Filter>
     </ClInclude>
     <ClInclude Include="Sun.h" />
+    <ClInclude Include="NullableItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -462,16 +465,12 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
     <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
     <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\ReturnToTitleButton.png">
-      <Filter>sprite\button</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\RespawnButton.png">
-      <Filter>sprite\button</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
