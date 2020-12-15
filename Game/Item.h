@@ -42,6 +42,14 @@ public:
 	//! @brief GUI用のアイテムの描画。
 	void Draw( const CVector2& pos, const CVector2& scale );
 
+	/// <summary>
+	/// ブロックかツールかを取得する。
+	/// </summary>
+	/// <returns>trueならブロック</returns>
+	bool GetIsBlock() {
+		return m_id < enCube_Num;	
+	}
+
 private:
 	Item();
 	Item( Item&& item );

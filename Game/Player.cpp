@@ -132,6 +132,7 @@ void Player::Update()
 	Test();
 	//右手の更新処理。
 	ItemDisplayUpdate();
+
 }
 
 //とりまのこす。
@@ -516,15 +517,25 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
-		CVector3 installPos;
+		CVector3 installPos;		//設置する場所。
 		installPos = (ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH;
 
+		//当たり判定がブロックでないとき(ゾンビとか)。
+		if(m_world->GetBlock(installPos) == nullptr){
+			return;
+		}
 		//ブロックに設定された右クリック時のアクションを実行する。(作業台を開くだとか、そんなもの)
 		bool isClickActionDone = m_world->GetBlock( installPos )->OnClick( this );
 		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
 		if( isClickActionDone == false ){
-			installPos -= frontRotAdd * 2 / Block::WIDTH;
-			m_world->PlaceBlock( installPos, BlockFactory::CreateBlock( enCube_CraftingTable ) );
+
+			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//aにアイテムの参照が。
+			if (item != nullptr) {
+				if (item->GetIsBlock()) {		//ブロック。
+					installPos -= frontRotAdd * 2 / Block::WIDTH;
+					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
+				}
+			}
 		}
 	}
 	//破壊。
