@@ -41,9 +41,9 @@ void Enemy::Tracking()
 	m_direction.Normalize();
 	m_direction.y = 0.f;
 
-	Jump();		//ジャンプ処理。
+	Jump();				//ジャンプ処理。
 
-	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH) {		//プレイヤーと一定距離離れているとき。
+	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH && !m_isTakenDamage) {		//プレイヤーと一定距離離れていて、ノックバックしていないとき。
 
 		//モデル、キャラコン、当たり判定用の座標を更新。
 		m_characonMove = m_direction * m_moveSpeed;
@@ -105,14 +105,58 @@ void Enemy::TakenDamage(int attackDamage)
 {
 	if (m_hp > 0) {		//HPがあるとき。
 		m_hp -= attackDamage;
-
-		//ノックバック処理。
+		m_isTakenDamage = true;		//ダメージフラグを返す。
 
 		//体力を0未満にしない。
 		if (m_hp <= 0) {
 			m_hp = 0;
 			m_enemyState = enEnemy_death;		//死亡状態に。
 		}
+	}
+}
+
+//ノックバック処理。
+void Enemy::KnockBack()
+{
+	float knockBackFrame = 25.f;			//ノックバックするフレーム数(60FPS)。
+
+	if (m_isTakenDamage) {
+		if (m_knockBackTimer < knockBackFrame) {
+
+			//ノックバック処理。
+			CVector3 direction;
+			direction = (m_player->GetPos() - m_position);
+			direction.Normalize();
+			direction.y = 0.f;
+			m_characonMove.x -= direction.x * m_knockBack * Block::WIDTH;
+			m_characonMove.z -= direction.z * m_knockBack * Block::WIDTH;
+
+			//高さの処理。
+			m_knoceBackY = m_knockBack;
+			m_characonMove.y += m_knoceBackY * Block::WIDTH;
+			m_knoceBackY -= m_knoceBackY + 0.5 * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
+
+			m_position = m_characon.Execute(m_characonMove);
+			m_skinModelRender->SetPos(m_position);
+
+			//モデルの色を赤みがかったようにする。
+			m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+				mat->SetAlbedoScale({ CVector4::Red() });
+			});
+			m_knockBackTimer += 1;		//タイマーを加算。
+		}
+		else {		//リセット。
+			m_isTakenDamage = false;
+			m_knockBackTimer = 0.f;
+			m_knoceBackY = 1.f;
+		}
+		
+	}
+	else if (!m_isTakenDamage) {
+		//モデルの色を元に戻す。
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+			mat->SetAlbedoScale({ CVector4::White() });
+		});
 	}
 }
 
