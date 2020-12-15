@@ -11,6 +11,7 @@
 #include "DamegeScreenEffect.h"
 #include "Enemy.h"
 #include "ItemDisplay.h"
+#include "PlayerDeath.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -55,12 +56,14 @@ bool Player::Start()
 	m_raytraceModel.Init(*m_skinModelRender);
 
 	//キャラコンの初期化。
-	m_characon.Init(m_characonRadius, m_characonHeight, m_position);
+	const float characonRadius = 50.f;					//キャラコンの半径。
+	const float characonHeight = 160.f;					//キャラコンの高さ。
+	m_characon.Init(characonRadius, characonHeight, m_position);
 
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
 	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
-	m_damageCollision->CreateCapsule(colPos, m_rotation, m_characonRadius, m_characonHeight);
+	m_damageCollision->CreateCapsule(colPos, m_rotation, characonRadius, characonHeight);
 	m_damageCollision->SetTimer(enNoTimer);				//寿命無し。
 	m_damageCollision->SetName(L"CPlayer");
 	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
@@ -93,41 +96,43 @@ void Player::Update()
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
-	//todo Debug専用。
-	if( GetKeyDown( 'C' ) ){			//マウスカーソルを固定(解除)。
-		static bool lock = true;
-		MouseCursor().SetLockMouseCursor( lock = !lock );
-	}
 
 	//頭の骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
 
-	//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
-	Move();
+	//死んでないとき。
+	if (m_playerState != enPlayerState_death) {
+		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
+		Move();
 
-	//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
-	if( m_openedGUI == nullptr ){
+		//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
+		if (m_openedGUI == nullptr) {
 
-		//回転処理。
-		Turn();
-		//攻撃。
-		Attack();
-		//インベントリを開く。
-		OpenInventory();
-		//前方にRayを飛ばす。
-		FlyTheRay();
+			//回転処理。
+			Turn();
+			//攻撃。
+			Attack();
+			//インベントリを開く。
+			OpenInventory();
+			//前方にRayを飛ばす。
+			FlyTheRay();
 
-	} else if( GetKeyDown( 'E' ) ){
-		//GUIが開かれているときに、Eが押されたらGUIを閉じる。
-		CloseGUI();
+		}
+		else if (GetKeyDown('E')) {
+			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
+			CloseGUI();
+		}
 	}
-
 	//プレイヤーの状態管理。
 	StateManagement();
+
+	//死亡処理。
+	Death();
 
 	Test();
 	//右手の更新処理。
 	ItemDisplayUpdate();
+
 }
 
 //とりまのこす。
@@ -512,15 +517,25 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
-		CVector3 installPos;
+		CVector3 installPos;		//設置する場所。
 		installPos = (ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH;
 
+		//当たり判定がブロックでないとき(ゾンビとか)。
+		if(m_world->GetBlock(installPos) == nullptr){
+			return;
+		}
 		//ブロックに設定された右クリック時のアクションを実行する。(作業台を開くだとか、そんなもの)
 		bool isClickActionDone = m_world->GetBlock( installPos )->OnClick( this );
 		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
 		if( isClickActionDone == false ){
-			installPos -= frontRotAdd * 2 / Block::WIDTH;
-			m_world->PlaceBlock( installPos, BlockFactory::CreateBlock( enCube_CraftingTable ) );
+
+			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//aにアイテムの参照が。
+			if (item != nullptr) {
+				if (item->GetIsBlock()) {		//ブロック。
+					installPos -= frontRotAdd * 2 / Block::WIDTH;
+					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
+				}
+			}
 		}
 	}
 	//破壊。
@@ -561,20 +576,17 @@ void Player::TakenDamage(int AttackPow)
 	if (m_hp > 0) {			//被弾する。
 		m_hp -= AttackPow;
 
-		//カメラ回転
-		if (m_hp <= 0) {
-			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
-		}
-		else {
-			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 25.0f : -25.0f);
-		}
-
 		//ダメージエフェクト
 		NewGO<DamegeScreenEffect>();
 
+		//HPを0未満にしない。
+		if (m_hp <= 0) {			
+			m_hp = 0;
+		}
+
 		//ダメージボイス
 		SuicideObj::CSE* voice;
-		if (m_hp <= 0) {		//死亡した時。
+		if (m_playerState == enPlayerState_death) {		//死亡した時。
 			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 		}
 		//死亡してない場合は２種類からランダムで音が鳴る。
@@ -586,10 +598,58 @@ void Player::TakenDamage(int AttackPow)
 		}
 		voice->Play();
 	}
-	if(m_hp <= 0){			//HPを0未満にしない。
-		m_hp = 0;
+}
+
+//死亡処理。
+void Player::Death()
+{
+	//死亡状態かの判定。
+	if (m_hp <= 0) {
+		m_playerState = enPlayerState_death;
+	}
+
+	//死亡した時。
+	if (m_playerState == enPlayerState_death) {
+		float maxRot = 90.f;							//回転の上限値。
+		float rotEndTime = 0.5f;						//回転終了までにかかる時間。 
+		float oneFrameRot = maxRot / 60.f / rotEndTime;			//1フレームの回転量。
+
+		//プレイヤーの回転処理。
+		if (m_deathAddRot <= maxRot) {	//回転量が上限に達するまで。
+			CQuaternion deathRot;		//死亡時に加算する回転量。
+			deathRot.SetRotationDeg(CVector3::AxisZ(), oneFrameRot);
+			m_rotation.Multiply(deathRot);
+			m_skinModelRender->SetRot(m_rotation);
+			m_deathAddRot += oneFrameRot;
+		}
+		//モデルの色を赤みがかったようにする。
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+			mat->SetAlbedoScale({ CVector4::Red() });
+		});
+		//死亡時の画像。
+		if (m_playerDeath == nullptr) {
+			m_playerDeath = NewGO<PlayerDeath>();
+		}
+		//リスポーン。
+		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
+			Respawn();
+		}
 	}
 }
+
+//リスポーン。
+void Player::Respawn()
+{
+	m_hp = 20;								//HPの初期化。
+	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
+	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+		mat->SetAlbedoScale({ CVector4::White() });		//モデルの色の初期化。
+	});
+	m_characon.SetPosition(m_respawnPos);
+	DeleteGO(m_playerDeath);
+	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの固定。
+}
+
 
 //todo Debug専用。
 void Player::Test()

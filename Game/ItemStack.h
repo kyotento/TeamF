@@ -47,6 +47,14 @@ public:
 		return m_item.GetStackLimit();
 	}
 
+	/// <summary>
+	/// ブロックか、ツールかを取得する。
+	/// </summary>
+	/// <returns>trueならブロック</returns>
+	bool GetIsBlock() {
+		return m_item.GetIsBlock();
+	}
+
 	//! @brief 描画関数
 	void Draw( const CVector2& pos, const CVector2& parentScale );
 
