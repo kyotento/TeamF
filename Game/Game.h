@@ -5,7 +5,6 @@
 class Player;
 class GameCamera;
 class Zombie;
-class PlayerParameter;
 class Title;
 class Sun;
 
@@ -18,6 +17,11 @@ public:
 	bool Start();
 	void Update();
 
+	/// <summary>
+	/// ゲームを終了する。
+	/// </summary>
+	void GameEnd();
+
 
 private:
 	World m_world;
@@ -26,7 +30,6 @@ private:
 	Zombie* m_zombie = nullptr;				//ゾンビ。
 	GameMode* m_gameMode = nullptr;			//ゲームモード。
 	Title* m_title = nullptr;				//タイトル。
-	PlayerParameter* m_playerParameter = nullptr;		//プレイヤーのパラメーター。
 	Sun* m_sun = nullptr;					//太陽
 };
 

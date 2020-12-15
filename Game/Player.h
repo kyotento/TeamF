@@ -9,6 +9,7 @@ class GameCamera;
 class Item;
 class GameMode;
 class ItemDisplay;
+class PlayerParameter;
 class PlayerDeath;
 namespace GUI{
 	class RootNode;
@@ -343,6 +344,7 @@ private:
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
+	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 };
 

@@ -11,6 +11,7 @@
 #include "DamegeScreenEffect.h"
 #include "Enemy.h"
 #include "ItemDisplay.h"
+#include "PlayerParameter.h"
 #include "PlayerDeath.h"
 
 namespace {
@@ -42,6 +43,7 @@ Player::Player(World* world) : Entity(world), m_inventory(36)
 Player::~Player()
 {
 	DeleteGO(m_skinModelRender);
+	DeleteGO(m_playerParameter);
 }
 
 #include "ItemStack.h"
@@ -84,6 +86,11 @@ bool Player::Start()
 	m_rightHandDisplay = NewGO<ItemDisplay>();
 	m_rightHandDisplay->SetName(L"ItemDisplay");
 	m_rightHandDisplay->SetPos(m_position);
+
+	//プレイヤーのパラメーター生成。
+	m_playerParameter = NewGO<PlayerParameter>();
+	m_playerParameter->SetPlayerIns(this);
+
 	return true;
 }
 
