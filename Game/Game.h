@@ -7,6 +7,7 @@ class GameCamera;
 class Zombie;
 class PlayerParameter;
 class Title;
+class ZombieGenerator;
 class Game :public IGameObject
 {
 public:
@@ -25,6 +26,6 @@ private:
 	GameMode* m_gameMode = nullptr;			//ゲームモード。
 	Title* m_title = nullptr;				//タイトル。
 	PlayerParameter* m_playerParameter = nullptr;		//プレイヤーのパラメーター。
-
+	ZombieGenerator* m_zombieGenerator = nullptr;			//ゾンビツクール。
 };
 

@@ -10,6 +10,7 @@
 #include "BlockFactory.h"
 #include "RecipeFiler.h"
 #include "RecipeManager.h"
+#include "ZombieGenerator.h"
 
 Game::Game()
 {
@@ -39,6 +40,9 @@ bool Game::Start()
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(m_player);
 
+	m_zombieGenerator = NewGO<ZombieGenerator>();
+	m_zombieGenerator->SetWorld(&m_world);
+	
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 
 	return true;

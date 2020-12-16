@@ -137,6 +137,7 @@
     <ClCompile Include="ItemDisplay.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="ZombieGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -287,6 +288,7 @@
     <ClInclude Include="ItemDisplay.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -447,12 +449,6 @@
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\CraftingBox.png">
       <Filter>sprite\inventory</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
-      <Filter>sprite\items</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
-      <Filter>sprite\items</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
