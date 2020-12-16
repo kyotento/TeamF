@@ -137,6 +137,9 @@
     <ClCompile Include="ItemDisplay.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDeath.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
     <ClCompile Include="ZombieGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +291,13 @@
     <ClInclude Include="ItemDisplay.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerDeath.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sun.h" />
+    <ClInclude Include="NullableItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>
@@ -359,6 +369,9 @@
     </Filter>
     <Filter Include="Block">
       <UniqueIdentifier>{22d57d72-19f3-40d7-bbf8-fdf904499635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sprite\button">
+      <UniqueIdentifier>{0e0bb4e2-0c43-4287-8c27-d5442ea43a15}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -454,6 +467,8 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
     <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
     <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

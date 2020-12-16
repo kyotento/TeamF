@@ -10,6 +10,7 @@
 #include "BlockFactory.h"
 #include "RecipeFiler.h"
 #include "RecipeManager.h"
+#include "Sun.h"
 #include "ZombieGenerator.h"
 
 Game::Game()
@@ -20,6 +21,7 @@ Game::Game()
 Game::~Game()
 {
 	DeleteGO(m_player);
+	DeleteGO(m_sun);
 }
 
 bool Game::Start()
@@ -39,6 +41,8 @@ bool Game::Start()
 
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(m_player);
+
+	m_sun = NewGO<Sun>();
 
 	m_zombieGenerator = NewGO<ZombieGenerator>();
 	m_zombieGenerator->SetWorld(&m_world);

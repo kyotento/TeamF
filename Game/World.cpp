@@ -262,7 +262,6 @@ void World::DeleteBlock( const CVector3& pos ){
 
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
-	int a = 0;
 }
 
 bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){

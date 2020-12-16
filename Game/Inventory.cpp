@@ -14,6 +14,14 @@ void Inventory::SetItem( unsigned slotNo, std::unique_ptr<ItemStack> item ){
 	m_slotArray[slotNo] = std::move( item );
 }
 
+NullableItemStack & Inventory::GetNullableItem( unsigned slotNo ){
+	if( m_slotArray[slotNo] ){
+		return *m_slotArray[slotNo];
+	} else{
+		return NullableItemStack::Instance();
+	}
+}
+
 void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	if( item == nullptr ){
 		return;

@@ -7,7 +7,10 @@
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 namespace {
-
+	int DownPosY = 0;
+	int DownPosZ = 0;
+	bool swich_flag = false;
+	bool initItem_flag = false;
 }
 
 ItemDisplay::ItemDisplay()
@@ -54,10 +57,9 @@ void ItemDisplay::Update()
 void ItemDisplay::InitModel()
 {
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/GrassBlock.tkm");
-	m_scale = { 0.25f,0.25f,0.25f };
+	m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
+	type = enHand;
 }
-
 //モデルの追従。
 void ItemDisplay::Follow()
 {	
@@ -74,7 +76,7 @@ void ItemDisplay::Follow()
 	m_forward += (right * mullCrossProduct);
 	
 	//下方向にずらす。
-	m_forward.y -= blockPulsPosY;
+	m_forward.y -= blockPulsPosY ;
 
 	//上下方向に回転させる。
 	CQuaternion upDownRot;
@@ -85,36 +87,60 @@ void ItemDisplay::Follow()
 	m_position = m_gameCamera->GetPos();
 	m_position += m_forward;
 
+	m_position.y += DownPosY;
+	m_position.z -= DownPosZ;
 	////座標をモデルへ。
 	m_skinModelRender->SetPos(m_position);
 }
-
-//切り替え（まだ中身作らないです。）
+//切り替え
 void ItemDisplay::Switching()
 {
-
+	int minDownPos = -50;
+	int maxDownPos = 0;
+	//切り替え(後でif文を変えます。)
+	if (GetKeyDown('G'))
+	{
+		//下に落とすよ。
+		DownPosY--;
+		DownPosZ--;
+		if (DownPosY >= minDownPos)
+		{
+			DownPosY = minDownPos-1;
+			DownPosZ = minDownPos-1;
+			initItem_flag = true;
+			swich_flag = true;
+		}
+	}
+	else if (swich_flag)
+	{
+		DownPosY++;
+		DownPosZ++;
+		BuildAgain();
+		//元の位置へ。
+		if (DownPosY >= maxDownPos)
+		{
+			DownPosY = maxDownPos;
+			DownPosZ = maxDownPos;
+			swich_flag = false;
+		}
+	}
 }
-
 //腕の回転処理
 void ItemDisplay::Rotation()
 {
-	const float m_rotX = 0.0f;						//ツール系が増えたときに前に倒すための変数。
-
-	//プレイヤーの回転を持ってくる
-	m_radianY = m_player->GetRadianY();
-	//ここで斜めにずらします。
-	m_rotation = m_player->GetRot();
-	CQuaternion m_rotationX;
-	m_rotationX.SetRotationDeg(CVector3::AxisX(),-m_rotX);
-	m_rotation.Multiply(m_rotationX);
-	//ここでプレイヤーの上下にそってずらします。
-	CQuaternion upDownRot;
-	upDownRot.SetRotation(CVector3::AxisX(), -m_player->GetRadianXZ());
-	m_rotation.Multiply(upDownRot);
-	//モデルへ。
-	m_skinModelRender->SetRot(m_rotation);
+	switch (type)
+	{
+	case ItemDisplay::enHand:
+		HandRotation();
+		break;
+	case ItemDisplay::enBlock:
+		BlockRotation();
+		break;
+	case ItemDisplay::enTool:
+		ToolRotation();
+		break;
+	}
 }
-
 //カメラのモードに合わせた処理
 void ItemDisplay::CameraModeChangeToDisplay()
 {
@@ -126,4 +152,86 @@ void ItemDisplay::CameraModeChangeToDisplay()
 	{
 		m_skinModelRender->SetIsDraw(false);
 	}
+}
+//再度。
+void ItemDisplay::BuildAgain()
+{
+	//一度だけ生成しなおす。
+	//if文は後に変更します。
+	if (initItem_flag && type == enHand)
+	{
+		DeleteGO(m_skinModelRender);
+		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+		m_skinModelRender->Init(L"Resource/modelData/GrassBlock.tkm");
+		initItem_flag = false;
+		type = enBlock;
+	}
+	else if (initItem_flag && type == enBlock)
+	{
+		DeleteGO(m_skinModelRender);
+		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+		m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
+		initItem_flag = false;
+		type = enHand;
+	}
+}
+//手の回転
+void ItemDisplay::HandRotation()
+{
+	const float m_rotX = 25.0f;						//ツール系が増えたときに前に倒すための変数。
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+	//ここで斜めにずらします。
+	m_rotation = m_player->GetRot();
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(), -m_rotX);
+	m_rotation.Multiply(m_rotationX);
+	//ここでプレイヤーの上下にそってずらします。
+	CQuaternion upDownRot;
+	upDownRot.SetRotation(CVector3::AxisX(), -m_player->GetRadianXZ());
+	m_rotation.Multiply(upDownRot);
+	//モデルへ。
+	m_skinModelRender->SetRot(m_rotation);
+	//サイズ。
+	m_scale = { 0.40f,0.40f,0.40f };
+}
+//ブロック系の回転
+void ItemDisplay::BlockRotation()
+{
+	const float m_rotY = 0.0f;						//ツール系が増えたときに前に倒すための変数。
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+	//ここで斜めにずらします。
+	m_rotation = m_player->GetRot();
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisY(), m_rotY);
+	m_rotation.Multiply(m_rotationX);
+	//ここでプレイヤーの上下にそってずらします。
+	CQuaternion upDownRot;
+	upDownRot.SetRotation(CVector3::AxisX(), -m_player->GetRadianXZ());
+	m_rotation.Multiply(upDownRot);
+	//モデルへ。
+	m_skinModelRender->SetRot(m_rotation);
+	//サイズ。
+	m_scale = { 0.25f,0.25f,0.25f };
+}
+//ツール系の回転
+void ItemDisplay::ToolRotation()
+{
+	const float m_rotX = 0.0f;						//ツール系が増えたときに前に倒すための変数。
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+	//ここで斜めにずらします。
+	m_rotation = m_player->GetRot();
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(), -m_rotX);
+	m_rotation.Multiply(m_rotationX);
+	//ここでプレイヤーの上下にそってずらします。
+	CQuaternion upDownRot;
+	upDownRot.SetRotation(CVector3::AxisX(), -m_player->GetRadianXZ());
+	m_rotation.Multiply(upDownRot);
+	//モデルへ。
+	m_skinModelRender->SetRot(m_rotation);
+	//サイズ。
+	m_scale = { 0.40f,0.40f,0.40f };
 }
