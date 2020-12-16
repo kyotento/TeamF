@@ -17,8 +17,8 @@
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
-	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
-	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
+	const float maxDegreeXZ = 88.0f;		//XZ軸の回転の最大値。
+	const float minDegreeXZ = -88.0f;		//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
@@ -77,7 +77,7 @@ bool Player::Start()
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
 		enItem_Rod, enItem_Gold_Ingot, enCube_Grass, enCube_GoldOre, enCube_CobbleStone, enItem_Iron_Ingot,
-		enCube_OakWood,enItem_Diamond
+		enCube_OakWood,enItem_Diamond,enCube_CraftingTable
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );

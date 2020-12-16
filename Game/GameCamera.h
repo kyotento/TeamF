@@ -55,7 +55,7 @@ public:
 	float m_radianXZ = 0.0f;							//XZ軸の回転(ラジアン)
 	EnCameraMode m_mode = EnMode_FPS;					//カメラのモード
 	float m_viewAngleDeg = 90.0f;						//視野角
-	float m_rollDeg = 0.0f;								//カメラの回転角度(ロール軸)
+	float m_rollDeg = -0.5f;								//カメラの回転角度(ロール軸)
 	bool m_isRollLock = false;							//ロール軸回転をロックするか
 };
 

@@ -19,26 +19,29 @@ Game::Game()
 
 Game::~Game()
 {
-	DeleteGO(m_player);
+//	DeleteGO(m_player);
 	DeleteGO(m_sun);
 }
 
 bool Game::Start()
 {
-	//レシピ読み込み
-	RecipeFiler recipeFiler;
-	recipeFiler.SetFolder( L"Resource/recipeData/" );
-	recipeFiler.LoadRecipe(RecipeManager::Instance());
-
 	//必要なクラスの生成。
 	m_gameMode = NewGO<GameMode>();
 	m_gameMode->SetName(L"gamemode");
 
-	m_player = NewGO<Player>(&m_world);
+	m_world = std::make_unique<World>();
+
+	//レシピ読み込み。
+	// TODO: Worldの初期化より前に読むとエラーになる。いつかこのわかりにくい依存はどうにかしたい。
+	RecipeFiler recipeFiler;
+	recipeFiler.SetFolder(L"Resource/recipeData/");
+	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
+	m_player.reset(NewGO<Player>(m_world.get()));
 	m_player->SetName(L"player");
 	m_player->SetGameIns(this);
 
-	m_gameCamera = NewGO<GameCamera>();
+	m_gameCamera = std::make_unique<GameCamera>();
 
 	m_sun = NewGO<Sun>();
 

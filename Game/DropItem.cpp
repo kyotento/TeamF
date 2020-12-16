@@ -46,14 +46,14 @@ void DropItem::Drop()
 	m_collision.CreateBox( m_colPos, CQuaternion::Identity(), m_colScale );
 
 	// TODO: アイテムが出現時に跳ねる方向。Fall()とあわせて調整してください。(ランダムな方向に跳ねるとか)
-	m_velocity = CVector3( 0, 1000, 0 );
+	m_velocity = CVector3( 0, 300, 0 );
 }
 
 //落下処理。
 void DropItem::Fall()
 {
 	m_colPos = m_collision.Execute( m_velocity );
-	m_velocity.y -= 10;
+	m_velocity.y -= 15;
 }
 
 //回転処理。

@@ -24,9 +24,10 @@ public:
 
 
 private:
-	World m_world;
-	Player* m_player = nullptr;				//プレイヤー。
-	GameCamera* m_gameCamera = nullptr;		//ゲームカメラ。
+
+	std::unique_ptr<World> m_world;			//ワールド。
+	std::unique_ptr<Player> m_player;		//プレイヤー。
+	std::unique_ptr <GameCamera> m_gameCamera;		//ゲームカメラ。
 	Zombie* m_zombie = nullptr;				//ゾンビ。
 	GameMode* m_gameMode = nullptr;			//ゲームモード。
 	Title* m_title = nullptr;				//タイトル。
