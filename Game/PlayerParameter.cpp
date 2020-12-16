@@ -230,6 +230,7 @@ void PlayerParameter::KariItemS()
 void PlayerParameter::InitRightHand()
 {
 	m_rightHandDisplay = NewGO<ItemDisplay>();
+	m_rightHandDisplay->SetName(L"ItemDisplay");
 	m_rightHandDisplay->SetPos(m_player->GetPos());
 }
 
