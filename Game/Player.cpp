@@ -10,7 +10,6 @@
 #include "BlockFactory.h"
 #include "DamegeScreenEffect.h"
 #include "Enemy.h"
-#include "ItemDisplay.h"
 #include "PlayerDeath.h"
 
 namespace {
@@ -79,11 +78,6 @@ bool Player::Start()
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
 		m_inventory.AddItem( item );
 	}
-
-	//右手表示のclassにゅうごー
-	m_rightHandDisplay = NewGO<ItemDisplay>();
-	m_rightHandDisplay->SetName(L"ItemDisplay");
-	m_rightHandDisplay->SetPos(m_position);
 	return true;
 }
 
@@ -130,9 +124,6 @@ void Player::Update()
 	Death();
 
 	Test();
-	//右手の更新処理。
-	ItemDisplayUpdate();
-
 }
 
 //とりまのこす。
@@ -301,8 +292,6 @@ void Player::Move()
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
-	//右手も移動させる。
-	m_rightHandDisplay->SetPos(m_position);
 	//ダメージ当たり判定移動。
 	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
 	m_damageCollision->SetPosition(colPos);
@@ -529,7 +518,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
 		if( isClickActionDone == false ){
 
-			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//aにアイテムの参照が。
+			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
 			if (item != nullptr) {
 				if (item->GetIsBlock()) {		//ブロック。
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
@@ -650,7 +639,6 @@ void Player::Respawn()
 	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの固定。
 }
 
-
 //todo Debug専用。
 void Player::Test()
 {
@@ -678,12 +666,4 @@ void Player::Test()
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
 		m_exp += 0.3f;
 	}
-}
-
-//右手表示の更新処理。
-void Player::ItemDisplayUpdate()
-{
-	//右手に位置と回転を送ってます。
-	//m_rightHandDisplay->SetPos(m_position);
-	//m_rightHandDisplay->SetRot(m_rotation);
 }

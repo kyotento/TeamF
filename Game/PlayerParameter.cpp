@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PlayerParameter.h"
 #include "Player.h"
-
+#include "ItemDisplay.h"
 
 PlayerParameter::PlayerParameter()
 {
@@ -13,11 +13,15 @@ PlayerParameter::~PlayerParameter()
 	DeleteGO(m_spriteRenderOnHand);
 	DeleteGO(m_spriteRenderExp);
 	DeleteGO(m_spriteRenderSelectItem);
+	DeleteGO(m_rightHandDisplay);
 }
 
 bool PlayerParameter::Start()
 {
 	SetParamFound();		// パラメータ画像の基盤を生成。
+
+	//右手表示のclassにゅうごー
+	InitRightHand();
 	return true;
 }
 
@@ -28,6 +32,9 @@ void PlayerParameter::Update()
 	ChangeArmor();			//防御力を変更する。
 	ChangeExp();			//経験値ゲージを変更する。
 	SelectItem();			//アイテムを変更する。
+
+	//こいつ更新させてあげてください。
+	m_rightHandDisplay->SetPos(m_player->GetPos());
 }
 
 // パラメータ画像の基盤を生成。
@@ -171,6 +178,11 @@ void PlayerParameter::SelectItem()
 	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。。
 	KariItemS();								//キーボードによる指定。
 
+	if (m_selectNum == m_selectNumOld) {
+		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
+		m_spriteRenderSelectItem->SetPos(m_sItemPos);
+		m_isItemChangeFlag = false;
+	}
 	if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
 		//超過した時の修正。	
 		if (m_selectNum > 9) {
@@ -181,10 +193,18 @@ void PlayerParameter::SelectItem()
 		}
 		//座標の変更。
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
-		m_spriteRenderSelectItem->SetPos(m_sItemPos);	
+		m_spriteRenderSelectItem->SetPos(m_sItemPos);
+		m_isItemChangeFlag = true;
 	}
-	m_player->SetSelectItemNum(m_selectNum);	//プレイヤークラスに格納。	
-	m_selectNumOld = m_selectNum;				//現在のアイテム番号を格納。
+
+	m_player->SetSelectItemNum(m_selectNum);					//プレイヤークラスに格納。
+	m_rightHandDisplay->SetSelectNum(m_selectNum);				//右手のクラスに番号を格納。
+	m_rightHandDisplay->SetChangeItemFlag(m_isItemChangeFlag);	//右手にフラグも格納します。
+	m_selectNumOld = m_selectNum;								//現在のアイテム番号を格納。
+	if (!m_rightHandDisplay->GetEndChangeFlag())
+	{
+		m_isItemChangeFlag = false;
+	}
 }
 
 //1~9ボタンによるアイテムセレクト(ごり押しの極み)。
@@ -216,4 +236,11 @@ void PlayerParameter::PostRender()
 		DirectX::SpriteEffects_None,
 		0.7f
 	);
+}
+
+void PlayerParameter::InitRightHand()
+{
+	m_rightHandDisplay = NewGO<ItemDisplay>();
+	m_rightHandDisplay->SetName(L"ItemDisplay");
+	m_rightHandDisplay->SetPos(m_player->GetPos());
 }

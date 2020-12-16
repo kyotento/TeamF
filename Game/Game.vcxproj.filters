@@ -134,10 +134,10 @@
     <ClCompile Include="ItemDicitionary.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemDisplay.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerDeath.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDisplay.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -287,13 +287,13 @@
     <ClInclude Include="ItemDictionary.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemDisplay.h">
-      <Filter>Item</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerDeath.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
     <ClInclude Include="Sun.h" />
+    <ClInclude Include="ItemDisplay.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -462,16 +462,12 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
     <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
     <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\ReturnToTitleButton.png">
-      <Filter>sprite\button</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\RespawnButton.png">
-      <Filter>sprite\button</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
