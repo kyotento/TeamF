@@ -58,7 +58,6 @@
     <ClCompile Include="CraftingController.cpp" />
     <ClCompile Include="CraftingInventory.cpp" />
     <ClCompile Include="CraftingTable.cpp" />
-    <ClCompile Include="ZombieGenerator.cpp" />
     <ClCompile Include="DamegeScreenEffect.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -120,7 +119,6 @@
     <ClInclude Include="CraftingController.h" />
     <ClInclude Include="CraftingInventory.h" />
     <ClInclude Include="CraftingTable.h" />
-    <ClInclude Include="ZombieGenerator.h" />
     <ClInclude Include="DamegeScreenEffect.h" />
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="InventorySlot.h" />
