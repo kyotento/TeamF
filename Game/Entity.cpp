@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "World.h"
 
-Entity::Entity(World* world) : m_world(world)
+Entity::Entity(World* world, EnEntity enEntity) : m_world(world), m_enEntity(enEntity)
 {
 	world->AddEntity(this);
 }

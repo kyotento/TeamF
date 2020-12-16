@@ -8,6 +8,7 @@ class Zombie;
 class Title;
 class Sun;
 
+class ZombieGenerator;
 class Game :public IGameObject
 {
 public:
@@ -32,5 +33,6 @@ private:
 	GameMode* m_gameMode = nullptr;			//ゲームモード。
 	Title* m_title = nullptr;				//タイトル。
 	Sun* m_sun = nullptr;					//太陽
+	ZombieGenerator* m_zombieGenerator = nullptr;			//ゾンビツクール。
 };
 

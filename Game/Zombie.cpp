@@ -2,7 +2,7 @@
 #include "Zombie.h"
 
 
-Zombie::Zombie(World* world) : Enemy(world)
+Zombie::Zombie(World* world) : Enemy(world, enEntity_Zombie)
 {
 }
 
