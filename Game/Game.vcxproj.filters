@@ -134,10 +134,10 @@
     <ClCompile Include="ItemDicitionary.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemDisplay.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerDeath.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDisplay.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
@@ -287,13 +287,13 @@
     <ClInclude Include="ItemDictionary.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemDisplay.h">
-      <Filter>Item</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerDeath.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
     <ClInclude Include="Sun.h" />
+    <ClInclude Include="ItemDisplay.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
     <ClInclude Include="NullableItemStack.h">
       <Filter>Item</Filter>
     </ClInclude>

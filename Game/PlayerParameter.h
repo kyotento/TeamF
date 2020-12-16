@@ -1,6 +1,7 @@
 #pragma once
 
 class Player;
+class ItemDisplay;
 class PlayerParameter : public IGameObject
 {
 public:
@@ -28,7 +29,6 @@ public:
 	{
 		return m_selectNum;
 	}
-
 private:
 
 	/// <summary>
@@ -66,6 +66,10 @@ private:
 	/// </summary>
 	void KariItemS();
 
+	/// <summary>
+	/// 右手の生成。
+	/// </summary>
+	void InitRightHand();
 	static const int m_paramNum = 10;				//パラメーターの画像の数。
 	int m_oldHP = 0;								//プレイヤーの1フレーム前のHPを格納。
 	int m_oldStamina = 0;							//プレイヤーの1フレーム前のスタミナを格納。
@@ -77,6 +81,7 @@ private:
 	const float m_selectPosX = 0.260f;				//アイテムセレクト0番目のX座標。
 	const float m_expScale = 1.5f;					//経験値系画像のスケール。
 
+	bool m_isItemChangeFlag = false;				//持ってるもの切り替えたかどうか。
 	CVector2 m_hpPosition[m_paramNum] = { CVector2::Zero() };		//HP画像の座標。
 	CVector2 m_staminaPosition[m_paramNum] = { CVector2::Zero() };	//スタミナ画像の座標。
 	CVector2 m_armorPos[m_paramNum] = { CVector2::Zero() };			//防御力画像の座標。
@@ -92,5 +97,7 @@ private:
 
 	Player* m_player = nullptr;			//プレイヤー。
 	CFont m_font;						//フォント。
+
+	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
 };
 

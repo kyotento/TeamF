@@ -292,11 +292,6 @@ private:
 	void Respawn();
 
 	/// <summary>
-	/// 右手表示の更新してます。
-	/// </summary>
-	void ItemDisplayUpdate();
-
-	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
 	/// <returns>doubleClickFlag</returns>
@@ -353,7 +348,6 @@ private:
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
-	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 	Game* m_game = nullptr;										//Gameクラス。
