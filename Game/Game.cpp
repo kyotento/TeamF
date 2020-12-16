@@ -11,7 +11,7 @@
 #include "RecipeManager.h"
 #include "Sun.h"
 #include "Title.h"
-//#include "ZombieGenerator.h"
+#include "ZombieGenerator.h"
 
 Game::Game()
 {
@@ -46,8 +46,8 @@ bool Game::Start()
 
 	m_sun = NewGO<Sun>();
 
-	//m_zombieGenerator = NewGO<ZombieGenerator>();
-	//m_zombieGenerator->SetWorld(&m_world);
+	m_zombieGenerator = NewGO<ZombieGenerator>();
+	m_zombieGenerator->SetWorld(m_world.get());
 	
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 
