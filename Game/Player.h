@@ -8,7 +8,10 @@ class World;
 class GameCamera;
 class Item;
 class GameMode;
+class ItemDisplay;
+class PlayerParameter;
 class PlayerDeath;
+class Game;
 namespace GUI{
 	class RootNode;
 }
@@ -201,6 +204,15 @@ public:
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
 	void TakenDamage(int AttackePow);
+
+	/// <summary>
+	/// ゲームのインスタンスを設定する。
+	/// </summary>
+	/// <param name="game"></param>
+	void SetGameIns(Game* game)
+	{
+		m_game = game;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -337,5 +349,6 @@ private:
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
+	Game* m_game = nullptr;										//Gameクラス。
 };
 

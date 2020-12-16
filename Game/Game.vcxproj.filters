@@ -294,6 +294,9 @@
     <ClInclude Include="ItemDisplay.h">
       <Filter>Entity\Player</Filter>
     </ClInclude>
+    <ClInclude Include="NullableItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

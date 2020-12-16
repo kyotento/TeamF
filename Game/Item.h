@@ -50,11 +50,16 @@ public:
 		return m_id < enCube_Num;	
 	}
 
+	//! @brief アイテムの3Dモデルのパスを取得。
+	std::filesystem::path GetModelPath() const{
+		return m_modelPath;
+	}
+
 private:
 	Item();
 	Item( Item&& item );
 	Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const std::filesystem::path& modelPath );
-	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath );
+	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath, const std::filesystem::path& modelPath );
 
 	//! アイテムID
 	unsigned m_id = enCube_None;
@@ -65,6 +70,9 @@ private:
 	//! アイテム名
 	const wchar_t* m_itemName = nullptr;
 
-	//アイテム画像、またはモデル。
+	//アイテム画像。
 	std::unique_ptr<ItemImage> m_image;
+
+	//3Dモデルのパス。
+	std::filesystem::path m_modelPath;
 };

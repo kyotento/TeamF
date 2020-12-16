@@ -50,7 +50,7 @@ void GameCamera::Update()
 		//å∏êä
 		float rollPow = ROLL_MODORI_DEG_PER_SEC * GetDeltaTimeSec();
 		if (abs(m_rollDeg) <= rollPow) {
-			m_rollDeg = 0.0f;
+			m_rollDeg =-0.0f;
 		}
 		else {
 			m_rollDeg = (abs(m_rollDeg) - rollPow) * (m_rollDeg < 0.0f ? -1.0f : 1.0f);
@@ -114,7 +114,7 @@ void GameCamera::FPS()
 	rotAxis.Normalize();
 	qRot.SetRotation(rotAxis, m_radianXZ);
 	qRot.Multiply(toPos);
-	toPos *= m_radius;
+	toPos *= m_radius*1.5;
 	m_target = m_position - toPos;
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);

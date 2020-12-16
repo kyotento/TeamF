@@ -5,7 +5,6 @@
 class Player;
 class GameCamera;
 class Zombie;
-class PlayerParameter;
 class Title;
 class Sun;
 
@@ -18,15 +17,20 @@ public:
 	bool Start();
 	void Update();
 
+	/// <summary>
+	/// タイトルへの遷移。
+	/// </summary>
+	void TransToTitle();
+
 
 private:
-	World m_world;
-	Player* m_player = nullptr;				//プレイヤー。
-	GameCamera* m_gameCamera = nullptr;		//ゲームカメラ。
+
+	std::unique_ptr<World> m_world;			//ワールド。
+	std::unique_ptr<Player> m_player;		//プレイヤー。
+	std::unique_ptr <GameCamera> m_gameCamera;		//ゲームカメラ。
 	Zombie* m_zombie = nullptr;				//ゾンビ。
 	GameMode* m_gameMode = nullptr;			//ゲームモード。
 	Title* m_title = nullptr;				//タイトル。
-	PlayerParameter* m_playerParameter = nullptr;		//プレイヤーのパラメーター。
 	Sun* m_sun = nullptr;					//太陽
 };
 
