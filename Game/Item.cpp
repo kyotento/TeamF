@@ -22,18 +22,21 @@ const Item & Item::operator=( Item && item ){
 	m_limitNumber = item.m_limitNumber;
 	m_itemName = item.m_itemName;
 	m_image = std::move( item.m_image );
+	m_modelPath = item.m_modelPath;
 	return *this;
 }
 
 Item::Item(){}
 
 Item::Item( Item&& item ) : m_id( item.m_id ), m_limitNumber( item.m_limitNumber ), m_itemName( item.m_itemName ),
-m_image( std::move( item.m_image ) ){}
+m_image( std::move( item.m_image ) ), m_modelPath(item.m_modelPath){}
 
 Item::Item( EnCube enCube, const wchar_t* itemName, int limitNumber, const std::filesystem::path& modelPath )
 	: m_id( enCube ), m_itemName( itemName ), m_limitNumber( limitNumber ),
-	m_image( std::make_unique<ItemImage>( true, modelPath ) ){}
+	m_image( std::make_unique<ItemImage>( true, modelPath ) ),
+	m_modelPath( modelPath ){}
 
-Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath )
+Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath, const std::filesystem::path& modelPath )
 	: m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ),
-	m_image( std::make_unique<ItemImage>( false, spritePath ) ){}
+	m_image( std::make_unique<ItemImage>( false, spritePath ) ),
+	m_modelPath(modelPath){}
