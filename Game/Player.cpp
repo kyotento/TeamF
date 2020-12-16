@@ -97,7 +97,7 @@ bool Player::Start()
 }
 
 void Player::Update()
-{
+{	
 	if (m_gameCamera == nullptr) {
 		m_gameCamera = FindGO<GameCamera>();
 		return;
