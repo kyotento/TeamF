@@ -182,7 +182,7 @@ void PlayerParameter::SelectItem()
 
 	if (m_selectNum == m_selectNumOld) {
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
-		m_spriteRenderSelectItem->SetPos(m_sItemPos);
+		m_spriteRenderSelectItem.SetPos(m_sItemPos);
 		m_isItemChangeFlag = false;
 	}
 	if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
@@ -195,7 +195,7 @@ void PlayerParameter::SelectItem()
 		}
 		//座標の変更。
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
-		m_spriteRenderSelectItem->SetPos(m_sItemPos);
+		m_spriteRenderSelectItem.SetPos(m_sItemPos);
 		m_isItemChangeFlag = true;
 	}
 
@@ -225,6 +225,12 @@ void PlayerParameter::KariItemS()
 	//if (GetKeyDown('7')) { m_selectNum = 7;}
 	//if (GetKeyDown('8')) { m_selectNum = 8;}
 	//if (GetKeyDown('9')) { m_selectNum = 9;}
+}
+
+void PlayerParameter::InitRightHand()
+{
+	m_rightHandDisplay = NewGO<ItemDisplay>();
+	m_rightHandDisplay->SetPos(m_player->GetPos());
 }
 
 void PlayerParameter::PostRender()

@@ -348,6 +348,7 @@ private:
 
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 	Game* m_game = nullptr;										//Gameクラス。
 };
