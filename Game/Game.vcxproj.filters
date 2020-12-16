@@ -140,7 +140,9 @@
     <ClCompile Include="PlayerDeath.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
-    <ClCompile Include="ZombieGenerator.cpp" />
+    <ClCompile Include="ZombieGenerator.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -298,7 +300,9 @@
     <ClInclude Include="NullableItemStack.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="ZombieGenerator.h" />
+    <ClInclude Include="ZombieGenerator.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
