@@ -92,8 +92,8 @@ public:
 
 protected:
 
-	//wchar_t m_damageVoice;			//ダメージ音。
-	//wchar_t m_deathVoice;			//死亡音。
+	const wchar_t* m_damageVoice;	//ダメージ音。
+	const wchar_t* m_deathVoice;	//死亡音。
 
 	bool m_jumpFlag = false;		//ジャンプするどうか。
 	bool m_isTakenDamage = false;	//ダメージを受けた時。

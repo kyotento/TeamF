@@ -30,11 +30,11 @@ bool Zombie::Start()
 	m_characon.SetPosition(m_position);
 
 	m_hp = 20;					//体力の設定。
-	m_oldHp = m_hp;				
 	m_attackPow = 1;			//攻撃力の設定。
 	m_knockBack = 0.5f;			//ノックバック倍率。
 
-//	m_damageVoice = L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav";
+	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
+	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
 
 	return true;
 }
@@ -57,7 +57,6 @@ void Zombie::Update()
 	}
 	KnockBack();	//ノックバック処理。
 	Death();		//死亡判定
-	DamageVoice();
 }
 
 //攻撃処理。
@@ -84,24 +83,6 @@ void Zombie::Attack()
 		m_damageTimer = 0;
 	}
 }
-
-void Zombie::DamageVoice()
-{
-	if (m_hp <= 0 && !m_voiceFlag) {
-		//ダメージボイス
-		SuicideObj::CSE* voice;
-		voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/enemy/cat2.wav");
-		voice->Play();
-		m_voiceFlag = true;
-	}
-	if (m_hp > 0 && m_hp != m_oldHp) {
-		SuicideObj::CSE* voice;
-		voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/enemy/cat1.wav");
-		voice->Play();
-	}
-	m_oldHp = m_hp;
-}
-
 
 //ゾンビのダメージ判定の座標を取得。
 CVector3 Zombie::GetDamageColPos()
