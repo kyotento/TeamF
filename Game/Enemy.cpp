@@ -26,7 +26,6 @@ Enemy::Enemy(World* world, EnEntity enEntity) : Entity(world, enEntity)
 	}
 }
 
-
 Enemy::~Enemy()
 {
 	DeleteGO(m_skinModelRender);
@@ -103,9 +102,10 @@ void Enemy::Jump()
 //被ダメージ処理。
 void Enemy::TakenDamage(int attackDamage)
 {
-	if (m_hp > 0) {		//HPがあるとき。
+	if (m_hp > 0 && !m_isInvincibleTime) {		//HPがあるとき、かつ無敵時間でないとき。
 		m_hp -= attackDamage;
-		m_isTakenDamage = true;		//ダメージフラグを返す。
+		m_isTakenDamage = true;			//ダメージフラグを返す。
+		m_isInvincibleTime = true;		//無敵時間にする。
 
 		DamageVoice();
 
@@ -117,6 +117,7 @@ void Enemy::TakenDamage(int attackDamage)
 	}
 }
 
+//被ダメ時のダメージ音。
 void Enemy::DamageVoice()
 {
 	SuicideObj::CSE* voice;
@@ -163,6 +164,7 @@ void Enemy::KnockBack()
 			m_isTakenDamage = false;
 			m_knockBackTimer = 0.f;
 			m_knoceBackY = 1.f;
+			m_isInvincibleTime = false;
 		}
 		
 	}

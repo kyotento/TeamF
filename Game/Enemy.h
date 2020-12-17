@@ -92,11 +92,13 @@ public:
 
 protected:
 
-	const wchar_t* m_damageVoice;	//ダメージ音。
-	const wchar_t* m_deathVoice;	//死亡音。
+	const wchar_t* m_damageVoice;		//ダメージ音。
+	const wchar_t* m_deathVoice;		//死亡音。
 
-	bool m_jumpFlag = false;		//ジャンプするどうか。
-	bool m_isTakenDamage = false;	//ダメージを受けた時。
+	bool m_jumpFlag = false;			//ジャンプするどうか。
+	bool m_isTakenDamage = false;		//ダメージを受けた時。
+	//todo 現時点では、ダメージフラグを使えばいい。
+	bool m_isInvincibleTime = false;	//無敵時間かどうか。
 
 	int m_hp = 0;				//体力。
 	int m_attackPow = 0;		//攻撃力。
@@ -128,7 +130,7 @@ protected:
 
 	enEnemyState m_enemyState = enEnemy_num;					//エネミーの状態。
 
-	CCharacterControllerType2 m_characon;						//キャラコン。
+	CCharacterControllerType2 m_characon;								//キャラコン。
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
