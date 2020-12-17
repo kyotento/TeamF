@@ -107,12 +107,25 @@ void Enemy::TakenDamage(int attackDamage)
 		m_hp -= attackDamage;
 		m_isTakenDamage = true;		//ダメージフラグを返す。
 
+		DamageVoice();
+
 		//体力を0未満にしない。
 		if (m_hp <= 0) {
 			m_hp = 0;
 			m_enemyState = enEnemy_death;		//死亡状態に。
 		}
 	}
+}
+
+void Enemy::DamageVoice()
+{
+	//SuicideObj::CSE* voice;
+	//if (m_hp <= 0) {		//死亡時。
+	//	voice = NewGO<SuicideObj::CSE>(m_deathVoice);
+	//}
+	//else {			//死んでないとき。
+	//	voice = NewGO<SuicideObj::CSE>(m_damageVoice);
+	//}
 }
 
 //ノックバック処理。

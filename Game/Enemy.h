@@ -38,6 +38,9 @@ public:
 	/// <param name="attackDamage">攻撃力</param>
 	virtual void TakenDamage(int attackDamage);
 
+	//被ダメ時のダメージ音。
+	virtual void DamageVoice();
+
 	/// <summary>
 	/// ノックバック処理。
 	/// </summary>
@@ -88,6 +91,9 @@ public:
 	}
 
 protected:
+
+	//wchar_t m_damageVoice;			//ダメージ音。
+	//wchar_t m_deathVoice;			//死亡音。
 
 	bool m_jumpFlag = false;		//ジャンプするどうか。
 	bool m_isTakenDamage = false;	//ダメージを受けた時。
