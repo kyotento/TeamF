@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Game.h"
 #include "GameCamera.h"
 #define _USE_MATH_DEFINES //M_PI 円周率呼び出し
 #include <math.h> 
@@ -10,13 +11,13 @@
 #include "BlockFactory.h"
 #include "DamegeScreenEffect.h"
 #include "Enemy.h"
-#include "ItemDisplay.h"
+#include "PlayerParameter.h"
 #include "PlayerDeath.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
-	const float maxDegreeXZ = 70.0f;		//XZ軸の回転の最大値。
-	const float minDegreeXZ = -50.0f;		//XZ軸の回転の最小値。
+	const float maxDegreeXZ = 88.0f;		//XZ軸の回転の最大値。
+	const float minDegreeXZ = -88.0f;		//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;			//プレイヤーの移動速度。
 	const float move = 1.0f;				//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
@@ -42,6 +43,8 @@ Player::Player(World* world) : Entity(world), m_inventory(36)
 Player::~Player()
 {
 	DeleteGO(m_skinModelRender);
+	DeleteGO(m_playerParameter);
+	DeleteGO(m_playerDeath);
 }
 
 #include "ItemStack.h"
@@ -73,22 +76,23 @@ bool Player::Start()
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
 		enItem_Rod, enItem_Gold_Ingot, enCube_Grass, enCube_GoldOre, enCube_CobbleStone, enItem_Iron_Ingot,
-		enCube_OakWood,enItem_Diamond
+		enCube_OakWood,enItem_Diamond,enCube_CraftingTable
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
 		m_inventory.AddItem( item );
 	}
 
-	//右手表示のclassにゅうごー
-	m_rightHandDisplay = NewGO<ItemDisplay>();
-	m_rightHandDisplay->SetName(L"ItemDisplay");
-	m_rightHandDisplay->SetPos(m_position);
+
+	//プレイヤーのパラメーター生成。
+	m_playerParameter = NewGO<PlayerParameter>();
+	m_playerParameter->SetPlayerIns(this);
+
 	return true;
 }
 
 void Player::Update()
-{
+{	
 	if (m_gameCamera == nullptr) {
 		m_gameCamera = FindGO<GameCamera>();
 		return;
@@ -130,9 +134,6 @@ void Player::Update()
 	Death();
 
 	Test();
-	//右手の更新処理。
-	ItemDisplayUpdate();
-
 }
 
 //とりまのこす。
@@ -301,8 +302,6 @@ void Player::Move()
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
 	m_skinModelRender->SetPos(m_position);
-	//右手も移動させる。
-	m_rightHandDisplay->SetPos(m_position);
 	//ダメージ当たり判定移動。
 	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
 	m_damageCollision->SetPosition(colPos);
@@ -529,10 +528,12 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 		//アクションが実行されなかった場合だけ、通常通りブロックの設置を行う。
 		if( isClickActionDone == false ){
 
-			auto& item = m_inventory.GetNullableItem(m_selItemNum - 1);		//itemにアイテムの参照が。
-			if (item.GetIsBlock()) {		//ブロック。
-				installPos -= frontRotAdd * 2 / Block::WIDTH;
-				m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item.GetID())));
+			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
+			if (item != nullptr) {
+				if (item->GetIsBlock()) {		//ブロック。
+					installPos -= frontRotAdd * 2 / Block::WIDTH;
+					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
+				}
 			}
 		}
 	}
@@ -632,12 +633,17 @@ void Player::Death()
 		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
 			Respawn();
 		}
+		//タイトルへ戻る。
+		else if (m_playerDeath->Click() == m_playerDeath->enButtonRerturnToTitle) {
+			m_game->TransToTitle();
+		}
 	}
 }
 
 //リスポーン。
 void Player::Respawn()
 {
+	m_deathAddRot = 0.f;					//プレイヤーの回転量の初期化。。
 	m_hp = 20;								//HPの初期化。
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
@@ -645,9 +651,8 @@ void Player::Respawn()
 	});
 	m_characon.SetPosition(m_respawnPos);
 	DeleteGO(m_playerDeath);
-	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの固定。
+	CloseGUI();
 }
-
 
 //todo Debug専用。
 void Player::Test()
@@ -676,12 +681,4 @@ void Player::Test()
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
 		m_exp += 0.3f;
 	}
-}
-
-//右手表示の更新処理。
-void Player::ItemDisplayUpdate()
-{
-	//右手に位置と回転を送ってます。
-	//m_rightHandDisplay->SetPos(m_position);
-	//m_rightHandDisplay->SetRot(m_rotation);
 }

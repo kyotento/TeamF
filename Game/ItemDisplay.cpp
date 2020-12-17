@@ -3,12 +3,18 @@
 #include "GameCamera.h"
 #include "Player.h"
 #include "BlockFactory.h"
+#include "ItemStack.h"
 
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 namespace {
 	int DownPosY = 0;
 	int DownPosZ = 0;
+
+	const float handMullCross = 45.0f;
+	const float BlockMullCross= 45.0f;
+	const float toolMullCross = 20.0f;
+
 	bool swich_flag = false;
 	bool initItem_flag = false;
 }
@@ -57,23 +63,22 @@ void ItemDisplay::Update()
 void ItemDisplay::InitModel()
 {
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
+	m_skinModelRender->Init(L"Resource/modelData/tools/Diamond_Sword.tkm");
 	type = enHand;
 }
 //モデルの追従。
 void ItemDisplay::Follow()
 {	
 	const float blockPulsPosY = 60.0;				//Yは別で足してずらします。
-	const float mullFornt = 45.0f;					//前ベクトルの数値を大きくする変数。
-	const float mullCrossProduct = 45.0f;			//外積の数値を大きくする変数
+
 
 	//次にプレイヤーの正面取得。
 	m_forward = m_player->GetFront();
-	m_forward *= mullFornt;
+	m_forward *= m_mullFornt;
 
 	//右方向にずらす。
 	CVector3 right = m_player->GetRight();
-	m_forward += (right * mullCrossProduct);
+	m_forward += (right * m_mullCrossProduct);
 	
 	//下方向にずらす。
 	m_forward.y -= blockPulsPosY ;
@@ -88,17 +93,20 @@ void ItemDisplay::Follow()
 	m_position += m_forward;
 
 	m_position.y += DownPosY;
-	m_position.z -= DownPosZ;
+	//m_position.z -= DownPosZ;
 	////座標をモデルへ。
 	m_skinModelRender->SetPos(m_position);
 }
 //切り替え
 void ItemDisplay::Switching()
 {
+	int oldID = m_player->GetSelectItemNum();
+	SwitchItemType();
 	int minDownPos = -50;
 	int maxDownPos = 0;
+
 	//切り替え(後でif文を変えます。)
-	if (GetKeyDown('G'))
+	if (m_isItemChangeFlag && !swich_flag)
 	{
 		//下に落とすよ。
 		DownPosY--;
@@ -107,7 +115,7 @@ void ItemDisplay::Switching()
 		{
 			DownPosY = minDownPos-1;
 			DownPosZ = minDownPos-1;
-			initItem_flag = true;
+			//initItem_flag = true;
 			swich_flag = true;
 		}
 	}
@@ -117,6 +125,7 @@ void ItemDisplay::Switching()
 		DownPosZ++;
 		BuildAgain();
 		//元の位置へ。
+		m_isItemChangeFlag = false;
 		if (DownPosY >= maxDownPos)
 		{
 			DownPosY = maxDownPos;
@@ -192,8 +201,9 @@ void ItemDisplay::HandRotation()
 	m_rotation.Multiply(upDownRot);
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
-	//サイズ。
+	//サイズと位置をずらす。
 	m_scale = { 0.40f,0.40f,0.40f };
+	m_mullFornt = handMullCross;
 }
 //ブロック系の回転
 void ItemDisplay::BlockRotation()
@@ -212,8 +222,9 @@ void ItemDisplay::BlockRotation()
 	m_rotation.Multiply(upDownRot);
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
-	//サイズ。
+	//サイズと位置をずらす。
 	m_scale = { 0.25f,0.25f,0.25f };
+	m_mullCrossProduct = BlockMullCross;
 }
 //ツール系の回転
 void ItemDisplay::ToolRotation()
@@ -232,6 +243,28 @@ void ItemDisplay::ToolRotation()
 	m_rotation.Multiply(upDownRot);
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
-	//サイズ。
+	//サイズと位置をずらす。
 	m_scale = { 0.40f,0.40f,0.40f };
+	m_mullCrossProduct = toolMullCross;
+}
+//インベントリに合わせて切り替え(ry
+void ItemDisplay::SwitchItemType()
+{
+	int endBlockNum = 11;					//ボックス系の最後の番号。
+	int startToolNum = 16;					//ツールの初めの番号。
+	//簡易処理
+	//アイテムの参照。
+	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
+	if (item != nullptr) {
+		if (item->GetID() >= endBlockNum && item->GetID() < startToolNum) {
+			type = enHand;
+		}
+		else if (item->GetIsBlock()) {
+			type = enBlock;
+		}
+		else if (item->GetIsBlock())
+		{
+			type = enTool;
+		}
+	}
 }

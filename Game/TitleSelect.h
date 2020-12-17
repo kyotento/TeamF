@@ -48,7 +48,5 @@ private:
 
 	GameObj::CSpriteRender m_spriteRneder[m_buttonNum];
 
-	//ボタンのノードリスト。
-//	std::unordered_set<Node*> m_buttons;
 };
 

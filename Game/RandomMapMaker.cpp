@@ -56,7 +56,6 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			//木を生やす。
 			if (!Tree(wx, wy, wz)) {
 				//木を生やせなかったら、ゾンビツクール。
-				//CreateZombie(wx, wy, wz);
 			}
 		
 			//決定した最高地点から最低高度までブロックをしきつめていく。
@@ -212,26 +211,4 @@ bool RandomMapMaker::Tree(const int x, const int y, const int z)
 		}
 	}
 	return true;
-}
-
-void RandomMapMaker::CreateZombie(const int x, const int y, const int z)
-{
-	//同じマップを生成しないようにシード生成
-	float xSample = (x + m_seedX2) / m_relief2;
-	float ySample = (y + m_seedY2) / m_relief2;
-	float zSample = (z + m_seedZ2) / m_relief2;
-
-	float noise = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-	float minNoise = 0.701;
-	float maxNoise = 0.7017;
-	//ノイズが一定以内やったらゾンビ生成。
-	if (noise < minNoise || noise > maxNoise) {
-		return;
-	}
-
-	//Enemy* zombie = NewGO<Zombie>(m_world);
-	//zombie->SetPos(CVector3(x * Block::WIDTH, (float(y) + 1.0f) * Block::WIDTH, z * Block::WIDTH));
-	//zombie->SetScale(CVector3::One() * 1.f);
-//	m_world->AddEntity(zombie);
 }
