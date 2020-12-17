@@ -68,7 +68,7 @@ void ItemDisplay::Update()
 void ItemDisplay::InitModel()
 {
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
+	m_skinModelRender->Init(L"Resource/modelData/tools/Diamond_Sword.tkm");
 	type = enHand;
 }
 //ƒ‚ƒfƒ‹‚Ì’Ç]B

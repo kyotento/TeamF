@@ -2,7 +2,7 @@
 #include "Zombie.h"
 
 
-Zombie::Zombie(World* world) : Enemy(world)
+Zombie::Zombie(World* world) : Enemy(world, enEntity_Zombie)
 {
 }
 
@@ -33,6 +33,9 @@ bool Zombie::Start()
 	m_attackPow = 1;			//攻撃力の設定。
 	m_knockBack = 0.5f;			//ノックバック倍率。
 
+	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
+	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
+
 	return true;
 }
 
@@ -53,7 +56,7 @@ void Zombie::Update()
 		}
 	}
 	KnockBack();	//ノックバック処理。
-	Death();		//死亡判定。
+	Death();		//死亡判定
 }
 
 //攻撃処理。

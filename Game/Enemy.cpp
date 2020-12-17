@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Enemy.h"
 
-Enemy::Enemy(World* world) : Entity(world)
+Enemy::Enemy(World* world, EnEntity enEntity) : Entity(world, enEntity)
 {
 	//スキンモデルを生成。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
@@ -25,7 +25,6 @@ Enemy::Enemy(World* world) : Entity(world)
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
 }
-
 
 Enemy::~Enemy()
 {
@@ -103,9 +102,12 @@ void Enemy::Jump()
 //被ダメージ処理。
 void Enemy::TakenDamage(int attackDamage)
 {
-	if (m_hp > 0) {		//HPがあるとき。
+	if (m_hp > 0 && !m_isInvincibleTime) {		//HPがあるとき、かつ無敵時間でないとき。
 		m_hp -= attackDamage;
-		m_isTakenDamage = true;		//ダメージフラグを返す。
+		m_isTakenDamage = true;			//ダメージフラグを返す。
+		m_isInvincibleTime = true;		//無敵時間にする。
+
+		DamageVoice();
 
 		//体力を0未満にしない。
 		if (m_hp <= 0) {
@@ -113,6 +115,19 @@ void Enemy::TakenDamage(int attackDamage)
 			m_enemyState = enEnemy_death;		//死亡状態に。
 		}
 	}
+}
+
+//被ダメ時のダメージ音。
+void Enemy::DamageVoice()
+{
+	SuicideObj::CSE* voice;
+	if (m_hp <= 0) {		//死亡時。
+		voice = NewGO<SuicideObj::CSE>(m_deathVoice);
+	}
+	else {			//死んでないとき。
+		voice = NewGO<SuicideObj::CSE>(m_damageVoice);
+	}
+	voice->Play();
 }
 
 //ノックバック処理。
@@ -149,6 +164,7 @@ void Enemy::KnockBack()
 			m_isTakenDamage = false;
 			m_knockBackTimer = 0.f;
 			m_knoceBackY = 1.f;
+			m_isInvincibleTime = false;
 		}
 		
 	}

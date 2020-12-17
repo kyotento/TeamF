@@ -111,7 +111,12 @@ public:
 		if( num < 0 )num -= Chunk::WIDTH - 1;
 		return num / Chunk::WIDTH;
 	}
-
+	//! @briefエンティティを取得
+	//! @return エンティティの配列。
+	std::unordered_set<Entity*>& GetEntities()
+	{
+		return m_entities;
+	}
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
 	void LoadChunk(int x, int z);

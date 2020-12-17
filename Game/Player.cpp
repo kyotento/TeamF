@@ -92,7 +92,7 @@ bool Player::Start()
 }
 
 void Player::Update()
-{
+{	
 	if (m_gameCamera == nullptr) {
 		m_gameCamera = FindGO<GameCamera>();
 		return;
@@ -643,7 +643,7 @@ void Player::Death()
 //リスポーン。
 void Player::Respawn()
 {
-	m_deathAddRot = 0.f;					//プレイヤーの回転量の取得。
+	m_deathAddRot = 0.f;					//プレイヤーの回転量の初期化。。
 	m_hp = 20;								//HPの初期化。
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
@@ -651,7 +651,7 @@ void Player::Respawn()
 	});
 	m_characon.SetPosition(m_respawnPos);
 	DeleteGO(m_playerDeath);
-	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの固定。
+	CloseGUI();
 }
 
 //todo Debug専用。

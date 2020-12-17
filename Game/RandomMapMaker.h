@@ -20,9 +20,6 @@ private:
 	float SetY(const CVector3& pos);
 	//–Ø‚ğ¶‚â‚·B
 	bool Tree(const int x, const int y, const int z);
-	//ƒ]ƒ“ƒr‚ğ‚Â‚­‚éB
-	void CreateZombie(const int x, const int y, const int z);
-	
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
