@@ -180,12 +180,20 @@ void PlayerParameter::SelectItem()
 	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。。
 	KariItemS();								//キーボードによる指定。
 
-	if (m_selectNum == m_selectNumOld) {
+	//StopMoveToChange();						//こいつはまだ完成してないです。
+
+	if (m_isStopMoveToChangeFlag)
+	{
+		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
+		m_spriteRenderSelectItem.SetPos(m_sItemPos);
+		m_isItemChangeFlag = true;
+	}
+	else if (m_selectNum == m_selectNumOld) {
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
 		m_spriteRenderSelectItem.SetPos(m_sItemPos);
 		m_isItemChangeFlag = false;
 	}
-	if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
+	else if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
 		//超過した時の修正。	
 		if (m_selectNum > 9) {
 			m_selectNum = 1;
@@ -198,7 +206,7 @@ void PlayerParameter::SelectItem()
 		m_spriteRenderSelectItem.SetPos(m_sItemPos);
 		m_isItemChangeFlag = true;
 	}
-
+	
 	m_player->SetSelectItemNum(m_selectNum);					//プレイヤークラスに格納。
 	m_rightHandDisplay->SetSelectNum(m_selectNum);				//右手のクラスに番号を格納。
 	m_rightHandDisplay->SetChangeItemFlag(m_isItemChangeFlag);	//右手にフラグも格納します。
@@ -265,4 +273,27 @@ void PlayerParameter::PostRender()
 		inv.GetNullableItem( i ).Draw( itemPos, scale );
 		itemPos.x += moveX;
 	}
+}
+
+void PlayerParameter::StopMoveToChange()
+{
+	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
+	int id = item->GetID();
+	//if (item->GetItem().GetItem() == nullptr)
+	//{
+	//	id = 999;
+	//}
+	//else
+	//{
+	//	id = item->GetID();
+	//}
+	if (m_idOld != id)
+	{
+		m_isStopMoveToChangeFlag = true;
+	}
+	else if (m_idOld == id)
+	{
+		m_isStopMoveToChangeFlag = false;
+	}
+	m_idOld = item->GetID();
 }

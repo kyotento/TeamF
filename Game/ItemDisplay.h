@@ -131,5 +131,8 @@ private:
 	GameCamera* m_gameCamera = nullptr;						//ゲームカメライェア。
 
 	EnType type;											//タイプ
+
+	const wchar_t* m_itemName = nullptr;					//モデルの名前。	
+	std::filesystem::path m_modelPath;						//3Dモデルのパス。
 };
 

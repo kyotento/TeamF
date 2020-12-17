@@ -70,18 +70,27 @@ private:
 	/// 右手の生成。
 	/// </summary>
 	void InitRightHand();
+
+	/// <summary>
+	/// アイテムがインベントリーで切り替わった時の処理。
+	/// </summary>
+	void StopMoveToChange();
+
 	static const int m_paramNum = 10;				//パラメーターの画像の数。
 	int m_oldHP = 0;								//プレイヤーの1フレーム前のHPを格納。
 	int m_oldStamina = 0;							//プレイヤーの1フレーム前のスタミナを格納。
 	int m_oldArmor = 0;								//プレイヤーの1フレーム前の防御力を格納。
 	int m_selectNum = 1;							//何番目のアイテムをセレクトしているか 1~9(プレイヤー格納用)。
 	int m_selectNumOld = 0;							//１フレーム前の↑。
+	int m_idOld = 0;								//1フレーム前のID
 
 	const float m_scale = 3.f;						//HPとスタミナのスケール。
 	const float m_selectPosX = 0.260f;				//アイテムセレクト0番目のX座標。
 	const float m_expScale = 1.5f;					//経験値系画像のスケール。
 
 	bool m_isItemChangeFlag = false;				//持ってるもの切り替えたかどうか。
+
+	bool m_isStopMoveToChangeFlag = false;			//インベントリー開いてるときに持ち物が切り替わったか。
 	CVector2 m_hpPosition[m_paramNum] = { CVector2::Zero() };		//HP画像の座標。
 	CVector2 m_staminaPosition[m_paramNum] = { CVector2::Zero() };	//スタミナ画像の座標。
 	CVector2 m_armorPos[m_paramNum] = { CVector2::Zero() };			//防御力画像の座標。
