@@ -20,6 +20,8 @@ namespace {
 	//範囲内に生成するゾンビの最大数。
 	//範囲内というのは、プレイヤーからの距離が↑のmaxのブロック数以内のもの。
 	const int maxNumberZombieRange = 10;
+	//全ワールドに生成するゾンビの最大数。
+	const int maxNumberZombie = 30;
 	//乱数生成。
 	std::mt19937 random((std::random_device())());
 }
@@ -48,12 +50,13 @@ void ZombieGenerator::GenerateZombie()
 	{
 		CVector3 playerPos = m_player->GetPos() / Block::WIDTH;
 		m_numberZombieRange = 0;
+		m_numberZombie = 0;
 		//範囲内にいるゾンビの数を調べる。
 		SearchNumberZombieRange(playerPos);
 		//ゾンビを生成したい回数分。
 		for (int i = 0; i < maxNumberZombieGenerateOneTime; i++)
 		{
-			if (m_numberZombieRange > maxNumberZombieRange)
+			if (m_numberZombieRange >= maxNumberZombieRange || m_numberZombie >= maxNumberZombie)
 			{
 				break;
 			}
@@ -95,6 +98,7 @@ void ZombieGenerator::SearchSpaceZombieGenerate(CVector3& pos)
 				Zombie* zombie = NewGO<Zombie>(m_world);
 				zombie->SetPos(CVector3(pos.x * Block::WIDTH, (float(i) + 1.0f) * Block::WIDTH, pos.z * Block::WIDTH));
 				m_numberZombieRange++;
+				m_numberZombie++;
 				return;
 			}
 		}
@@ -110,6 +114,7 @@ void ZombieGenerator::SearchNumberZombieRange(CVector3& playerPos)
 		//エンティティのタイプがゾンビだったら。
 		if (entity->GetEntityType() == enEntity_Zombie)
 		{
+			m_numberZombie++;
 			CVector3 zombiePos = entity->GetPos() / Block::WIDTH;
 			CVector3 diff = playerPos - zombiePos;
 			//プレイヤーとの距離が一定範囲内だったら。
