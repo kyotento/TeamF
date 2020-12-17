@@ -47,5 +47,6 @@ private:
 	World* m_world;				//ワールド。
 	float m_timer = 0.0f;			//タイマー。
 	int m_numberZombieRange = 0;		//範囲内に存在しているゾンビ。
+	int m_numberZombie = 0;
 };
 
