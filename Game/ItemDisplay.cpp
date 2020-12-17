@@ -11,9 +11,15 @@ namespace {
 	int DownPosY = 0;
 	int DownPosZ = 0;
 
+	float UpPosY = 25;
+
+	const float handMullFront = 45.0f;
+	const float blockMullFront = 45.0f;
+	const float toolMullFront = 30.0f;
+
 	const float handMullCross = 45.0f;
 	const float BlockMullCross= 45.0f;
-	const float toolMullCross = 20.0f;
+	const float toolMullCross = 30.0f;
 
 	bool swich_flag = false;
 	bool initItem_flag = false;
@@ -55,7 +61,6 @@ void ItemDisplay::Update()
 
 	//切り替えの処理。
 	Switching();
-
 	m_skinModelRender->SetScale(m_scale);
 }
 
@@ -81,7 +86,7 @@ void ItemDisplay::Follow()
 	m_forward += (right * m_mullCrossProduct);
 	
 	//下方向にずらす。
-	m_forward.y -= blockPulsPosY ;
+	m_forward.y -= blockPulsPosY + UpPosY;
 
 	//上下方向に回転させる。
 	CQuaternion upDownRot;
@@ -93,7 +98,6 @@ void ItemDisplay::Follow()
 	m_position += m_forward;
 
 	m_position.y += DownPosY;
-	//m_position.z -= DownPosZ;
 	////座標をモデルへ。
 	m_skinModelRender->SetPos(m_position);
 }
@@ -115,7 +119,20 @@ void ItemDisplay::Switching()
 		{
 			DownPosY = minDownPos-1;
 			DownPosZ = minDownPos-1;
-			//initItem_flag = true;
+			initItem_flag = true;
+			swich_flag = true;
+		}
+	}
+	//切り替えモーション中に切り替えたとき用。
+	else if (m_isItemChangeFlag) {
+		//下に落とすよ。
+		DownPosY--;
+		DownPosZ--;
+		if (DownPosY >= minDownPos)
+		{
+			DownPosY = minDownPos - 1;
+			DownPosZ = minDownPos - 1;
+			initItem_flag = true;
 			swich_flag = true;
 		}
 	}
@@ -171,17 +188,22 @@ void ItemDisplay::BuildAgain()
 	{
 		DeleteGO(m_skinModelRender);
 		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-		m_skinModelRender->Init(L"Resource/modelData/GrassBlock.tkm");
+		m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
 		initItem_flag = false;
-		type = enBlock;
 	}
 	else if (initItem_flag && type == enBlock)
 	{
 		DeleteGO(m_skinModelRender);
 		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-		m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
+		m_skinModelRender->Init(m_modelPath.wstring().c_str());
 		initItem_flag = false;
-		type = enHand;
+	}
+	else if (initItem_flag && type == enTool)
+	{
+		DeleteGO(m_skinModelRender);
+		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+		m_skinModelRender->Init(m_modelPath.wstring().c_str());
+		initItem_flag = false;
 	}
 }
 //手の回転
@@ -202,8 +224,10 @@ void ItemDisplay::HandRotation()
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
 	//サイズと位置をずらす。
+	UpPosY = 0;
 	m_scale = { 0.40f,0.40f,0.40f };
-	m_mullFornt = handMullCross;
+	m_mullFornt = handMullFront;
+	m_mullCrossProduct = BlockMullCross;
 }
 //ブロック系の回転
 void ItemDisplay::BlockRotation()
@@ -224,18 +248,20 @@ void ItemDisplay::BlockRotation()
 	m_skinModelRender->SetRot(m_rotation);
 	//サイズと位置をずらす。
 	m_scale = { 0.25f,0.25f,0.25f };
+	m_mullFornt = blockMullFront;
 	m_mullCrossProduct = BlockMullCross;
+	UpPosY = 0;
 }
 //ツール系の回転
 void ItemDisplay::ToolRotation()
 {
-	const float m_rotX = 0.0f;						//ツール系が増えたときに前に倒すための変数。
+	const float m_rotZ = 10.0f;						//ツール系が増えたときに前に倒すための変数。
 	//プレイヤーの回転を持ってくる
 	m_radianY = m_player->GetRadianY();
 	//ここで斜めにずらします。
 	m_rotation = m_player->GetRot();
 	CQuaternion m_rotationX;
-	m_rotationX.SetRotationDeg(CVector3::AxisX(), -m_rotX);
+	m_rotationX.SetRotationDeg(CVector3::AxisZ(), m_rotZ);
 	m_rotation.Multiply(m_rotationX);
 	//ここでプレイヤーの上下にそってずらします。
 	CQuaternion upDownRot;
@@ -244,8 +270,10 @@ void ItemDisplay::ToolRotation()
 	//モデルへ。
 	m_skinModelRender->SetRot(m_rotation);
 	//サイズと位置をずらす。
-	m_scale = { 0.40f,0.40f,0.40f };
+	m_scale = { 0.2f,0.225f,0.2f };
+	m_mullFornt = toolMullFront;
 	m_mullCrossProduct = toolMullCross;
+	UpPosY = -20;
 }
 //インベントリに合わせて切り替え(ry
 void ItemDisplay::SwitchItemType()
@@ -256,15 +284,17 @@ void ItemDisplay::SwitchItemType()
 	//アイテムの参照。
 	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
 	if (item != nullptr) {
-		if (item->GetID() >= endBlockNum && item->GetID() < startToolNum) {
+		if (!item->GetIsBlock() && item->GetID() <= startToolNum) {
 			type = enHand;
+		}
+		else if (!item->GetIsBlock() && item->GetID() > startToolNum)
+		{
+			type = enTool;
+			m_modelPath = item->GetModelPath();
 		}
 		else if (item->GetIsBlock()) {
 			type = enBlock;
-		}
-		else if (item->GetIsBlock())
-		{
-			type = enTool;
+			m_modelPath = item->GetModelPath();
 		}
 	}
 }
