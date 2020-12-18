@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "BlockFactory.h"
 #include "World.h"
+#include "ItemStack.h"
 
 DropItem::DropItem(World* world) : Entity(world)
 {
@@ -73,21 +74,18 @@ void DropItem::SetPos( const CVector3 & position ){
 //todo　m_worldにGetPlayer()があるので、それを使って距離判定をし、プレイヤーにアイテムを取得させる処理を追加してね。
 void DropItem::Distance()
 {
-	/*if (m_box == nullptr) {
-		m_box = FindGO<Box>();
-		return;
+	Player* player = m_world->GetPlayer();
+
+	CVector3 diff = player->GetPos() - m_colPos;
+
+	const float catchLength = Block::WIDTH;
+
+	if (diff.LengthSq() < catchLength * catchLength) {
+
+		auto item = std::make_unique<ItemStack>(Item::GetItem(m_state), 1);
+
+		player->GetInventory().AddItem(item);
+
+		DeleteGO(this);
 	}
-
-	const float distance = 2.0f * 2.0f;
-
-	CVector3 diff = m_player->GetPos() - m_position;
-	if (diff.LengthSq() <= distance) {
-		int number = m_box->AddItem(m_state, m_number);
-		if (number == 0) {
-			DeleteGO(this);
-		}
-		else {
-			m_number = number;
-		}
-	}*/
 }
