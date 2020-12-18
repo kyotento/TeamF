@@ -40,8 +40,6 @@ public:
 private:
 	//YÀ•W‚ğ‚«‚ß‚½‚¢‚í‚¯B
 	float SetY(const CVector3& pos);
-	//–Ø‚ğ¶‚â‚·B
-	bool Tree(const int x, const int y, const int z);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
