@@ -1,9 +1,9 @@
 #pragma once
+#include "TreeGenerator.h"
 
 class Block;
 class World;
 class Chunk;
-class TreeGenerator;
 
 class RandomMapMaker
 {
@@ -64,6 +64,6 @@ private:
 	float m_relief2 = 2.5f;			//‹Nó‚ÌŒƒ‚µ‚³
 	float m_relief3 = 1000.0f;
 
-	TreeGenerator* m_treeGenerator = nullptr;
+	TreeGenerator m_treeGenerator;
 };
 

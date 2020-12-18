@@ -13,7 +13,7 @@
 
 RandomMapMaker::~RandomMapMaker()
 {
-	delete m_treeGenerator;
+	
 }
 
 void RandomMapMaker::Init( World* world, std::mt19937& seedGenerator ){
@@ -33,9 +33,9 @@ void RandomMapMaker::Init( World* world, std::mt19937& seedGenerator ){
 	m_seedY2 = seedGenerator() % 101 + 50;
 	m_seedZ2 = seedGenerator() % 101 + 50;
 
-	m_treeGenerator = new TreeGenerator();
-	m_treeGenerator->SetRandomMapMaker(this);
-	m_treeGenerator->SetWorld(world);
+	m_treeGenerator;
+	m_treeGenerator.SetRandomMapMaker(this);
+	m_treeGenerator.SetWorld(world);
 }
 
 void RandomMapMaker::GenerateChunk( Chunk & chunk ){
@@ -63,7 +63,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			//上で決定した高さをもとに最高高度のブロックを設置。
 			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
 			//木を生やす。
-			m_treeGenerator->GenerateTree(wx, wy, wz);
+			m_treeGenerator.GenerateTree(wx, wy, wz);
 		
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( wy > m_minHeight ){
