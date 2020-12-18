@@ -143,6 +143,9 @@
     <ClCompile Include="ItemDisplay.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
+    <ClCompile Include="TreeGenerator.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -302,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="ItemDisplay.h">
       <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeGenerator.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
