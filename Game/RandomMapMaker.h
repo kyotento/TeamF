@@ -1,4 +1,5 @@
 #pragma once
+#include "TreeGenerator.h"
 
 class Block;
 class World;
@@ -7,6 +8,7 @@ class Chunk;
 class RandomMapMaker
 {
 public:
+	~RandomMapMaker();
 	//初期化
 	void Init( World* world, std::mt19937& seedGenerator );
 
@@ -15,11 +17,29 @@ public:
 	void GenerateChunk( Chunk& chunk );
 	static const int m_maxHeight = 16;			//マップの最大の高さ
 	static const int m_minHeight = 0;
+	const float GetSeedX2() const
+ 	{
+		return m_seedX2;
+	}
+	const float GetSeedY2() const
+	{
+		return m_seedY2;
+	}
+	const float GetSeedZ2() const
+	{
+		return m_seedZ2;
+	}
+	const float GetRelief2() const
+	{
+		return m_relief2;
+	}
+	const float GetRelief3() const
+	{
+		return m_relief3;
+	}
 private:
 	//Y座標をきめたいわけ。
 	float SetY(const CVector3& pos);
-	//木を生やす。
-	bool Tree(const int x, const int y, const int z);
 private:
 
 	float m_seedX, m_seedZ, m_seedY;
@@ -41,5 +61,7 @@ private:
 	float m_seedX2, m_seedZ2, m_seedY2;
 	float m_relief2 = 2.5f;			//起状の激しさ
 	float m_relief3 = 1000.0f;
+
+	TreeGenerator m_treeGenerator;
 };
 
