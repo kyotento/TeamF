@@ -443,16 +443,7 @@
       <Filter>sprite\title</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
-    <ImageContentTask Include="Resource\sprite\GameStartButton.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\GameEndButton.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Experience_Gauge.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
@@ -471,8 +462,21 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
     <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
     <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
-    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
-    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
