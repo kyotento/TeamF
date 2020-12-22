@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Enemy.h"
 
-Enemy::Enemy(World* world, EnEntity enEntity) : Entity(world, enEntity)
+Enemy::Enemy(EnEntity enEntity) : Entity(enEntity)
 {
 	//スキンモデルを生成。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();

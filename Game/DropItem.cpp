@@ -6,7 +6,7 @@
 #include "World.h"
 #include "ItemStack.h"
 
-DropItem::DropItem(World* world) : Entity(world)
+DropItem::DropItem()
 {
 
 }

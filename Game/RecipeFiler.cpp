@@ -35,6 +35,10 @@ private:
 
 void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 
+	if( rm.GetInited() ){
+		return;
+	}
+
 	using namespace std::filesystem;
 
 	path recipeDir = m_folder;
@@ -218,6 +222,8 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 				RecipeManager::Instance().AddRecipe( std::move( recipe ) );
 			}
 		}
+
+		rm.SetInited();
 	}
 
 }

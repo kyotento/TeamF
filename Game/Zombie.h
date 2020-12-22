@@ -5,7 +5,7 @@ class World;
 class Zombie : public Enemy
 {
 public:
-	Zombie(World* world);
+	Zombie();
 	~Zombie();
 
 	bool Start();
