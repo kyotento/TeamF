@@ -13,7 +13,7 @@ class World;
 //! @author Takayama
 class Entity : public IGameObject{
 public:
-	Entity(World* world, EnEntity enEntity = enEntity_None);
+	Entity(EnEntity enEntity = enEntity_None);
 
 	virtual ~Entity();
 
@@ -22,6 +22,10 @@ public:
 
 	//! @brief À•W‚ğİ’èB
 	virtual void SetPos( const CVector3& pos ) = 0;
+
+	void SetWorld( World* world ){
+		m_world = world;
+	}
 
 	EnEntity GetEntityType()
 	{

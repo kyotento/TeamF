@@ -2,12 +2,12 @@
 #include "Entity.h"
 #include "World.h"
 
-Entity::Entity(World* world, EnEntity enEntity) : m_world(world), m_enEntity(enEntity)
-{
-	world->AddEntity(this);
-}
+Entity::Entity(EnEntity enEntity) : m_enEntity(enEntity)
+{}
 
 Entity::~Entity()
 {
-	m_world->RemoveEntity(this);
+	if( m_world ){
+		m_world->RemoveEntity( this );
+	}
 }

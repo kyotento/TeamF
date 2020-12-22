@@ -14,22 +14,28 @@ class DropItem;
 class World : public IGameObject{
 public:
 	World();
+	~World();
 
 	//! @brief 更新関数。チャンクをストレージに退避させる処理をする。
 	void PostUpdate() override;
 
 	//! @brief Player をセットする。
-	//! @param recursive trueなら Player::SetWorld(this, false) も呼び出す。
-	void SetPlayer( Player* player, bool recursive = false );
+	void SetPlayer( Player* player ){
+		m_player = player;
+	}
 
 	Player* GetPlayer();
 
-	//! @brief Entity をワールドに追加する。
-	void AddEntity( Entity* entity ){
-		m_entities.insert( entity );
+	//! @brief Entity をワールドに生成する。引数は対象のコンストラクタ。
+	template<class T, class... TArgs>
+	T*  CreateEntity( TArgs... ctorArgs ){
+		T* newEntity = NewGO<T>( ctorArgs... );
+		newEntity->SetWorld( this );
+		m_entities.insert( newEntity );
+		return newEntity;
 	}
 
-	//! @brief Entity をワールドから取り除く。
+	//! @brief Entity をワールドから取り除く。DeleteGOはしない。
 	void RemoveEntity( Entity* entity ){
 		m_entities.erase( entity );
 	}

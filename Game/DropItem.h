@@ -11,7 +11,7 @@ class World;
 class DropItem : public Entity
 {
 public:
-	DropItem(World* world);
+	DropItem();
 	~DropItem();
 	bool Start() override;
 	void Update() override;

@@ -19,7 +19,7 @@ namespace GUI{
 class Player : public Entity
 {
 public:
-	Player(World* world);
+	Player();
 	~Player();
 	bool Start() override;
 	void Update() override;
@@ -175,10 +175,6 @@ public:
 	World* GetWorld(){
 		return m_world;
 	}
-
-	//! @brief World をセットする。
-	//! @param recursive trueなら World::SetPlayer(this, false) も呼び出す。
-	void SetWorld( World* world , bool recursive = false);
 
 	//インベントリの長さ
 	static const int inventryWidth = 9;

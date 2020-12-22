@@ -29,9 +29,8 @@ namespace {
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
 }
 
-Player::Player(World* world) : Entity(world), m_inventory(36)
+Player::Player() : m_inventory(36)
 {
-	world->SetPlayer(this);
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
 	m_animationClip[enAnimationClip_Idle].SetLoopFlag(true);
@@ -135,13 +134,6 @@ void Player::Update()
 	Death();
 
 	Test();
-}
-
-//とりまのこす。
-void Player::SetWorld(World* world, bool recursive) {
-	m_world = world;
-	if (recursive)
-		world->SetPlayer(this, false);
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
@@ -609,28 +601,40 @@ void Player::TakenDamage(int AttackPow)
 {
 	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
 		m_hp -= AttackPow;
-
-		//ダメージエフェクト
-		NewGO<DamegeScreenEffect>();
-
+		
 		//HPを0未満にしない。
 		if (m_hp <= 0) {			
 			m_hp = 0;
 		}
 
-		//ダメージボイス
-		SuicideObj::CSE* voice;
-		if (m_playerState == enPlayerState_death) {		//死亡した時。
+		//ダメージエフェクト
+		//NewGO<DamegeScreenEffect>();
+
+		//死んでないときのみ実行
+		if (m_hp > 0) {
+			//カメラ回転		
+			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 25.0f : -25.0f);
+			
+			//ダメージボイス
+			SuicideObj::CSE* voice;
+			//２種類からランダムで音が鳴る。
+			if (CMath::RandomZeroToOne() > 0.5f) {
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
+			}
+			else {
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
+			}
+			voice->Play();
+		}
+		else //死んだとき
+		{
+			//首折れる
+			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
+			//ダメージボイス
+			SuicideObj::CSE* voice;
 			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
+			voice->Play();
 		}
-		//死亡してない場合は２種類からランダムで音が鳴る。
-		else if (CMath::RandomZeroToOne() > 0.5f) {
-			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
-		}
-		else {
-			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
-		}
-		voice->Play();
 	}
 }
 
@@ -646,7 +650,7 @@ void Player::Death()
 	if (m_playerState == enPlayerState_death) {
 		float maxRot = 90.f;							//回転の上限値。
 		float rotEndTime = 0.5f;						//回転終了までにかかる時間。 
-		float oneFrameRot = maxRot / 60.f / rotEndTime;			//1フレームの回転量。
+		float oneFrameRot = maxRot / 60.f / rotEndTime;			//1フレームの回転量。		
 
 		//プレイヤーの回転処理。
 		if (m_deathAddRot <= maxRot) {	//回転量が上限に達するまで。
