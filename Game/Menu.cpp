@@ -15,10 +15,10 @@ bool Menu::Start()
 {
 	m_spriteRender[0].Init(L"Resource/spriteData/ReturnToTitleButton.dds");
 	m_spriteRender[1].Init(L"Resource/spriteData/GameEndButton.dds");
-	m_spriteRender[2].Init(L"Resource/spriteData/Configuration.dds");
+	m_spriteRender[2].Init(L"Resource/spriteData/ConfigurationButton.dds");
 
 	for (int i = 0; i < m_buttonNum; i++) {
-		m_position[i] = { 0.5f,0.6f };
+		m_position[i] = { 0.5f,0.4f };
 		float posY = 0.125f * i;		//YÀ•W‚Ì‰ÁŽZ’lB
 		m_position[i].y += posY;
 		m_spriteRender[i].SetPos(m_position[i]);
