@@ -7,7 +7,7 @@ BiomeManager::BiomeManager(){}
 enBiome BiomeManager::DecideBiome(const int x,const int y,const int z)
 {
 	//起伏の激しさ。
-	float relief = 300.0f;
+	float relief = 90.0f;
 	//最高気温。
 	int maxTemp = 30;
 	//最低気温。
@@ -27,31 +27,31 @@ enBiome BiomeManager::DecideBiome(const int x,const int y,const int z)
 	int rain = int(noise2 * (maxRain - minRain));
 	rain += minRain;
 
-	enBiome state = enBiome_None;
+	enBiome state = enBiome_Forest;
 	//降水量1500以上
-	if (rain > 1500) {
+	if (rain > 2000) {
 		//森林。
-		if (temp > 15) {
+		if (temp > 10) {
 			state = enBiome_Forest;
 		}
-		//平原。
+		/*//平原。
 		else if (temp > -5) {
 			state = enBiome_Plains;
 		}
 		//ツンドラ。
 		else {
 			state = enBiome_Tundra;
-		}
+		}*/
 	}
 	else {
 		//砂漠。
-		if (temp > -5) {
+		if (temp > 7) {
 			state = enBiome_Desert;
 		}
 		//ツンドラ。
-		else {
+		/*else {
 			state = enBiome_Tundra;
-		}
+		}*/
 	}
 
 	return state;

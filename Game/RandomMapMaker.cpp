@@ -60,10 +60,16 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			pos.y = SetY( pos );
 			int wy = int( pos.y );
 
-			//上で決定した高さをもとに最高高度のブロックを設置。
-			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
-			//木を生やす。
-			m_treeGenerator.GenerateTree(wx, wy, wz);
+			if (state == enBiome_Forest) {
+				//上で決定した高さをもとに最高高度のブロックを設置。
+				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Grass));
+				//木を生やす。
+				m_treeGenerator.GenerateTree(wx, wy, wz);
+			}
+			else if (state == enBiome_Desert) {
+				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_OakLog));
+			}
+		
 		
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( wy > m_minHeight ){
@@ -73,13 +79,18 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 				{
 					//土
 					EnCube bType = enCube_Soil;
+					if (state == enBiome_Desert)
+					{
+						bType = enCube_OakLog;
+					}
+				
 					//石ブロック圏内なら石
 					if( m_stoneMaxHeight >= wy && wy >= m_stoneMinHeight ){
 						bType = enCube_Stone;
 					}
 
 					//鉱石ブロック圏内でノイズが許せば鉱石
-					if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
+					/*if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
 
 						//パーリンノイズ
 						float noise = GetPerlin().PerlinNoise( ( float( wx ) + m_seedX ) / m_relief2,
@@ -88,7 +99,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 						if( noise >= 0.7f ){
 							bType = enCube_Soil;//暫定的に土で代用
 						}
-					}
+					}*/
 
 					//if (bType == enCube_Stone || bType == enCube_Soil)
 						//continue;
@@ -122,7 +133,7 @@ float RandomMapMaker::SetY( const CVector3& pos ){
 	float noise = GetPerlin().PerlinNoise( xSample * 2, 0.0f, zSample * 2 );
 	noise += GetPerlin().PerlinNoise( xSample, 0.0f, zSample ) * 3;
 	noise /= 4;
-	y = m_maxHeight * noise;
+	y = m_maxHeight * noise + m_addHeight;
 	y = std::round( y );
 
 	return y;

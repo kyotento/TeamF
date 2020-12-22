@@ -16,6 +16,7 @@ public:
 	//! @param[in,out] chunk このチャンクに生成する。
 	void GenerateChunk( Chunk& chunk );
 	static const int m_maxHeight = 16;			//マップの最大の高さ
+	static const int m_addHeight = 7;
 	static const int m_minHeight = 0;
 	const float GetSeedX2() const
  	{
@@ -52,7 +53,7 @@ private:
 	float m_mapSize = 1.f;			//マップの大きさ
 
 
-	const int m_stoneMaxHeight = 3;
+	const int m_stoneMaxHeight = 10;
 	const int m_stoneMinHeight = 0;
 	const int m_OreMaxHeight = 2;
 	const int m_OreMinHeight = 0;
