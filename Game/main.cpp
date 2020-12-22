@@ -52,7 +52,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
-	SetIsDebugInput(true);
+	SetIsDebugInput(false);//Escで終了しなくなります。
 
 	//フォグの設定
 	SetEnableFog(true);				//有効
