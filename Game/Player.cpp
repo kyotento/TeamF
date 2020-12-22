@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "PlayerParameter.h"
 #include "PlayerDeath.h"
+#include "DropItem.h"
 
 namespace {
 	const float turnMult = 20.0f;			//プレイヤーの回転速度。
@@ -119,6 +120,17 @@ void Player::Update()
 			OpenInventory();
 			//前方にRayを飛ばす。
 			FlyTheRay();
+
+			if( GetKeyDown( 'Q' ) ){
+				auto item = m_inventory.TakeItem( m_selItemNum - 1, 1 );
+				if( item ){
+					CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+					pos.y += Block::WIDTH;
+					DropItem* drop = DropItem::CreateDropItem( m_world, std::move( item ) );
+					drop->SetPos( pos );
+					drop->SetVelocity( GetFront() * 300 );
+				}
+			}
 
 		}
 		else if (GetKeyDown('E')) {
