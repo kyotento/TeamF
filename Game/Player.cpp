@@ -16,13 +16,14 @@
 #include "DropItem.h"
 
 namespace {
-	const float turnMult = 20.0f;			//プレイヤーの回転速度。
-	const float maxDegreeXZ = 88.0f;		//XZ軸の回転の最大値。
-	const float minDegreeXZ = -88.0f;		//XZ軸の回転の最小値。
-	const float moveMult = 8.0f;			//プレイヤーの移動速度。
-	const float move = 1.0f;				//移動速度(基本的には触らない)。
+	const float turnMult = 20.0f;						//プレイヤーの回転速度。
+	const float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
+	const float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
+	const float moveMult = 8.0f;						//プレイヤーの移動速度。
+	const float move = 1.0f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
-	const float doubleClickRug = 0.2f;		//ダブルクリック判定になる間合い。
+	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
+	int fallTimer = 0;								//滞空時間。
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
@@ -339,10 +340,15 @@ void Player::Jump()
 
 			moveSpeed.y += m_jmpInitialVelocity;
 			m_jmpInitialVelocity -= m_gravity * gravitationalAcceleration;
-
+			//落下しているとき。
+			if (moveSpeed.y <= 0) {
+				fallTimer += 1;		//滞空時間を加算。
+			}
 			if (m_characon.IsOnGround() && m_jmpInitialVelocity < m_gravity * gravitationalAcceleration) {
 				m_isJump = false;
 				m_jmpInitialVelocity = 3.f;
+				//落下ダメージ。
+				TakenDamage(FallDamage());
 			}
 		}
 		else
@@ -351,13 +357,42 @@ void Player::Jump()
 			if (!m_characon.IsOnGround()) {
 				m_fallSpeed += 0.1f;
 				moveSpeed.y -= m_gravity + m_fallSpeed;		//自由落下。
+				fallTimer += 1;		//滞空時間を加算。
 			}
 			else
 			{
+				//落下ダメージ。
+				TakenDamage(FallDamage());
 				m_fallSpeed = 0.5f;
 			}
 		}
 	}
+	if (m_characon.IsOnGround()) {
+		fallTimer = 0;
+	}
+}
+
+//落下ダメージ。
+int Player::FallDamage()
+{
+	if (m_gameMode->GetGameMode() != GameMode::enGameModeSurvival) {
+		return 0;
+	}
+	int fallSpeed = fallTimer;			//落下時間。
+	const int damageSpeed = 5;			//1ダメージが発生する落下時間。
+	int fallDamage = 0;					//落下ダメージ。
+	int damageReduction = 5;			//ダメージ軽減。
+
+	if (fallSpeed <= damageSpeed * damageReduction) { return 0; }		//落下時間が30frame以下ならダメージを受けない。
+
+	fallDamage = abs(fallSpeed) / damageSpeed;
+
+	fallTimer = 0;						//タイマーをリセット。
+
+	if (fallDamage <= 10) {
+		fallDamage -= damageReduction;		//無敵時間分ダメージを軽減する。
+	}
+	return fallDamage;
 }
 
 //回転処理。
@@ -576,7 +611,7 @@ void Player::FlyTheRay()
 //被ダメ－ジ。
 void Player::TakenDamage(int AttackPow)
 {
-	if (m_hp > 0) {			//被弾する。
+	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
 		m_hp -= AttackPow;
 		
 		//HPを0未満にしない。

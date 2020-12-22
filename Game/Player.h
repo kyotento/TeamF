@@ -315,7 +315,9 @@ private:
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
 	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
 
-	int m_hp = 20;					//体力。
+	int FallDamage();		//落下ダメージ。
+
+	float m_hp = 20.f;				//体力。
 	int m_stamina = 20;				//スタミナ。
 	int m_attackPower = 5;			//攻撃力。
 	int m_defensePower = 15;		//防御力。
