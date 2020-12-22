@@ -53,6 +53,7 @@
   <ItemGroup>
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="ClickEvent.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldInfoFile.cpp" />
     <ClCompile Include="Zombie.cpp" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>

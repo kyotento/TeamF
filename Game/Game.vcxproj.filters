@@ -144,6 +144,9 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="ZombieGenerator.cpp" />
+    <ClCompile Include="Menu.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -305,6 +308,9 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="ZombieGenerator.h" />
+    <ClInclude Include="Menu.h">
+      <Filter>menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -378,6 +384,9 @@
     </Filter>
     <Filter Include="sprite\button">
       <UniqueIdentifier>{0e0bb4e2-0c43-4287-8c27-d5442ea43a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="menu">
+      <UniqueIdentifier>{ebf68a18-5d59-456b-a63a-3d73538b2ea0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

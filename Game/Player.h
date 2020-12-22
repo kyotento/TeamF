@@ -12,6 +12,7 @@ class ItemDisplay;
 class PlayerParameter;
 class PlayerDeath;
 class Game;
+class Menu;
 namespace GUI{
 	class RootNode;
 }
@@ -196,6 +197,16 @@ public:
 	void CloseGUI();
 
 	/// <summary>
+	/// Menuを開く。
+	/// </summary>
+	void OpenMenu();
+
+	/// <summary>
+	/// Menuを閉じる。
+	/// </summary>
+	void CloseMenu();
+
+	/// <summary>
 	/// 被ダメージ
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
@@ -349,5 +360,6 @@ private:
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 	Game* m_game = nullptr;										//Gameクラス。
+	Menu* m_menu = nullptr;										//Escメニュー。
 };
 

@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "PlayerParameter.h"
 #include "PlayerDeath.h"
+#include "Menu.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -45,6 +46,7 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
+	DeleteGO(m_menu);
 }
 
 #include "ItemStack.h"
@@ -104,35 +106,41 @@ void Player::Update()
 	//頭の骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
 
-	//死んでないとき。
-	if (m_playerState != enPlayerState_death) {
-		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
-		Move();
+	if (m_menu == nullptr) {
 
-		//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
-		if (m_openedGUI == nullptr) {
+		//死んでないとき。
+		if (m_playerState != enPlayerState_death) {
+			//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
+			Move();
 
-			//回転処理。
-			Turn();
-			//攻撃。
-			Attack();
-			//インベントリを開く。
-			OpenInventory();
-			//前方にRayを飛ばす。
-			FlyTheRay();
+			//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
+			if (m_openedGUI == nullptr) {
 
+				//回転処理。
+				Turn();
+				//攻撃。
+				Attack();
+				//インベントリを開く。
+				OpenInventory();
+				//前方にRayを飛ばす。
+				FlyTheRay();
+				//menuを開く。
+				OpenMenu();
+			}
+			else if (GetKeyDown('E')) {
+				//GUIが開かれているときに、Eが押されたらGUIを閉じる。
+				CloseGUI();
+			}
 		}
-		else if (GetKeyDown('E')) {
-			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
-			CloseGUI();
-		}
+		//プレイヤーの状態管理。
+		StateManagement();
+
+		//死亡処理。
+		Death();
 	}
-	//プレイヤーの状態管理。
-	StateManagement();
-
-	//死亡処理。
-	Death();
-
+	else if (GetKeyDown(VK_ESCAPE)) {
+		CloseMenu();
+	}
 	Test();
 }
 
@@ -144,6 +152,18 @@ inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
 inline void Player::CloseGUI(){
 	m_openedGUI.reset();
 	MouseCursor().SetLockMouseCursor( true );		//マウスカーソルを固定する。
+}
+
+void Player::OpenMenu()
+{
+	if (GetKeyDown(VK_ESCAPE)) {
+		m_menu = NewGO<Menu>();
+	}
+}
+
+void Player::CloseMenu()
+{
+	DeleteGO(m_menu);
 }
 
 //キーボードの入力情報管理。
