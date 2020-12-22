@@ -95,7 +95,7 @@ void ZombieGenerator::SearchSpaceZombieGenerate(CVector3& pos)
 				m_world->GetBlock(CVector3(pos.x, i + 2, pos.z)) == nullptr)
 			{
 				//‹ó‚«‚ª‚ ‚Á‚½‚çƒ]ƒ“ƒr¶¬B
-				Zombie* zombie = NewGO<Zombie>(m_world);
+				Zombie* zombie = m_world->CreateEntity<Zombie>();
 				zombie->SetPos(CVector3(pos.x * Block::WIDTH, (float(i) + 1.0f) * Block::WIDTH, pos.z * Block::WIDTH));
 				m_numberZombieRange++;
 				m_numberZombie++;

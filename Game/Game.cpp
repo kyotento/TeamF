@@ -19,15 +19,12 @@ Game::Game()
 
 
 Game::~Game()
-{
-//	DeleteGO(m_player);
-	DeleteGO(m_sun);
-}
+{}
 
 bool Game::Start()
 {
 	//必要なクラスの生成。
-	m_gameMode = NewGO<GameMode>();
+	m_gameMode.reset(NewGO<GameMode>());
 	m_gameMode->SetName(L"gamemode");
 
 	m_world = std::make_unique<World>();
@@ -38,16 +35,18 @@ bool Game::Start()
 	recipeFiler.SetFolder(L"Resource/recipeData/");
 	recipeFiler.LoadRecipe(RecipeManager::Instance());
 
-	m_player.reset(NewGO<Player>(m_world.get()));
-	m_player->SetName(L"player");
-	m_player->SetGameIns(this);
+	//プレイヤーの生成。
+	Player* player = m_world->CreateEntity<Player>();
+	m_world->SetPlayer( player );
+	player->SetName(L"player");
+	player->SetGameIns(this);
 
 	m_gameCamera = std::make_unique<GameCamera>();
 
-	m_sun = NewGO<Sun>();
+	m_sun.reset(NewGO<Sun>());
 
-	//m_zombieGenerator = NewGO<ZombieGenerator>();
-	//m_zombieGenerator->SetWorld(m_world.get());
+	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
+	m_zombieGenerator->SetWorld(m_world.get());
 	
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 

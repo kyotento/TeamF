@@ -8,6 +8,9 @@
 class ItemStack : public NullableItemStack{
 public:
 
+	//! @brief アイテムスタックからnum個を別のスタックとして取り出す。
+	static std::unique_ptr<ItemStack> TakeItem( std::unique_ptr<ItemStack>& item, int num );
+
 	ItemStack(Item& item , int number = 1) : m_item(item), m_number(number){}
 
 	bool operator==( const ItemStack& rhs ){

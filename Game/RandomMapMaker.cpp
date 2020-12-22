@@ -9,7 +9,12 @@
 #include "Block.h"
 #include "CreateOre.h"
 #include "BiomeManager.h"
+#include "TreeGenerator.h"
 
+RandomMapMaker::~RandomMapMaker()
+{
+	
+}
 
 void RandomMapMaker::Init( World* world, std::mt19937& seedGenerator ){
 	m_world = world;
@@ -27,6 +32,10 @@ void RandomMapMaker::Init( World* world, std::mt19937& seedGenerator ){
 	m_seedX2 = seedGenerator() % 101 + 50;
 	m_seedY2 = seedGenerator() % 101 + 50;
 	m_seedZ2 = seedGenerator() % 101 + 50;
+
+	m_treeGenerator;
+	m_treeGenerator.SetRandomMapMaker(this);
+	m_treeGenerator.SetWorld(world);
 }
 
 void RandomMapMaker::GenerateChunk( Chunk & chunk ){
@@ -51,12 +60,16 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			pos.y = SetY( pos );
 			int wy = int( pos.y );
 
-			//上で決定した高さをもとに最高高度のブロックを設置。
-			chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock( enCube_Grass ) );
-			//木を生やす。
-			if (!Tree(wx, wy, wz)) {
-				//木を生やせなかったら、ゾンビツクール。
+			if (state == enBiome_Forest) {
+				//上で決定した高さをもとに最高高度のブロックを設置。
+				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Grass));
+				//木を生やす。
+				m_treeGenerator.GenerateTree(wx, wy, wz);
 			}
+			else if (state == enBiome_Desert) {
+				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_OakLog));
+			}
+		
 		
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( wy > m_minHeight ){
@@ -66,13 +79,18 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 				{
 					//土
 					EnCube bType = enCube_Soil;
+					if (state == enBiome_Desert)
+					{
+						bType = enCube_OakLog;
+					}
+				
 					//石ブロック圏内なら石
 					if( m_stoneMaxHeight >= wy && wy >= m_stoneMinHeight ){
 						bType = enCube_Stone;
 					}
 
 					//鉱石ブロック圏内でノイズが許せば鉱石
-					if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
+					/*if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
 
 						//パーリンノイズ
 						float noise = GetPerlin().PerlinNoise( ( float( wx ) + m_seedX ) / m_relief2,
@@ -81,7 +99,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 						if( noise >= 0.7f ){
 							bType = enCube_Soil;//暫定的に土で代用
 						}
-					}
+					}*/
 
 					//if (bType == enCube_Stone || bType == enCube_Soil)
 						//continue;
@@ -115,100 +133,8 @@ float RandomMapMaker::SetY( const CVector3& pos ){
 	float noise = GetPerlin().PerlinNoise( xSample * 2, 0.0f, zSample * 2 );
 	noise += GetPerlin().PerlinNoise( xSample, 0.0f, zSample ) * 3;
 	noise /= 4;
-	y = m_maxHeight * noise;
+	y = m_maxHeight * noise + m_addHeight;
 	y = std::round( y );
 
 	return y;
-}
-
-
-
-bool RandomMapMaker::Tree(const int x, const int y, const int z)
-{
-	//同じマップを生成しないようにシード生成。
-	float xSample = (x + m_seedX2) / m_relief2;
-	float ySample = (y + m_seedY2) / m_relief2;
-	float zSample = (z + m_seedZ2) / m_relief2;
-
-	float noise = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-	//ノイズが一定以内だったら木を生成。
-	if (noise < 0.6f || noise > 0.607f) {
-		return false;
-	}
-
-	int xx = x;
-	int yy = y + 1;
-	int zz = z;
-	noise *= 100.f;
-	int height = rand() * int(noise) % 3 + 3;
-	//木の幹をつくっていく。
-	for (int i = 0; i < height; i++) {
-		m_world->SetBlock(xx, yy, zz, BlockFactory::CreateBlock(enCube_OakLog));
-		yy += 1;
-	}
-
-
-	//葉のパラメータ
-	int reafHeight = 5;
-	int reafWidth = 3;
-	int reafDepth = 3;
-	yy -= rand() * int(noise * 100) % 2 + 1;
-	float seed = 13;
-	float a = 1.f;
-
-	//xyzの値を0～13の値にする。
-	int xxx = xx % 14;
-	int yyy = yy % 14;
-	int zzz = zz % 14;
-
-
-	xSample = (xxx + seed) / m_relief3 * a;
-	ySample = (yyy + seed) / m_relief3;
-	zSample = (zzz + seed) / m_relief3 * a;
-
-	//木の中心のノイズを求める
-	noise = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-	//葉を生成していく。
-	for (int i = 0; i < reafHeight; i++) {
-		for (int j = -2; j < reafWidth; j++) {
-			for (int p = -2; p < reafDepth; p++) {
-
-				//ノイズを生成していく。
-				//一つのノイズだけだと偏るので。
-				//複数のノイズを生成していく。
-				int rm = rand() * int(noise * 10000) % 2;
-				int rm2 = rand() * int(noise * 10000) % 2;
-				int b = 15;
-				float xSample = (xxx + j + seed + rm2) / m_relief3 * a;
-				float ySample = (yyy + i * b + seed) / m_relief3;
-				float zSample = (zzz + p + seed + rm) / m_relief3 * a;
-				float noise2 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-				//
-				xSample = (xxx + j + seed + rm2) / m_relief3 * a;
-				ySample = (yyy + i * b + seed) / m_relief3;
-				zSample = (zzz - p + seed - rm) / m_relief3 * a;
-				float noise3 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-				xSample = (xxx - j + seed - rm2) / m_relief3 * a;
-				ySample = (yyy + i * b + seed) / m_relief3;
-				zSample = (zzz + p + seed + rm) / m_relief3 * a;
-				float noise4 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-				xSample = (xxx - j + seed - rm2) / m_relief3 * a;
-				ySample = (yyy + i * b + seed) / m_relief3;
-				zSample = (zzz - p + seed - rm) / m_relief3 * a;
-				float noise5 = GetPerlin().PerlinNoise(xSample, ySample, zSample);
-
-				float a = 0.0015f;
-				//木の中心のノイズとの差が一定以内なら葉を生成する。
-				if (abs(noise - noise2) > a || abs(noise - noise3) > a || abs(noise - noise4) > a || abs(noise - noise5) > a)
-					continue;
-				m_world->SetBlock(xx + j, yy + i, zz + p, BlockFactory::CreateBlock(enCube_OakLeaf));
-			}
-		}
-	}
-	return true;
 }

@@ -20,6 +20,14 @@ World::World(){
 	m_mapMaker.Init( this, infoFile.GetSeedGenerator() );
 }
 
+World::~World(){
+	//エンティティたちの削除
+	for( Entity* e : m_entities ){
+		e->SetWorld( nullptr );
+		DeleteGO( e );
+	}
+}
+
 void World::PostUpdate(){
 
 	Player* player = GetPlayer();
@@ -107,12 +115,6 @@ void World::PostUpdate(){
 			} );
 		}
 	}
-}
-
-void World::SetPlayer( Player* player, bool recursive ){
-	m_player = player;
-	if( recursive )
-		player->SetWorld( this, false );
 }
 
 Player * World::GetPlayer(){
@@ -251,12 +253,9 @@ void World::DeleteBlock( const CVector3& pos ){
 
 	//ブロックをポップ。
 	{
-		DropItem* dropItem = NewGO<DropItem>( this );		//ドロップアイテムクラスを取得。
-		//std::unique_ptr<DropItem> dropItem;
-		//dropItem.reset(NewGO<DropItem>(this));
-		dropItem->SetEnCube( GetBlock( x, y, z )->GetBlockType() );		//ブロックの種類を代入。
-		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) );
-		dropItem->Drop();
+		//ドロップアイテムを作成。
+		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
+		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH );
 	}
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );

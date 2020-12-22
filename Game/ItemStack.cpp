@@ -2,6 +2,14 @@
 #include "ItemStack.h"
 #include "InventorySlot.h"
 
+std::unique_ptr<ItemStack> ItemStack::TakeItem( std::unique_ptr<ItemStack>& item, int num ){
+	if( item->GetNumber() <= num ){
+		return std::move( item );
+	}
+	item->SetNumber( item->GetNumber() - num );
+	return std::make_unique<ItemStack>( item->GetItem(), num );
+}
+
 void ItemStack::Draw( const CVector2 & pos, const CVector2 & parentScale ){
 	m_item.Draw( pos, parentScale );
 
