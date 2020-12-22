@@ -7,7 +7,7 @@ BiomeManager::BiomeManager(){}
 enBiome BiomeManager::DecideBiome(const int x,const int y,const int z)
 {
 	//起伏の激しさ。
-	float relief = 70.0f;
+	float relief = 90.0f;
 	//最高気温。
 	int maxTemp = 30;
 	//最低気温。
