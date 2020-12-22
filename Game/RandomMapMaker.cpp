@@ -122,7 +122,7 @@ float RandomMapMaker::SetY( const CVector3& pos ){
 	float noise = GetPerlin().PerlinNoise( xSample * 2, 0.0f, zSample * 2 );
 	noise += GetPerlin().PerlinNoise( xSample, 0.0f, zSample ) * 3;
 	noise /= 4;
-	y = m_maxHeight * noise;
+	y = m_maxHeight * noise + m_addHeight;
 	y = std::round( y );
 
 	return y;

@@ -5,7 +5,9 @@
 Block::Block(){
 }
 
-Block::~Block(){}
+Block::~Block(){
+	m_raytraceModel.Release();
+}
 
 void Block::SetPos( int x, int y, int z ){
 	constexpr float half = WIDTH * 0.5f;

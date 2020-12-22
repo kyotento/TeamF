@@ -19,6 +19,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	initparam.SDUnityChanScale = 2.5f;//スケール設定
 	initparam.isAtmosphericFog = true;//大気フォグ有効化
+	initparam.isPointFiltering = true;//テクスチャポイントフィルタリング有効化
+	//initparam.isCreateMipmap = false; //ミップマップ生成無効化
 
 	//解像度
 	//initparam.screenWidth = initparam.frameBufferWidth = initparam.frameBufferWidth3D = 1920;
@@ -50,7 +52,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
-	SetIsDebugInput(true);
+	SetIsDebugInput(false);//Escで終了しなくなります。
 
 	//フォグの設定
 	SetEnableFog(true);				//有効
