@@ -9,6 +9,12 @@ namespace{
 	const CVector2 leftItemPos = { 0.308f,0.95f };
 	//! アイテムバーで、右隣りのアイテムとの幅。一つ右に移動する場合のX座標の移動量。
 	const float itemBarStride = 0.048f;
+	//アイテム欄一つの移動量X。
+	float moveX = itemBarStride;
+	//前のID
+	int OldID = 0;
+
+	bool A = false;
 }
 
 PlayerParameter::PlayerParameter()
@@ -37,7 +43,6 @@ void PlayerParameter::Update()
 	ChangeArmor();			//防御力を変更する。
 	ChangeExp();			//経験値ゲージを変更する。
 	SelectItem();			//アイテムを変更する。
-
 	//こいつ更新させてあげてください。
 	m_rightHandDisplay->SetPos(m_player->GetPos());
 }
@@ -175,45 +180,38 @@ void PlayerParameter::ChangeExp()
 //アイテムを選択する。
 void PlayerParameter::SelectItem()
 {
-	float moveX = itemBarStride;		//アイテム欄一つの移動量X。
 
 	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。。
 	KariItemS();								//キーボードによる指定。
+	StopMoveToChange();
 
-	//StopMoveToChange();						//こいつはまだ完成してないです。
-
-	if (m_isStopMoveToChangeFlag)
-	{
-		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
-		m_spriteRenderSelectItem.SetPos(m_sItemPos);
-		m_isItemChangeFlag = true;
-	}
-	else if (m_selectNum == m_selectNumOld) {
+	if (m_selectNum == m_selectNumOld && !m_isStopMoveToChangeFlag) {
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
 		m_spriteRenderSelectItem.SetPos(m_sItemPos);
 		m_isItemChangeFlag = false;
 	}
-	else if (m_selectNum != m_selectNumOld) {		//値に変更が行われていた場合。
+	else if (m_selectNum != m_selectNumOld || m_isStopMoveToChangeFlag) {	//値に変更が行われていた場合。
 		//超過した時の修正。	
 		if (m_selectNum > 9) {
 			m_selectNum = 1;
 		}
 		if (m_selectNum < 1) {
-			m_selectNum = 9;	
+			m_selectNum = 9;
 		}
 		//座標の変更。
 		m_sItemPos.x = m_selectPosX + m_selectNum * moveX;
 		m_spriteRenderSelectItem.SetPos(m_sItemPos);
 		m_isItemChangeFlag = true;
+		m_isStopMoveToChangeFlag = false;
+
 	}
-	
-	m_player->SetSelectItemNum(m_selectNum);					//プレイヤークラスに格納。
-	m_rightHandDisplay->SetSelectNum(m_selectNum);				//右手のクラスに番号を格納。
-	m_rightHandDisplay->SetChangeItemFlag(m_isItemChangeFlag);	//右手にフラグも格納します。
-	m_selectNumOld = m_selectNum;								//現在のアイテム番号を格納。
+		m_player->SetSelectItemNum(m_selectNum);					//プレイヤークラスに格納。
+		m_rightHandDisplay->SetChangeItemFlag(m_isItemChangeFlag);	//右手にフラグも格納します。
+		m_selectNumOld = m_selectNum;								//現在のアイテム番号を格納。
 	if (!m_rightHandDisplay->GetEndChangeFlag())
 	{
 		m_isItemChangeFlag = false;
+		m_isStopMoveToChangeFlag = false;
 	}
 }
 
@@ -278,22 +276,28 @@ void PlayerParameter::PostRender()
 void PlayerParameter::StopMoveToChange()
 {
 	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
-	int id = item->GetID();
-	//if (item->GetItem().GetItem() == nullptr)
-	//{
-	//	id = 999;
-	//}
-	//else
-	//{
-	//	id = item->GetID();
-	//}
-	if (m_idOld != id)
+	if (item != nullptr)
+	{
+		if (item->GetID() != OldID)
+		{
+			m_isStopMoveToChangeFlag = true;
+			A = false;
+		}
+		else if (A)
+		{
+			m_isStopMoveToChangeFlag = true;
+			A = false;
+		}
+		else if (item->GetID() == OldID)
+		{
+			m_isStopMoveToChangeFlag = false;
+			A = false;
+		}
+		OldID = item->GetID();
+	}
+	else if (item == nullptr && !A)
 	{
 		m_isStopMoveToChangeFlag = true;
+		A = true;
 	}
-	else if (m_idOld == id)
-	{
-		m_isStopMoveToChangeFlag = false;
-	}
-	m_idOld = item->GetID();
 }
