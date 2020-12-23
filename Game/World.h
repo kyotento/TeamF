@@ -2,7 +2,6 @@
 #pragma once
 #include "Chunk.h"
 #include "RandomMapMaker.h"
-#include "IntVector3.h"
 #include "WorldInfoFile.h"
 
 class Entity;

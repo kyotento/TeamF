@@ -104,37 +104,53 @@ void ItemDisplay::Follow()
 //切り替え
 void ItemDisplay::Switching()
 {
-	int oldID = m_player->GetSelectItemNum();
+
 	SwitchItemType();
 	int minDownPos = -50;
 	int maxDownPos = 0;
 
-	//切り替え(後でif文を変えます。)
+	////切り替え(後でif文を変えます。)
+	//if (m_isItemChangeFlag && !swich_flag)
+	//{
+	//	//下に落とすよ。
+	//	DownPosY--;
+	//	DownPosZ--;
+	//	if (DownPosY >= minDownPos)
+	//	{
+	//		DownPosY = minDownPos-1;
+	//		DownPosZ = minDownPos-1;
+	//		initItem_flag = true;
+	//		swich_flag = true;
+	//	}
+	//}
+	////切り替えモーション中に切り替えたとき用。
+	//else if (m_isItemChangeFlag) {
+	//	//下に落とすよ。
+	//	DownPosY--;
+	//	DownPosZ--;
+	//	if (DownPosY >= minDownPos)
+	//	{
+	//		DownPosY = minDownPos - 1;
+	//		DownPosZ = minDownPos - 1;
+	//		initItem_flag = true;
+	//		swich_flag = true;
+	//	}
+	//}
+
+	//切り替え
 	if (m_isItemChangeFlag && !swich_flag)
 	{
-		//下に落とすよ。
-		DownPosY--;
-		DownPosZ--;
-		if (DownPosY >= minDownPos)
-		{
-			DownPosY = minDownPos-1;
-			DownPosZ = minDownPos-1;
-			initItem_flag = true;
-			swich_flag = true;
-		}
+		DownPosY = minDownPos;
+		DownPosZ = minDownPos;
+		initItem_flag = true;
+		swich_flag = true;
 	}
-	//切り替えモーション中に切り替えたとき用。
-	else if (m_isItemChangeFlag) {
-		//下に落とすよ。
-		DownPosY--;
-		DownPosZ--;
-		if (DownPosY >= minDownPos)
-		{
-			DownPosY = minDownPos - 1;
-			DownPosZ = minDownPos - 1;
-			initItem_flag = true;
-			swich_flag = true;
-		}
+	else if (m_isItemChangeFlag)
+	{
+		DownPosY = minDownPos;
+		DownPosZ = minDownPos;
+		initItem_flag = true;
+		swich_flag = true;
 	}
 	else if (swich_flag)
 	{
@@ -183,7 +199,6 @@ void ItemDisplay::CameraModeChangeToDisplay()
 void ItemDisplay::BuildAgain()
 {
 	//一度だけ生成しなおす。
-	//if文は後に変更します。
 	if (initItem_flag && type == enHand)
 	{
 		DeleteGO(m_skinModelRender);
@@ -283,7 +298,10 @@ void ItemDisplay::SwitchItemType()
 	//簡易処理
 	//アイテムの参照。
 	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
-	if (item != nullptr) {
+	if (item == nullptr) {
+		type = enHand;
+	}
+	else if (item != nullptr) {
 		if (!item->GetIsBlock() && item->GetID() <= startToolNum) {
 			type = enHand;
 		}
