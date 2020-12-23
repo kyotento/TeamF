@@ -46,7 +46,6 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
-	DeleteGO(m_menu);
 }
 
 #include "ItemStack.h"
@@ -106,41 +105,38 @@ void Player::Update()
 	//頭の骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
 
-	if (m_menu == nullptr) {
+	//死んでないとき。
+	if (m_playerState != enPlayerState_death) {
+		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
+		Move();
 
-		//死んでないとき。
-		if (m_playerState != enPlayerState_death) {
-			//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
-			Move();
+		//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
+		if (m_openedGUI == nullptr) {
 
-			//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
-			if (m_openedGUI == nullptr) {
+			//回転処理。
+			Turn();
+			//攻撃。
+			Attack();
+			//インベントリを開く。
+			OpenInventory();
+			//前方にRayを飛ばす。
+			FlyTheRay();
 
-				//回転処理。
-				Turn();
-				//攻撃。
-				Attack();
-				//インベントリを開く。
-				OpenInventory();
-				//前方にRayを飛ばす。
-				FlyTheRay();
-				//menuを開く。
-				OpenMenu();
-			}
-			else if (GetKeyDown('E')) {
-				//GUIが開かれているときに、Eが押されたらGUIを閉じる。
-				CloseGUI();
-			}
 		}
-		//プレイヤーの状態管理。
-		StateManagement();
+		else if (GetKeyDown('E')) {
+			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
+			CloseGUI();
+		}
+	}
+	//プレイヤーの状態管理。
+	StateManagement();
 
-		//死亡処理。
-		Death();
-	}
-	else if (GetKeyDown(VK_ESCAPE)) {
-		CloseMenu();
-	}
+	//死亡処理。
+	Death();
+
+	//モデルを描画するかどうか。
+	IsDraw();
+
 	Test();
 }
 
@@ -152,18 +148,6 @@ inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
 inline void Player::CloseGUI(){
 	m_openedGUI.reset();
 	MouseCursor().SetLockMouseCursor( true );		//マウスカーソルを固定する。
-}
-
-void Player::OpenMenu()
-{
-	if (GetKeyDown(VK_ESCAPE)) {
-		m_menu = NewGO<Menu>();
-	}
-}
-
-void Player::CloseMenu()
-{
-	DeleteGO(m_menu);
 }
 
 //キーボードの入力情報管理。
@@ -711,6 +695,17 @@ void Player::Respawn()
 	m_characon.SetPosition(m_respawnPos);
 	DeleteGO(m_playerDeath);
 	CloseGUI();
+}
+
+//モデルの描画をするか。
+void Player::IsDraw()
+{
+	if (m_gameCamera->GetCameraMode() == EnMode_FPS) {
+		m_skinModelRender->SetIsDraw(false);
+	}
+	else{
+		m_skinModelRender->SetIsDraw(true);
+	}
 }
 
 //todo Debug専用。

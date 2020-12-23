@@ -9,6 +9,7 @@ Menu::Menu()
 
 Menu::~Menu()
 {
+	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの非固定。
 }
 
 bool Menu::Start()
@@ -32,6 +33,7 @@ void Menu::Update()
 {
 	GetScPos();				//スクリーン空間上の画像の範囲取得。
 	ChangeColor();			//選択された画像の色を変更。
+
 }
 
 //スクリーン空間上の画像の範囲取得。
