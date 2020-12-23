@@ -17,7 +17,25 @@ public:
 
 	void ChangeColor();		//選択された画像の色を変更。
 
+	/// <summary>
+	/// クリックしたときの処理。
+	/// </summary>
+	void ClickProcess();
+
+	/// <returns>クリックしたボタン番号</returns>
+	int Click();
+
 private:
+
+	enum enMenuButton
+	{
+		enMenu_ReturnToTitle,
+		enMenu_GameEnd,
+		enMenu_Config,
+		enMenu_Num,
+	};
+
+	enMenuButton m_menuButtion = enMenu_Num;
 
 	static const int m_buttonNum = 3;		//生成されるボタンの数。
 

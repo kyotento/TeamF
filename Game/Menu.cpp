@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Menu.h"
-
+#include "Game.h"
 
 Menu::Menu()
 {
@@ -33,7 +33,7 @@ void Menu::Update()
 {
 	GetScPos();				//スクリーン空間上の画像の範囲取得。
 	ChangeColor();			//選択された画像の色を変更。
-
+	ClickProcess();			// クリックしたときの処理。
 }
 
 //スクリーン空間上の画像の範囲取得。
@@ -65,4 +65,39 @@ void Menu::ChangeColor()
 			m_spriteRender[i].SetColor(CVector4::White());
 		}
 	}
+}
+
+// クリックしたときの処理。
+void Menu::ClickProcess()
+{
+	if (GetKeyDown(VK_LBUTTON)) {		//左クリックした時。
+		if (Click() == enMenu_ReturnToTitle) {
+			m_game->TransToTitle();
+		}
+		else if (Click() == enMenu_GameEnd) {
+			GetEngine().BreakGameLoop();
+		}
+		else if (Click() == enMenu_Config) {
+			MessageBox(nullptr, "春休み明けに実装します", "まー待て", MB_ICONASTERISK);
+		}
+	}
+}
+
+//マウスをクリックしたときの判定。
+int Menu::Click()
+{
+	if (GetKeyDown(VK_LBUTTON)) {		//右クリックした時。
+
+		CVector3 mousePos = MouseCursor().GetMouseCursorPos();			//マウスカーソルの座標。
+
+		for (int i = 0; i < m_buttonNum; i++) {
+			//画像内にマウスカーソルがあるとき。
+			if (mousePos.x >= m_scPos[i].x && mousePos.y <= m_scPos[i].y
+				&& mousePos.x <= m_scPos2[i].x && mousePos.y >= m_scPos2[i].y) {
+				return i;
+			}
+		}
+	}
+
+	return m_buttonNum;		//画像の番号外の数値。
 }

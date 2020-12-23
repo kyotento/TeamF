@@ -84,7 +84,6 @@ bool Player::Start()
 		m_inventory.AddItem( item );
 	}
 
-
 	//プレイヤーのパラメーター生成。
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
