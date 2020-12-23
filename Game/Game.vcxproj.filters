@@ -144,6 +144,9 @@
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="ZombieGenerator.cpp" />
+    <ClCompile Include="MCCharaCon.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -305,6 +308,9 @@
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="ZombieGenerator.h" />
+    <ClInclude Include="MCCharaCon.h">
+      <Filter>physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

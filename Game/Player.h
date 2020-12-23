@@ -3,6 +3,7 @@
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
 #include "Inventory.h"
+#include "MCCharaCon.h"
 
 class World;
 class GameCamera;
@@ -341,7 +342,7 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
-	CCharacterControllerType2 m_characon;						//キャラコン。
+	MCCharaCon m_characon;										//キャラコン。
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	Bone* m_headBone;												//頭の骨。

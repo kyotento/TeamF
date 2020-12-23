@@ -61,7 +61,8 @@ bool Player::Start()
 	//キャラコンの初期化。
 	const float characonRadius = 50.f;					//キャラコンの半径。
 	const float characonHeight = 160.f;					//キャラコンの高さ。
-	m_characon.Init(characonRadius, characonHeight, m_position);
+	m_characon.Init(characonRadius, characonHeight, m_position, m_world);
+	m_characon.SetIsDrawCollider(true);
 
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();

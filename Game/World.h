@@ -48,6 +48,14 @@ public:
 	}
 	Block* GetBlock( int x, int y, int z );
 
+	/// <summary>
+	/// 指定のAABB範囲内のブロックを取得
+	/// </summary>
+	/// <param name="aabbmin">AABBの小さい方の座標</param>
+	/// <param name="aabbmax">AABBの大きい方の座標</param>
+	/// <param name="return_blocks">このベクターに範囲内のブロックが追加される</param>
+	void GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& return_blocks);
+
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		int x = (int)std::floorf( pos.x );
 		int y = (int)std::floorf( pos.y );

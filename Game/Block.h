@@ -17,6 +17,11 @@ public:
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
 
+	//! @brief モデルのポジションを取得
+	const CVector3& GetModelPos()const {
+		return m_model.GetPos();
+	}
+
 	//! @brief モデルを初期化
 	void InitModel(const wchar_t* filePath) {
 		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。

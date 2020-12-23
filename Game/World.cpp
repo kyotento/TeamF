@@ -136,6 +136,24 @@ Block * World::GetBlock( int x, int y, int z ){
 	return nullptr;
 }
 
+void World::GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& return_blocks) {
+	aabbmin -= Block::WIDTH;
+	aabbmax += Block::WIDTH;
+	CVector3 aabbSize = aabbmax - aabbmin;
+	for (float x = 0.0f; x < aabbSize.x - FLT_EPSILON; x = min(aabbSize.x, x + Block::WIDTH)) {
+		for (float y = 0.0f; y < aabbSize.y - FLT_EPSILON; y = min(aabbSize.y, y + Block::WIDTH)) {
+			for (float z = 0.0f; z < aabbSize.z - FLT_EPSILON; z = min(aabbSize.z, z + Block::WIDTH)) {
+				CVector3 pos = aabbmin + CVector3(x,y,z);
+				pos /= Block::WIDTH;
+				auto block = GetBlock(pos);
+				if (block != nullptr) {
+					return_blocks.push_back(block);
+				}
+			}
+		}
+	}
+}
+
 void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
 
