@@ -619,9 +619,6 @@ void Player::TakenDamage(int AttackPow)
 			m_hp = 0;
 		}
 
-		//ダメージエフェクト
-		//NewGO<DamegeScreenEffect>();
-
 		//死んでないときのみ実行
 		if (m_hp > 0) {
 			//カメラ回転		
@@ -636,15 +633,6 @@ void Player::TakenDamage(int AttackPow)
 			else {
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
 			}
-			voice->Play();
-		}
-		else //死んだとき
-		{
-			//首折れる
-			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
-			//ダメージボイス
-			SuicideObj::CSE* voice;
-			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 			voice->Play();
 		}
 	}
@@ -679,6 +667,18 @@ void Player::Death()
 		//死亡時の画像。
 		if (m_playerDeath == nullptr) {
 			m_playerDeath = NewGO<PlayerDeath>();
+
+			//死亡中一度だけ実行
+			{
+				//ダメージエフェクト
+				NewGO<DamegeScreenEffect>();
+				//首折れる
+				m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
+				//ダメージボイス
+				SuicideObj::CSE* voice;
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
+				voice->Play();
+			}
 		}
 		//リスポーン。
 		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
@@ -699,7 +699,8 @@ void Player::Respawn()
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 		mat->SetAlbedoScale({ CVector4::White() });		//モデルの色の初期化。
-	});
+	});	
+	m_gameCamera->SetRollDeg(0.0f);			//首蘇生
 	m_characon.SetPosition(m_respawnPos);
 	DeleteGO(m_playerDeath);
 	CloseGUI();
