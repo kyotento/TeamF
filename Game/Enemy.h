@@ -7,7 +7,7 @@ class World;
 class Enemy : public Entity
 {
 public:
-	Enemy(World* world, EnEntity enEntity = enEntity_None);
+	Enemy(EnEntity enEntity = enEntity_None);
 	virtual ~Enemy();
 
 	/// <summary>
