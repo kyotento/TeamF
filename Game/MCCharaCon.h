@@ -33,6 +33,11 @@ public:
 	{
 		m_position = pos;
 	}
+
+	//ブロックから余分に押し出す距離を設定
+	void SetOffset(float offset) {
+		m_offset = offset;
+	}
 	
 	//ジャンプ中か
 	bool IsJump() const
@@ -51,6 +56,7 @@ public:
 	}
 
 private:
+	//描画AABBの更新
 	void UpdateAABBRender() {
 		if (m_aabbReender) {
 			CVector3 min = m_position - m_colSize, max = m_position + m_colSize;
@@ -71,8 +77,9 @@ private:
 	bool				m_isContactWall = false;		//壁に接触してる？
 
 	CVector3			m_colSize;						//コリジョンの大きさ
+	float				m_offset = 0.05f;				//ブロックから余分に押し出す距離
 
 	std::unique_ptr<GameObj::CAABBRender> m_aabbReender;//AABBを描画するやつ
 
-	World* m_world = nullptr;
+	World* m_world = nullptr;							//ワールドのポインタ
 };

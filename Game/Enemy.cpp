@@ -7,7 +7,8 @@ Enemy::Enemy(World* world, EnEntity enEntity) : Entity(world, enEntity)
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_characonPos = m_position;
 	//キャラコンの初期化。
-	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos);
+	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos, m_world);
+	m_characon.SetIsDrawCollider(true);
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
 	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。

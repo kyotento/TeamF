@@ -49,7 +49,7 @@ public:
 	Block* GetBlock( int x, int y, int z );
 
 	/// <summary>
-	/// 指定のAABB範囲内のブロックを取得
+	/// 指定のAABB付近のブロックを取得
 	/// </summary>
 	/// <param name="aabbmin">AABBの小さい方の座標</param>
 	/// <param name="aabbmax">AABBの大きい方の座標</param>
