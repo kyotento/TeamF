@@ -310,7 +310,7 @@ void Player::Move()
 	}
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
-	m_skinModelRender->SetPos(m_position);
+	m_skinModelRender->SetPos(m_position + CVector3::Down()*(GetIsSneaking() ? Block::WIDTH/3.f : 0.0f));
 	//ダメージ当たり判定移動。
 	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
 	m_damageCollision->SetPosition(colPos);
@@ -455,6 +455,9 @@ void Player::Shift()
 		bodyBone->SetRotationOffset(bodyRot);
 		rightLegBone->SetRotationOffset(rightLegRot);
 		leftLegBone->SetRotationOffset(leftLegRot);
+
+		//キャラコンをしゃがみ移動状態にする
+		m_characon.SetIsShiftMove(true);
 	}
 	//元に戻る処理。
 	if (GetKeyUp(VK_SHIFT)) {
@@ -465,6 +468,9 @@ void Player::Shift()
 		bodyBone->SetRotationOffset(bodyRot);
 		rightLegBone->SetRotationOffset(rightLegRot);
 		leftLegBone->SetRotationOffset(leftLegRot);
+
+		//キャラコンのしゃがみ移動状態を解除
+		m_characon.SetIsShiftMove(false);
 	}
 }
 

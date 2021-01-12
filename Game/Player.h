@@ -68,6 +68,14 @@ public:
 	}
 
 	/// <summary>
+	/// プレイヤーがしゃがんでいるか取得。
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsSneaking()const {
+		return m_characon.IsShiftMove();
+	}
+
+	/// <summary>
 	/// プレイヤーの右方向を取得。
 	/// </summary>
 	/// <returns>プレイヤーの右方向</returns>
@@ -88,6 +96,14 @@ public:
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
 		return m_position;
+	}
+
+	//! @brief モデル座標を取得。
+	const CVector3& GetModelPos() const {
+		if (!m_skinModelRender) {
+			return CVector3::Zero();
+		}
+		return m_skinModelRender->GetPos();
 	}
 
 	//! @brief 回転を取得。

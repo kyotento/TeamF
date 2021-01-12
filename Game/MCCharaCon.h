@@ -1,6 +1,7 @@
 #pragma once
 
 class World;
+class Block;
 
 /// <summary>
 /// マインクラフト用キャラクターコントローラー
@@ -22,7 +23,15 @@ public:
 			m_aabbReender.reset();
 		}
 	}
-	
+
+	//シフト移動中か設定
+	void SetIsShiftMove(bool isShifting) {
+		m_isShiftMove = isShifting;
+	}
+	bool IsShiftMove()const {
+		return m_isShiftMove;
+	}
+
 	//座標取得
 	const CVector3& GetPosition() const
 	{
@@ -67,6 +76,9 @@ private:
 		}
 	}
 
+	//一定範囲付近のブロックの取得
+	bool GetBlocks(const CVector3& aabbmin, const CVector3& aabbmax, std::vector<Block*>& return_blocks);
+
 private:
 	bool				m_isInited = false;				//初期化済み？
 
@@ -79,7 +91,10 @@ private:
 	CVector3			m_colSize;						//コリジョンの大きさ
 	float				m_offset = 0.05f;				//ブロックから余分に押し出す距離
 
+	bool				m_isShiftMove = false;			//シフト移動中?
+
 	std::unique_ptr<GameObj::CAABBRender> m_aabbReender;//AABBを描画するやつ
+	//GameObj::CAABBRender m_aabbReender2[16];
 
 	World* m_world = nullptr;							//ワールドのポインタ
 };
