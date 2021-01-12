@@ -18,6 +18,9 @@ World::World(){
 	//シード値をそれぞれに設定する。
 	BiomeManager::GetInstance().GenerateSeed( infoFile.GetSeedGenerator() );
 	m_mapMaker.Init( this, infoFile.GetSeedGenerator() );
+
+	//名前を設定
+	SetName(L"World");
 }
 
 World::~World(){

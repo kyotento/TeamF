@@ -8,13 +8,13 @@ class World;
 class MCCharaCon {
 public:
 	//‰Šú‰»
-	void Init(float width, float height, const CVector3& position, World* world);
+	void Init(float width, float height, const CVector3& position);
 	//Às
 	const CVector3& Execute(CVector3& moveSpeed, float deltaTime = 1.0f / GetStandardFrameRate());
 
 	//‚±‚ÌƒLƒƒƒ‰ƒRƒ“‚Ì“–‚½‚è”»’è‚ğ•`‰æ‚·‚é‚©
 	void SetIsDrawCollider(bool b) {
-		if (b) {
+		if (b && GetIsDebugDraw()) {
 			m_aabbReender = std::make_unique<GameObj::CAABBRender>();
 			UpdateAABBRender();
 		}

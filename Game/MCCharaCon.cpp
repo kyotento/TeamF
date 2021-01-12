@@ -7,11 +7,10 @@ namespace {
 	const CVector3 BLOCK_SIZE = Block::WIDTH * 0.5f;
 }
 
-void MCCharaCon::Init(float width, float height, const CVector3& position, World* world) {
+void MCCharaCon::Init(float width, float height, const CVector3& position) {
 	m_colSize.x = m_colSize.z = width;
 	m_colSize.y = height + width*2.0f;
-	m_position = position;
-	m_world = world;
+	m_position = position;	
 	m_isInited = true;
 }
 
@@ -92,6 +91,13 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 
 			//キャラクターのAABBに接触するブロック達を取得
 			rtnBlocks.clear();
+			if (!m_world) {
+				m_world = FindGO<World>(L"World");
+				if (!m_world) {
+					DW_ERRORBOX(true, "MCCharaCon::Execute() ワールドがありません");
+					return CVector3::Zero();
+				}
+			}
 			m_world->GetBlocks(min, max, rtnBlocks);
 
 			bool isHit = false;
