@@ -32,6 +32,7 @@ public:
 	void InitModel(const wchar_t* filePath) {
 		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
 		m_model.Init(0, filePath);
+		m_model.SetRot(CQuaternion(CVector3::AxisY(),((CMath::RandomInt() % 4) * CMath::PI_HALF)));//モデルランダムで回転
 		m_raytraceModel.Init(m_model);
 	}
 
