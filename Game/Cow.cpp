@@ -10,7 +10,7 @@ Cow::~Cow()
 bool Cow::Start()
 {
 	//スキンモデル　の初期化。
-	m_skinModelRender->Init(L"Resource/modelData/zombie.tkm");
+	m_skinModelRender->Init(L"Resource/modelData/Cow.tkm");
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetScale(m_scale);
 	m_skinModelRender->SetRot(m_rot);
