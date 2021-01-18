@@ -171,6 +171,20 @@ void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	chunk->SetBlock( x, y, z, std::move( block ) );
 }
 
+char* World::GetLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetLightData(x, y, z);
+	}
+	return nullptr;
+}
+
 Chunk* World::GetChunk( int x, int z ){
 	auto pair = std::make_pair( x, z );
 	if( m_chunkMap.count( pair ) == 0 ){

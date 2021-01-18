@@ -24,6 +24,18 @@ public:
 		std::move( &c.m_blockArray[0][0][0], &c.m_blockArray[WIDTH - 1][HEIGHT - 1][WIDTH - 1], &m_blockArray[0][0][0] );
 	}
 
+	//! @brief チャンク内の座標でライト情報を取得
+	char* GetLightData(int x, int y, int z) {
+		return &m_lightData[x][y][z];
+	}
+	//! @brief チャンク内の座標でライト情報を取得
+	char* GetLightData(const CVector3& pos) {
+		int x = (int)std::floorf(pos.x);
+		int y = (int)std::floorf(pos.y);
+		int z = (int)std::floorf(pos.z);
+		return GetLightData(x, y, z);
+	}
+
 	//! @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( int x, int y, int z ){
 		return m_blockArray[x][y][z].get();
@@ -130,6 +142,7 @@ private:
 	int m_chunkX = 0;
 	int m_chunkZ = 0;
 	std::unique_ptr<Block> m_blockArray[WIDTH][HEIGHT][WIDTH];
+	char m_lightData[WIDTH][HEIGHT][WIDTH];
 
 	bool m_isGenerated = false;
 };

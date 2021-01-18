@@ -5,12 +5,6 @@
 class Player;
 class World;
 
-struct IntVec3 {
-	int x = 0;
-	int y = 0;
-	int z = 0;
-};
-
 //! @brief ブロックの情報とモデルレンダーを持つクラス。
 //! @details 生成には BlockFactory を使用してほしい。
 //! @details これの派生クラスを作ったら BlockFactory::CreateBlock 関数に追加する。
@@ -83,7 +77,7 @@ private:
 	//! @brief ライティング設定する
 	//void SubLight(const IntVec3& lightDir, int power);
 	//! @brief 光を伝搬させる
-	void SpreadLight(World* world, int lightPower, IntVec3 pos, IntVec3 fromDir);
+	void SpreadLight(World* world, int lightPower, const IntVector3& pos, const IntVector3& fromDir);
 
 private:
 	//モデル
@@ -95,7 +89,7 @@ private:
 
 	//明るさ
 	CMatrix m_lighting = CMatrix::Zero();
-	int m_blockLighting[6] = {};
+	//int m_blockLighting[6] = {};
 	//int m_skyLighting[6] = {};
 	//このブロックが影響範囲内にある光源のリスト
 	//std::list<Block*> m_lightSourceList;

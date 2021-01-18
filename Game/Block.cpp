@@ -5,10 +5,16 @@
 
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
-	constexpr float LIGHT_POWER_MAX = 15.0f;//明るさの最大値
+	constexpr int LIGHT_POWER_MAX = 15;//明るさの最大値
+	//表示上の明るさ
+	constexpr float DRAWING_LIGHT[LIGHT_POWER_MAX] = { 
+		0.04398046511104f, 0.0549755813888f, 0.068719476736f, 0.08589934592f, 0.1073741824f,
+		0.134217728f, 0.16777216f, 0.2097152f, 0.262144f, 0.32768f,
+		0.4096f, 0.512f, 0.64f, 0.8f, 1.0f
+	};
 
 	//光が伝搬する方向
-	constexpr IntVec3 spreadDir[6] = {
+	constexpr IntVector3 spreadDir[6] = {
 		{1,0,0},
 		{-1,0,0},
 		{0,1,0},
@@ -16,8 +22,6 @@ namespace {
 		{0,0,1},
 		{0,0,-1},
 	};
-
-	int count = 0;
 }
 
 Block::Block(){
@@ -40,11 +44,45 @@ void Block::CalcAddLight() {
 		lightPower = 14;
 	}
 
+	//ワールド
+	World* world = FindGO<World>(L"World");
+
+	//このブロックの座標求める
+	CVector3 pos = m_model.GetPos();
+	pos.x -= half;
+	pos.z -= half;
+	pos /= WIDTH;
+	IntVector3 blockpos = { (int)std::round(pos.x),(int)std::round(pos.y), (int)std::round(pos.z) };
+
 	//このブロック自体の明るさを設定
+	bool isReflesh = false;
 	for (int _1 = 0; _1 < 4; _1++) {
 		for (int _2 = 0; _2 < 4; _2++) {
-			m_blockLighting[_1 + min(2, _2)] = max(m_blockLighting[_1 + min(2, _2)], lightPower);
-			m_lighting.m[_1][_2] = max(m_lighting.m[_1][_2], lightPower / LIGHT_POWER_MAX);
+			auto light = world->GetLightData(blockpos.x, blockpos.y, blockpos.z);
+			if (*light < lightPower) {
+				isReflesh = true;
+				*light = lightPower;
+				m_lighting.m[_1][_2] = max(m_lighting.m[_1][_2], DRAWING_LIGHT[lightPower]);
+			}
+		}
+	}
+
+	//更新不要
+	if (!isReflesh) {
+		return;
+	}
+
+	//上下左右前後のブロックを照らす
+	for (int sb = 0; sb < 6; sb++) {
+		IntVector3 samplePos = blockpos + spreadDir[sb];
+		Block* block = world->GetBlock(samplePos.x, samplePos.y, samplePos.z);
+		if (block) {
+			if (sb < 4) {
+				block->m_lighting.m[sb][0] = DRAWING_LIGHT[lightPower];
+			}
+			else {
+				block->m_lighting.m[sb - 4][1] = DRAWING_LIGHT[lightPower];
+			}
 		}
 	}
 
@@ -52,27 +90,16 @@ void Block::CalcAddLight() {
 	if (lightPower <= 1) {
 		return;
 	}
-
-	//このブロックの座標求める
-	CVector3 pos = m_model.GetPos();
-	pos.x -= half;
-	pos.z -= half;
-	pos /= WIDTH;
-	IntVec3 blockpos;
-	blockpos.x = (int)std::round(pos.x), blockpos.y = (int)std::round(pos.y), blockpos.z = (int)std::round(pos.z);
-
+	
 	//光を伝搬させる
-	World* world = FindGO<World>(L"World");
-	count = 0;
 	SpreadLight(world, lightPower -1, blockpos, { 0,0,0 });
 }
 
-void Block::SpreadLight(World* world, int lightPower, IntVec3 pos, IntVec3 fromDir) {
+void Block::SpreadLight(World* world, int lightPower, const IntVector3& pos, const IntVector3& fromDir) {
 	//弱すぎる光は伝搬しない
 	if (lightPower < 1) {
 		return;
 	}
-	count ++;
 	for (int i = 0; i < 6; i++) {//6方向に伝搬(前後上下左右)
 		//来た方向には戻らない
 		if (fromDir.x * -1 == spreadDir[i].x && fromDir.y * -1 == spreadDir[i].y && fromDir.z * -1 == spreadDir[i].z) {
@@ -80,27 +107,39 @@ void Block::SpreadLight(World* world, int lightPower, IntVec3 pos, IntVec3 fromD
 		}
 
 		//サンプル位置算出
-		IntVec3 nowPos = pos;
-		nowPos.x += spreadDir[i].x;
-		nowPos.y += spreadDir[i].y;
-		nowPos.z += spreadDir[i].z;
+		IntVector3 nowPos = pos + spreadDir[i];
+
+		//ライト情報記録
+		auto light = world->GetLightData(nowPos.x, nowPos.y, nowPos.z);
+		if (*light < lightPower) {
+			*light = lightPower;
+		}
+		else {
+			//この方向への伝播は終わり(もう明るいから)
+			continue;
+		}
+		
+		//上下左右前後のブロックを照らす
+		for (int sb = 0; sb < 6; sb++) {
+			IntVector3 samplePos = nowPos + spreadDir[sb];
+			Block* block = world->GetBlock(samplePos.x, samplePos.y, samplePos.z);
+			if (block) {
+				if (sb < 4) {
+					block->m_lighting.m[sb][0] = DRAWING_LIGHT[lightPower];
+				}
+				else {
+					block->m_lighting.m[sb - 4][1] = DRAWING_LIGHT[lightPower];
+				}
+			}
+		}
 
 		//ブロックをサンプル
 		Block* block = world->GetBlock(nowPos.x, nowPos.y, nowPos.z);
-
-		if (block) {//TODO なおかつ不透明ブロック
-			//ブロックにヒットしたらヒットしてる面を照らして次のループへ
-			block->m_blockLighting[i] = max(block->m_blockLighting[i], lightPower);
-			if (i < 4) {
-				block->m_lighting.m[i][0] = max(block->m_lighting.m[i][0], lightPower / LIGHT_POWER_MAX);
-			}
-			else {
-				block->m_lighting.m[i - 4][1] = max(block->m_lighting.m[i - 4][1], lightPower / LIGHT_POWER_MAX);
-			}
+		if (block) {//TODO なおかつ不透明ブロック			
 
 			//TODO リストに追加
 
-			//この方向への伝播は終わり
+			//この方向への伝播は終わり(ブロックと衝突したから)
 		}
 		else {
 			//伝搬を続ける
@@ -118,9 +157,10 @@ void Block::InitModel(const wchar_t* filePath) {
 	//レイトレモデル
 	m_raytraceModel.Init(m_model);
 
+	//デフォの明るさ
 	for (int _1 = 0; _1 < 4; _1++) {
 		for (int _2 = 0; _2 < 4; _2++) {
-			m_lighting.m[_1][_2] = max(m_lighting.m[_1][_2], 0.05f);
+			m_lighting.m[_1][_2] = DRAWING_LIGHT[0];
 		}
 	}
 }
