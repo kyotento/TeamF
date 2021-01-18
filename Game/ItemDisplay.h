@@ -64,9 +64,10 @@ private:
 
 	enum EnType
 	{
-		enHand,
-		enBlock,
-		enTool
+		enHand,				//何も持ってない。
+		enBlock,			//ブロック系のアイテム。
+		enTool,				//武器やつるはし系統のアイテム。
+		enItem				//インゴットや木の棒などのアイテム。
 	};
 
 	/// <summary>
@@ -104,6 +105,10 @@ private:
 	/// ツール系の回転処理
 	/// </summary>
 	void ToolRotation();
+	/// <summary>
+	/// インゴットや木の棒などのアイテム。
+	/// </summary>
+	void ItemRotation();
 	/// <summary>
 	/// アイテムをインベントリに合わせて切り替える。
 	/// </summary>

@@ -45,8 +45,8 @@ bool Game::Start()
 
 	m_sun.reset(NewGO<Sun>());
 
-	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
-	m_zombieGenerator->SetWorld(m_world.get());
+	//m_zombieGenerator.reset(NewGO<ZombieGenerator>());
+	//m_zombieGenerator->SetWorld(m_world.get());
 	
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 
