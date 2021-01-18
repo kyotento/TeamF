@@ -53,10 +53,12 @@
   <ItemGroup>
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="BlockRenderingLightParameter.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
+    <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
     <ClCompile Include="CraftingController.cpp" />

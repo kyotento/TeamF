@@ -150,6 +150,9 @@
     <ClCompile Include="MCCharaCon.cpp">
       <Filter>physics</Filter>
     </ClCompile>
+    <ClCompile Include="BlockRenderingLightParameter.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="MCCharaCon.h">
       <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockRenderingLightParameter.h">
+      <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,5 +19,9 @@ public:
 	//! @param blockType ブロックの種類。
 	static std::unique_ptr<Block> CreateBlock( EnCube blockType );
 
+private:
+	//ブロック描画シェーダー
+	static SkinModelEffectShader m_s_ps;
+
 };
 

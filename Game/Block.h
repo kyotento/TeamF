@@ -3,6 +3,13 @@
 #include "../BlockType.h"
 
 class Player;
+class World;
+
+struct IntVec3 {
+	int x = 0;
+	int y = 0;
+	int z = 0;
+};
 
 //! @brief ブロックの情報とモデルレンダーを持つクラス。
 //! @details 生成には BlockFactory を使用してほしい。
@@ -16,11 +23,8 @@ public:
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
-
-	/// <summary>
-	/// ワールド座標を使ってポジションをセット。
-	/// </summary>
-	/// <param name="worldpos">ワールド座標</param>
+		
+	//! @brief ワールド座標を使ってポジションをセット。
 	void SetPosWithWorldPos(const CVector3& worldpos);
 
 	//! @brief モデルのポジションを取得
@@ -29,12 +33,7 @@ public:
 	}
 
 	//! @brief モデルを初期化
-	void InitModel(const wchar_t* filePath) {
-		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
-		m_model.Init(0, filePath);
-		m_model.SetRot(CQuaternion(CVector3::AxisY(),((CMath::RandomInt() % 4) * CMath::PI_HALF)));//モデルランダムで回転
-		m_raytraceModel.Init(m_model);
-	}
+	void InitModel(const wchar_t* filePath);
 
 	//! @brief ブロックの種類を設定。
 	//! @details この関数はモデルを変更しない。
@@ -73,13 +72,37 @@ public:
 
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
+
 private:
+	//! @brief ライティング計算する
+	void CalcAddLight();
+	//! @brief ライティング計算する
+	//void CalcSubLight();
+	//! @brief ライティング設定する
+	//void AddLight(const IntVec3& lightDir, int power);
+	//! @brief ライティング設定する
+	//void SubLight(const IntVec3& lightDir, int power);
+	//! @brief 光を伝搬させる
+	void SpreadLight(World* world, int lightPower, IntVec3 pos, IntVec3 fromDir);
+
+private:
+	//モデル
 	GameObj::CInstancingModelRender m_model;
-	CRayTracingModelRender m_raytraceModel;
+	CRayTracingModelRender m_raytraceModel;//レイトレ用
 
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 
+	//明るさ
+	CMatrix m_lighting = CMatrix::Zero();
+	int m_blockLighting[6] = {};
+	//int m_skyLighting[6] = {};
+	//このブロックが影響範囲内にある光源のリスト
+	//std::list<Block*> m_lightSourceList;
+	//このブロックが光源として影響を与えているブロックのリスト
+	//std::list<Block*> m_lightingBlockList;
+
+	//コリジョン
 	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
 };
 

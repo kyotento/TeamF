@@ -3,7 +3,11 @@
 
 #include "CraftingTable.h"
 
+#include "BlockRenderingLightParameter.h"
+
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
+
+SkinModelEffectShader BlockFactory::m_s_ps;
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -19,6 +23,13 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
 	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
 
+	//シェーダー読み込み
+	D3D_SHADER_MACRO macros[] = {
+		"INSTANCING", "1",
+		NULL, NULL
+	};
+	m_s_ps.Load("Preset/shader/_u_blockShader.fx", "PSMain_McBlockRenderGBuffer", Shader::EnType::PS, "INSTANCING", macros);
+
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
 	for( auto type : FILE_PATH_ARRAY ){
@@ -27,6 +38,15 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 		GameObj::InstancingModel* instanceModel = mngr.Load( instanceMax, type );
 		
 		instanceModel->SetIsFrustumCulling( true );
+
+		//ライティング用IInstanceDataを設定
+		instanceModel->AddIInstanceData(L"BlockRenderingLightParameter", std::make_unique<BlockRenderingLightParameter>(instanceMax));
+		//シェーダー設定
+		instanceModel->GetModelRender().GetSkinModel().FindMaterialSetting(
+			[&](MaterialSetting* mat) {
+				mat->SetPS(&m_s_ps);
+			}
+		);
 	}
 }
 
