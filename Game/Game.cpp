@@ -12,6 +12,7 @@
 #include "Sun.h"
 #include "Title.h"
 #include "ZombieGenerator.h"
+#include "Menu.h"
 
 Game::Game()
 {
@@ -55,6 +56,20 @@ bool Game::Start()
 
 void Game::Update()
 {
+	EscMenu();
+}
+
+void Game::EscMenu()
+{
+	if (GetKeyDown(VK_ESCAPE)) {
+		if (m_menu == nullptr) {
+			m_menu.reset(NewGO<Menu>());
+			m_menu->SetGame(this);
+		}
+		else {
+			m_menu.reset();
+		}
+	}
 }
 
 //タイトルへの遷移。

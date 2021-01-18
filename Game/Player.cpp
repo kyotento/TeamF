@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "PlayerParameter.h"
 #include "PlayerDeath.h"
+#include "Menu.h"
 #include "DropItem.h"
 
 namespace {
@@ -63,6 +64,7 @@ bool Player::Start()
 	const float characonRadius = 50.f;					//キャラコンの半径。
 	const float characonHeight = 160.f;					//キャラコンの高さ。
 	m_characon.Init(characonRadius, characonHeight, m_position);
+	m_characon.SetIsDrawCollider(true);
 
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
@@ -83,7 +85,6 @@ bool Player::Start()
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
 		m_inventory.AddItem( item );
 	}
-
 
 	//プレイヤーのパラメーター生成。
 	m_playerParameter = NewGO<PlayerParameter>();
@@ -144,6 +145,9 @@ void Player::Update()
 
 	//死亡処理。
 	Death();
+
+	//モデルを描画するかどうか。
+	IsDraw();
 
 	Test();
 }
@@ -306,7 +310,7 @@ void Player::Move()
 	}
 	//キャラコンを移動させる。
 	m_position = m_characon.Execute(moveSpeed);
-	m_skinModelRender->SetPos(m_position);
+	m_skinModelRender->SetPos(m_position + CVector3::Down()*(GetIsSneaking() ? Block::WIDTH/3.f : 0.0f));
 	//ダメージ当たり判定移動。
 	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
 	m_damageCollision->SetPosition(colPos);
@@ -451,6 +455,9 @@ void Player::Shift()
 		bodyBone->SetRotationOffset(bodyRot);
 		rightLegBone->SetRotationOffset(rightLegRot);
 		leftLegBone->SetRotationOffset(leftLegRot);
+
+		//キャラコンをしゃがみ移動状態にする
+		m_characon.SetIsShiftMove(true);
 	}
 	//元に戻る処理。
 	if (GetKeyUp(VK_SHIFT)) {
@@ -461,6 +468,9 @@ void Player::Shift()
 		bodyBone->SetRotationOffset(bodyRot);
 		rightLegBone->SetRotationOffset(rightLegRot);
 		leftLegBone->SetRotationOffset(leftLegRot);
+
+		//キャラコンのしゃがみ移動状態を解除
+		m_characon.SetIsShiftMove(false);
 	}
 }
 
@@ -619,9 +629,6 @@ void Player::TakenDamage(int AttackPow)
 			m_hp = 0;
 		}
 
-		//ダメージエフェクト
-		//NewGO<DamegeScreenEffect>();
-
 		//死んでないときのみ実行
 		if (m_hp > 0) {
 			//カメラ回転		
@@ -636,15 +643,6 @@ void Player::TakenDamage(int AttackPow)
 			else {
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
 			}
-			voice->Play();
-		}
-		else //死んだとき
-		{
-			//首折れる
-			m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
-			//ダメージボイス
-			SuicideObj::CSE* voice;
-			voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 			voice->Play();
 		}
 	}
@@ -679,6 +677,18 @@ void Player::Death()
 		//死亡時の画像。
 		if (m_playerDeath == nullptr) {
 			m_playerDeath = NewGO<PlayerDeath>();
+
+			//死亡中一度だけ実行
+			{
+				//ダメージエフェクト
+				NewGO<DamegeScreenEffect>();
+				//首折れる
+				m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
+				//ダメージボイス
+				SuicideObj::CSE* voice;
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
+				voice->Play();
+			}
 		}
 		//リスポーン。
 		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
@@ -699,10 +709,22 @@ void Player::Respawn()
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 		mat->SetAlbedoScale({ CVector4::White() });		//モデルの色の初期化。
-	});
+	});	
+	m_gameCamera->SetRollDeg(0.0f);			//首蘇生
 	m_characon.SetPosition(m_respawnPos);
 	DeleteGO(m_playerDeath);
 	CloseGUI();
+}
+
+//モデルの描画をするか。
+void Player::IsDraw()
+{
+	if (m_gameCamera->GetCameraMode() == EnMode_FPS) {
+		m_skinModelRender->SetIsDraw(false);
+	}
+	else{
+		m_skinModelRender->SetIsDraw(true);
+	}
 }
 
 //todo Debug専用。

@@ -17,10 +17,22 @@ public:
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
 
+	/// <summary>
+	/// ワールド座標を使ってポジションをセット。
+	/// </summary>
+	/// <param name="worldpos">ワールド座標</param>
+	void SetPosWithWorldPos(const CVector3& worldpos);
+
+	//! @brief モデルのポジションを取得
+	const CVector3& GetModelPos()const {
+		return m_model.GetPos();
+	}
+
 	//! @brief モデルを初期化
 	void InitModel(const wchar_t* filePath) {
 		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
 		m_model.Init(0, filePath);
+		m_model.SetRot(CQuaternion(CVector3::AxisY(),((CMath::RandomInt() % 4) * CMath::PI_HALF)));//モデルランダムで回転
 		m_raytraceModel.Init(m_model);
 	}
 

@@ -8,6 +8,7 @@ Enemy::Enemy(EnEntity enEntity) : Entity(enEntity)
 	m_characonPos = m_position;
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos);
+	m_characon.SetIsDrawCollider(true);
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
 	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。

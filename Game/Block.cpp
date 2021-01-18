@@ -22,6 +22,14 @@ void Block::SetPos( int x, int y, int z ){
 	}
 }
 
+void Block::SetPosWithWorldPos(const CVector3& worldpos) {
+	m_model.SetPos(worldpos);
+
+	if (m_collision) {
+		m_collision->SetPosition(worldpos + CVector3::Up() * (WIDTH * 0.5f));
+	}
+}
+
 void Block::EnableCollision(){
 	if( !m_collision ){
 		m_collision = std::make_unique<SuicideObj::CCollisionObj>();
