@@ -8,6 +8,13 @@ namespace {
 	std::mt19937 random((std::random_device())());
 }
 
+MobGenerator::~MobGenerator()
+{
+	if (m_params != nullptr) {
+		delete m_params;
+	}
+}
+
 bool MobGenerator::Start()
 {
 	Init();

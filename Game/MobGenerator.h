@@ -31,6 +31,7 @@ class World;
 class MobGenerator : public IGameObject
 {
 public:
+	~MobGenerator() override;
 	bool Start() override;
 	void Update() override;
 	/// <summary>
