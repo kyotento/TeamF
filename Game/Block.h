@@ -1,6 +1,7 @@
 //! @file
 #pragma once
 #include "../BlockType.h"
+#include "Light.h"
 
 class Player;
 class World;
@@ -19,6 +20,7 @@ public:
 	void SetPos( int x, int y, int z );
 		
 	//! @brief ワールド座標を使ってポジションをセット。
+	//! ※いずれなくなる関数かも
 	void SetPosWithWorldPos(const CVector3& worldpos);
 
 	//! @brief モデルのポジションを取得
@@ -47,6 +49,7 @@ public:
 		m_model.SetIsDraw( isDraw );
 	}
 
+	//! @brief 当たり判定が有効か取得。
 	bool IsCollisionEnabled() const{
 		return m_collision.operator bool();
 	}
@@ -58,10 +61,26 @@ public:
 		return false;
 	}
 
+	//! @brief 当たり判定の有効化。
 	void EnableCollision();
 
+	//! @brief 当たり判定の無効化。
 	void DisableCollision(){
 		m_collision.reset();
+	}
+
+	//! @brief ライティング状態の設定。
+	void SetLightingData(int row, int column, char lightpower) {
+		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "明るさレベルが範囲外です")
+		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
+		m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];
+	}
+	//! @brief ライティングを行う。
+	void Lighting(int row, int column, char lightpower) {
+		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "明るさレベルが範囲外です")
+		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
+		//より明るい方を使用
+		m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);
 	}
 
 	//! @brief ブロックの幅、奥行き、高さ。
@@ -70,14 +89,6 @@ public:
 private:
 	//! @brief ライティング計算する
 	void CalcAddLight();
-	//! @brief ライティング計算する
-	//void CalcSubLight();
-	//! @brief ライティング設定する
-	//void AddLight(const IntVec3& lightDir, int power);
-	//! @brief ライティング設定する
-	//void SubLight(const IntVec3& lightDir, int power);
-	//! @brief 光を伝搬させる
-	void SpreadLight(World* world, int lightPower, const IntVector3& pos, const IntVector3& fromDir);
 
 private:
 	//モデル

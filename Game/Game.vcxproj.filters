@@ -153,6 +153,7 @@
     <ClCompile Include="BlockRenderingLightParameter.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -323,6 +324,7 @@
     <ClInclude Include="BlockRenderingLightParameter.h">
       <Filter>Block</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

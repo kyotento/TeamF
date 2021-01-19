@@ -36,6 +36,18 @@ public:
 		return GetLightData(x, y, z);
 	}
 
+	//! @brief チャンク内の座標でスカイライト情報を取得
+	char* GetSkyLightData(int x, int y, int z) {
+		return &m_skyLightData[x][y][z];
+	}
+	//! @brief チャンク内の座標でスカイライト情報を取得
+	char* GetSkyLightData(const CVector3& pos) {
+		int x = (int)std::floorf(pos.x);
+		int y = (int)std::floorf(pos.y);
+		int z = (int)std::floorf(pos.z);
+		return GetLightData(x, y, z);
+	}
+
 	//! @brief チャンク内の座標でブロックを取得
 	Block* GetBlock( int x, int y, int z ){
 		return m_blockArray[x][y][z].get();
@@ -138,11 +150,15 @@ public:
 	static constexpr int WIDTH = 16;
 	//! @brief チャンクのy方向の長さ。
 	static constexpr int HEIGHT = 64;
+
 private:
 	int m_chunkX = 0;
 	int m_chunkZ = 0;
 	std::unique_ptr<Block> m_blockArray[WIDTH][HEIGHT][WIDTH];
-	char m_lightData[WIDTH][HEIGHT][WIDTH];
+
+	//ライト情報
+	char m_lightData[WIDTH][HEIGHT][WIDTH] = {};
+	char m_skyLightData[WIDTH][HEIGHT][WIDTH] = {};
 
 	bool m_isGenerated = false;
 };

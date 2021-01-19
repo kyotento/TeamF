@@ -95,6 +95,16 @@ public:
 	}
 	char* GetLightData(int x, int y, int z);
 
+	//! @brief 指定位置のスカイライト情報を取得。
+	//! @details 座標はブロック単位
+	char* GetSkyLightData(const CVector3& pos) {
+		int x = (int)std::floorf(pos.x);
+		int y = (int)std::floorf(pos.y);
+		int z = (int)std::floorf(pos.z);
+		return GetSkyLightData(x, y, z);
+	}
+	char* GetSkyLightData(int x, int y, int z);
+
 	//=========チャンクの取得に関する関数。==============
 
 	//! @brief チャンクを取得。

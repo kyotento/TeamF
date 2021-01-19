@@ -56,6 +56,7 @@
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
@@ -115,6 +116,7 @@
     <ClCompile Include="Zombie.cpp" />
     <ClInclude Include="MCCharaCon.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>

@@ -2,26 +2,10 @@
 #include "Block.h"
 #include "CollisionIndex.h"
 #include "World.h"
+#include "Light.h"
 
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
-	constexpr int LIGHT_POWER_MAX = 15;//明るさの最大値
-	//表示上の明るさ
-	constexpr float DRAWING_LIGHT[LIGHT_POWER_MAX] = { 
-		0.04398046511104f, 0.0549755813888f, 0.068719476736f, 0.08589934592f, 0.1073741824f,
-		0.134217728f, 0.16777216f, 0.2097152f, 0.262144f, 0.32768f,
-		0.4096f, 0.512f, 0.64f, 0.8f, 1.0f
-	};
-
-	//光が伝搬する方向
-	constexpr IntVector3 spreadDir[6] = {
-		{1,0,0},
-		{-1,0,0},
-		{0,1,0},
-		{0,-1,0},
-		{0,0,1},
-		{0,0,-1},
-	};
 }
 
 Block::Block(){
@@ -54,16 +38,24 @@ void Block::CalcAddLight() {
 	pos /= WIDTH;
 	IntVector3 blockpos = { (int)std::round(pos.x),(int)std::round(pos.y), (int)std::round(pos.z) };
 
+	DW_ERRORBOX((lightPower < 0 || lightPower > LightUtil::LIGHT_POWER_MAX), "明るさレベルが範囲外です")
+
 	//このブロック自体の明るさを設定
+	auto light = world->GetLightData(blockpos.x, blockpos.y, blockpos.z);
+
+	//DW_ERRORBOX(light == nullptr, "です")
+	if (!light) {
+		return;
+	}
+
 	bool isReflesh = false;
+	if (*light < lightPower) {
+		isReflesh = true;
+		*light = lightPower;		
+	}
 	for (int _1 = 0; _1 < 4; _1++) {
 		for (int _2 = 0; _2 < 4; _2++) {
-			auto light = world->GetLightData(blockpos.x, blockpos.y, blockpos.z);
-			if (*light < lightPower) {
-				isReflesh = true;
-				*light = lightPower;
-				m_lighting.m[_1][_2] = max(m_lighting.m[_1][_2], DRAWING_LIGHT[lightPower]);
-			}
+			Lighting(_1, _2, lightPower);
 		}
 	}
 
@@ -74,14 +66,14 @@ void Block::CalcAddLight() {
 
 	//上下左右前後のブロックを照らす
 	for (int sb = 0; sb < 6; sb++) {
-		IntVector3 samplePos = blockpos + spreadDir[sb];
+		IntVector3 samplePos = blockpos + LightUtil::spreadDir[sb];
 		Block* block = world->GetBlock(samplePos.x, samplePos.y, samplePos.z);
 		if (block) {
 			if (sb < 4) {
-				block->m_lighting.m[sb][0] = DRAWING_LIGHT[lightPower];
+				block->Lighting(sb, 0, lightPower);
 			}
 			else {
-				block->m_lighting.m[sb - 4][1] = DRAWING_LIGHT[lightPower];
+				block->Lighting(sb - 4, 1, lightPower);
 			}
 		}
 	}
@@ -92,60 +84,7 @@ void Block::CalcAddLight() {
 	}
 	
 	//光を伝搬させる
-	SpreadLight(world, lightPower -1, blockpos, { 0,0,0 });
-}
-
-void Block::SpreadLight(World* world, int lightPower, const IntVector3& pos, const IntVector3& fromDir) {
-	//弱すぎる光は伝搬しない
-	if (lightPower < 1) {
-		return;
-	}
-	for (int i = 0; i < 6; i++) {//6方向に伝搬(前後上下左右)
-		//来た方向には戻らない
-		if (fromDir.x * -1 == spreadDir[i].x && fromDir.y * -1 == spreadDir[i].y && fromDir.z * -1 == spreadDir[i].z) {
-			continue;
-		}
-
-		//サンプル位置算出
-		IntVector3 nowPos = pos + spreadDir[i];
-
-		//ライト情報記録
-		auto light = world->GetLightData(nowPos.x, nowPos.y, nowPos.z);
-		if (*light < lightPower) {
-			*light = lightPower;
-		}
-		else {
-			//この方向への伝播は終わり(もう明るいから)
-			continue;
-		}
-		
-		//上下左右前後のブロックを照らす
-		for (int sb = 0; sb < 6; sb++) {
-			IntVector3 samplePos = nowPos + spreadDir[sb];
-			Block* block = world->GetBlock(samplePos.x, samplePos.y, samplePos.z);
-			if (block) {
-				if (sb < 4) {
-					block->m_lighting.m[sb][0] = DRAWING_LIGHT[lightPower];
-				}
-				else {
-					block->m_lighting.m[sb - 4][1] = DRAWING_LIGHT[lightPower];
-				}
-			}
-		}
-
-		//ブロックをサンプル
-		Block* block = world->GetBlock(nowPos.x, nowPos.y, nowPos.z);
-		if (block) {//TODO なおかつ不透明ブロック			
-
-			//TODO リストに追加
-
-			//この方向への伝播は終わり(ブロックと衝突したから)
-		}
-		else {
-			//伝搬を続ける
-			SpreadLight(world, lightPower - 1, nowPos, spreadDir[i]);
-		}
-	}
+	LightUtil::SpreadLight(world, lightPower -1, blockpos, { 0,0,0 }, false);
 }
 
 void Block::InitModel(const wchar_t* filePath) {
@@ -160,7 +99,7 @@ void Block::InitModel(const wchar_t* filePath) {
 	//デフォの明るさ
 	for (int _1 = 0; _1 < 4; _1++) {
 		for (int _2 = 0; _2 < 4; _2++) {
-			m_lighting.m[_1][_2] = DRAWING_LIGHT[0];
+			SetLightingData(_1, _2, 0);
 		}
 	}
 }
