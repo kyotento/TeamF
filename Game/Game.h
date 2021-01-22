@@ -28,7 +28,26 @@ public:
 	/// </summary>
 	void EscMenu();
 
+	/// <summary>
+	/// Configを取得。
+	/// </summary>
+	/// <returns>t or f</returns>
+	bool GetIsConfig()
+	{
+		return m_isConfig;
+	}
+	/// <summary>
+	/// Configを設定。
+	/// </summary>
+	/// <param name="config">t or f</param>
+	void SetIsConfig(bool config)
+	{
+		m_isConfig = config;
+	}
+
 private:
+
+	bool m_isConfig = false;			//コンフィグが出ているかどうか。
 
 	std::unique_ptr	<World> m_world;						//ワールド。
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。
