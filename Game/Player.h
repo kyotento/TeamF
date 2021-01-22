@@ -226,6 +226,14 @@ public:
 	{
 		m_game = game;
 	}
+	/// <summary>
+	/// プレイヤー死んでる？？
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsPlayerDead()
+	{
+		return m_deathFlag;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -322,6 +330,7 @@ private:
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
 	bool m_attackFlag = false;				//エネミーに攻撃したか。
+	bool m_deathFlag = false;				//死んだかどうか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。

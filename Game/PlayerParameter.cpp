@@ -13,8 +13,8 @@ namespace{
 	float moveX = itemBarStride;
 	//前のID
 	int OldID = 0;
-
-	bool A = false;
+	//インベントリでクリックしたときにアイテム切り替えのフラグ。
+	bool isSwichByMouseClickFlag = false;
 }
 
 PlayerParameter::PlayerParameter()
@@ -38,11 +38,13 @@ bool PlayerParameter::Start()
 
 void PlayerParameter::Update()
 {
-	ChangeHP();				//体力を変更する。	
-	ChangeStamina();		//スタミナを変更する。
-	ChangeArmor();			//防御力を変更する。
-	ChangeExp();			//経験値ゲージを変更する。
-	SelectItem();			//アイテムを変更する。
+	ChangeHP();				//体力を変更する。
+	if (!m_player->GetIsPlayerDead()) {	
+		ChangeStamina();		//スタミナを変更する。
+		ChangeArmor();			//防御力を変更する。
+		ChangeExp();			//経験値ゲージを変更する。
+		SelectItem();			//アイテムを変更する。
+	}
 	//こいつ更新させてあげてください。
 	m_rightHandDisplay->SetPos(m_player->GetPos());
 }
@@ -103,7 +105,6 @@ void PlayerParameter::SetParamFound()
 void PlayerParameter::ChangeHP()
 {
 	int remainHP = m_player->GetHP();		//プレイヤーの体力。
-
 	if (remainHP != m_oldHP) {		//HPに変化が起きた時。
 
 		for (int i = 0; i < m_paramNum; i++) {
@@ -281,23 +282,23 @@ void PlayerParameter::StopMoveToChange()
 		if (item->GetID() != OldID)
 		{
 			m_isStopMoveToChangeFlag = true;
-			A = false;
+			isSwichByMouseClickFlag = false;
 		}
-		else if (A)
+		else if (isSwichByMouseClickFlag)
 		{
 			m_isStopMoveToChangeFlag = true;
-			A = false;
+			isSwichByMouseClickFlag = false;
 		}
 		else if (item->GetID() == OldID)
 		{
 			m_isStopMoveToChangeFlag = false;
-			A = false;
+			isSwichByMouseClickFlag = false;
 		}
 		OldID = item->GetID();
 	}
-	else if (item == nullptr && !A)
+	else if (item == nullptr && !isSwichByMouseClickFlag)
 	{
 		m_isStopMoveToChangeFlag = true;
-		A = true;
+		isSwichByMouseClickFlag = true;
 	}
 }

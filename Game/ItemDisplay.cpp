@@ -8,6 +8,9 @@
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 namespace {
+	const int endBlockNum = 11;					//ボックス系の最後の番号。
+	const int startToolNum = 16;					//ツールの初めの番号。
+
 	int DownPosY = 0;
 	int DownPosZ = 0;
 
@@ -16,10 +19,12 @@ namespace {
 	const float handMullFront = 45.0f;
 	const float blockMullFront = 45.0f;
 	const float toolMullFront = 30.0f;
+	const float itemMullFront = 15.0f;
 
 	const float handMullCross = 45.0f;
 	const float BlockMullCross= 45.0f;
 	const float toolMullCross = 30.0f;
+	const float itemMullCross = 15.0f;
 
 	bool swich_flag = false;
 	bool initItem_flag = false;
@@ -52,16 +57,22 @@ void ItemDisplay::Update()
 		return;
 	}
 
-	CameraModeChangeToDisplay();
-	//追従処理。
-	Follow();
+	if (!m_player->GetIsPlayerDead()) {
+		CameraModeChangeToDisplay();
+		//追従処理。
+		Follow();
 
-	//回転
-	Rotation();
+		//回転
+		Rotation();
 
-	//切り替えの処理。
-	Switching();
-	m_skinModelRender->SetScale(m_scale);
+		//切り替えの処理。
+		Switching();
+		m_skinModelRender->SetScale(m_scale);
+	}
+	else if (m_player->GetIsPlayerDead())
+	{
+		m_skinModelRender->SetIsDraw(false);
+	}
 }
 
 //モデル生成。
@@ -109,34 +120,6 @@ void ItemDisplay::Switching()
 	int minDownPos = -50;
 	int maxDownPos = 0;
 
-	////切り替え(後でif文を変えます。)
-	//if (m_isItemChangeFlag && !swich_flag)
-	//{
-	//	//下に落とすよ。
-	//	DownPosY--;
-	//	DownPosZ--;
-	//	if (DownPosY >= minDownPos)
-	//	{
-	//		DownPosY = minDownPos-1;
-	//		DownPosZ = minDownPos-1;
-	//		initItem_flag = true;
-	//		swich_flag = true;
-	//	}
-	//}
-	////切り替えモーション中に切り替えたとき用。
-	//else if (m_isItemChangeFlag) {
-	//	//下に落とすよ。
-	//	DownPosY--;
-	//	DownPosZ--;
-	//	if (DownPosY >= minDownPos)
-	//	{
-	//		DownPosY = minDownPos - 1;
-	//		DownPosZ = minDownPos - 1;
-	//		initItem_flag = true;
-	//		swich_flag = true;
-	//	}
-	//}
-
 	//切り替え
 	if (m_isItemChangeFlag && !swich_flag)
 	{
@@ -181,6 +164,9 @@ void ItemDisplay::Rotation()
 	case ItemDisplay::enTool:
 		ToolRotation();
 		break;
+	case ItemDisplay::enItem:
+		ItemRotation();
+		break;
 	}
 }
 //カメラのモードに合わせた処理
@@ -199,6 +185,7 @@ void ItemDisplay::CameraModeChangeToDisplay()
 void ItemDisplay::BuildAgain()
 {
 	//一度だけ生成しなおす。
+	//何も持ってない時。
 	if (initItem_flag && type == enHand)
 	{
 		DeleteGO(m_skinModelRender);
@@ -206,6 +193,7 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
 		initItem_flag = false;
 	}
+	//ブロック系のアイテム。
 	else if (initItem_flag && type == enBlock)
 	{
 		DeleteGO(m_skinModelRender);
@@ -213,6 +201,7 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender->Init(m_modelPath.wstring().c_str());
 		initItem_flag = false;
 	}
+	//ツール系のアイテム。
 	else if (initItem_flag && type == enTool)
 	{
 		DeleteGO(m_skinModelRender);
@@ -220,8 +209,16 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender->Init(m_modelPath.wstring().c_str());
 		initItem_flag = false;
 	}
+	//それ以外のアイテム。
+	else if (initItem_flag && type == enItem)
+	{
+		DeleteGO(m_skinModelRender);
+		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+		m_skinModelRender->Init(m_modelPath.wstring().c_str());
+		initItem_flag = false;
+	}
 }
-//手の回転
+//手の回転。
 void ItemDisplay::HandRotation()
 {
 	const float m_rotX = 25.0f;						//ツール系が増えたときに前に倒すための変数。
@@ -244,7 +241,7 @@ void ItemDisplay::HandRotation()
 	m_mullFornt = handMullFront;
 	m_mullCrossProduct = BlockMullCross;
 }
-//ブロック系の回転
+//ブロック系の回転。
 void ItemDisplay::BlockRotation()
 {
 	const float m_rotY = 0.0f;						//ツール系が増えたときに前に倒すための変数。
@@ -267,7 +264,7 @@ void ItemDisplay::BlockRotation()
 	m_mullCrossProduct = BlockMullCross;
 	UpPosY = 0;
 }
-//ツール系の回転
+//ツール系の回転。
 void ItemDisplay::ToolRotation()
 {
 	const float m_rotZ = 10.0f;						//ツール系が増えたときに前に倒すための変数。
@@ -290,11 +287,32 @@ void ItemDisplay::ToolRotation()
 	m_mullCrossProduct = toolMullCross;
 	UpPosY = -20;
 }
-//インベントリに合わせて切り替え(ry
+//木の棒やインゴット等の回転。
+void ItemDisplay::ItemRotation()
+{
+	const float m_rotX = 25.0f;						//ツール系が増えたときに前に倒すための変数。
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+	//ここで斜めにずらします。
+	m_rotation = m_player->GetRot();
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(), -m_rotX);
+	m_rotation.Multiply(m_rotationX);
+	//ここでプレイヤーの上下にそってずらします。
+	CQuaternion upDownRot;
+	upDownRot.SetRotation(CVector3::AxisX(), -m_player->GetRadianXZ());
+	m_rotation.Multiply(upDownRot);
+	//モデルへ。
+	m_skinModelRender->SetRot(m_rotation);
+	//サイズと位置をずらす。
+	UpPosY = -40;
+	m_scale = { 0.10f,0.10f,0.10f };
+	m_mullFornt = itemMullFront;
+	m_mullCrossProduct = itemMullCross;
+}
+//インベントリに合わせて切り替え(ry。
 void ItemDisplay::SwitchItemType()
 {
-	int endBlockNum = 11;					//ボックス系の最後の番号。
-	int startToolNum = 16;					//ツールの初めの番号。
 	//簡易処理
 	//アイテムの参照。
 	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
@@ -302,8 +320,9 @@ void ItemDisplay::SwitchItemType()
 		type = enHand;
 	}
 	else if (item != nullptr) {
-		if (!item->GetIsBlock() && item->GetID() <= startToolNum) {
-			type = enHand;
+		if (item->GetID() >=endBlockNum && item->GetID() <= startToolNum) {
+			type = enItem;
+			m_modelPath = item->GetModelPath();
 		}
 		else if (!item->GetIsBlock() && item->GetID() > startToolNum)
 		{
