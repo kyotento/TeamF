@@ -84,11 +84,15 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 						bType = enCube_OakLog;
 					}
 				
+					//一番下には岩盤を設置する
+					if (wy == m_minHeight)
+					{
+						bType = enCube_Bedrock;
+					}
 					//石ブロック圏内なら石
-					if( m_stoneMaxHeight >= wy && wy >= m_stoneMinHeight ){
+					else if (m_stoneMaxHeight >= wy && wy >= m_stoneMinHeight) {
 						bType = enCube_Stone;
 					}
-
 					//鉱石ブロック圏内でノイズが許せば鉱石
 					/*if( m_OreMaxHeight >= wy && wy >= m_OreMinHeight ){
 

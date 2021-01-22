@@ -23,7 +23,7 @@ void CreateOre::Awake(Chunk& chunk)
 	//ƒ}ƒbƒv‚ÌL‚³Ž‚Á‚Ä‚«‚Ä
 
 	m_maxHeight = m_mapMaker->m_maxHeight;
-	m_minHeight = m_mapMaker->m_minHeight;
+	m_minHeight = m_mapMaker->m_minHeight + 1;
 	m_startX = chunk.CalcWorldCoordX(0);
 	m_startZ = chunk.CalcWorldCoordZ(0);
 	m_width = chunk.CalcWorldCoordX(Chunk::WIDTH);
