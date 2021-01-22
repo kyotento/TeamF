@@ -47,7 +47,7 @@ public:
 	}
 
 private:
-
+	bool m_isConfig = true;
 	std::unique_ptr	<World> m_world;					//ワールド。
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。
 	std::unique_ptr <GameMode> m_gameMode;				//ゲームモード。
