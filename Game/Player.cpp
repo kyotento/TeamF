@@ -15,6 +15,7 @@
 #include "PlayerDeath.h"
 #include "Menu.h"
 #include "DropItem.h"
+#include"Animals.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -504,6 +505,11 @@ void Player::Attack()
 			if (param.EqualName(L"CEnemy")) {			//名前検索。
 				Enemy* enemy = param.GetClass<Enemy>();
 				enemy->TakenDamage(m_attackPower);
+				m_attackFlag = true;
+			}
+			if (param.EqualName(L"CAnimals")) {			//名前検索。
+				Animals* animals = param.GetClass<Animals>();
+				animals->TakenDamage(m_attackPower);
 				m_attackFlag = true;
 			}
 		});

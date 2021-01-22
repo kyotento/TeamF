@@ -9,6 +9,7 @@ class Title;
 class Sun;
 class Menu;
 class ZombieGenerator;
+class CowGenerator;
 class Game :public IGameObject
 {
 public:
@@ -30,11 +31,12 @@ public:
 
 private:
 
-	std::unique_ptr	<World> m_world;						//ワールド。
+	std::unique_ptr	<World> m_world;					//ワールド。
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。
 	std::unique_ptr <GameMode> m_gameMode;				//ゲームモード。
 	std::unique_ptr <Sun> m_sun;						//太陽
 	std::unique_ptr <ZombieGenerator> m_zombieGenerator;//ゾンビツクール。
 	std::unique_ptr <Menu> m_menu;						//メニュー。
+	std::unique_ptr <CowGenerator> m_cowGenerator;		//牛。
 };
 

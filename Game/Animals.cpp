@@ -8,6 +8,7 @@ Animals::Animals(EnEntity enEntity) : Entity(enEntity)
 	m_characonPos = m_position;
 	//キャラコンの初期化。
 	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos);
+	m_characon.SetIsDrawCollider(true);
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
 	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
@@ -167,7 +168,6 @@ void Animals::StateManagement()
 void Animals::KnockBack()
 {
 	float knockBackFrame = 25.f;			//ノックバックするフレーム数(60FPS)。
-
 	if (m_isTakenDamage) {
 		if (m_knockBackTimer < knockBackFrame) {
 

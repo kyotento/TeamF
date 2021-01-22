@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "World.h"
 
 struct GeneratorParameters
 {
@@ -9,21 +10,20 @@ struct GeneratorParameters
 	//24～128だとモブの生成がわかりづらいので範囲を狭めています。
 	//const int minDistanceMobGenerate = 24;
 	//const int maxDistanceMobGenerate = 128;
-	const int minDistanceMobGenerate = 20;
-	const int maxDistanceMobGenerate = 50;
+	int minDistanceMobGenerate = 20;
+	int maxDistanceMobGenerate = 50;
 	//設定した秒数後にモブの生成を開始する。
-	const float mobGenerateTimer = 7.0f;
+	float mobGenerateTimer = 7.0f;
 	//一度に生成するモブの最大数。
-	const int maxNumberMobGenerateOneTime = 4;
+	int maxNumberMobGenerateOneTime = 4;
 	//範囲内に生成するモブの最大数。
 	//範囲内というのは、プレイヤーからの距離が↑のmaxのブロック数以内のもの。
-	const int maxNumberMobRange = 10;
+	int maxNumberMobRange = 10;
 	//全ワールドに生成するモブの最大数。
-	const int maxNumberMob = 30;
+	int maxNumberMob = 30;
 };
 
 class Player;
-class World;
 /// <summary>
 /// モブを生成していくクラス。
 /// モブはブロックのある場所にしか生成されません。
@@ -41,6 +41,10 @@ public:
 	void SetWorld(World* world)
 	{
 		m_world = world;
+	}
+	World* GetWorld()
+	{
+		return m_world;
 	}
 protected:
 	virtual void Init() = 0;
@@ -65,10 +69,6 @@ protected:
 	/// モブを生成する。
 	/// </summary>
 	virtual void NewGOMob(const CVector3& pos) = 0;
-	World* GetWorld()
-	{
-		return m_world;
-	}
 private:
 	Player* GetPlayer()
 	{
