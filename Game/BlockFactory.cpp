@@ -8,6 +8,7 @@
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 
 SkinModelEffectShader BlockFactory::m_s_ps;
+int BlockFactory::m_instanceMax = -1;
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -47,6 +48,19 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 				mat->SetPS(&m_s_ps);
 			}
 		);
+	}
+
+	m_instanceMax = instanceMax;
+}
+
+void BlockFactory::FindBlockModel(std::function<void(GameObj::InstancingModel*)> func) {
+	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
+	for (auto type : FILE_PATH_ARRAY) {
+		if (!type)continue;
+		GameObj::InstancingModel* instanceModel = mngr.Load(m_instanceMax, type);
+
+		//èàóùé¿çs
+		func(instanceModel);
 	}
 }
 

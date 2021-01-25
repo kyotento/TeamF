@@ -32,8 +32,18 @@ PSOutput_RenderGBuffer PSMain_McBlockRenderGBuffer(PSInput In)
     lightScale += saturate(Out.normal.y * -1.0 * LightingParam[In.instanceID]._m02);
     lightScale += saturate(Out.normal.y * LightingParam[In.instanceID]._m03);
     lightScale += saturate(Out.normal.z * -1.0 * LightingParam[In.instanceID]._m10);
-    lightScale += saturate(Out.normal.z  * LightingParam[In.instanceID]._m11);
-    Out.albedo.rgb *= lightScale;
+    lightScale += saturate(Out.normal.z * LightingParam[In.instanceID]._m11);
+    
+    float lightScaleSky = 0.0f;
+    lightScaleSky += saturate(Out.normal.x * -1.0 * LightingParam[In.instanceID]._m20);
+    lightScaleSky += saturate(Out.normal.x * LightingParam[In.instanceID]._m21);
+    lightScaleSky += saturate(Out.normal.y * -1.0 * LightingParam[In.instanceID]._m22);
+    lightScaleSky += saturate(Out.normal.y * LightingParam[In.instanceID]._m23);
+    lightScaleSky += saturate(Out.normal.z * -1.0 * LightingParam[In.instanceID]._m30);
+    lightScaleSky += saturate(Out.normal.z * LightingParam[In.instanceID]._m31);
+    lightScaleSky *= cb_t;
+    
+    Out.albedo.rgb *= max(lightScale, lightScaleSky);
 
     PosRender(In, Out);
 

@@ -14,7 +14,6 @@ Block::Block(){
 Block::~Block(){
 	if (m_state != enCube_None) {
 		m_state = enCube_None;
-		//CalcDestroyLight();//Ç‚ÇÁÇ»Ç¢èÍçá(îªíËÇÃï˚)
 		CalcAddLight(true);
 	}
 }
@@ -67,8 +66,10 @@ void Block::CalcAddLight(bool isDestroy) {
 		for (int sb = 0; sb < 6; sb++) {
 			//é¸ÇËÇ©ÇÁåıÇì`î¿Ç≥ÇπÇÈ
 			auto pos = blockpos + LightUtil::spreadDir[sb];
-			char* light = world->GetLightData(pos);
-			LightUtil::SpreadLight(world, *light - 1, pos, LightUtil::spreadDir[sb]*-1, false);
+			char* samplight = world->GetLightData(pos);
+			if (samplight) {
+				LightUtil::SpreadLight(world, *samplight - 1, pos, LightUtil::spreadDir[sb] * -1, false);
+			}
 			//TODO Ç¢Ç¡Ç©Ç¢Ç≈Ç¢Ç¢?
 		}
 		lightPower = *light;

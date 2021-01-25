@@ -57,6 +57,7 @@
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="BlockRenderingLightParameter.h" />

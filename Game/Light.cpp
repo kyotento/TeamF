@@ -50,12 +50,11 @@ void LightUtil::SpreadLight(World* world, char lightPower, const IntVector3& pos
 				Block* block = world->GetBlock(samplePos);
 				if (block) {
 					if (isSkyLight) {
-						//TODO
 						if (sb < 4) {
-							block->Lighting(sb, 0, lightPower);
+							block->Lighting(sb, 2, lightPower);
 						}
 						else {
-							block->Lighting(sb - 4, 1, lightPower);
+							block->Lighting(sb - 4, 3, lightPower);
 						}
 					}
 					else {
@@ -127,12 +126,11 @@ int LightUtil::SpreadDark(World* world, char oldLightPower, const IntVector3& po
 						Block* block = world->GetBlock(samplePos);
 						if (block) {
 							if (isSkyLight) {
-								//TODO
 								if (sb < 4) {
-									block->SetLightingData(sb, 0, *light);
+									block->SetLightingData(sb, 2, *light);
 								}
 								else {
-									block->SetLightingData(sb - 4, 1, *light);
+									block->SetLightingData(sb - 4, 3, *light);
 								}
 							}
 							else {
@@ -197,34 +195,6 @@ void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVecto
 	}
 }
 
-void LightUtil::RefleshLight(World* world, const IntVector3& pos) {
-	//ブロックのライティングを更新
-	Block* block = world->GetBlock(pos);
-	if (block) {
-		for (int sb = 0; sb < 6; sb++) {
-			IntVector3 samplePos = pos + spreadDir[sb]*-1;
-			char* light = world->GetLightData(samplePos);
-			//if (isSkyLight) {
-			//	//TODO
-			//	if (sb < 4) {
-			//		block->SetLightingData(sb, 0, *light);
-			//	}
-			//	else {
-			//		block->SetLightingData(sb - 4, 1, *light);
-			//	}
-			//}
-			//else {
-				if (sb < 4) {
-					block->SetLightingData(sb, 0, *light);
-				}
-				else {
-					block->SetLightingData(sb - 4, 1, *light);
-				}
-			//}
-		}
-	}
-}
-
 void SkyLight::CalcSkyLight(Chunk* chunk) {
 	if (!m_world) {
 		DW_ERRORBOX(true,"SkyLight::CalcSkyLight()\n初期化されてないよ...")
@@ -235,12 +205,11 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 	int lightHeight[Chunk::WIDTH][Chunk::WIDTH] = {};
 	for (int x = 0; x < Chunk::WIDTH; x++) {
 		for (int z = 0; z < Chunk::WIDTH; z++) {
-
 			//初期化
 			lightHeight[x][z] = Chunk::HEIGHT;
 
 			for (int y = Chunk::HEIGHT-1; y >= 0; y--) {
-				auto light = chunk->GetSkyLightData(x,y,z);
+				auto light = chunk->GetSkyLightData(x, y, z);
 				auto block = chunk->GetBlock(x, y, z);
 				if (block) {
 					//ブロックに衝突(遮蔽されている)
@@ -259,22 +228,25 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 	for (int x = 0; x < Chunk::WIDTH; x++) {
 		for (int z = 0; z < Chunk::WIDTH; z++) {
 			for (int y = Chunk::HEIGHT - 1; y >= lightHeight[x][z]; y--) {
+				//ワールドのブロック単位座標算出
+				IntVector3 worldBlockPos = { chunk->CalcWorldCoordX(x), y, chunk->CalcWorldCoordZ(z) };
+
 				//上下左右前後のブロックを照らす
 				for (int sb = 0; sb < 6; sb++) {
-					IntVector3 samplePos = { x,y,z }; samplePos += LightUtil::spreadDir[sb];
-					Block* block = m_world->GetBlock(samplePos.x, samplePos.y, samplePos.z);
+					IntVector3 samplePos = worldBlockPos + LightUtil::spreadDir[sb];
+					Block* block = m_world->GetBlock(samplePos);
 					if (block) {
 						if (sb < 4) {
-							block->Lighting(sb, 0, LightUtil::LIGHT_POWER_MAX);
+							block->Lighting(sb, 2, LightUtil::LIGHT_POWER_MAX);
 						}
 						else {
-							block->Lighting(sb - 4, 1, LightUtil::LIGHT_POWER_MAX);
+							block->Lighting(sb - 4, 3, LightUtil::LIGHT_POWER_MAX);
 						}
 					}
 				}
 
 				//光の伝播
-				LightUtil::SpreadLight(m_world, LightUtil::LIGHT_POWER_MAX, { x,y,z }, { 0,0,0 }, true);
+				LightUtil::SpreadLight(m_world, LightUtil::LIGHT_POWER_MAX - 1, worldBlockPos, { 0,0,0 }, true);
 			}
 		}
 	}

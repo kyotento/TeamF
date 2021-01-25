@@ -12,6 +12,9 @@ public:
 	//! @details インスタンシング描画に使用するモデルを読み込む。CreateBlockより前に呼ばれていなければならない。
 	static void LoadInstancingModels(int instanceMax);
 
+	//! @brief 各ブロックモデルを検索して処理を実行。
+	static void FindBlockModel(std::function<void(GameObj::InstancingModel*)> func);
+
 	//! @brief モデルパスを取得。 Item クラスが使用する。
 	static const wchar_t* GetModelPath( EnCube blockType );
 
@@ -22,6 +25,7 @@ public:
 private:
 	//ブロック描画シェーダー
 	static SkinModelEffectShader m_s_ps;
-
+	//インスタンス数
+	static int m_instanceMax;
 };
 

@@ -222,12 +222,6 @@ Chunk * World::CreateChunk( int x, int z ){
 	ChunkFiler filer;
 	filer.Read( *chunk );
 
-	//スカイライトの計算を行う
-	//if (chunk->IsGenerated()) {
-	//	SkyLight skylight(this);
-	//	skylight.CalcSkyLight(chunk);
-	//}
-
 	return chunk;
 }
 
@@ -235,32 +229,30 @@ void World::LoadChunk( int x, int z ){
 	if( !IsExistChunk( x, z ) ){
 		Chunk* chunk = CreateChunk( x, z );
 
-		//↓これCreateChunkでやってる
-		//ファイルから読み込む。
-		//ChunkFiler filer;
-		//bool readResult = filer.Read( *chunk );
-
 		//ファイルにチャンクが存在しなかったか、存在はしたが生成が済んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
-
-			//スカイライトの計算を行う
-			//SkyLight skylight(this);
-			//skylight.CalcSkyLight(chunk);
 		}
 
 		//埋まったブロックを非表示にする。
 		ChunkCulling( *chunk );
+
+		//スカイライトの計算を行う
+		SkyLight skylight(this);
+		skylight.CalcSkyLight(chunk);
 	} else{
 		Chunk* chunk = GetChunk( x, z );
+
 		//チャンクが存在はしたが生成が住んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
+
+			//埋まったブロックを非表示にする。
 			ChunkCulling( *chunk );
 
 			//スカイライトの計算を行う
-			//SkyLight skylight(this);
-			//skylight.CalcSkyLight(chunk);
+			SkyLight skylight(this);
+			skylight.CalcSkyLight(chunk);
 		}
 	}
 }
