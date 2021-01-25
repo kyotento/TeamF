@@ -162,6 +162,9 @@
     <ClCompile Include="Animals.cpp">
       <Filter>Entity\Mob</Filter>
     </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="Animals.h">
       <Filter>Entity\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -182,7 +182,7 @@ void PlayerParameter::ChangeExp()
 void PlayerParameter::SelectItem()
 {
 
-	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。。
+	m_selectNum -= GetMouseWheelNotch();		//マウスホイールによる指定。
 	KariItemS();								//キーボードによる指定。
 	StopMoveToChange();
 
@@ -206,9 +206,11 @@ void PlayerParameter::SelectItem()
 		m_isStopMoveToChangeFlag = false;
 
 	}
-		m_player->SetSelectItemNum(m_selectNum);					//プレイヤークラスに格納。
-		m_rightHandDisplay->SetChangeItemFlag(m_isItemChangeFlag);	//右手にフラグも格納します。
-		m_selectNumOld = m_selectNum;								//現在のアイテム番号を格納。
+
+	m_player->SetSelectItemNum(m_selectNum);					//プレイヤークラスに格納。
+	m_rightHandDisplay->SetChangeItemFlag(m_isItemChangeFlag);	//右手にフラグも格納します。
+	m_selectNumOld = m_selectNum;								//現在のアイテム番号を格納。
+
 	if (!m_rightHandDisplay->GetEndChangeFlag())
 	{
 		m_isItemChangeFlag = false;
@@ -222,16 +224,6 @@ void PlayerParameter::KariItemS()
 	for (int i = 1; i <= 9; i++) {
 		if (GetKeyDown('0' + i)) { m_selectNum = i; }
 	}
-
-	//if (GetKeyDown('1')) { m_selectNum = 1;}
-	//if (GetKeyDown('2')) { m_selectNum = 2;}
-	//if (GetKeyDown('3')) { m_selectNum = 3;}
-	//if (GetKeyDown('4')) { m_selectNum = 4;}
-	//if (GetKeyDown('5')) { m_selectNum = 5;}
-	//if (GetKeyDown('6')) { m_selectNum = 6;}
-	//if (GetKeyDown('7')) { m_selectNum = 7;}
-	//if (GetKeyDown('8')) { m_selectNum = 8;}
-	//if (GetKeyDown('9')) { m_selectNum = 9;}
 }
 
 void PlayerParameter::InitRightHand()

@@ -62,14 +62,30 @@ void Game::Update()
 void Game::EscMenu()
 {
 	if (GetKeyDown(VK_ESCAPE)) {
-		if (m_menu == nullptr) {
-			m_menu.reset(NewGO<Menu>());
-			m_menu->SetGame(this);
+		if (m_menu == nullptr && !m_isEscMenu) {
+			NewEscMenu();
 		}
-		else {
-			m_menu.reset();
+		else{
+			if (m_isEscMenu) {			//生成されているとき。
+				DeleteEscMenu();
+				m_isEscMenu = false;
+			}
 		}
 	}
+}
+
+//EscMnuを生成する。
+void Game::NewEscMenu()
+{
+	m_menu.reset(NewGO<Menu>());
+	m_menu->SetGame(this);
+	m_isEscMenu = true;			//生成フラグを返す。
+}
+
+//EscMnuを消す処理。
+void Game::DeleteEscMenu()
+{
+	m_menu.reset();
 }
 
 //タイトルへの遷移。

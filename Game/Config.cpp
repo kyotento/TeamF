@@ -17,7 +17,7 @@ bool Config::Start()
 
 	m_spriteRender[0].Init(L"Resource/spriteData/ReturnToTitleButton.dds");
 	m_spriteRender[1].Init(L"Resource/spriteData/GameEndButton.dds");
-	m_spriteRender[2].Init(L"Resource/spriteData/ConfigurationButton.dds");
+	m_spriteRender[2].Init(L"Resource/spriteData/GameEndButton.dds");
 
 	for (int i = 0; i < m_buttonNum; i++) {
 		m_position[i] = { 0.5f,0.4f };
@@ -26,6 +26,8 @@ bool Config::Start()
 		m_spriteRender[i].SetPos(m_position[i]);
 		m_spriteRender[i].SetScale(m_scale);
 	}
+
+	MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの非固定。
 
 	return true;
 }
@@ -66,4 +68,42 @@ void Config::ChangeColor()
 			m_spriteRender[i].SetColor(CVector4::White());
 		}
 	}
+}
+
+//画像をクリックしたときの処理。
+void Config::ClickProcess()
+{
+	if (GetKeyDown(VK_LBUTTON)) {		//左クリックした時。
+		if (Click() == 0) {
+
+		}
+		if (Click() == 2) {
+			if (m_backclass == enMenu) {
+				m_game->NewEscMenu();
+			}
+			if (m_backclass == enTitle) {
+				//タイトルのボタンを生成する。
+			}
+		}
+
+	}
+}
+
+//マウスをクリックしたときの判定。
+int Config::Click()
+{
+	if (GetKeyDown(VK_LBUTTON)) {		//右クリックした時。
+
+		CVector3 mousePos = MouseCursor().GetMouseCursorPos();			//マウスカーソルの座標。
+
+		for (int i = 0; i < m_buttonNum; i++) {
+			//画像内にマウスカーソルがあるとき。
+			if (mousePos.x >= m_scPos[i].x && mousePos.y <= m_scPos[i].y
+				&& mousePos.x <= m_scPos2[i].x && mousePos.y >= m_scPos2[i].y) {
+				return i;
+			}
+		}
+	}
+
+	return m_buttonNum;		//画像の番号外の数値。
 }
