@@ -301,6 +301,10 @@ void World::DeleteBlock( const CVector3& pos ){
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
+	if (y == RandomMapMaker::m_minHeight)
+	{
+		return;
+	}
 
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
 

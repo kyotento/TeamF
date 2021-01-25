@@ -15,6 +15,7 @@
 #include "PlayerDeath.h"
 #include "Menu.h"
 #include "DropItem.h"
+#include"Animals.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -110,7 +111,7 @@ void Player::Update()
 	if (m_playerState != enPlayerState_death) {
 		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
 		Move();
-
+		m_deathFlag = false;
 		//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
 		if (m_openedGUI == nullptr) {
 
@@ -506,6 +507,11 @@ void Player::Attack()
 				enemy->TakenDamage(m_attackPower);
 				m_attackFlag = true;
 			}
+			if (param.EqualName(L"CAnimals")) {			//名前検索。
+				Animals* animals = param.GetClass<Animals>();
+				animals->TakenDamage(m_attackPower);
+				m_attackFlag = true;
+			}
 		});
 	}
 }
@@ -654,8 +660,8 @@ void Player::Death()
 	//死亡状態かの判定。
 	if (m_hp <= 0) {
 		m_playerState = enPlayerState_death;
+		m_deathFlag = true;
 	}
-
 	//死亡した時。
 	if (m_playerState == enPlayerState_death) {
 		float maxRot = 90.f;							//回転の上限値。
