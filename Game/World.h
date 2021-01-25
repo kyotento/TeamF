@@ -53,6 +53,9 @@ public:
 		int z = (int)std::floorf( pos.z );
 		return GetBlock( x, y, z );
 	}
+	Block* GetBlock(const IntVector3& pos) {
+		return GetBlock(pos.x, pos.y, pos.z);
+	}
 	Block* GetBlock( int x, int y, int z );
 
 	/// <summary>
@@ -87,21 +90,15 @@ public:
 
 	//! @brief 指定位置のライト情報を取得。
 	//! @details 座標はブロック単位
-	char* GetLightData(const CVector3& pos) {
-		int x = (int)std::floorf(pos.x);
-		int y = (int)std::floorf(pos.y);
-		int z = (int)std::floorf(pos.z);
-		return GetLightData(x, y, z);
+	char* GetLightData(const IntVector3& pos) {
+		return GetLightData(pos.x, pos.y, pos.z);
 	}
 	char* GetLightData(int x, int y, int z);
 
 	//! @brief 指定位置のスカイライト情報を取得。
 	//! @details 座標はブロック単位
-	char* GetSkyLightData(const CVector3& pos) {
-		int x = (int)std::floorf(pos.x);
-		int y = (int)std::floorf(pos.y);
-		int z = (int)std::floorf(pos.z);
-		return GetSkyLightData(x, y, z);
+	char* GetSkyLightData(const IntVector3& pos) {
+		return GetSkyLightData(pos.x, pos.y, pos.z);
 	}
 	char* GetSkyLightData(int x, int y, int z);
 
