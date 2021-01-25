@@ -276,6 +276,14 @@ void World::DeleteBlock( const CVector3& pos ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
+	auto block = GetBlock(x, y, z);
+	//ブロックのHPを減らす、とりあえず2入れてる
+	block->ReduceHP(2);
+	//ブロックのHPが0以上ならこれで終わり
+	if (block->GetHP() > 0)
+	{
+		return;
+	}
 	//ブロックをポップ。
 	{
 		//ドロップアイテムを作成。

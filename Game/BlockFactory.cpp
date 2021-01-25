@@ -4,6 +4,7 @@
 #include "CraftingTable.h"
 
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
+static int BLOCK_HP_ARRAY[enCube_Num]{};
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -19,6 +20,20 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
 	FILE_PATH_ARRAY[enCube_Bedrock] = L"Resource/modelData/GrassBlock.tkm";
 	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
+
+	BLOCK_HP_ARRAY[enCube_Grass] = 4;
+	BLOCK_HP_ARRAY[enCube_Soil] = 4;
+	BLOCK_HP_ARRAY[enCube_Stone] = 16;
+	BLOCK_HP_ARRAY[enCube_CobbleStone] = 16;
+	BLOCK_HP_ARRAY[enCube_OakLog] = 8;
+	BLOCK_HP_ARRAY[enCube_OakWood] = 12;
+	BLOCK_HP_ARRAY[enCube_OakLeaf] = 2;
+	BLOCK_HP_ARRAY[enCube_CoalOre] = 20;
+	BLOCK_HP_ARRAY[enCube_IronOre] = 28;
+	BLOCK_HP_ARRAY[enCube_GoldOre] = 36;
+	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
+	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
+
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
@@ -47,6 +62,7 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 		
 	block->InitModel(FILE_PATH_ARRAY[blockType]);
 	block->SetBlockType( blockType );
+	block->SetHP(BLOCK_HP_ARRAY[blockType]);
 
 	return std::move( block );
 }
