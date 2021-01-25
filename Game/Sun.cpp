@@ -2,9 +2,12 @@
 #include "Sun.h"
 #include "BlockFactory.h"
 
+namespace {
+	constexpr int _20minSec = 1200;//20•ª(ˆê“ú)‚Í1200•b
+}
 void Sun::Update() {
 	//ŽžŠÔŒo‰ß
-	CQuaternion rot(CVector3::AxisX(), 0.05f * GetDeltaTimeSec());
+	CQuaternion rot(CVector3::AxisX(), CMath::PI2 / _20minSec * GetDeltaTimeSec() * m_timeScale);
 	rot.Multiply(m_direction);
 
 	//ƒ‰ƒCƒg•ûŒü
