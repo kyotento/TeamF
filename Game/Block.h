@@ -88,7 +88,7 @@ public:
 
 private:
 	//! @brief ライティング計算する
-	void CalcAddLight();
+	void CalcAddLight(bool isDestroy = false);
 
 private:
 	//モデル

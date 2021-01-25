@@ -19,6 +19,21 @@ public:
 	/// <param name="isSkyLight">スカイライトか?</param>
 	static void SpreadLight(World* world, char lightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight);
 
+	/// <summary>
+	/// 負の伝播処理
+	/// </summary>
+	/// <param name="world">ワールド</param>
+	/// <param name="lightPower">以前の光の強さ</param>
+	/// <param name="pos">光の位置</param>
+	/// <param name="fromDir">光の方向(全方位あり)</param>
+	/// <param name="isSkyLight">スカイライトか?</param>
+	static int SpreadDark(World* world, char oldLightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight);
+
+	static void SpreadDarkInner(World* world, char oldLightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight, std::list<std::unique_ptr<IntVector3>>& refleshList);
+
+	//
+	static void RefleshLight(World* world, const IntVector3& pos);
+
 	//明るさレベルの数
 	static constexpr int LIGHT_POWER_COUNT = 16;
 	//明るさレベルの最大値
