@@ -10,6 +10,8 @@ public:
 	bool Start();
 	void Update();
 
+	void PostRender() override;
+
 	void GetScPos();		//スクリーン空間上の画像の範囲取得。
 
 	void ChangeColor();		//選択された画像の色を変更
@@ -40,7 +42,9 @@ private:
 
 	enBackClass m_backclass = enNum;		//再生成されるクラス。
 
-	static const int m_buttonNum = 3;		//生成されるボタンの数。
+	static const int m_buttonNum = 4;		//生成されるボタンの数。
+
+	int m_chunk = 3;						//Doneのときに反映されるチャンク。
 
 	GameObj::CSpriteRender m_spriteRender[m_buttonNum];		//画像。
 
@@ -51,5 +55,6 @@ private:
 
 	Game* m_game = nullptr;			//ゲーム。
 
+	CFont m_font;						//フォント。
 };
 

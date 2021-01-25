@@ -13,6 +13,7 @@
 #include "Title.h"
 #include "ZombieGenerator.h"
 #include "Menu.h"
+#include "Config.h"
 
 Game::Game()
 {
@@ -63,7 +64,10 @@ void Game::EscMenu()
 {
 	if (GetKeyDown(VK_ESCAPE)) {
 		if (m_menu == nullptr && !m_isEscMenu) {
-			NewEscMenu();
+			m_config = FindGO<Config>();
+			if ( m_config == nullptr) {
+				NewEscMenu();
+			}
 		}
 		else{
 			if (m_isEscMenu) {			//ê∂ê¨Ç≥ÇÍÇƒÇ¢ÇÈÇ∆Ç´ÅB

@@ -9,6 +9,7 @@ class Title;
 class Sun;
 class Menu;
 class ZombieGenerator;
+class Config;
 class Game :public IGameObject
 {
 public:
@@ -55,7 +56,19 @@ public:
 		m_isEscMenu = escMenu;
 	}
 
+	//描画距離を指定する。
+	void SetChunkRange(int range)
+	{
+		m_chunkRange = range;
+	}
+	int GetChunkRange()
+	{
+		return m_chunkRange;
+	}
+
 private:
+
+	int m_chunkRange = 3;				//描画距離。
 
 	bool m_isEscMenu = false;			//EscMenuが出ているかどうか。
 
@@ -65,5 +78,6 @@ private:
 	std::unique_ptr <Sun> m_sun;						//太陽
 	std::unique_ptr <ZombieGenerator> m_zombieGenerator;//ゾンビツクール。
 	std::unique_ptr <Menu> m_menu;						//メニュー。
+	Config* m_config = nullptr;					//コンフィグ。
 };
 

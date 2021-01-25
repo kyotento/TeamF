@@ -535,6 +535,18 @@
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
     </Image>
+    <Image Include="Resource\sprite\Button\DoneButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\ChunkButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\PlusButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\MinusButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
