@@ -48,8 +48,6 @@ void Block::CalcAddLight(bool isDestroy) {
 
 	//‚±‚ÌƒuƒƒbƒNŽ©‘Ì‚Ì–¾‚é‚³‚ðÝ’è
 	auto light = world->GetLightData(blockpos);
-
-	//DW_ERRORBOX(light == nullptr, "‚Å‚·")
 	if (!light) {
 		return;
 	}
@@ -61,17 +59,8 @@ void Block::CalcAddLight(bool isDestroy) {
 
 	if (!isLight) {//ˆÃ‚­‚È‚Á‚½
 		//•‰‚Ì“`”d
-		//for (int sb = 0; sb < 2; sb++) {
 		int count =	LightUtil::SpreadDark(world, oldLightPower, blockpos, { 0,0,0 }, false);
-		DW_WARNING_MESSAGE(true, "SpreadDark_Loop:%d \n", count)
-		//}
-		/*for (int sb = 0; sb < 6; sb++) {
-			IntVector3 samplePos = blockpos + LightUtil::spreadDir[sb];
-			char* lihght = world->GetLightData(samplePos);
-			if (lihght && *lihght > 1) {
-				LightUtil::SpreadLight(world, *lihght - 1, samplePos, { 0,0,0 }, false);
-			}
-		}*/
+		DW_WARNING_MESSAGE(count >= 2, "SpreadDark_Loop:%d \n", count)
 	}
 
 	if (isDestroy) {
@@ -126,8 +115,7 @@ void Block::CalcAddLight(bool isDestroy) {
 		return;
 	}
 	//Œõ‚ð“`”À‚³‚¹‚é
-	LightUtil::SpreadLight(world, lightPower - 1, blockpos, { 0,0,0 }, false);
-	
+	LightUtil::SpreadLight(world, lightPower - 1, blockpos, { 0,0,0 }, false);	
 }
 
 void Block::InitModel(const wchar_t* filePath) {

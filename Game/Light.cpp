@@ -77,171 +77,83 @@ void LightUtil::SpreadLight(World* world, char lightPower, const IntVector3& pos
 
 int LightUtil::SpreadDark(World* world, char oldLightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight)
 {
-	/*char newOldLightPower[6] = {-1,-1 ,-1 ,-1 ,-1 ,-1 };
-	for (int i = 0; i < 6; i++) {//6方向に更新(前後上下左右)
-		//来た方向には戻らない
-		if (fromDir.x * -1 == spreadDir[i].x && fromDir.y * -1 == spreadDir[i].y && fromDir.z * -1 == spreadDir[i].z) {
-			continue;
-		}
-
-		//サンプル位置算出
-		IntVector3 nowPos = pos + spreadDir[i];
-
-		//ブロックのあるところは無視
-		Block* block = world->GetBlock(nowPos);
-		if (block && block->GetBlockType() != enCube_None) {//TODO なおかつ不透明ブロック
-			continue;
-		}
-
-		//サンプル位置のライト情報取得
-		char* light = nullptr;
-		if (isSkyLight) {
-			light = world->GetSkyLightData(nowPos);
-		}
-		else {
-			light = world->GetLightData(nowPos);
-		}
-
-		if (light && oldLightPower > *light) {//減衰可能性あり
-			//更新
-			char maxlight = 0;
-
-			//6方向を調べる
-			for (int i2 = 0; i2 < 6; i2++) {
-				//サンプリング
-				IntVector3 sampPos = nowPos + spreadDir[i2];
-				char* sampLight = nullptr;
-				if (isSkyLight) {
-					sampLight = world->GetSkyLightData(sampPos);
-				}
-				else {
-					sampLight = world->GetLightData(sampPos);
-				}
-				if (sampLight) {
-					maxlight = max(maxlight, *sampLight - 1);
-				}
-			}
-
-			//へんかなし
-			if (*light <= maxlight) {
-				continue;
-			}
-
-			DW_ERRORBOX(maxlight > *light, "なんかあかるいぞ")
-
-			//ライト情報更新
-			newOldLightPower[i] = *light;
-			*light = maxlight;
-
-			//上下左右前後のブロックのライティングを更新
-			for (int sb = 0; sb < 6; sb++) {
-				IntVector3 samplePos = nowPos + spreadDir[sb];
-				Block* block = world->GetBlock(samplePos);
-				if (block) {
-					if (isSkyLight) {
-						//TODO
-						if (sb < 4) {
-							block->SetLightingData(sb, 0, *light);
-						}
-						else {
-							block->SetLightingData(sb - 4, 1, *light);
-						}
-					}
-					else {
-						if (sb < 4) {
-							block->SetLightingData(sb, 0, *light);
-						}
-						else {
-							block->SetLightingData(sb - 4, 1, *light);
-						}
-					}
-				}
-			}
-		}
+	if (oldLightPower <= 0) {
+		return 0;
 	}
-
-	for (int i = 0; i < 6; i++) {
-		if (newOldLightPower[i] >= 0) {
-			//更に周りの更新する
-			IntVector3 nowPos = pos + spreadDir[i];
-			SpreadDark(world, newOldLightPower[i], nowPos, spreadDir[i], isSkyLight);
-		}
-	}*/
-
 	std::list<std::unique_ptr<IntVector3>> refleshList;
 	SpreadDarkInner(world, oldLightPower, pos, fromDir, isSkyLight, refleshList);
 
 	int count = 0;
 	bool reflesh = true;
 	while(reflesh){
-	reflesh = false;
-	count++;
-	for (auto& ppos : refleshList) {
-		IntVector3 pos = *(ppos.get());
-		char maxlight = 0;
-		//6方向を調べる
-		for (int i2 = 0; i2 < 6; i2++) {
-			//サンプリング
-			IntVector3 sampPos = pos + spreadDir[i2];
-			char* sampLight = nullptr;
+		reflesh = false;
+		count++;
+		for (auto& ppos : refleshList) {
+			IntVector3 pos = *(ppos.get());
+
+			char* light = nullptr;
 			if (isSkyLight) {
-				sampLight = world->GetSkyLightData(sampPos);
+				light = world->GetSkyLightData(pos);
 			}
 			else {
-				sampLight = world->GetLightData(sampPos);
+				light = world->GetLightData(pos);
 			}
-			if (sampLight) {
-				maxlight = max(maxlight, *sampLight - 1);
-			}
-		}
 
-		char* light = nullptr;
-		if (isSkyLight) {
-			light = world->GetSkyLightData(pos);
-		}
-		else {
-			light = world->GetLightData(pos);
-		}
-		if (light){
-			if (*light != maxlight) {
-				reflesh = true;
-			}
-			*light = maxlight;
-
-			//上下左右前後のブロックのライティングを更新
-			for (int sb = 0; sb < 6; sb++) {
-				IntVector3 samplePos = pos + spreadDir[sb];
-				Block* block = world->GetBlock(samplePos);
-				if (block) {
+			if (light) {
+				char maxlight = 0;
+				//6方向を調べる
+				for (int i2 = 0; i2 < 6; i2++) {
+					//サンプリング
+					IntVector3 sampPos = pos + spreadDir[i2];
+					char* sampLight = nullptr;
 					if (isSkyLight) {
-						//TODO
-						if (sb < 4) {
-							block->SetLightingData(sb, 0, *light);
-						}
-						else {
-							block->SetLightingData(sb - 4, 1, *light);
-						}
+						sampLight = world->GetSkyLightData(sampPos);
 					}
 					else {
-						if (sb < 4) {
-							block->SetLightingData(sb, 0, *light);
-						}
-						else {
-							block->SetLightingData(sb - 4, 1, *light);
-						}
+						sampLight = world->GetLightData(sampPos);
+					}
+					if (sampLight) {
+						maxlight = max(maxlight, *sampLight - 1);
 					}
 				}
+			
+				if (*light != maxlight) {
+					reflesh = true;
+				}
+				//if (count == 1 || *light != maxlight) {
+					//上下左右前後のブロックのライティングを更新
+					for (int sb = 0; sb < 6; sb++) {
+						IntVector3 samplePos = pos + spreadDir[sb];
+						Block* block = world->GetBlock(samplePos);
+						if (block) {
+							if (isSkyLight) {
+								//TODO
+								if (sb < 4) {
+									block->SetLightingData(sb, 0, *light);
+								}
+								else {
+									block->SetLightingData(sb - 4, 1, *light);
+								}
+							}
+							else {
+								if (sb < 4) {
+									block->SetLightingData(sb, 0, *light);
+								}
+								else {
+									block->SetLightingData(sb - 4, 1, *light);
+								}
+							}
+						}
+					}
+				//}
+				*light = maxlight;
 			}
 		}
-	}
 	}
 	return count;
 }
 void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight, std::list<std::unique_ptr<IntVector3>>& refleshList)
 {
-//	if (oldLightPower <= 1) {
-//		return;
-//	}
 	char newOldLightPower[6] = { -1,-1 ,-1 ,-1 ,-1 ,-1 };
 	for (int i = 0; i < 6; i++) {//6方向に伝搬(前後上下左右)
 		//来た方向には戻らない
@@ -267,86 +179,19 @@ void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVecto
 			light = world->GetLightData(nowPos);
 		}
 
-		if (light && oldLightPower > *light){// && oldLightPower -1 == *light) {//減衰可能性あり
+		if (light && oldLightPower > *light && *light > 0){//減衰可能性あり
 			refleshList.emplace_back(std::make_unique<IntVector3>(nowPos.x, nowPos.y, nowPos.z));
 		}
 		else {
 			continue;
-		}
-
-		char maxlight = 0;
-		/*bool isContinue = true;
-		if (light && oldLightPower - 1 == *light) {//減衰可能性あり
-			isContinue = false;
-			//6方向を調べる
-			for (int i2 = 0; i2 < 6; i2++) {
-				//来た方向には戻らない
-				//if (spreadDir[i].x * -1 == spreadDir[i2].x && spreadDir[i].y * -1 == spreadDir[i2].y && spreadDir[i].z * -1 == spreadDir[i2].z) {
-					//if (fromDir.x * -1 == spreadDir[i2].x && fromDir.y * -1 == spreadDir[i2].y && fromDir.z * -1 == spreadDir[i2].z) {
-				//	continue;
-				//}
-
-				//ブロックサンプリング
-				IntVector3 sampPos = nowPos + spreadDir[i2];
-				char* sampLight = nullptr;
-				if (isSkyLight) {
-					sampLight = world->GetSkyLightData(sampPos);
-				}
-				else {
-					sampLight = world->GetLightData(sampPos);
-				}
-
-				//if (sampLight && *sampLight > *light) {//明るいなら
-					//そのままで大丈夫
-				//	isContinue = true;
-				//	break;
-				//}
-				//else 
-				if (sampLight) {
-					maxlight = max(maxlight, *sampLight - 1);
-				}
-			}
-		}
-		if (isContinue || *light == maxlight) {
-			continue;
-		}*/
+		}	
 
 		//ライト情報更新
 		newOldLightPower[i] = *light;
-		*light = maxlight;
-
-		//上下左右前後のブロックのライティングを更新
-		/*for (int sb = 0; sb < 6; sb++) {
-			IntVector3 samplePos = nowPos + spreadDir[sb];
-			Block* block = world->GetBlock(samplePos);
-			if (block) {
-				if (isSkyLight) {
-					//TODO
-					if (sb < 4) {
-						block->SetLightingData(sb, 0, *light);
-					}
-					else {
-						block->SetLightingData(sb - 4, 1, *light);
-					}
-				}
-				else {
-					if (sb < 4) {
-						block->SetLightingData(sb, 0, *light);
-					}
-					else {
-						block->SetLightingData(sb - 4, 1, *light);
-					}
-				}
-			}
-		}*/
-
-		//if (newOldLightPower[i] > 1) {
-			//伝搬を続ける
-		//	SpreadDarkInner(world, newOldLightPower[i], nowPos, spreadDir[i], isSkyLight, refleshList);
-		//}
+		*light = 0;
 	}
 	for (int i = 0; i < 6; i++) {
-		if (newOldLightPower[i] >= 0) {			
+		if (newOldLightPower[i] > 0) {			
 			SpreadDarkInner(world, newOldLightPower[i], pos + spreadDir[i], spreadDir[i], isSkyLight, refleshList);
 		}
 	}
