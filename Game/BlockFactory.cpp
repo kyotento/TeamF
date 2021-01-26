@@ -6,6 +6,7 @@
 #include "BlockRenderingLightParameter.h"
 
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
+static int BLOCK_HP_ARRAY[enCube_Num]{};
 
 SkinModelEffectShader BlockFactory::m_s_ps;
 int BlockFactory::m_instanceMax = -1;
@@ -25,7 +26,20 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_Bedrock] = L"Resource/modelData/GrassBlock.tkm";
 	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
 
-	//ƒVƒF[ƒ_[“Ç‚İ‚İ
+	BLOCK_HP_ARRAY[enCube_Grass] = 4;
+	BLOCK_HP_ARRAY[enCube_Soil] = 4;
+	BLOCK_HP_ARRAY[enCube_Stone] = 16;
+	BLOCK_HP_ARRAY[enCube_CobbleStone] = 16;
+	BLOCK_HP_ARRAY[enCube_OakLog] = 8;
+	BLOCK_HP_ARRAY[enCube_OakWood] = 12;
+	BLOCK_HP_ARRAY[enCube_OakLeaf] = 2;
+	BLOCK_HP_ARRAY[enCube_CoalOre] = 20;
+	BLOCK_HP_ARRAY[enCube_IronOre] = 28;
+	BLOCK_HP_ARRAY[enCube_GoldOre] = 36;
+	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
+	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
+
+	//ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Ç‚İï¿½ï¿½ï¿½
 	D3D_SHADER_MACRO macros[] = {
 		"INSTANCING", "1",
 		NULL, NULL
@@ -41,9 +55,9 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 		
 		instanceModel->SetIsFrustumCulling( true );
 
-		//ƒ‰ƒCƒeƒBƒ“ƒO—pIInstanceData‚ğİ’è
+		//ï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½pIInstanceDataï¿½ï¿½İ’ï¿½
 		instanceModel->AddIInstanceData(L"BlockRenderingLightParameter", std::make_unique<BlockRenderingLightParameter>(instanceMax));
-		//ƒVƒF[ƒ_[İ’è
+		//ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½İ’ï¿½
 		instanceModel->GetModelRender().GetSkinModel().FindMaterialSetting(
 			[&](MaterialSetting* mat) {
 				mat->SetPS(&m_s_ps);
@@ -60,7 +74,7 @@ void BlockFactory::FindBlockModel(std::function<void(GameObj::InstancingModel*)>
 		if (!type)continue;
 		GameObj::InstancingModel* instanceModel = mngr.Load(m_instanceMax, type);
 
-		//ˆ—Às
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s
 		func(instanceModel);
 	}
 }
@@ -72,7 +86,7 @@ const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
 std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	std::unique_ptr<Block> block;
 
-	//ƒNƒŠƒbƒN‚ÉƒAƒNƒVƒ‡ƒ“‚ğ‹N‚±‚·ƒuƒƒbƒN‚È‚Ç‚Í•Ê‚ÌƒNƒ‰ƒXB
+	//ï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ÉƒAï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½È‚Ç‚Í•Ê‚ÌƒNï¿½ï¿½ï¿½Xï¿½B
 	if( blockType == enCube_CraftingTable ){
 		block = std::make_unique<CraftingTable>();
 	} else{
@@ -81,6 +95,7 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 		
 	block->InitModel(FILE_PATH_ARRAY[blockType]);
 	block->SetBlockType( blockType );
+	block->SetHP(BLOCK_HP_ARRAY[blockType]);
 
 	return std::move( block );
 }

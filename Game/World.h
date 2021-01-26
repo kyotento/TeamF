@@ -152,6 +152,7 @@ public:
 	{
 		return m_entities;
 	}
+	void Update() override;
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
 	void LoadChunk(int x, int z);
@@ -176,5 +177,9 @@ private:
 
 	//!シード値などの情報を保存。
 	WorldInfoFile infoFile;
+
+
+	Block* m_block = nullptr;
+	float m_timer = 0.0f;
 };
 
