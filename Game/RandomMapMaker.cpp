@@ -64,7 +64,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 				//上で決定した高さをもとに最高高度のブロックを設置。
 				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Grass));
 				//木を生やす。
-				//m_treeGenerator.GenerateTree(wx, wy, wz);
+				m_treeGenerator.GenerateTree(wx, wy, wz);
 			}
 			else if (state == enBiome_Desert) {
 				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_OakLog));
@@ -108,7 +108,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 					//if (bType == enCube_Stone || bType == enCube_Soil)
 						//continue;
 
-					//chunk.SetBlock( cx, wy, cz, BlockFactory::CreateBlock( bType ) );
+					chunk.SetBlock( cx, wy, cz, BlockFactory::CreateBlock( bType ) );
 
 				}
 			}
@@ -116,10 +116,10 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 	}
 	
 	//鉱石生成
-	//CreateOre co;
-	//co.SetMapMaker(this);
-	//co.SetWorld(m_world);
-	//co.Awake(chunk);
+	CreateOre co;
+	co.SetMapMaker(this);
+	co.SetWorld(m_world);
+	co.Awake(chunk);
 
 	//チャンクを生成済みにする。
 	chunk.SetGenerated();
