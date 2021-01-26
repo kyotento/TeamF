@@ -3,12 +3,16 @@
 #include "../physics/character/CCharacterController.h"
 #include "Entity.h"
 #include "Inventory.h"
+#include "MCCharaCon.h"
 
 class World;
 class GameCamera;
 class Item;
 class GameMode;
-
+class ItemDisplay;
+class PlayerParameter;
+class PlayerDeath;
+class Game;
 namespace GUI{
 	class RootNode;
 }
@@ -51,6 +55,7 @@ public:
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
 		enPlayerState_excavate,			//物を掘る。
+		enPlayerState_death,			//死んだとき。
 		enPlayerState_num,				//状態の数。
 	};
 
@@ -60,6 +65,14 @@ public:
 	/// <returns>プレイヤーの状態</returns>
 	enPlayerState GetplayerState()const {
 		return m_playerState;
+	}
+
+	/// <summary>
+	/// プレイヤーがしゃがんでいるか取得。
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsSneaking()const {
+		return m_characon.IsShiftMove();
 	}
 
 	/// <summary>
@@ -83,6 +96,19 @@ public:
 	//! @brief 座標を取得。
 	CVector3 GetPos() const override{
 		return m_position;
+	}
+
+	//! @brief モデル座標を取得。
+	const CVector3& GetModelPos() const {
+		if (!m_skinModelRender) {
+			return CVector3::Zero();
+		}
+		return m_skinModelRender->GetPos();
+	}
+
+	//! @brief 回転を取得。
+	CQuaternion GetRot() const {
+		return m_rotation;
 	}
 
 	//! @brief 座標を設定。
@@ -167,10 +193,6 @@ public:
 		return m_world;
 	}
 
-	//! @brief World をセットする。
-	//! @param recursive trueなら World::SetPlayer(this, false) も呼び出す。
-	void SetWorld( World* world , bool recursive = true);
-
 	//インベントリの長さ
 	static const int inventryWidth = 9;
 	static const int inventryHeight = 1;
@@ -195,6 +217,23 @@ public:
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
 	void TakenDamage(int AttackePow);
+
+	/// <summary>
+	/// ゲームのインスタンスを設定する。
+	/// </summary>
+	/// <param name="game"></param>
+	void SetGameIns(Game* game)
+	{
+		m_game = game;
+	}
+	/// <summary>
+	/// プレイヤー死んでる？？
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsPlayerDead()
+	{
+		return m_deathFlag;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -232,6 +271,11 @@ private:
 	void Headbang();
 
 	/// <summary>
+	/// 攻撃処理。
+	/// </summary>
+	void Attack();
+
+	/// <summary>
 	/// インベントリを開く。
 	/// </summary>
 	void OpenInventory();
@@ -258,6 +302,20 @@ private:
 	/// </summary>
 	void FlyTheRay();
 
+	/// <summary>
+	/// 死亡処理。
+	/// </summary>
+	void Death();
+
+	/// <summary>
+	/// リスポーン。
+	/// </summary>
+	void Respawn();
+
+	/// <summary>
+	/// モデルの描画をするか。
+	/// </summary>
+	void IsDraw();
 
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
@@ -271,6 +329,8 @@ private:
 	bool m_flyingMode = true;				//クリエイティブの際、飛行モードかどうか。
 	bool m_doubleClickFlagC = false;		//ダブルクリックフラグ(クリエイティブ)。
 	bool m_flyingflag = false;				//飛べる状態か。
+	bool m_attackFlag = false;				//エネミーに攻撃したか。
+	bool m_deathFlag = false;				//死んだかどうか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -281,24 +341,27 @@ private:
 	float m_runSpeedDouble = 1.f;							//走るときの移動速度の倍率。(走るときは2.fになる予定)。
 	float m_doubleClickTimer = 0.0f;						//ダブルクリックの判定時間。
 	float m_doubleClickTimerC = 0.0f;						//ダブルクリックの判定時間(クリエイティブ)。
-	const float m_characonRadius = 50.f;					//キャラコンの半径。
-	const float m_characonHeight = 160.f;					//キャラコンの高さ。
+	float m_deathAddRot = 0.f;								//死亡時の回転総数。
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
+	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
 
-	int m_hp = 20;					//体力。
+	int FallDamage();		//落下ダメージ。
+
+	float m_hp = 20.f;				//体力。
 	int m_stamina = 20;				//スタミナ。
+	int m_attackPower = 5;			//攻撃力。
 	int m_defensePower = 15;		//防御力。
 	float m_exp = 5.50f;			//経験値。
 	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
+	CVector3 m_respawnPos = m_position;											//リスポーン座標。
 	CVector3 m_right = CVector3(1.0f,0.0f,0.0f);				//右方向。
 	CVector3 m_front = CVector3(0.0f, 0.0f, 1.0f);				//正面。	
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
-
 
 	Inventory m_inventory; //アイテムを保管するインベントリ。
 	std::unique_ptr<GUI::RootNode> m_openedGUI; //現在開いているGUI
@@ -307,14 +370,15 @@ private:
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//モデル。
 	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
-	CCharacterControllerType2 m_characon;						//キャラコン。
+	MCCharaCon m_characon;										//キャラコン。
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	Bone* m_headBone;												//頭の骨。
 
-	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。	
-	World* m_world = nullptr;                                   //ワールド。
+	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
-
+	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
+	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
+	Game* m_game = nullptr;										//Gameクラス。
 };
 

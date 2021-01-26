@@ -18,6 +18,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	InitEngineParameter initparam;	
 
 	initparam.SDUnityChanScale = 2.5f;//スケール設定
+	initparam.isAtmosphericFog = true;//大気フォグ有効化
+	initparam.isPointFiltering = true;//テクスチャポイントフィルタリング有効化
+	//initparam.isCreateMipmap = false; //ミップマップ生成無効化
 
 	//解像度
 	//initparam.screenWidth = initparam.frameBufferWidth = initparam.frameBufferWidth3D = 1920;
@@ -39,7 +42,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1)));
 	
 	//判定表示
-
 //	SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
 	if (isStart == false)
@@ -50,9 +52,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//デバッグ表示・入力、常時有効化
 	SetIsDebugDraw(true);
-	SetIsDebugInput(true);
+	SetIsDebugInput(false);//Escで終了しなくなります。
 
-	MouseCursor().SetLockMouseCursor(true);			//マウスカーソルを中央に固定。
+	//フォグの設定
+	SetEnableFog(true);				//有効
+	SetFogDistance(3000.0f);		//フォグが完全にかかりきる距離
+	SetFogStartDistance(2800.0f);	//フォグが始まる距離
+	SetFogHeightScale(0.1f);		//高さ方向へのフォグのかかり具合	
+
 	//ゲームループ。
 	GetEngine().RunGameLoop();
 	return 0;

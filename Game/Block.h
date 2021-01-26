@@ -17,10 +17,22 @@ public:
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
 
+	/// <summary>
+	/// ワールド座標を使ってポジションをセット。
+	/// </summary>
+	/// <param name="worldpos">ワールド座標</param>
+	void SetPosWithWorldPos(const CVector3& worldpos);
+
+	//! @brief モデルのポジションを取得
+	const CVector3& GetModelPos()const {
+		return m_model.GetPos();
+	}
+
 	//! @brief モデルを初期化
 	void InitModel(const wchar_t* filePath) {
 		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
 		m_model.Init(0, filePath);
+		m_model.SetRot(CQuaternion(CVector3::AxisY(),((CMath::RandomInt() % 4) * CMath::PI_HALF)));//モデルランダムで回転
 		m_raytraceModel.Init(m_model);
 	}
 
@@ -58,16 +70,31 @@ public:
 	void DisableCollision(){
 		m_collision.reset();
 	}
-
+	void SetHP(const int hp)
+	{
+		m_maxHP = hp;
+		m_hp = hp;
+	}
+	//HPを取得
+	const int GetHP() const
+	{
+		return m_hp;
+	}
+	//HPを減らす
+	void ReduceHP(const int attack)
+	{
+		m_hp -= attack;
+	}
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
 private:
 	GameObj::CInstancingModelRender m_model;
 	CRayTracingModelRender m_raytraceModel;
-
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 
 	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
+	int m_maxHP = 0;
+	int m_hp = 10;
 };
 

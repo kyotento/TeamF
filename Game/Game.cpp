@@ -5,11 +5,15 @@
 #include "GameCamera.h"
 #include "Player.h"
 #include "Zombie.h"
-#include "PlayerParameter.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
 #include "RecipeFiler.h"
 #include "RecipeManager.h"
+#include "Sun.h"
+#include "Title.h"
+#include "ZombieGenerator.h"
+#include "Menu.h"
+#include "CowGenerator.h"
 
 Game::Game()
 {
@@ -17,28 +21,37 @@ Game::Game()
 
 
 Game::~Game()
-{
-	DeleteGO(m_player);
-}
+{}
 
 bool Game::Start()
 {
-	//レシピ読み込み
-	RecipeFiler recipeFiler;
-	recipeFiler.SetFolder( L"Resource/recipeData/" );
-	recipeFiler.LoadRecipe(RecipeManager::Instance());
-
 	//必要なクラスの生成。
-	m_gameMode = NewGO<GameMode>();
+	m_gameMode.reset(NewGO<GameMode>());
 	m_gameMode->SetName(L"gamemode");
 
-	m_player = NewGO<Player>();
-	m_player->SetName(L"player");
-	m_player->SetWorld( &m_world );
-	m_gameCamera = NewGO<GameCamera>();
+	m_world = std::make_unique<World>();
 
-	m_playerParameter = NewGO<PlayerParameter>();
-	m_playerParameter->SetPlayerIns(m_player);
+	//レシピ読み込み。
+	// TODO: Worldの初期化より前に読むとエラーになる。いつかこのわかりにくい依存はどうにかしたい。
+	RecipeFiler recipeFiler;
+	recipeFiler.SetFolder(L"Resource/recipeData/");
+	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
+	//プレイヤーの生成。
+	Player* player = m_world->CreateEntity<Player>();
+	m_world->SetPlayer( player );
+	player->SetName(L"player");
+	player->SetGameIns(this);
+
+	m_gameCamera = std::make_unique<GameCamera>();
+
+	m_sun.reset(NewGO<Sun>());
+
+	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
+	m_zombieGenerator->SetWorld(m_world.get());
+	
+	m_cowGenerator.reset(NewGO<CowGenerator>());
+	m_cowGenerator->SetWorld(m_world.get());
 
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 
@@ -47,4 +60,25 @@ bool Game::Start()
 
 void Game::Update()
 {
+	EscMenu();
+}
+
+void Game::EscMenu()
+{
+	if (GetKeyDown(VK_ESCAPE)) {
+		if (m_menu == nullptr) {
+			m_menu.reset(NewGO<Menu>());
+			m_menu->SetGame(this);
+		}
+		else {
+			m_menu.reset();
+		}
+	}
+}
+
+//タイトルへの遷移。
+void Game::TransToTitle()
+{
+	DeleteGO(this);
+	NewGO<Title>();		
 }

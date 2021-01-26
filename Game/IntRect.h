@@ -1,6 +1,5 @@
 //! @file
 #pragma once
-#include "IntVector3.h"
 
 //! @brief 正数型で直方体を表現するクラス。
 //! @details 座標が内部に含まれるか確かめたり、内部の座標をイテレーターでループ処理したりできる。

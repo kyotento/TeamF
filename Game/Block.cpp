@@ -5,7 +5,9 @@
 Block::Block(){
 }
 
-Block::~Block(){}
+Block::~Block(){
+	m_raytraceModel.Release();
+}
 
 void Block::SetPos( int x, int y, int z ){
 	constexpr float half = WIDTH * 0.5f;
@@ -17,6 +19,14 @@ void Block::SetPos( int x, int y, int z ){
 	if( m_collision ){
 		pos.y += half;
 		m_collision->SetPosition( pos );
+	}
+}
+
+void Block::SetPosWithWorldPos(const CVector3& worldpos) {
+	m_model.SetPos(worldpos);
+
+	if (m_collision) {
+		m_collision->SetPosition(worldpos + CVector3::Up() * (WIDTH * 0.5f));
 	}
 }
 

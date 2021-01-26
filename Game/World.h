@@ -2,7 +2,6 @@
 #pragma once
 #include "Chunk.h"
 #include "RandomMapMaker.h"
-#include "IntVector3.h"
 #include "WorldInfoFile.h"
 
 class Entity;
@@ -14,24 +13,28 @@ class DropItem;
 class World : public IGameObject{
 public:
 	World();
+	~World();
 
 	//! @brief 更新関数。チャンクをストレージに退避させる処理をする。
 	void PostUpdate() override;
 
 	//! @brief Player をセットする。
-	//! @param recursive trueなら Player::SetWorld(this, false) も呼び出す。
-	void SetPlayer( Player* player, bool recursive );
-
-	Player* GetPlayer(){
-		return m_player;
+	void SetPlayer( Player* player ){
+		m_player = player;
 	}
 
-	//! @brief Entity をワールドに追加する。
-	void AddEntity( Entity* entity ){
-		m_entities.insert( entity );
+	Player* GetPlayer();
+
+	//! @brief Entity をワールドに生成する。引数は対象のコンストラクタ。
+	template<class T, class... TArgs>
+	T*  CreateEntity( TArgs... ctorArgs ){
+		T* newEntity = NewGO<T>( ctorArgs... );
+		newEntity->SetWorld( this );
+		m_entities.insert( newEntity );
+		return newEntity;
 	}
 
-	//! @brief Entity をワールドから取り除く。
+	//! @brief Entity をワールドから取り除く。DeleteGOはしない。
 	void RemoveEntity( Entity* entity ){
 		m_entities.erase( entity );
 	}
@@ -49,6 +52,14 @@ public:
 		return GetBlock( x, y, z );
 	}
 	Block* GetBlock( int x, int y, int z );
+
+	/// <summary>
+	/// 指定のAABB付近のブロックを取得
+	/// </summary>
+	/// <param name="aabbmin">AABBの小さい方の座標</param>
+	/// <param name="aabbmax">AABBの大きい方の座標</param>
+	/// <param name="return_blocks">このベクターに範囲内のブロックが追加される</param>
+	void GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& return_blocks);
 
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		int x = (int)std::floorf( pos.x );
@@ -113,7 +124,12 @@ public:
 		if( num < 0 )num -= Chunk::WIDTH - 1;
 		return num / Chunk::WIDTH;
 	}
-
+	//! @briefエンティティを取得
+	//! @return エンティティの配列。
+	std::unordered_set<Entity*>& GetEntities()
+	{
+		return m_entities;
+	}
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
 	void LoadChunk(int x, int z);

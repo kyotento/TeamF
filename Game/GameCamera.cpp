@@ -50,7 +50,7 @@ void GameCamera::Update()
 		//減衰
 		float rollPow = ROLL_MODORI_DEG_PER_SEC * GetDeltaTimeSec();
 		if (abs(m_rollDeg) <= rollPow) {
-			m_rollDeg = 0.0f;
+			m_rollDeg =-0.0f;
 		}
 		else {
 			m_rollDeg = (abs(m_rollDeg) - rollPow) * (m_rollDeg < 0.0f ? -1.0f : 1.0f);
@@ -98,7 +98,7 @@ void GameCamera::FPS()
 	//カメラをプレイヤーの正面に
 	const float front = 0.05f* Block::WIDTH;
 
-	m_position = m_player->GetPos();
+	m_position = m_player->GetModelPos();
 	m_position += m_player->GetFront() * front;
 	m_position.y += height;
 	//Y軸周りに回転させる。
@@ -114,7 +114,7 @@ void GameCamera::FPS()
 	rotAxis.Normalize();
 	qRot.SetRotation(rotAxis, m_radianXZ);
 	qRot.Multiply(toPos);
-	toPos *= m_radius;
+	toPos *= m_radius*1.5;
 	m_target = m_position - toPos;
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
@@ -127,7 +127,7 @@ void GameCamera::TPS()
 	//カメラをプレイヤーより横にずらす
 	const float right = 0.20f* Block::WIDTH;
 	
-	m_target = m_player->GetPos() + m_player->GetRight() * right;
+	m_target = m_player->GetModelPos() + m_player->GetRight() * right;
 	m_target.y += height;
 	//Y軸周りに回転させる。
 	CQuaternion qRot;
@@ -155,7 +155,7 @@ void GameCamera::ReverseTPS()
 	//カメラをプレイヤーの正面に
 	const float front = 0.05f* Block::WIDTH;
 
-	m_position = m_player->GetPos();
+	m_position = m_player->GetModelPos();
 	m_position += m_player->GetFront() * front;
 	m_position.y += height;
 	//Y軸周りに回転させる。

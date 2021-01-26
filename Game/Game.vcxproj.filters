@@ -134,6 +134,37 @@
     <ClCompile Include="ItemDicitionary.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDeath.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemDisplay.cpp">
+      <Filter>Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeGenerator.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MCCharaCon.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieGenerator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
+    <ClCompile Include="MobGenerator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieGenerator.cpp" />
+    <ClCompile Include="Cow.cpp">
+      <Filter>Entity\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="Animals.cpp">
+      <Filter>Entity\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="CowGenerator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -281,6 +312,41 @@
     <ClInclude Include="ItemDictionary.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerDeath.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Sun.h" />
+    <ClInclude Include="NullableItemStack.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDisplay.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeGenerator.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MCCharaCon.h">
+      <Filter>physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieGenerator.h">
+      <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="MobGenerator.h">
+      <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieGenerator.h" />
+    <ClInclude Include="Cow.h">
+      <Filter>Entity\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="Animals.h">
+      <Filter>Entity\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="CowGenerator.h">
+      <Filter>generator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -352,6 +418,18 @@
     <Filter Include="Block">
       <UniqueIdentifier>{22d57d72-19f3-40d7-bbf8-fdf904499635}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sprite\button">
+      <UniqueIdentifier>{0e0bb4e2-0c43-4287-8c27-d5442ea43a15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="menu">
+      <UniqueIdentifier>{ebf68a18-5d59-456b-a63a-3d73538b2ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator">
+      <UniqueIdentifier>{c83a7e71-dffd-40d6-8c6b-6f59849451ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity\Mob">
+      <UniqueIdentifier>{09008de0-7f90-41bc-8147-8c1ee6389ad2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Perlin.cpp" />
@@ -418,16 +496,7 @@
       <Filter>sprite\title</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\SelectInventory.png" />
-    <ImageContentTask Include="Resource\sprite\GameStartButton.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\GameEndButton.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\Experience_Gauge.png">
-      <Filter>sprite</Filter>
-    </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png">
       <Filter>sprite</Filter>
     </ImageContentTask>
     <ImageContentTask Include="Resource\sprite\OnHandInventory.png">
@@ -442,11 +511,24 @@
     <ImageContentTask Include="Resource\sprite\CraftingBox.png">
       <Filter>sprite\inventory</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Diamond_Hoe.png">
-      <Filter>sprite\items</Filter>
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png" />
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png" />
+    <ImageContentTask Include="Resource\sprite\Experience_Gauge.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png">
+      <Filter>sprite\button</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Golden_Pickaxe.png">
-      <Filter>sprite\items</Filter>
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\ConfigurationButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\GameStartButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\GameEndButton.png">
+      <Filter>sprite\button</Filter>
     </ImageContentTask>
   </ItemGroup>
   <ItemGroup>

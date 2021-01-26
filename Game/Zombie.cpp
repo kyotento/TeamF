@@ -2,7 +2,7 @@
 #include "Zombie.h"
 
 
-Zombie::Zombie()
+Zombie::Zombie() : Enemy(enEntity_Zombie)
 {
 }
 
@@ -29,7 +29,12 @@ bool Zombie::Start()
 
 	m_characon.SetPosition(m_position);
 
+	m_hp = 20;					//体力の設定。
 	m_attackPow = 1;			//攻撃力の設定。
+	m_knockBack = 0.5f;			//ノックバック倍率。
+
+	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
+	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
 
 	return true;
 }
@@ -40,16 +45,21 @@ void Zombie::Update()
 	if (m_position.y <= 3.f) {
 		return;
 	}
+	//エネミーが存在しているときのみ。
+	if (m_enemyState != enEnemy_death) {
+		Tracking();				//プレイヤーを追跡する処理。
+		StateManagement();		//状態管理。
 
-	Tracking();				//プレイヤーを追跡する処理。
-	StateManagement();		//状態管理。
-
-	//サバイバルのとき。
-	if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-		Attack();				//攻撃。
+		//サバイバルのとき。
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+			Attack();				//攻撃。
+		}
 	}
+	KnockBack();	//ノックバック処理。
+	Death();		//死亡判定
 }
 
+//攻撃処理。
 void Zombie::Attack()
 {
 	if (m_enemyState == enEnemy_attack) {	//攻撃状態のとき。

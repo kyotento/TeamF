@@ -96,11 +96,3 @@ int TitleSelect::Click()
 
 	return m_buttonNum;		//‰æ‘œ‚Ì”Ô†ŠO‚Ì”’lB
 }
-
-
-//CVector2 TitleSelect::GetSize() const 
-//{
-//	CVector2 scale = { 292.f,28.f };
-//	scale *= m_scale;
-//	return scale;
-//}

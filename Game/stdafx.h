@@ -13,3 +13,5 @@
 #include <unordered_map>
 
 using namespace DemolisherWeapon;
+
+#include "IntVector3.h"

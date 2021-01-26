@@ -51,8 +51,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animals.cpp" />
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="Config.cpp" />
+    <ClCompile Include="CowGenerator.cpp" />
+    <ClCompile Include="MCCharaCon.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MobGenerator.cpp" />
+    <ClCompile Include="Cow.cpp" />
+    <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="ZombieGenerator.cpp" />
+    <ClInclude Include="Animals.h" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
     <ClCompile Include="CraftingController.cpp" />
@@ -77,9 +87,11 @@
     <ClCompile Include="InventoryController.cpp" />
     <ClCompile Include="InventoryView.cpp" />
     <ClCompile Include="ItemDicitionary.cpp" />
+    <ClCompile Include="PlayerDeath.cpp" />
     <ClCompile Include="PlayerInventory.cpp" />
     <ClCompile Include="InventorySlot.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemDisplay.cpp" />
     <ClCompile Include="ItemImage.cpp" />
     <ClCompile Include="ItemStack.cpp" />
     <ClCompile Include="main.cpp" />
@@ -105,6 +117,14 @@
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WorldInfoFile.cpp" />
     <ClCompile Include="Zombie.cpp" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Cow.h" />
+    <ClInclude Include="CowGenerator.h" />
+    <ClInclude Include="MCCharaCon.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MobGenerator.h" />
+    <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biome.h" />
@@ -121,6 +141,7 @@
     <ClInclude Include="InventoryController.h" />
     <ClInclude Include="InventorySlot.h" />
     <ClInclude Include="InventoryView.h" />
+    <ClInclude Include="ItemDisplay.h" />
     <ClInclude Include="ItemImage.h" />
     <ClInclude Include="ItemDictionary.h" />
     <ClInclude Include="KeyEvent.h" />
@@ -136,6 +157,8 @@
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="IntRect.h" />
     <ClInclude Include="IntVector3.h" />
+    <ClInclude Include="NullableItemStack.h" />
+    <ClInclude Include="PlayerDeath.h" />
     <ClInclude Include="PlayerInventory.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemStack.h" />
@@ -153,6 +176,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimpleMoveObj.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Sun.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="TitleSelect.h" />
     <ClInclude Include="World.h" />
@@ -164,6 +188,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
     <ImageContentTask Include="Resource\sprite\CraftingBox.png" />
     <ImageContentTask Include="Resource\sprite\ConfigurationButton.png" />
     <ImageContentTask Include="Resource\sprite\GameEndButton.png" />

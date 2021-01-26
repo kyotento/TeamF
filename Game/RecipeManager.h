@@ -26,6 +26,14 @@ public:
 		return GetResult( 2, itemArray );
 	}
 
+	bool GetInited(){
+		return m_inited;
+	}
+
+	void SetInited(){
+		m_inited = true;
+	}
+
 private:
 	RecipeManager(){}
 	~RecipeManager(){}
@@ -35,5 +43,7 @@ private:
 
 	using RecipeVector = std::vector<std::unique_ptr<Recipe>>;
 	std::map<std::pair<int, int>, RecipeVector> m_recipeMap;
+
+	bool m_inited = false;
 };
 
