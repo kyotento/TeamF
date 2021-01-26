@@ -79,5 +79,9 @@ private:
 	std::unique_ptr <Sun> m_sun;						//太陽
 	std::unique_ptr <ZombieGenerator> m_zombieGenerator;//ゾンビツクール。
 	std::unique_ptr <Menu> m_menu;						//メニュー。
+	std::unique_ptr <CowGenerator> m_cowGenerator;
+
+	Config* m_config = nullptr;
+
 };
 
