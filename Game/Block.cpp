@@ -3,6 +3,7 @@
 #include "CollisionIndex.h"
 #include "World.h"
 #include "Light.h"
+#include "BlockFactory.h"
 
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
@@ -16,6 +17,14 @@ Block::~Block(){
 		m_state = enCube_None;
 		CalcAddLight(true);
 	}
+}
+
+AABB Block::GetAABB()const {
+	//ブロックAABB
+	AABB aabb = BlockFactory::GetAABB(m_state);
+	aabb.min += GetModelPos();
+	aabb.max += GetModelPos();
+	return aabb;
 }
 
 void Block::CalcAddLight(bool isDestroy) {
@@ -198,14 +207,6 @@ void Block::SetPos( int x, int y, int z ){
 
 	//光の計算 ここじゃない
 	CalcAddLight();
-}
-
-void Block::SetPosWithWorldPos(const CVector3& worldpos) {
-	m_model.SetPos(worldpos);
-
-	if (m_collision) {
-		m_collision->SetPosition(worldpos + CVector3::Up() * (WIDTH * 0.5f));
-	}
 }
 
 void Block::EnableCollision(){

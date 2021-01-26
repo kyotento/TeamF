@@ -5,11 +5,16 @@
 
 #include "BlockRenderingLightParameter.h"
 
+namespace {
+	constexpr float BLOCK_SIZE_HALF = Block::WIDTH * 0.5f;
+}
+
 static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
 static int BLOCK_HP_ARRAY[enCube_Num]{};
 
 SkinModelEffectShader BlockFactory::m_s_ps;
 int BlockFactory::m_instanceMax = -1;
+AABB BlockFactory::BLOCK_AABB_ARRAY[enCube_Num];
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -38,6 +43,11 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_HP_ARRAY[enCube_GoldOre] = 36;
 	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
 	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
+
+	for (int i = 0; i < enCube_Num; i++) {
+		BLOCK_AABB_ARRAY[i].min = { -BLOCK_SIZE_HALF , 0.0f, -BLOCK_SIZE_HALF };
+		BLOCK_AABB_ARRAY[i].max = { BLOCK_SIZE_HALF , BLOCK_SIZE_HALF * 2.0f, BLOCK_SIZE_HALF };
+	}
 
 	//シェーダー読み込み
 	D3D_SHADER_MACRO macros[] = {

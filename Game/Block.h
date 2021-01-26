@@ -2,6 +2,7 @@
 #pragma once
 #include "../BlockType.h"
 #include "Light.h"
+#include "AABB.h"
 
 class Player;
 class World;
@@ -18,15 +19,14 @@ public:
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
-		
-	//! @brief ワールド座標を使ってポジションをセット。
-	//! ※いずれなくなる関数
-	void SetPosWithWorldPos(const CVector3& worldpos);
 
 	//! @brief モデルのポジションを取得
 	const CVector3& GetModelPos()const {
 		return m_model.GetPos();
 	}
+
+	//! @brief このブロックのAABBを取得
+	AABB GetAABB()const;
 
 	//! @brief モデルを初期化
 	void InitModel(const wchar_t* filePath);
@@ -68,6 +68,8 @@ public:
 	void DisableCollision(){
 		m_collision.reset();
 	}
+
+	//HPを設定
 	void SetHP(const int hp)
 	{
 		m_maxHP = hp;

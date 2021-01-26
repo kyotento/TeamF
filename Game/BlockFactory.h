@@ -18,14 +18,23 @@ public:
 	//! @brief モデルパスを取得。 Item クラスが使用する。
 	static const wchar_t* GetModelPath( EnCube blockType );
 
+	//! @brief ブロックのＡＡＢＢを取得する。
+	static const AABB& GetAABB(EnCube blockType) {
+		return BLOCK_AABB_ARRAY[blockType];
+	}
+
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
-	static std::unique_ptr<Block> CreateBlock( EnCube blockType );
+	static std::unique_ptr<Block> CreateBlock( EnCube blockType );	
 
 private:
 	//ブロック描画シェーダー
 	static SkinModelEffectShader m_s_ps;
+
 	//インスタンス数
 	static int m_instanceMax;
+
+	//ブロックのAABB
+	static AABB BLOCK_AABB_ARRAY[enCube_Num];
 };
 

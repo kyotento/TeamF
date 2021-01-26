@@ -65,6 +65,7 @@
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
     <ClInclude Include="ClickEvent.h" />
