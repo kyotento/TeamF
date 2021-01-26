@@ -122,6 +122,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 
 					//仮想ブロックの作成
 					if (!first) {
+						//int ci = 0;
 						createAABBmax.x += Block::WIDTH;
 						createAABBmin.x -= Block::WIDTH;
 						for (int bi = 0; bi < (createAABBmax.x - createAABBmin.x) / Block::WIDTH; bi++) {
@@ -136,7 +137,8 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 							virtualAABB.min.y = setPos.y;
 							virtualAABB.max.y = setPos.y + Block::WIDTH;
 							aabbs.emplace_back(virtualAABB);
-							
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
+
 							setPos.z = createAABBmax.z + (Block::WIDTH * 0.5f) + (m_colSize.z * 2.0f - m_offset);
 
 							//作成
@@ -144,6 +146,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 							virtualAABB.min.y = setPos.y;
 							virtualAABB.max.y = setPos.y + Block::WIDTH;
 							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 						}
 						createAABBmax.x += -Block::WIDTH;
 						createAABBmin.x -= -Block::WIDTH;
@@ -162,6 +165,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 							virtualAABB.min.y = setPos.y;
 							virtualAABB.max.y = setPos.y + Block::WIDTH;
 							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 
 							setPos.x = createAABBmax.x + (Block::WIDTH * 0.5f) + (m_colSize.x * 2.0f - m_offset);
 
@@ -170,6 +174,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 							virtualAABB.min.y = setPos.y;
 							virtualAABB.max.y = setPos.y + Block::WIDTH;
 							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 						}
 					}
 				}
