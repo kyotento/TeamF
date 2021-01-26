@@ -44,6 +44,13 @@ PSOutput_RenderGBuffer PSMain_McBlockRenderGBuffer(PSInput In)
     lightScaleSky *= cb_t;
     
     Out.albedo.rgb *= max(lightScale, lightScaleSky);
+    
+    //è„ñ ÇÕñæÇÈÇ¢
+    //â∫ñ ÇÕà√Ç¢
+    Out.albedo.rgb *= 1.0f + 0.2f * (Out.normal.y - 1.0f);
+    
+    //Xï˚å¸ñ ÇÕÇøÇÂÇ¡Ç∆à√Ç¢
+    Out.albedo.rgb *= 1.0f - 0.4f * abs(Out.normal.x);   
 
     PosRender(In, Out);
 
