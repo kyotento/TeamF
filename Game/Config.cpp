@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Config.h"
+//#include "Title.h"
 #include "Game.h"
 
 Config::Config()
@@ -18,15 +19,19 @@ bool Config::Start()
 	m_chunk = m_game->GetChunkRange();
 
 	m_spriteRender[0].Init(L"Resource/spriteData/MinusButton.dds");
+	m_position[0] = { 0.3f,0.4f };
+	m_spriteRender[0].SetPos(m_position[0]);
 	m_spriteRender[1].Init(L"Resource/spriteData/ChunkButton.dds");
+	m_position[1] = { 0.5f,0.4f };
+	m_spriteRender[1].SetPos(m_position[1]);
 	m_spriteRender[2].Init(L"Resource/spriteData/PlusButton.dds");
+	m_position[2] = { 0.7f,0.4f };
+	m_spriteRender[2].SetPos(m_position[2]);
 	m_spriteRender[3].Init(L"Resource/spriteData/DoneButton.dds");
+	m_position[3] = { 0.5f,0.6125f };
+	m_spriteRender[3].SetPos(m_position[3]);
 
 	for (int i = 0; i < m_buttonNum; i++) {
-		m_position[i] = { 0.5f,0.4f };
-		float posY = 0.125f * i;		//Y座標の加算値。
-		m_position[i].y += posY;
-		m_spriteRender[i].SetPos(m_position[i]);
 		m_spriteRender[i].SetScale(m_scale);
 	}
 
@@ -91,17 +96,26 @@ void Config::ClickProcess()
 		if (Click() == 3) {			//Done.
 			if (m_backclass == enMenu) {
 				m_game->NewEscMenu();
+				SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
+				SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
+				m_game->SetChunkRange(m_chunk);
 				DeleteGO(this);
-				SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
-				SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
-				m_game->SetChunkRange(m_chunk);
 			}
-			if (m_backclass == enTitle) {
-				//タイトルのボタンを生成する。
-				SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
-				SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
-				m_game->SetChunkRange(m_chunk);
-			}
+			//if (m_backclass == enTitle) {
+			//	//タイトルのボタンを生成する。
+			//	m_title->NewTitleSelect();
+			//	SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
+			//	SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
+			//	m_game->SetChunkRange(m_chunk);
+			//	DeleteGO(this);
+			//}
+		}
+		//描画距離を大きくし過ぎると、重過ぎるため上限を設定。
+		if (m_chunk <= 1) {
+			m_chunk = 1;
+		}
+		if (m_chunk >= 5) {
+			m_chunk = 5;
 		}
 	}
 }

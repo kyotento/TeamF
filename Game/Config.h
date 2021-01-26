@@ -1,6 +1,7 @@
 #pragma once
 
 class Game;
+//class Title;
 class Config : public IGameObject
 {
 public:
@@ -36,6 +37,11 @@ public:
 	/// </summary>
 	void ClickProcess();
 
+	//タイトルを設定する。
+	//void SetTitle(Title* title) {
+	//	m_title = title;
+	//}
+
 	int Click();		//クリックした画像番号を返す。
 
 private:
@@ -54,7 +60,8 @@ private:
 	float m_scale = 2.f;			//ボタンのスケール。		
 
 	Game* m_game = nullptr;			//ゲーム。
+//	Title* m_title = nullptr;		//タイトル。
 
-	CFont m_font;						//フォント。
+	CFont m_font;					//フォント。
 };
 
