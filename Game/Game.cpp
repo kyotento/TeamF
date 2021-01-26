@@ -14,6 +14,7 @@
 #include "ZombieGenerator.h"
 #include "Menu.h"
 #include "Config.h"
+#include "CowGenerator.h"
 
 Game::Game()
 {
@@ -47,9 +48,12 @@ bool Game::Start()
 
 	m_sun.reset(NewGO<Sun>());
 
-	//m_zombieGenerator.reset(NewGO<ZombieGenerator>());
-	//m_zombieGenerator->SetWorld(m_world.get());
+	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
+	m_zombieGenerator->SetWorld(m_world.get());
 	
+	m_cowGenerator.reset(NewGO<CowGenerator>());
+	m_cowGenerator->SetWorld(m_world.get());
+
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
 
 	return true;

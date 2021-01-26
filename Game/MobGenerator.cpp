@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MobGenerator.h"
 #include "Player.h"
-#include "World.h"
+
 
 namespace {
 	//—”¶¬B

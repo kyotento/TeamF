@@ -10,6 +10,7 @@ class Sun;
 class Menu;
 class ZombieGenerator;
 class Config;
+class CowGenerator;
 class Game :public IGameObject
 {
 public:
@@ -72,12 +73,13 @@ private:
 
 	bool m_isEscMenu = false;			//EscMenuが出ているかどうか。
 
-	std::unique_ptr	<World> m_world;						//ワールド。
+	bool m_isConfig = true;
+	std::unique_ptr	<World> m_world;					//ワールド。
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。
 	std::unique_ptr <GameMode> m_gameMode;				//ゲームモード。
 	std::unique_ptr <Sun> m_sun;						//太陽
 	std::unique_ptr <ZombieGenerator> m_zombieGenerator;//ゾンビツクール。
 	std::unique_ptr <Menu> m_menu;						//メニュー。
-	Config* m_config = nullptr;					//コンフィグ。
+	std::unique_ptr <CowGenerator> m_cowGenerator;		//牛。
 };
 

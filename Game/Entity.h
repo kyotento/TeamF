@@ -5,7 +5,8 @@
 enum EnEntity
 {
 	enEntity_None,			//ノーン(今んとこゾンビしか判定に使ってないので他はこれで)。
-	enEntity_Zombie			//ゾンビ。
+	enEntity_Zombie,		//ゾンビ。
+	enEntity_Cow			//牛。			
 };
 
 class World;
@@ -32,7 +33,6 @@ public:
 		return m_enEntity;
 	}
 protected:
-
 	World* m_world = nullptr;
 	EnEntity m_enEntity = enEntity_None;
 };

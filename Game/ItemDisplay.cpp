@@ -14,6 +14,11 @@ namespace {
 	int DownPosY = 0;
 	int DownPosZ = 0;
 
+	int minDownPos = -50;
+	int maxDownPos = 0;
+
+	int Limit = 0;
+
 	float UpPosY = 25;
 
 	const float handMullFront = 45.0f;
@@ -67,6 +72,10 @@ void ItemDisplay::Update()
 
 		//切り替えの処理。
 		Switching();
+
+		//クリックしたときのモーション処理。
+		LeftClickMouseToMoveHand();
+
 		m_skinModelRender->SetScale(m_scale);
 	}
 	else if (m_player->GetIsPlayerDead())
@@ -116,36 +125,30 @@ void ItemDisplay::Follow()
 void ItemDisplay::Switching()
 {
 
-	SwitchItemType();
-	int minDownPos = -50;
-	int maxDownPos = 0;
+	SwitchItemType();		//持つアイテムの情報の処理。
 
 	//切り替え
 	if (m_isItemChangeFlag && !swich_flag)
 	{
 		DownPosY = minDownPos;
-		DownPosZ = minDownPos;
 		initItem_flag = true;
 		swich_flag = true;
 	}
 	else if (m_isItemChangeFlag)
 	{
 		DownPosY = minDownPos;
-		DownPosZ = minDownPos;
 		initItem_flag = true;
 		swich_flag = true;
 	}
 	else if (swich_flag)
 	{
 		DownPosY++;
-		DownPosZ++;
 		BuildAgain();
 		//元の位置へ。
 		m_isItemChangeFlag = false;
 		if (DownPosY >= maxDownPos)
 		{
 			DownPosY = maxDownPos;
-			DownPosZ = maxDownPos;
 			swich_flag = false;
 		}
 	}
@@ -334,4 +337,22 @@ void ItemDisplay::SwitchItemType()
 			m_modelPath = item->GetModelPath();
 		}
 	}
+}
+
+//クリックに合わせて動かすよん。
+void ItemDisplay::LeftClickMouseToMoveHand()
+{
+	int minDown = -90;
+	if (GetKeyDown(VK_LBUTTON))
+	{
+		Limit = minDown;
+	}
+	if (Limit <= maxDownPos)
+	{
+		Limit += 3;
+	}
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(), Limit);
+	m_rotation.Multiply(m_rotationX);
+	m_skinModelRender->SetRot(m_rotation);
 }

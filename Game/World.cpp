@@ -5,6 +5,11 @@
 #include "IntRect.h"
 #include "BiomeManager.h"
 #include "DropItem.h"
+#include "Light.h"
+
+namespace {
+	const float timeBlockDurabilityValueRecover = 0.4f;
+}
 
 World::World(){
 	bool result = infoFile.Read();
@@ -171,6 +176,34 @@ void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	chunk->SetBlock( x, y, z, std::move( block ) );
 }
 
+char* World::GetLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetLightData(x, y, z);
+	}
+	return nullptr;
+}
+
+char* World::GetSkyLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetSkyLightData(x, y, z);
+	}
+	return nullptr;
+}
+
 Chunk* World::GetChunk( int x, int z ){
 	auto pair = std::make_pair( x, z );
 	if( m_chunkMap.count( pair ) == 0 ){
@@ -200,10 +233,6 @@ void World::LoadChunk( int x, int z ){
 	if( !IsExistChunk( x, z ) ){
 		Chunk* chunk = CreateChunk( x, z );
 
-		//ファイルから読み込む。
-		ChunkFiler filer;
-		bool readResult = filer.Read( *chunk );
-
 		//ファイルにチャンクが存在しなかったか、存在はしたが生成が済んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
@@ -211,12 +240,23 @@ void World::LoadChunk( int x, int z ){
 
 		//埋まったブロックを非表示にする。
 		ChunkCulling( *chunk );
+
+		//スカイライトの計算を行う
+		SkyLight skylight(this);
+		skylight.CalcSkyLight(chunk);
 	} else{
 		Chunk* chunk = GetChunk( x, z );
+
 		//チャンクが存在はしたが生成が住んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
+
+			//埋まったブロックを非表示にする。
 			ChunkCulling( *chunk );
+
+			//スカイライトの計算を行う
+			SkyLight skylight(this);
+			skylight.CalcSkyLight(chunk);
 		}
 	}
 }
@@ -262,6 +302,8 @@ void World::ChunkCulling( Chunk& chunk ){
 }
 
 void World::DeleteBlock( const CVector3& pos ){
+	//タイマーを0にする
+	m_timer = 0.0f;
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
@@ -276,6 +318,14 @@ void World::DeleteBlock( const CVector3& pos ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
+	m_block = GetBlock(x, y, z);
+	//ブロックのHPを減らす、とりあえず2入れてる
+	m_block->ReduceHP(2);
+	//ブロックのHPが0以上ならこれで終わり
+	if (m_block->GetHP() > 0)
+	{
+		return;
+	}
 	//ブロックをポップ。
 	{
 		//ドロップアイテムを作成。
@@ -287,6 +337,9 @@ void World::DeleteBlock( const CVector3& pos ){
 
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
+	//ブロック破壊されたらnullにする
+	m_block = nullptr;
+
 }
 
 bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
@@ -345,5 +398,19 @@ void World::AroundBlock( const CVector3& pos ){
 		}
 
 		block->SetIsDraw( doNotCulling );
+	}
+}
+
+void World::Update()
+{
+	if (m_block != nullptr) {
+		m_timer += GetDeltaTimeSec();
+		if (m_timer >= timeBlockDurabilityValueRecover)
+		{
+			m_timer = 0.0f;
+			m_block->RestoresBlockDurabilityValue();
+			m_block = nullptr;
+		}
+
 	}
 }

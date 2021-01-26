@@ -113,6 +113,10 @@ private:
 	/// アイテムをインベントリに合わせて切り替える。
 	/// </summary>
 	void SwitchItemType();
+	/// <summary>
+	/// 左クリックで右手動くよ。
+	/// </summary>
+	void LeftClickMouseToMoveHand();
 private:
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;	//モデル。
 	CVector3 m_position = CVector3::Zero();					//モデルを表示する座標。

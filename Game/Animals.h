@@ -109,12 +109,14 @@ protected:
 
 	enAnimalsState m_animalState = enAnimals_idle;						//状態。
 
-	CCharacterControllerType2 m_characon;								//キャラコン。
+	MCCharaCon m_characon;								//キャラコン。
 	CRayTracingModelRender m_raytraceModel;								//レイトレモデル。
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;		//スキンモデル。
 	Player* m_player = nullptr;									//プレイヤー。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+
+	int a = 0;
 };
 
