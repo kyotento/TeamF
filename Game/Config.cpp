@@ -92,14 +92,14 @@ void Config::ClickProcess()
 			if (m_backclass == enMenu) {
 				m_game->NewEscMenu();
 				DeleteGO(this);
-				SetFogDistance(m_chunk * 1000);					//フォグが完全にかかりきる距離。
-				SetFogStartDistance(m_chunk * 1000 - 200);		//フォグが始まる距離。
+				SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
+				SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
 				m_game->SetChunkRange(m_chunk);
 			}
 			if (m_backclass == enTitle) {
 				//タイトルのボタンを生成する。
-				SetFogDistance(m_chunk * 1000);					//フォグが完全にかかりきる距離。
-				SetFogStartDistance(m_chunk * 1000 - 200);		//フォグが始まる距離。
+				SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
+				SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
 				m_game->SetChunkRange(m_chunk);
 			}
 		}

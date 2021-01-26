@@ -45,6 +45,10 @@ public:
 		return m_chunkLoadRange;
 	}
 
+	void SetChunkCoadRange(int chunkRange) {
+		m_chunkLoadRange = chunkRange;
+	}
+
 	Block* GetBlock( const CVector3& pos ){
 		int x = (int)std::floorf( pos.x );
 		int y = (int)std::floorf( pos.y );

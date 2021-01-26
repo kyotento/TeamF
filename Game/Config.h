@@ -44,7 +44,7 @@ private:
 
 	static const int m_buttonNum = 4;		//生成されるボタンの数。
 
-	int m_chunk = 3;						//Doneのときに反映されるチャンク。
+	int m_chunk = 1;						//Doneのときに反映されるチャンク。
 
 	GameObj::CSpriteRender m_spriteRender[m_buttonNum];		//画像。
 

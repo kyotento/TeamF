@@ -57,6 +57,7 @@ bool Game::Start()
 
 void Game::Update()
 {
+	m_world->SetChunkCoadRange(m_chunkRange);		//読み込みチャンクの更新。
 	EscMenu();
 }
 

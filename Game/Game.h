@@ -68,7 +68,7 @@ public:
 
 private:
 
-	int m_chunkRange = 3;				//描画距離。
+	int m_chunkRange = 1;				//描画距離。
 
 	bool m_isEscMenu = false;			//EscMenuが出ているかどうか。
 
