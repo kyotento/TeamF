@@ -6,65 +6,65 @@
 class Player;
 class World;
 
-//! @brief ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìï¿½ï¿½Æƒï¿½ï¿½fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½[ï¿½ï¿½ï¿½ï¿½ÂƒNï¿½ï¿½ï¿½Xï¿½B
-//! @details ï¿½ï¿½ï¿½ï¿½ï¿½É‚ï¿½ BlockFactory ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½Ä‚Ù‚ï¿½ï¿½ï¿½ï¿½B
-//! @details ï¿½ï¿½ï¿½ï¿½Ì”hï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ BlockFactory::CreateBlock ï¿½Öï¿½ï¿½É’Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½B
+//! @brief ƒuƒƒbƒN‚Ìî•ñ‚Æƒ‚ƒfƒ‹ƒŒƒ“ƒ_[‚ğ‚ÂƒNƒ‰ƒXB
+//! @details ¶¬‚É‚Í BlockFactory ‚ğg—p‚µ‚Ä‚Ù‚µ‚¢B
+//! @details ‚±‚ê‚Ì”h¶ƒNƒ‰ƒX‚ğì‚Á‚½‚ç BlockFactory::CreateBlock ŠÖ”‚É’Ç‰Á‚·‚éB
 //! @author Takayama
 class Block{
 public:
 	Block();
 	virtual ~Block();
 
-	//! @brief ï¿½|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½B
-	//! @details Worldï¿½ï¿½1ï¿½uï¿½ï¿½ï¿½bï¿½N1ï¿½Pï¿½Ê‚Åï¿½ï¿½Wï¿½ï¿½^ï¿½pï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚½ï¿½ßAï¿½ï¿½ï¿½fï¿½ï¿½ï¿½É‚Íƒuï¿½ï¿½ï¿½bï¿½Nï¿½Ì•ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½İ’è‚µï¿½Ä‚ï¿½ï¿½ï¿½B
+	//! @brief ƒ|ƒWƒVƒ‡ƒ“‚ğƒZƒbƒgB
+	//! @details World‚Í1ƒuƒƒbƒN1’PˆÊ‚ÅÀ•W‚ğ‰^—p‚µ‚Ä‚¢‚é‚½‚ßAƒ‚ƒfƒ‹‚É‚ÍƒuƒƒbƒN‚Ì•‚ğæZ‚µ‚½’l‚ğİ’è‚µ‚Ä‚¢‚éB
 	void SetPos( int x, int y, int z );
 		
-	//! @brief ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Wï¿½ï¿½gï¿½ï¿½ï¿½Äƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½B
-	//! ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½È‚ï¿½Öï¿½ï¿½ï¿½ï¿½ï¿½
+	//! @brief ƒ[ƒ‹ƒhÀ•W‚ğg‚Á‚Äƒ|ƒWƒVƒ‡ƒ“‚ğƒZƒbƒgB
+	//! ¦‚¢‚¸‚ê‚È‚­‚È‚éŠÖ”
 	void SetPosWithWorldPos(const CVector3& worldpos);
 
-	//! @brief ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìƒ|ï¿½Wï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
+	//! @brief ƒ‚ƒfƒ‹‚Ìƒ|ƒWƒVƒ‡ƒ“‚ğæ“¾
 	const CVector3& GetModelPos()const {
 		return m_model.GetPos();
 	}
 
-	//! @brief ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//! @brief ƒ‚ƒfƒ‹‚ğ‰Šú‰»
 	void InitModel(const wchar_t* filePath);
 
-	//! @brief ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìï¿½Ş‚ï¿½İ’ï¿½B
-	//! @details ï¿½ï¿½ï¿½ÌŠÖï¿½ï¿½Íƒï¿½ï¿½fï¿½ï¿½ï¿½ï¿½ÏXï¿½ï¿½ï¿½È‚ï¿½ï¿½B
+	//! @brief ƒuƒƒbƒN‚Ìí—Ş‚ğİ’èB
+	//! @details ‚±‚ÌŠÖ”‚Íƒ‚ƒfƒ‹‚ğ•ÏX‚µ‚È‚¢B
 	void SetBlockType(EnCube enCube)
 	{
 		m_state = enCube;
 	}
-	//! @brief ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìï¿½Ş‚ï¿½æ“¾ï¿½B
+	//! @brief ƒuƒƒbƒN‚Ìí—Ş‚ğæ“¾B
 	EnCube GetBlockType() const
 	{
 		return m_state;
 	}
 
-	//! @brief ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ì•`ï¿½ï¿½ï¿½ï¿½ï¿½é‚©ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½B
-	//! @details ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½Ä‚ï¿½ï¿½ÄŒï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ì•`ï¿½ï¿½ï¿½~ï¿½ß‚é‚½ï¿½ß‚Égï¿½pï¿½ï¿½ï¿½ï¿½ï¿½B
+	//! @brief ƒ‚ƒfƒ‹‚Ì•`‰æ‚ğ‚·‚é‚©‚Ç‚¤‚©‚ğİ’èB
+	//! @details –„‚Ü‚Á‚Ä‚¢‚ÄŒ©‚¦‚È‚¢ƒuƒƒbƒN‚Ì•`‰æ‚ğ~‚ß‚é‚½‚ß‚Ég—p‚³‚ê‚éB
 	void SetIsDraw(bool isDraw){
 		m_model.SetIsDraw( isDraw );
 	}
 
-	//! @brief ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½è‚ªï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½B
+	//! @brief “–‚½‚è”»’è‚ª—LŒø‚©æ“¾B
 	bool IsCollisionEnabled() const{
 		return m_collision.operator bool();
 	}
 
-	//! @brief ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½Eï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ì“ï¿½ï¿½ï¿½B
-	//! @return true ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½B(ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìİ’uï¿½ï¿½ï¿½ï¿½È‚ï¿½)
-	//! @return false ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B(ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìİ’uï¿½ï¿½ï¿½ï¿½ï¿½)
+	//! @brief ƒuƒƒbƒN‚ğ‰EƒNƒŠƒbƒN‚µ‚½‚Æ‚«‚Ì“®ìB
+	//! @return true ‰½‚©‚ğÀs‚µ‚½B(ƒuƒƒbƒN‚Ìİ’u‚ğ‚µ‚È‚¢)
+	//! @return false ‰½‚àÀs‚µ‚È‚©‚Á‚½B(ƒuƒƒbƒN‚Ìİ’u‚ğ‚·‚é)
 	virtual bool OnClick( Player* player ){
 		return false;
 	}
 
-	//! @brief ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì—Lï¿½ï¿½ï¿½ï¿½ï¿½B
+	//! @brief “–‚½‚è”»’è‚Ì—LŒø‰»B
 	void EnableCollision();
 
-	//! @brief ï¿½ï¿½ï¿½ï¿½ï¿½è”»ï¿½ï¿½Ì–ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B
+	//! @brief “–‚½‚è”»’è‚Ì–³Œø‰»B
 	void DisableCollision(){
 		m_collision.reset();
 	}
@@ -73,73 +73,67 @@ public:
 		m_maxHP = hp;
 		m_hp = hp;
 	}
-	//HPï¿½ï¿½æ“¾
+	//HP‚ğæ“¾
 	const int GetHP() const
 	{
 		return m_hp;
 	}
-	//HPï¿½ï¿½ï¿½ï¿½ç‚·
+	//HP‚ğŒ¸‚ç‚·
 	void ReduceHP(const int attack)
 	{
 		m_hp -= attack;
 	}
-	//ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ì‘Ï‹vï¿½lï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ƒuƒƒbƒN‚Ì‘Ï‹v’l‚ğ‘S‰õ‚³‚¹‚é
 	void RestoresBlockDurabilityValue()
 	{
 		m_hp = m_maxHP;
 	}
 
-	//! @brief ï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½ï¿½Ô‚Ìİ’ï¿½B
+	//! @brief ƒ‰ƒCƒeƒBƒ“ƒOó‘Ô‚Ìİ’èB
 	void SetLightingData(int row, int column, char lightpower) {
-		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "ï¿½ï¿½ï¿½é‚³ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ÍˆÍŠOï¿½Å‚ï¿½")
+		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "???????x???????O???")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
 		if (column < 2) {
-			m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];//ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½Cï¿½g
+			m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];//ƒuƒƒbƒNƒ‰ƒCƒg
 		}
 		else {
-			m_lighting.m[row][column] = LightUtil::DRAWING_SKY_LIGHT[lightpower];//ï¿½Xï¿½Jï¿½Cï¿½ï¿½ï¿½Cï¿½g
+			m_lighting.m[row][column] = LightUtil::DRAWING_SKY_LIGHT[lightpower];//ƒXƒJƒCƒ‰ƒCƒg
 		}
 	}
-	//! @brief ï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½ï¿½sï¿½ï¿½ï¿½B
+	//! @brief ƒ‰ƒCƒeƒBƒ“ƒO‚ğs‚¤B
 	void Lighting(int row, int column, char lightpower) {
-		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "ï¿½ï¿½ï¿½é‚³ï¿½ï¿½ï¿½xï¿½ï¿½ï¿½ï¿½ï¿½ÍˆÍŠOï¿½Å‚ï¿½")
+		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "???????x???????O???")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
-		//ï¿½ï¿½è–¾ï¿½é‚¢ï¿½ï¿½ï¿½ï¿½gï¿½p
+		//‚æ‚è–¾‚é‚¢•û‚ğg—p
 		if (column < 2) {
-			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);//ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½Cï¿½g
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);//ƒuƒƒbƒNƒ‰ƒCƒg
 		}
 		else {
-			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_SKY_LIGHT[lightpower]);//ï¿½Xï¿½Jï¿½Cï¿½ï¿½ï¿½Cï¿½g
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_SKY_LIGHT[lightpower]);//ƒXƒJƒCƒ‰ƒCƒg
 		}
 	}
-	//! @brief ï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½`ï¿½ï¿½ÌXï¿½Vï¿½B
+	//! @brief ƒ‰ƒCƒeƒBƒ“ƒO•`‰æ‚ÌXV
 	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
-	//! @brief ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ì•ï¿½ï¿½Aï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½B
+	//! @brief ƒuƒƒbƒN‚Ì•A‰œs‚«A‚‚³B
 	static constexpr float WIDTH = 140;
 
 private:
-	//! @brief ï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½vï¿½Zï¿½ï¿½ï¿½ï¿½
+	//! @brief ƒ‰ƒCƒeƒBƒ“ƒOŒvZ‚·‚é
 	void CalcAddLight(bool isDestroy = false);
 
 private:
-	//ï¿½ï¿½ï¿½fï¿½ï¿½
+	//ƒ‚ƒfƒ‹
 	GameObj::CInstancingModelRender m_model;
-	CRayTracingModelRender m_raytraceModel;//ï¿½ï¿½ï¿½Cï¿½gï¿½ï¿½ï¿½p
+	CRayTracingModelRender m_raytraceModel;//ƒŒƒCƒgƒŒ—p
 
-	//! @brief ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìï¿½ŞB
+	//! @brief ƒuƒƒbƒN‚Ìí—ŞB
 	EnCube m_state = enCube_None;
 
-	//ï¿½ï¿½ï¿½é‚³
+	//–¾‚é‚³
 	CMatrix m_lighting = CMatrix::Zero();
-	//int m_blockLighting[6] = {};
-	//int m_skyLighting[6] = {};
-	//ï¿½ï¿½ï¿½Ìƒuï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ÍˆÍ“ï¿½É‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½g
-	//std::list<Block*> m_lightSourceList;
-	//ï¿½ï¿½ï¿½Ìƒuï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ä‰eï¿½ï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ìƒï¿½ï¿½Xï¿½g
-	//std::list<Block*> m_lightingBlockList;
 
-	//ï¿½Rï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½
+	//ƒRƒŠƒWƒ‡ƒ“
 	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
 	int m_maxHP = 0;
 	int m_hp = 10;

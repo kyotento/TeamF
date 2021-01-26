@@ -39,7 +39,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
 	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
 
-	//ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Ç‚İï¿½ï¿½ï¿½
+	//ƒVƒF[ƒ_[“Ç‚İ‚İ
 	D3D_SHADER_MACRO macros[] = {
 		"INSTANCING", "1",
 		NULL, NULL
@@ -55,9 +55,9 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 		
 		instanceModel->SetIsFrustumCulling( true );
 
-		//ï¿½ï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½pIInstanceDataï¿½ï¿½İ’ï¿½
+		//ƒ‰ƒCƒeƒBƒ“ƒO—pIInstanceData‚ğİ’è
 		instanceModel->AddIInstanceData(L"BlockRenderingLightParameter", std::make_unique<BlockRenderingLightParameter>(instanceMax));
-		//ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½İ’ï¿½
+		//ƒVƒF[ƒ_[İ’è
 		instanceModel->GetModelRender().GetSkinModel().FindMaterialSetting(
 			[&](MaterialSetting* mat) {
 				mat->SetPS(&m_s_ps);
@@ -74,7 +74,7 @@ void BlockFactory::FindBlockModel(std::function<void(GameObj::InstancingModel*)>
 		if (!type)continue;
 		GameObj::InstancingModel* instanceModel = mngr.Load(m_instanceMax, type);
 
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½s
+		//ˆ—Às
 		func(instanceModel);
 	}
 }
@@ -86,7 +86,7 @@ const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
 std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	std::unique_ptr<Block> block;
 
-	//ï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ÉƒAï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½È‚Ç‚Í•Ê‚ÌƒNï¿½ï¿½ï¿½Xï¿½B
+	//ƒNƒŠƒbƒN‚ÉƒAƒNƒVƒ‡ƒ“‚ğ‹N‚±‚·ƒuƒƒbƒN‚È‚Ç‚Í•Ê‚ÌƒNƒ‰ƒXB
 	if( blockType == enCube_CraftingTable ){
 		block = std::make_unique<CraftingTable>();
 	} else{
