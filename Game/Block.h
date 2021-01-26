@@ -70,16 +70,36 @@ public:
 	void DisableCollision(){
 		m_collision.reset();
 	}
-
+	void SetHP(const int hp)
+	{
+		m_maxHP = hp;
+		m_hp = hp;
+	}
+	//HPを取得
+	const int GetHP() const
+	{
+		return m_hp;
+	}
+	//HPを減らす
+	void ReduceHP(const int attack)
+	{
+		m_hp -= attack;
+	}
+	//ブロックの耐久値を全快させる
+	void RestoresBlockDurabilityValue()
+	{
+		m_hp = m_maxHP;
+	}
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
 private:
 	GameObj::CInstancingModelRender m_model;
 	CRayTracingModelRender m_raytraceModel;
-
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 
 	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
+	int m_maxHP = 0;
+	int m_hp = 10;
 };
 
