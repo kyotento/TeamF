@@ -93,15 +93,27 @@ public:
 	void SetLightingData(int row, int column, char lightpower) {
 		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "���邳���x�����͈͊O�ł�")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
-		m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];
+		if (column < 2) {
+			m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];//�u���b�N���C�g
+		}
+		else {
+			m_lighting.m[row][column] = LightUtil::DRAWING_SKY_LIGHT[lightpower];//�X�J�C���C�g
+		}
 	}
 	//! @brief ���C�e�B���O��s���B
 	void Lighting(int row, int column, char lightpower) {
 		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "���邳���x�����͈͊O�ł�")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
 		//��薾�邢����g�p
-		m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);
+		if (column < 2) {
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);//�u���b�N���C�g
+		}
+		else {
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_SKY_LIGHT[lightpower]);//�X�J�C���C�g
+		}
 	}
+	//! @brief ���C�e�B���O�`��̍X�V�B
+	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
 	//! @brief �u���b�N�̕��A���s���A�����B
 	static constexpr float WIDTH = 140;
