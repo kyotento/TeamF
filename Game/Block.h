@@ -73,15 +73,27 @@ public:
 	void SetLightingData(int row, int column, char lightpower) {
 		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "明るさレベルが範囲外です")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
-		m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];
+		if (column < 2) {
+			m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];//ブロックライト
+		}
+		else {
+			m_lighting.m[row][column] = LightUtil::DRAWING_SKY_LIGHT[lightpower];//スカイライト
+		}
 	}
 	//! @brief ライティングを行う。
 	void Lighting(int row, int column, char lightpower) {
 		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "明るさレベルが範囲外です")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
 		//より明るい方を使用
-		m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);
+		if (column < 2) {
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);//ブロックライト
+		}
+		else {
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_SKY_LIGHT[lightpower]);//スカイライト
+		}
 	}
+	//! @brief ライティング描画の更新。
+	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;

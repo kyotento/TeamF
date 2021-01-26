@@ -80,7 +80,7 @@ int LightUtil::SpreadDark(World* world, char oldLightPower, const IntVector3& po
 		return 0;
 	}
 	std::list<std::unique_ptr<IntVector3>> refleshList;
-	SpreadDarkInner(world, oldLightPower, pos, fromDir, isSkyLight, refleshList);
+	SpreadDarkInner(world, oldLightPower, pos, fromDir, isSkyLight, refleshList, 0);
 
 	int count = 0;
 	bool reflesh = true;
@@ -150,7 +150,7 @@ int LightUtil::SpreadDark(World* world, char oldLightPower, const IntVector3& po
 	}
 	return count;
 }
-void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight, std::list<std::unique_ptr<IntVector3>>& refleshList)
+void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVector3& pos, const IntVector3& fromDir, bool isSkyLight, std::list<std::unique_ptr<IntVector3>>& refleshList, int nest)
 {
 	char newOldLightPower[6] = { -1,-1 ,-1 ,-1 ,-1 ,-1 };
 	for (int i = 0; i < 6; i++) {//6方向に伝搬(前後上下左右)
@@ -190,7 +190,7 @@ void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVecto
 	}
 	for (int i = 0; i < 6; i++) {
 		if (newOldLightPower[i] > 0) {			
-			SpreadDarkInner(world, newOldLightPower[i], pos + spreadDir[i], spreadDir[i], isSkyLight, refleshList);
+			SpreadDarkInner(world, newOldLightPower[i], pos + spreadDir[i], spreadDir[i], isSkyLight, refleshList, nest + 1);
 		}
 	}
 }
@@ -247,6 +247,146 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 
 				//光の伝播
 				LightUtil::SpreadLight(m_world, LightUtil::LIGHT_POWER_MAX - 1, worldBlockPos, { 0,0,0 }, true);
+			}
+		}
+	}
+}
+
+void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
+	//これより上にブロックがあるか検索
+	/*for (int y = pos.y + 1; y < Chunk::HEIGHT; y++) {
+		IntVector3 sampPos = { pos.x, y, pos.z };
+		auto block = m_world->GetBlock(sampPos);
+		if (block) {
+			return;//あるなら終わり
+		}
+	}*/
+	if (pos.y != Chunk::HEIGHT - 1) {//一番上じゃない
+		IntVector3 sampPos = { pos.x, pos.y + 1, pos.z };
+		auto light = m_world->GetSkyLightData(sampPos);
+		if (!light || *light < LightUtil::LIGHT_POWER_MAX) {//一個上のライトが最大値なら遮蔽はない
+			return;
+		}
+	}
+
+	if (isBlock) {//指定位置にブロックが置かれた
+
+		//遮蔽されてないならブロックにぶつかるまで自分より下を暗くする
+		for (int y = pos.y - 1; y >= 0; y--) {
+			IntVector3 sampPos = { pos.x, y, pos.z };
+
+			auto block = m_world->GetBlock(sampPos);
+			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+				break;
+			}
+
+			auto light = m_world->GetSkyLightData(sampPos);
+			if (light) {
+				*light = 0;
+			}
+		}
+
+		//負の伝播
+		for (int y = pos.y - 1; y >= 0; y--) {
+			IntVector3 sampPos = { pos.x, y, pos.z };
+
+			auto block = m_world->GetBlock(sampPos);
+			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+				break;
+			}
+
+			auto light = m_world->GetSkyLightData(sampPos);
+			if (light) {
+				char oldPower = LightUtil::LIGHT_POWER_MAX;
+				//負の伝播
+				int count = LightUtil::SpreadDark(m_world, oldPower, sampPos, { 0,0,0 }, true);				
+			}
+		}
+
+
+
+		//周囲からの伝播と描画更新
+		for (int y = pos.y - 1; y >= 0; y--) {
+			IntVector3 sampPos = { pos.x, y, pos.z };
+
+			auto block = m_world->GetBlock(sampPos);
+			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+				break;
+			}
+
+			auto light = m_world->GetSkyLightData(sampPos);
+			if (light) {
+				//TODO いっかいでいい?
+				for (int sb = 0; sb < 6; sb++) {
+					//周りから光を伝搬させる
+					auto pos = sampPos + LightUtil::spreadDir[sb];
+					//スカイ
+					auto samplight = m_world->GetSkyLightData(pos);
+					if (samplight) {
+						LightUtil::SpreadLight(m_world, *samplight - 1, pos, LightUtil::spreadDir[sb] * -1, true);
+					}
+				}
+				//skyLightPower = *skyLight;			
+
+				//自分と周囲のライティング描画更新
+				if (block) {
+					block->RefleshDrawLighting(m_world, sampPos, -1, *light);
+				}
+				else {
+					//上下左右前後のブロックのライティング
+					for (int sb = 0; sb < 6; sb++) {
+						IntVector3 samplePos = sampPos + LightUtil::spreadDir[sb];
+						Block* block = m_world->GetBlock(samplePos);
+						if (block) {
+							if (sb < 4) {
+								block->SetLightingData(sb, 2, *light);
+							}
+							else {
+								block->SetLightingData(sb - 4, 3, *light);
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+	else {//指定位置からブロックが消えた	
+		//遮蔽されてないならブロックにぶつかるまで自分から下を照らす
+		for (int y = pos.y; y >= 0; y--) {
+			IntVector3 sampPos = { pos.x, y, pos.z };
+
+			auto block = m_world->GetBlock(sampPos);
+			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+				break;
+			}
+
+			auto light = m_world->GetSkyLightData(sampPos);
+			if (light) {
+				*light = LightUtil::LIGHT_POWER_MAX;
+
+				//自分と周囲のライティング描画更新
+				if (block) {
+					block->RefleshDrawLighting(m_world, sampPos, -1, *light);
+				}
+				else {
+					//上下左右前後のブロックのライティング
+					for (int sb = 0; sb < 6; sb++) {
+						IntVector3 samplePos = sampPos + LightUtil::spreadDir[sb];
+						Block* block = m_world->GetBlock(samplePos);
+						if (block) {
+							if (sb < 4) {
+								block->SetLightingData(sb, 2, *light);
+							}
+							else {
+								block->SetLightingData(sb - 4, 3, *light);
+							}
+						}
+					}
+				}
+
+				//光の伝播
+				LightUtil::SpreadLight(m_world, LightUtil::LIGHT_POWER_MAX - 1, sampPos, { 0,0,0 }, true);
 			}
 		}
 	}

@@ -24,8 +24,8 @@ void Block::CalcAddLight(bool isDestroy) {
 		return;
 	}
 
-	int lightPower = 0;//ライト力(ぢから)
-
+	//ライト力(ぢから)
+	int lightPower = 0;
 	if (!isDestroy) {
 		//とりあえず丸石を松明として扱う
 		if (m_state == enCube_CobbleStone) {
@@ -43,53 +43,113 @@ void Block::CalcAddLight(bool isDestroy) {
 	pos /= WIDTH;
 	IntVector3 blockpos = { (int)std::round(pos.x),(int)std::round(pos.y), (int)std::round(pos.z) };
 
-	DW_ERRORBOX((lightPower < 0 || lightPower > LightUtil::LIGHT_POWER_MAX), "明るさレベルが範囲外です")
-
 	//このブロック自体の明るさを設定
 	auto light = world->GetLightData(blockpos);
 	if (!light) {
 		return;
 	}
+	auto skyLight = world->GetSkyLightData(blockpos);
 
-	bool isLight = *light < lightPower;
-	char oldLightPower = *light;
+	bool isLight = *light < lightPower;//もとより明るい光源か?
+	char oldLightPower = *light;//更新前のライト力
+	char oldSkyLightPower = *skyLight;//更新前のスカイライト力
+	char skyLightPower = 0;
+
 	//更新
 	*light = lightPower;
+	*skyLight = skyLightPower;
 
+	//負の伝播
 	if (!isLight) {//暗くなった
-		//負の伝播
 		int count =	LightUtil::SpreadDark(world, oldLightPower, blockpos, { 0,0,0 }, false);
 		DW_WARNING_MESSAGE(count >= 2, "SpreadDark_Loop:%d \n", count)
 	}
+	if (*skyLight != oldSkyLightPower) {
+		int count = LightUtil::SpreadDark(world, oldSkyLightPower, blockpos, { 0,0,0 }, true);
+		DW_WARNING_MESSAGE(count >= 2, "SpreadDark_Loop(sky):%d \n", count)
+	}
 
+	//スカイライト計算
+	SkyLight sky(world);
+	sky.CalcSkyLightThisPosition(blockpos, !isDestroy);
+
+	//破壊時
 	if (isDestroy) {
+		//TODO いっかいでいい?
 		for (int sb = 0; sb < 6; sb++) {
 			//周りから光を伝搬させる
 			auto pos = blockpos + LightUtil::spreadDir[sb];
+			//ブロック
 			char* samplight = world->GetLightData(pos);
 			if (samplight) {
 				LightUtil::SpreadLight(world, *samplight - 1, pos, LightUtil::spreadDir[sb] * -1, false);
 			}
-			//TODO いっかいでいい?
+			//スカイ
+			samplight = world->GetSkyLightData(pos);
+			if (samplight) {
+				LightUtil::SpreadLight(world, *samplight - 1, pos, LightUtil::spreadDir[sb] * -1, true);
+			}
 		}
 		lightPower = *light;
+		skyLightPower = *skyLight;
 	}
 
+	//更新あるか?
 	bool reflesh = oldLightPower != lightPower;
+	bool refleshSky = oldSkyLightPower != skyLightPower;
 
+	//自分と周囲のライティング描画更新
+	RefleshDrawLighting(world, blockpos, lightPower, skyLightPower);
+
+	if (reflesh) {
+		//弱すぎる光は伝搬しない
+		if (lightPower <= 1) {
+			return;
+		}
+		//光を伝搬させる
+		LightUtil::SpreadLight(world, lightPower - 1, blockpos, { 0,0,0 }, false);
+	}
+	if (refleshSky) {
+		//弱すぎる光は伝搬しない
+		if (skyLightPower <= 1) {
+			return;
+		}
+		//光を伝搬させる
+		LightUtil::SpreadLight(world, skyLightPower - 1, blockpos, { 0,0,0 }, true);
+	}
+}
+
+void Block::RefleshDrawLighting(World* world, const IntVector3& blockpos, char lightPower, char skyLightPower) {
 	//自分のライティング
-	for (int sb = 0; sb < 6; sb++) {		
-		char setpow = lightPower;
+	for (int sb = 0; sb < 6; sb++) {
 		auto pos = blockpos + LightUtil::spreadDir[sb] * -1;
-		char* lihght = world->GetLightData(pos);
-		if (lihght) {
-			setpow = max(setpow, *lihght);
+		//ブロックライト
+		if(lightPower >= 0){
+			char setpow = lightPower;
+			char* lihght = world->GetLightData(pos);
+			if (lihght) {
+				setpow = max(setpow, *lihght);
+			}
+			if (sb < 4) {
+				SetLightingData(sb, 0, setpow);
+			}
+			else {
+				SetLightingData(sb - 4, 1, setpow);
+			}
 		}
-		if (sb < 4) {
-			SetLightingData(sb, 0, setpow);
-		}
-		else {
-			SetLightingData(sb - 4, 1, setpow);
+		//スカイライト
+		if(skyLightPower >= 0){
+			char setpow = skyLightPower;
+			char* lihght = world->GetSkyLightData(pos);
+			if (lihght) {
+				setpow = max(setpow, *lihght);
+			}
+			if (sb < 4) {
+				SetLightingData(sb, 2, setpow);
+			}
+			else {
+				SetLightingData(sb - 4, 3, setpow);
+			}
 		}
 	}
 	//上下左右前後のブロックのライティング
@@ -98,25 +158,15 @@ void Block::CalcAddLight(bool isDestroy) {
 		Block* block = world->GetBlock(samplePos);
 		if (block) {
 			if (sb < 4) {
-				block->SetLightingData(sb, 0, lightPower);
+				if (lightPower >= 0)block->SetLightingData(sb, 0, lightPower);
+				if (skyLightPower >= 0)block->SetLightingData(sb, 2, skyLightPower);
 			}
 			else {
-				block->SetLightingData(sb - 4, 1, lightPower);
+				if (lightPower >= 0)block->SetLightingData(sb - 4, 1, lightPower);
+				if (skyLightPower >= 0)block->SetLightingData(sb - 4, 3, skyLightPower);
 			}
 		}
 	}
-
-	//更新不要
-	if (!reflesh) {
-		return;
-	}	
-
-	//弱すぎる光は伝搬しない
-	if (lightPower <= 1) {
-		return;
-	}
-	//光を伝搬させる
-	LightUtil::SpreadLight(world, lightPower - 1, blockpos, { 0,0,0 }, false);	
 }
 
 void Block::InitModel(const wchar_t* filePath) {
