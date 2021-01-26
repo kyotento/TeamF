@@ -44,23 +44,30 @@ public:
 	int GetChunkLoadRange(){
 		return m_chunkLoadRange;
 	}
-
+	
+	//! @brief 指定位置のブロックを取得。
+	//! @details 座標はブロック単位
 	Block* GetBlock( const CVector3& pos ){
 		int x = (int)std::floorf( pos.x );
 		int y = (int)std::floorf( pos.y );
 		int z = (int)std::floorf( pos.z );
 		return GetBlock( x, y, z );
 	}
+	Block* GetBlock(const IntVector3& pos) {
+		return GetBlock(pos.x, pos.y, pos.z);
+	}
 	Block* GetBlock( int x, int y, int z );
 
 	/// <summary>
 	/// 指定のAABB付近のブロックを取得
 	/// </summary>
-	/// <param name="aabbmin">AABBの小さい方の座標</param>
-	/// <param name="aabbmax">AABBの大きい方の座標</param>
+	/// <param name="aabbmin">AABBの小さい方のワールド座標</param>
+	/// <param name="aabbmax">AABBの大きい方のワールド座標</param>
 	/// <param name="return_blocks">このベクターに範囲内のブロックが追加される</param>
 	void GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& return_blocks);
 
+	//! @brief 指定位置にブロックをセット。
+	//! @details 座標はブロック単位
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		int x = (int)std::floorf( pos.x );
 		int y = (int)std::floorf( pos.y );
@@ -80,6 +87,21 @@ public:
 
 	//一つのブロックの周りのブロックのカリング処理をする。
 	void AroundBlock(const CVector3& pos);
+
+	//! @brief 指定位置のライト情報を取得。
+	//! @details 座標はブロック単位
+	char* GetLightData(const IntVector3& pos) {
+		return GetLightData(pos.x, pos.y, pos.z);
+	}
+	char* GetLightData(int x, int y, int z);
+
+	//! @brief 指定位置のスカイライト情報を取得。
+	//! @details 座標はブロック単位
+	char* GetSkyLightData(const IntVector3& pos) {
+		return GetSkyLightData(pos.x, pos.y, pos.z);
+	}
+	char* GetSkyLightData(int x, int y, int z);
+
 	//=========チャンクの取得に関する関数。==============
 
 	//! @brief チャンクを取得。

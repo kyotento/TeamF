@@ -56,12 +56,16 @@
     <ClCompile Include="BiomeManager.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
+    <ClCompile Include="BlockRenderingLightParameter.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MobGenerator.cpp" />
     <ClCompile Include="Cow.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
+    <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
@@ -122,6 +126,7 @@
     <ClInclude Include="CowGenerator.h" />
     <ClInclude Include="MCCharaCon.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="ZombieGenerator.h" />

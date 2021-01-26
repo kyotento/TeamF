@@ -5,6 +5,7 @@
 #include "IntRect.h"
 #include "BiomeManager.h"
 #include "DropItem.h"
+#include "Light.h"
 
 namespace {
 	const float timeBlockDurabilityValueRecover = 0.4f;
@@ -175,6 +176,34 @@ void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	chunk->SetBlock( x, y, z, std::move( block ) );
 }
 
+char* World::GetLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetLightData(x, y, z);
+	}
+	return nullptr;
+}
+
+char* World::GetSkyLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetSkyLightData(x, y, z);
+	}
+	return nullptr;
+}
+
 Chunk* World::GetChunk( int x, int z ){
 	auto pair = std::make_pair( x, z );
 	if( m_chunkMap.count( pair ) == 0 ){
@@ -204,10 +233,6 @@ void World::LoadChunk( int x, int z ){
 	if( !IsExistChunk( x, z ) ){
 		Chunk* chunk = CreateChunk( x, z );
 
-		//ファイルから読み込む。
-		ChunkFiler filer;
-		bool readResult = filer.Read( *chunk );
-
 		//ファイルにチャンクが存在しなかったか、存在はしたが生成が済んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
@@ -215,12 +240,23 @@ void World::LoadChunk( int x, int z ){
 
 		//埋まったブロックを非表示にする。
 		ChunkCulling( *chunk );
+
+		//スカイライトの計算を行う
+		SkyLight skylight(this);
+		skylight.CalcSkyLight(chunk);
 	} else{
 		Chunk* chunk = GetChunk( x, z );
+
 		//チャンクが存在はしたが生成が住んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
+
+			//埋まったブロックを非表示にする。
 			ChunkCulling( *chunk );
+
+			//スカイライトの計算を行う
+			SkyLight skylight(this);
+			skylight.CalcSkyLight(chunk);
 		}
 	}
 }
