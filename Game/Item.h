@@ -73,6 +73,8 @@ private:
 	//アイテム画像。
 	std::unique_ptr<ItemImage> m_image;
 
+	static constexpr int INSTANCE_MODEL_MAX = 500;
+
 	//3Dモデルのパス。
 	std::filesystem::path m_modelPath;
 };
