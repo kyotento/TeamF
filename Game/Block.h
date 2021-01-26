@@ -85,6 +85,11 @@ public:
 	{
 		m_hp -= attack;
 	}
+	//ブロックの耐久値を全快させる
+	void RestoresBlockDurabilityValue()
+	{
+		m_hp = m_maxHP;
+	}
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
 private:

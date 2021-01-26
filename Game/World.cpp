@@ -6,6 +6,10 @@
 #include "BiomeManager.h"
 #include "DropItem.h"
 
+namespace {
+	const float timeBlockDurabilityValueRecover = 0.4f;
+}
+
 World::World(){
 	bool result = infoFile.Read();
 
@@ -262,6 +266,8 @@ void World::ChunkCulling( Chunk& chunk ){
 }
 
 void World::DeleteBlock( const CVector3& pos ){
+	//タイマーを0にする
+	m_timer = 0.0f;
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
@@ -276,11 +282,11 @@ void World::DeleteBlock( const CVector3& pos ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
-	auto block = GetBlock(x, y, z);
+	m_block = GetBlock(x, y, z);
 	//ブロックのHPを減らす、とりあえず2入れてる
-	block->ReduceHP(2);
+	m_block->ReduceHP(2);
 	//ブロックのHPが0以上ならこれで終わり
-	if (block->GetHP() > 0)
+	if (m_block->GetHP() > 0)
 	{
 		return;
 	}
@@ -295,6 +301,9 @@ void World::DeleteBlock( const CVector3& pos ){
 
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
+	//ブロック破壊されたらnullにする
+	m_block = nullptr;
+
 }
 
 bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
@@ -353,5 +362,19 @@ void World::AroundBlock( const CVector3& pos ){
 		}
 
 		block->SetIsDraw( doNotCulling );
+	}
+}
+
+void World::Update()
+{
+	if (m_block != nullptr) {
+		m_timer += GetDeltaTimeSec();
+		if (m_timer >= timeBlockDurabilityValueRecover)
+		{
+			m_timer = 0.0f;
+			m_block->RestoresBlockDurabilityValue();
+			m_block = nullptr;
+		}
+
 	}
 }
