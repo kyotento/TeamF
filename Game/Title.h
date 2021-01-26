@@ -1,6 +1,7 @@
 #pragma once
 
 class TitleSelect;
+class Config;
 class Title : public IGameObject
 {
 public:
@@ -15,11 +16,20 @@ public:
 	/// </summary>
 	void ClickProcess();
 
+	/// <summary>
+	/// TitleSelectを生成する。
+	/// </summary>
+	void NewTitleSelect();
+
+	/// <summary>
+	/// TilteSelectを消す。
+	/// </summary>
+	void DeleteTitleSelect();
+
 private:
 
 	GameObj::CSpriteRender* m_spriteRender = nullptr;
 
-//	TitleSelect* m_titleSelect = nullptr;		//タイトルのボタン。
-	std::unique_ptr<TitleSelect> m_titleSelect2;
+	std::unique_ptr<TitleSelect> m_titleSelect;
 };
 

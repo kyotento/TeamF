@@ -193,6 +193,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\RespawnButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\ReturnToTitleButton.png" />
     <ImageContentTask Include="Resource\sprite\CraftingBox.png" />
