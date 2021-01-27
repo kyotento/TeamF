@@ -98,8 +98,8 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 			if (i == 0 && isShiftMoveMode) {
 				//キャラAABB
 				CVector3 min = nowPos - m_colSize, max = nowPos + m_colSize;
-				min.y = nowPos.y - Block::WIDTH / 2.0f - 1.0f;
-				max.y = nowPos.y - Block::WIDTH / 2.0f;
+				min.y = nowPos.y - 2.0f;// -Block::WIDTH / 2.0f - 1.0f;
+				max.y = nowPos.y - 1.0f;// -Block::WIDTH / 2.0f;
 
 				//足元のブロック取得
 				if (GetBlocks(min, max, rtnBlocks)) {
