@@ -15,6 +15,7 @@ static int BLOCK_HP_ARRAY[enCube_Num]{};
 SkinModelEffectShader BlockFactory::m_s_ps;
 int BlockFactory::m_instanceMax = -1;
 AABB BlockFactory::BLOCK_AABB_ARRAY[enCube_Num];
+char BlockFactory::BLOCK_LIGHT_ARRAY[enCube_Num];
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -30,6 +31,8 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
 	FILE_PATH_ARRAY[enCube_Bedrock] = L"Resource/modelData/GrassBlock.tkm";
 	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
+	FILE_PATH_ARRAY[enCube_TorchBlock] = L"Resource/modelData/TorchBlock.tkm";
+	FILE_PATH_ARRAY[enCube_Torch] = L"Resource/modelData/Torch.tkm";
 
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
 	BLOCK_HP_ARRAY[enCube_Soil] = 4;
@@ -43,11 +46,16 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_HP_ARRAY[enCube_GoldOre] = 36;
 	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
 	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
+	BLOCK_HP_ARRAY[enCube_TorchBlock] = 1;
+	BLOCK_HP_ARRAY[enCube_Torch] = 1;
 
 	for (int i = 0; i < enCube_Num; i++) {
 		BLOCK_AABB_ARRAY[i].min = { -BLOCK_SIZE_HALF , 0.0f, -BLOCK_SIZE_HALF };
 		BLOCK_AABB_ARRAY[i].max = { BLOCK_SIZE_HALF , BLOCK_SIZE_HALF * 2.0f, BLOCK_SIZE_HALF };
+		BLOCK_LIGHT_ARRAY[i] = 0;
 	}
+	BLOCK_LIGHT_ARRAY[enCube_TorchBlock] = 14;
+	BLOCK_LIGHT_ARRAY[enCube_Torch] = 14;
 
 	//シェーダー読み込み
 	D3D_SHADER_MACRO macros[] = {

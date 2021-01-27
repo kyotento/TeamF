@@ -36,10 +36,7 @@ void Block::CalcAddLight(bool isDestroy) {
 	//ライト力(ぢから)
 	int lightPower = 0;
 	if (!isDestroy) {
-		//とりあえず丸石を松明として扱う
-		if (m_state == enCube_CobbleStone) {
-			lightPower = 14;
-		}
+		lightPower = BlockFactory::GetLight(m_state);
 	}
 
 	//ワールド

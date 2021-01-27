@@ -22,6 +22,10 @@ public:
 	static const AABB& GetAABB(EnCube blockType) {
 		return BLOCK_AABB_ARRAY[blockType];
 	}
+	//! @brief ブロックの明るさを取得する。
+	static char GetLight(EnCube blockType) {
+		return BLOCK_LIGHT_ARRAY[blockType];
+	}
 
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
@@ -36,5 +40,7 @@ private:
 
 	//ブロックのAABB
 	static AABB BLOCK_AABB_ARRAY[enCube_Num];
+	//ブロックの明るさ
+	static char BLOCK_LIGHT_ARRAY[enCube_Num];
 };
 
