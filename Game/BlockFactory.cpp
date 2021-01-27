@@ -25,6 +25,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
 	FILE_PATH_ARRAY[enCube_Bedrock] = L"Resource/modelData/GrassBlock.tkm";
 	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
+	FILE_PATH_ARRAY[enCube_Glass] = L"Resource/modelData/GlassBlock.tkm";
 
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
 	BLOCK_HP_ARRAY[enCube_Soil] = 4;
@@ -38,6 +39,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_HP_ARRAY[enCube_GoldOre] = 36;
 	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
 	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
+	BLOCK_HP_ARRAY[enCube_Glass] = 4;
 
 	//シェーダー読み込み
 	D3D_SHADER_MACRO macros[] = {

@@ -17,5 +17,6 @@ enum EnCube
 	enCube_GoldOre,			//金鉱石。
 	enCube_Bedrock,			//岩盤。
 	enCube_CraftingTable,	//クラフティングテーブル。
+	enCube_Glass,			//ガラス。
 	enCube_Num
 };
