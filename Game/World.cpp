@@ -6,6 +6,7 @@
 #include "BiomeManager.h"
 #include "DropItem.h"
 #include "Light.h"
+#include "BlockFactory.h"
 
 namespace {
 	const float timeBlockDurabilityValueRecover = 0.4f;
@@ -291,7 +292,8 @@ void World::ChunkCulling( Chunk& chunk ){
 				continue;
 			}
 
-			if( GetBlock( wx + v.x, y + v.y, wz + v.z ) == nullptr ){
+			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
+			if( neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false ){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -391,7 +393,8 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.y = pos2.y + posList[j].y;
 			pos3.z = pos2.z + posList[j].z;
 
-			if( GetBlock( pos3 ) == nullptr ){
+			auto neighbor = GetBlock(pos3);
+			if (neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}

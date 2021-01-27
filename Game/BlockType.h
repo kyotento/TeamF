@@ -19,5 +19,6 @@ enum EnCube
 	enCube_CraftingTable,	//クラフティングテーブル。
 	enCube_TorchBlock,		//松明ブロック
 	enCube_Torch,			//松明
+	enCube_GrassHalf,		//草ハーフ
 	enCube_Num
 };

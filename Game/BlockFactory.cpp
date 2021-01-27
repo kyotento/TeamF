@@ -16,6 +16,7 @@ SkinModelEffectShader BlockFactory::m_s_ps;
 int BlockFactory::m_instanceMax = -1;
 AABB BlockFactory::BLOCK_AABB_ARRAY[enCube_Num];
 char BlockFactory::BLOCK_LIGHT_ARRAY[enCube_Num];
+bool BlockFactory::BLOCK_OPACITY[enCube_Num];
 
 void BlockFactory::LoadInstancingModels( int instanceMax ){
 
@@ -33,6 +34,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
 	FILE_PATH_ARRAY[enCube_TorchBlock] = L"Resource/modelData/TorchBlock.tkm";
 	FILE_PATH_ARRAY[enCube_Torch] = L"Resource/modelData/Torch.tkm";
+	FILE_PATH_ARRAY[enCube_GrassHalf] = L"Resource/modelData/GrassHalf.tkm";	
 
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
 	BLOCK_HP_ARRAY[enCube_Soil] = 4;
@@ -48,14 +50,29 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
 	BLOCK_HP_ARRAY[enCube_TorchBlock] = 1;
 	BLOCK_HP_ARRAY[enCube_Torch] = 1;
+	BLOCK_HP_ARRAY[enCube_GrassHalf] = 4;
 
 	for (int i = 0; i < enCube_Num; i++) {
 		BLOCK_AABB_ARRAY[i].min = { -BLOCK_SIZE_HALF , 0.0f, -BLOCK_SIZE_HALF };
 		BLOCK_AABB_ARRAY[i].max = { BLOCK_SIZE_HALF , BLOCK_SIZE_HALF * 2.0f, BLOCK_SIZE_HALF };
 		BLOCK_LIGHT_ARRAY[i] = 0;
+		BLOCK_OPACITY[i] = true;
 	}
+	//松明ブロック
 	BLOCK_LIGHT_ARRAY[enCube_TorchBlock] = 14;
+	//松明
 	BLOCK_LIGHT_ARRAY[enCube_Torch] = 14;
+	BLOCK_OPACITY[enCube_Torch] = false;
+	BLOCK_AABB_ARRAY[enCube_Torch].min.x *= 0.5f;
+	BLOCK_AABB_ARRAY[enCube_Torch].min.x /= 7.0f;
+	BLOCK_AABB_ARRAY[enCube_Torch].min.z *= 0.5f;
+	BLOCK_AABB_ARRAY[enCube_Torch].min.z /= 7.0f;
+	BLOCK_AABB_ARRAY[enCube_Torch].max *= 0.5f;
+	BLOCK_AABB_ARRAY[enCube_Torch].max.x /= 7.0f;
+	BLOCK_AABB_ARRAY[enCube_Torch].max.z /= 7.0f;
+	//草ハーフ
+	BLOCK_OPACITY[enCube_GrassHalf] = false;
+	BLOCK_AABB_ARRAY[enCube_GrassHalf].max.y *= 0.5f;
 
 	//シェーダー読み込み
 	D3D_SHADER_MACRO macros[] = {

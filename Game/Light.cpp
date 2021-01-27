@@ -21,8 +21,8 @@ void LightUtil::SpreadLight(World* world, char lightPower, const IntVector3& pos
 
 		//ブロックをサンプル
 		Block* block = world->GetBlock(nowPos);
-		if (block && block->GetBlockType() != enCube_None) {//TODO なおかつ不透明ブロック
-			//この方向への伝播は終わり(ブロックと衝突したから)		
+		if (block && block->GetIsOpacity()) {
+			//この方向への伝播は終わり(不透明ブロックと衝突したから)		
 		}
 		else {		
 
@@ -164,7 +164,7 @@ void LightUtil::SpreadDarkInner(World* world, char oldLightPower, const IntVecto
 
 		//ブロックのあるところは無視
 		Block* block = world->GetBlock(nowPos);
-		if (block && block->GetBlockType() != enCube_None) {//TODO なおかつ不透明ブロック
+		if (block && block->GetIsOpacity()) {
 			continue;
 		}
 
@@ -276,7 +276,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
 
 			auto block = m_world->GetBlock(sampPos);
-			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+			if (block && block->GetIsOpacity()) {
 				break;
 			}
 
@@ -291,7 +291,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
 
 			auto block = m_world->GetBlock(sampPos);
-			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+			if (block && block->GetIsOpacity()) {
 				break;
 			}
 
@@ -310,7 +310,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
 
 			auto block = m_world->GetBlock(sampPos);
-			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+			if (block && block->GetIsOpacity()) {
 				break;
 			}
 
@@ -357,7 +357,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
 
 			auto block = m_world->GetBlock(sampPos);
-			if (block && block->GetBlockType() != enCube_None) {//TODO 不透明ブロック
+			if (block && block->GetIsOpacity()) {
 				break;
 			}
 

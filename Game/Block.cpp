@@ -27,6 +27,10 @@ AABB Block::GetAABB()const {
 	return aabb;
 }
 
+bool Block::GetIsOpacity()const {
+	return BlockFactory::GetIsOpacity(m_state);
+}
+
 void Block::CalcAddLight(bool isDestroy) {
 	//計算不要
 	if (m_state == enCube_None && !isDestroy) {
@@ -34,7 +38,8 @@ void Block::CalcAddLight(bool isDestroy) {
 	}
 
 	//ライト力(ぢから)
-	int lightPower = 0;
+	char lightPower = 0;
+	char skyLightPower = 0;
 	if (!isDestroy) {
 		lightPower = BlockFactory::GetLight(m_state);
 	}
@@ -56,10 +61,17 @@ void Block::CalcAddLight(bool isDestroy) {
 	}
 	auto skyLight = world->GetSkyLightData(blockpos);
 
+	//透明ブロック
+	if (BlockFactory::GetIsOpacity(m_state) == false) {
+		skyLightPower = *skyLight;
+		if (!isDestroy && lightPower < *light) {
+			lightPower = *light;
+		}
+	}
+
 	bool isLight = *light < lightPower;//もとより明るい光源か?
 	char oldLightPower = *light;//更新前のライト力
 	char oldSkyLightPower = *skyLight;//更新前のスカイライト力
-	char skyLightPower = 0;
 
 	//更新
 	*light = lightPower;
@@ -208,9 +220,11 @@ void Block::SetPos( int x, int y, int z ){
 
 void Block::EnableCollision(){
 	if( !m_collision ){
+		AABB aabb = BlockFactory::GetAABB(m_state);
+
 		m_collision = std::make_unique<SuicideObj::CCollisionObj>();
 		m_collision->SetIsStaticObject( true );
-		m_collision->CreateBox( CVector3::Zero(), CQuaternion::Identity(), CVector3::One() * Block::WIDTH );
+		m_collision->CreateBox(CVector3::Zero(), CQuaternion::Identity(), aabb.max - aabb.min);
 		m_collision->SetTimer( enNoTimer );
 		m_collision->SetIsHurtCollision(true);	//自分から判定をとらない。
 		m_collision->SetName(L"Block");			//コリジョンに名前。
@@ -219,7 +233,7 @@ void Block::EnableCollision(){
 		//m_collision->GetCollisionObject().setUserPointer(this);		
 
 		CVector3 pos = m_model.GetPos();
-		pos.y += WIDTH * 0.5f;
+		pos.y += aabb.max.y * 0.5f;
 
 		m_collision->SetPosition(pos);
 	}

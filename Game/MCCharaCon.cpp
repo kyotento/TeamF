@@ -85,6 +85,10 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 			minMove = min(Block::WIDTH*0.5f, m_colSize.y);
 		}
 
+		//高さオフセット
+		//ハーフブロックを歩いて越えるためのもの
+		float heightOffset = i == 0 ? Block::WIDTH * 0.5f : 0.0f;
+
 		int ColCnt = 0;
 		while (ColCnt < 5) {
 			rtnBlocks.clear();
@@ -198,7 +202,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 
 			//キャラAABB
 			CVector3 min = nowPos - m_colSize, max = nowPos + m_colSize;
-			min.y = nowPos.y; max.y = nowPos.y + m_colSize.y;
+			min.y = nowPos.y + heightOffset; max.y = nowPos.y + m_colSize.y;
 
 			//キャラクターのAABBに接触するブロック達を取得
 			if (!GetBlocks(min, max, rtnBlocks)) {
@@ -236,7 +240,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 					for (int pushCnt = 0; pushCnt < Block::WIDTH * 2; pushCnt++) {
 						//キャラAABB更新
 						min = nowPos - m_colSize, max = nowPos + m_colSize;
-						min.y = nowPos.y; max.y = nowPos.y + m_colSize.y;
+						min.y = nowPos.y + heightOffset; max.y = nowPos.y + m_colSize.y;
 
 						//衝突判定
 						if (CMath::ColAABBs(min, max, NearBlockMin, NearBlockMax)) {

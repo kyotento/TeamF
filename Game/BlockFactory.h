@@ -26,6 +26,10 @@ public:
 	static char GetLight(EnCube blockType) {
 		return BLOCK_LIGHT_ARRAY[blockType];
 	}
+	//! @brief ブロックが不透明かどうかを取得する。
+	static bool GetIsOpacity(EnCube blockType) {
+		return blockType == enCube_None ? false : BLOCK_OPACITY[blockType];
+	}
 
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
@@ -42,5 +46,7 @@ private:
 	static AABB BLOCK_AABB_ARRAY[enCube_Num];
 	//ブロックの明るさ
 	static char BLOCK_LIGHT_ARRAY[enCube_Num];
+	//ブロックが不透明か
+	static bool BLOCK_OPACITY[enCube_Num];
 };
 

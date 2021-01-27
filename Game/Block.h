@@ -69,6 +69,9 @@ public:
 		m_collision.reset();
 	}
 
+	//! @brief •s“§–¾‚©‚Ç‚¤‚©æ“¾
+	bool GetIsOpacity()const;
+
 	//HP‚ğİ’è
 	void SetHP(const int hp)
 	{

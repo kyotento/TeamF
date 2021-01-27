@@ -33,7 +33,7 @@ PSOutput_RenderGBuffer PSMain_McBlockRenderGBuffer(PSInput In)
     lightScale += saturate(Out.normal.y * LightingParam[In.instanceID]._m03);
     lightScale += saturate(Out.normal.z * -1.0 * LightingParam[In.instanceID]._m10);
     lightScale += saturate(Out.normal.z * LightingParam[In.instanceID]._m11);
-    lightScale *= 2.8f;
+    lightScale *= 2.5f;
     
     float lightScaleSky = 0.0f;
     lightScaleSky += saturate(Out.normal.x * -1.0 * LightingParam[In.instanceID]._m20);
