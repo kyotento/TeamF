@@ -342,14 +342,15 @@ void ItemDisplay::SwitchItemType()
 //クリックに合わせて動かすよん。
 void ItemDisplay::LeftClickMouseToMoveHand()
 {
-	int minDown = -90;
+	const int minDown = -75;
+	const int plus = 3;
 	if (GetKeyDown(VK_LBUTTON))
 	{
 		Limit = minDown;
 	}
 	if (Limit <= maxDownPos)
 	{
-		Limit += 3;
+		Limit += plus;
 	}
 	CQuaternion m_rotationX;
 	m_rotationX.SetRotationDeg(CVector3::AxisX(), Limit);

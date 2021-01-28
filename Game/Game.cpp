@@ -13,6 +13,7 @@
 #include "Title.h"
 #include "ZombieGenerator.h"
 #include "Menu.h"
+#include "Config.h"
 #include "CowGenerator.h"
 
 Game::Game()
@@ -60,20 +61,40 @@ bool Game::Start()
 
 void Game::Update()
 {
+	m_world->SetChunkCoadRange(m_chunkRange);		//読み込みチャンクの更新。
 	EscMenu();
 }
 
 void Game::EscMenu()
 {
 	if (GetKeyDown(VK_ESCAPE)) {
-		if (m_menu == nullptr) {
-			m_menu.reset(NewGO<Menu>());
-			m_menu->SetGame(this);
+		if (m_menu == nullptr && !m_isEscMenu) {
+			m_config = FindGO<Config>();
+			if ( m_config == nullptr) {
+				NewEscMenu();
+			}
 		}
-		else {
-			m_menu.reset();
+		else{
+			if (m_isEscMenu) {			//生成されているとき。
+				DeleteEscMenu();
+				m_isEscMenu = false;
+			}
 		}
 	}
+}
+
+//EscMnuを生成する。
+void Game::NewEscMenu()
+{
+	m_menu.reset(NewGO<Menu>());
+	m_menu->SetGame(this);
+	m_isEscMenu = true;			//生成フラグを返す。
+}
+
+//EscMnuを消す処理。
+void Game::DeleteEscMenu()
+{
+	m_menu.reset();
 }
 
 //タイトルへの遷移。

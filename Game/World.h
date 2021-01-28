@@ -45,6 +45,10 @@ public:
 		return m_chunkLoadRange;
 	}
 	
+	void SetChunkCoadRange(int chunkRange) {
+		m_chunkLoadRange = chunkRange;
+	}
+
 	//! @brief 指定位置のブロックを取得。
 	//! @details 座標はブロック単位
 	Block* GetBlock( const CVector3& pos ){

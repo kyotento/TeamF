@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "World.h"
 #include "Title.h"
+#include "Config.h"
 
 namespace {
 	bool isStart = false;		//ゲームが実行されて一度だけ呼ばれる。
@@ -56,8 +57,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//フォグの設定
 	SetEnableFog(true);				//有効
-	SetFogDistance(3000.0f);		//フォグが完全にかかりきる距離
-	SetFogStartDistance(2800.0f);	//フォグが始まる距離
+	SetFogDistance(3000);			//フォグが完全にかかりきる距離
+	SetFogStartDistance(2800);		//フォグが始まる距離
 	SetFogHeightScale(0.1f);		//高さ方向へのフォグのかかり具合	
 
 	//ゲームループ。

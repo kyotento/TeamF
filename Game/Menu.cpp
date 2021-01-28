@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Menu.h"
 #include "Game.h"
+#include "Config.h"
 
 Menu::Menu()
 {
@@ -78,7 +79,9 @@ void Menu::ClickProcess()
 			GetEngine().BreakGameLoop();
 		}
 		else if (Click() == enMenu_Config) {
-			MessageBox(nullptr, "ètãxÇ›ñæÇØÇ…é¿ëïÇµÇ‹Ç∑", "Ç‹Å[ë“Çƒ", MB_ICONASTERISK);
+			Config* config = NewGO<Config>();
+			config->SetBackClass(config->enMenu);
+			m_game->DeleteEscMenu();
 		}
 	}
 }

@@ -166,6 +166,9 @@
     <ClCompile Include="Animals.cpp">
       <Filter>Entity\Mob</Filter>
     </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
     <ClCompile Include="CowGenerator.cpp">
       <Filter>generator</Filter>
     </ClCompile>
@@ -357,6 +360,9 @@
     </ClInclude>
     <ClInclude Include="Animals.h">
       <Filter>Entity\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>menu</Filter>
     </ClInclude>
     <ClInclude Include="CowGenerator.h">
       <Filter>generator</Filter>
@@ -558,6 +564,18 @@
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\DoneButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\ChunkButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\PlusButton.png">
+      <Filter>sprite\button</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\MinusButton.png">
+      <Filter>sprite\button</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
