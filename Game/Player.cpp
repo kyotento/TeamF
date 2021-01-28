@@ -588,6 +588,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 				if (item->GetIsBlock()) {		//ブロック。
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
 					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
+					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
 				}
 			}
 		}
