@@ -1,0 +1,6 @@
+{
+	"id": "enItem_Diamond_Shovel",
+	"name": "ダイヤのシャベル",
+	"sprite": "spriteData/items/Diamond_Shovel.dds",
+	"stack_limit": 1
+}

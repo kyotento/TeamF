@@ -34,7 +34,7 @@ bool Game::Start()
 	//レシピ読み込み。
 	// TODO: Worldの初期化より前に読むとエラーになる。いつかこのわかりにくい依存はどうにかしたい。
 	RecipeFiler recipeFiler;
-	recipeFiler.SetFolder(L"Resource/recipeData/");
+	recipeFiler.SetFolder(L"Resource/jsonData/recipeData/");
 	recipeFiler.LoadRecipe(RecipeManager::Instance());
 
 	//プレイヤーの生成。

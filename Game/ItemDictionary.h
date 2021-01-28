@@ -12,6 +12,8 @@ public:
 		return st_storage;
 	}
 
+	void LoadItems(std::filesystem::path folder);
+
 	//! @brief アイテムをid番号から取得。
 	//! @param id EnCube か EnItem
 	Item& GetItem( unsigned int id ){

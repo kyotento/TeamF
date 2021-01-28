@@ -2,6 +2,8 @@
 #include "ItemDictionary.h"
 #include "BlockFactory.h"
 
+void ItemDictionary::LoadItems( std::filesystem::path folder ){}
+
 Item& ItemDictionary::GetItem( const std::string & id ){
 	return *( m_nameMap.at( id ) );
 }

@@ -1,0 +1,6 @@
+{
+	"id": "enItem_Diamond_Pickaxe",
+	"name": "ダイヤのピッケル",
+	"sprite": "spriteData/items/Diamond_Pickaxe.dds",
+	"stack_limit": 1
+}
