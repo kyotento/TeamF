@@ -9,6 +9,7 @@ namespace {
 	constexpr float DASH_VIEW_ANGLE_DEG = 110.0f;//ƒ_ƒbƒVƒ…Žž‚ÌŽ‹–ìŠp(“x)
 	constexpr float VIEW_ANGLE_CHANGE_DEG_PER_SEC = 80.0f;//Ž‹–ìŠp‚ª•Ï‰»‚·‚éˆê•bŠÔ‚ÌŠp“x
 	constexpr float ROLL_MODORI_DEG_PER_SEC = 300.0f;//ƒ[ƒ‹‰ñ“]‚ª‚à‚Æ‚É–ß‚éˆê•bŠÔ‚ÌŠp“x
+	const float HEIGHT = Block::WIDTH * 1.0f;
 }
 
 bool GameCamera::Start()
@@ -22,6 +23,7 @@ bool GameCamera::Start()
 	m_camera->SetFar( 50000 );
 	m_camera->SetViewAngleDeg(m_viewAngleDeg = NORMAL_VIEW_ANGLE_DEG);
 	SetMainCamera(m_camera);
+	m_cameraCollisionSolver.Init(Block::WIDTH * 0.1f);
 	return true;
 }
 
@@ -89,6 +91,10 @@ void GameCamera::Update()
 		}
 	}
 
+	CVector3 result;
+	m_cameraCollisionSolver.Execute(result,m_camera->GetPos(),m_camera->GetTarget());
+	m_camera->SetPos(result);
+
 }
 
 void GameCamera::FPS()
@@ -114,7 +120,7 @@ void GameCamera::FPS()
 	rotAxis.Normalize();
 	qRot.SetRotation(rotAxis, m_radianXZ);
 	qRot.Multiply(toPos);
-	toPos *= m_radius*1.5;
+	toPos *= m_radius*0.1;
 	m_target = m_position - toPos;
 	m_camera->SetPos(m_position);
 	m_camera->SetTarget(m_target);
@@ -145,6 +151,7 @@ void GameCamera::TPS()
 	toPos *= m_radius;
 	m_position = m_target + toPos;
 	m_camera->SetPos(m_position);
+	m_target.y += HEIGHT;
 	m_camera->SetTarget(m_target);
 }
 
@@ -174,5 +181,6 @@ void GameCamera::ReverseTPS()
 	toPos *= m_radius;
 	m_target = m_position - toPos;
 	m_camera->SetPos(m_target);
+	m_position.y += HEIGHT;
 	m_camera->SetTarget(m_position);
 }

@@ -54,6 +54,7 @@
     <ClCompile Include="Animals.cpp" />
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="CameraCollisionSolver.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="AABB.h" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
+    <ClInclude Include="CameraCollisionSolver.h" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
     <ClCompile Include="CraftingController.cpp" />

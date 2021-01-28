@@ -179,6 +179,9 @@
     <ClCompile Include="WorthOfGod.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="CameraCollisionSolver.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -377,6 +380,9 @@
     <ClInclude Include="WorthOfGod.h">
       <Filter>Block</Filter>
     </ClInclude>
+    <ClInclude Include="CameraCollisionSolver.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -560,22 +566,14 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png">
       <Filter>sprite\button</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\DoneButton.png">
-      <Filter>sprite\button</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\ChunkButton.png">
-      <Filter>sprite\button</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\PlusButton.png">
-      <Filter>sprite\button</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Button\MinusButton.png">
-      <Filter>sprite\button</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 #include "Block.h"
+#include "CameraCollisionSolver.h"
 class Player;
 //カメラのモード
 enum EnCameraMode {
@@ -57,5 +58,6 @@ public:
 	float m_viewAngleDeg = 90.0f;						//視野角
 	float m_rollDeg = -0.5f;								//カメラの回転角度(ロール軸)
 	bool m_isRollLock = false;							//ロール軸回転をロックするか
+	CCameraCollisionSolver m_cameraCollisionSolver;
 };
 
