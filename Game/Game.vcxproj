@@ -64,6 +64,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="AABB.h" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>

@@ -20,5 +20,7 @@ enum EnCube
 	enCube_TorchBlock,		//松明ブロック
 	enCube_Torch,			//松明
 	enCube_GrassHalf,		//草ハーフ
+	enCube_GrassStairs,		//草階段
+	enCube_WoGBlock,		//ラスゴブロック
 	enCube_Num
 };

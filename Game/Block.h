@@ -26,7 +26,9 @@ public:
 	}
 
 	//! @brief このブロックのAABBを取得
-	AABB GetAABB()const;
+	const AABB& GetAABB(int index)const;
+	//! @brief このブロックのAABBの数を取得
+	int GetAABBNum() const;
 
 	//! @brief モデルを初期化
 	void InitModel(const wchar_t* filePath);
@@ -35,6 +37,10 @@ public:
 	//! @details この関数はモデルを変更しない。
 	void SetBlockType(EnCube enCube)
 	{
+		if (m_state != enCube) {
+			m_state = enCube;
+			CalcAABB();//AABBの計算
+		}
 		m_state = enCube;
 	}
 	//! @brief ブロックの種類を取得。
@@ -123,9 +129,15 @@ public:
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
 
+	//ブロックAABBの最大数
+	static constexpr int BLOCK_AABB_MAXNUM = 2;
+
 private:
 	//! @brief ライティング計算する
 	void CalcAddLight(bool isDestroy = false);
+
+	//! @brief AABBを計算する
+	void CalcAABB();
 
 private:
 	//モデル
@@ -135,11 +147,20 @@ private:
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 
+	//向き
+	enum enMuki {
+		enXm,enZm,enXp,enZp//-X,-Z...
+	};
+	enMuki m_muki = enXm;
+
 	//明るさ
 	CMatrix m_lighting = CMatrix::Zero();
 
+	//AABB
+	std::unique_ptr<AABB[]> m_aabb;
 	//コリジョン
-	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
+	std::unique_ptr<SuicideObj::CCollisionObj[]> m_collision;
+
 	int m_maxHP = 0;
 	int m_hp = 10;
 };

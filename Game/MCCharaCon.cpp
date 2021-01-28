@@ -107,19 +107,21 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 					CVector3 createAABBmin, createAABBmax;
 					bool first = true;
 					for (auto block : rtnBlocks) {
-						//ブロックAABB
-						AABB blockAABB = block->GetAABB();
+						for (int aabbind = 0; aabbind < block->GetAABBNum(); aabbind++) {
+							//ブロックAABB
+							AABB blockAABB = block->GetAABB(aabbind);
 
-						//足元接触判定
-						if (CMath::ColAABBs(min, max, blockAABB.min, blockAABB.max)) {
-							if (first) {
-								createAABBmin = blockAABB.min;
-								createAABBmax = blockAABB.max;
-								first = false;
-							}
-							else {
-								createAABBmin.Min(blockAABB.min);
-								createAABBmax.Max(blockAABB.max);
+							//足元接触判定
+							if (CMath::ColAABBs(min, max, blockAABB.min, blockAABB.max)) {
+								if (first) {
+									createAABBmin = blockAABB.min;
+									createAABBmax = blockAABB.max;
+									first = false;
+								}
+								else {
+									createAABBmin.Min(blockAABB.min);
+									createAABBmax.Max(blockAABB.max);
+								}
 							}
 						}
 					}
@@ -210,7 +212,9 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 			}			
 			//AABBをリスト化
 			for (auto block : rtnBlocks) {
-				aabbs.emplace_back(block->GetAABB());
+				for (int aabbind = 0; aabbind < block->GetAABBNum(); aabbind++) {
+					aabbs.emplace_back(block->GetAABB(aabbind));
+				}
 			}
 
 			bool isHit = false;

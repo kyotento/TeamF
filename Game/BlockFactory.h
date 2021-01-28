@@ -19,8 +19,12 @@ public:
 	static const wchar_t* GetModelPath( EnCube blockType );
 
 	//! @brief ブロックのＡＡＢＢを取得する。
-	static const AABB& GetAABB(EnCube blockType) {
-		return BLOCK_AABB_ARRAY[blockType];
+	static const AABB& GetAABB(EnCube blockType, int index) {
+		return BLOCK_AABB_ARRAY[blockType][index];
+	}
+	//! @brief ブロックのＡＡＢＢの数を取得する。
+	static int GetAABBNum(EnCube blockType) {		
+		return BLOCK_AABB_NUM[blockType];
 	}
 	//! @brief ブロックの明るさを取得する。
 	static char GetLight(EnCube blockType) {
@@ -33,7 +37,7 @@ public:
 
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
-	static std::unique_ptr<Block> CreateBlock( EnCube blockType );	
+	static std::unique_ptr<Block> CreateBlock( EnCube blockType );		
 
 private:
 	//ブロック描画シェーダー
@@ -43,7 +47,8 @@ private:
 	static int m_instanceMax;
 
 	//ブロックのAABB
-	static AABB BLOCK_AABB_ARRAY[enCube_Num];
+	static AABB BLOCK_AABB_ARRAY[enCube_Num][Block::BLOCK_AABB_MAXNUM];
+	static int  BLOCK_AABB_NUM[enCube_Num];
 	//ブロックの明るさ
 	static char BLOCK_LIGHT_ARRAY[enCube_Num];
 	//ブロックが不透明か
