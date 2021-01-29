@@ -5,6 +5,8 @@
 #include "Light.h"
 #include "BlockFactory.h"
 
+bool Block::m_sDestroyMode = false;
+
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
 
@@ -22,6 +24,9 @@ Block::Block(){
 }
 
 Block::~Block(){
+	if (m_sDestroyMode) {
+		return;
+	}
 	if (m_state != enCube_None) {
 		m_state = enCube_None;
 		CalcAddLight(true);

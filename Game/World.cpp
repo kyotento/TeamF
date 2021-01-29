@@ -35,6 +35,11 @@ World::~World(){
 		e->SetWorld( nullptr );
 		DeleteGO( e );
 	}
+
+	//ƒ`ƒƒƒ“ƒNíœ
+	Block::m_sDestroyMode = true;
+	m_chunkMap.clear();
+	Block::m_sDestroyMode = false;
 }
 
 void World::PostUpdate(){
