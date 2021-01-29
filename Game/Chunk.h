@@ -154,11 +154,12 @@ public:
 private:
 	int m_chunkX = 0;
 	int m_chunkZ = 0;
-	std::unique_ptr<Block> m_blockArray[WIDTH][HEIGHT][WIDTH];
 
 	//ÉâÉCÉgèÓïÒ
 	char m_lightData[WIDTH][HEIGHT][WIDTH] = {};
 	char m_skyLightData[WIDTH][HEIGHT][WIDTH] = {};
+
+	std::unique_ptr<Block> m_blockArray[WIDTH][HEIGHT][WIDTH];
 
 	bool m_isGenerated = false;
 };

@@ -126,10 +126,13 @@ public:
 	//! @brief ライティング描画の更新
 	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
+	//デストロイモード
+	//デストラクタの挙動を変える
+	static bool m_sDestroyMode;
+
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
-
-	//ブロックAABBの最大数
+	//! @brief ブロックAABBの最大数
 	static constexpr int BLOCK_AABB_MAXNUM = 2;
 
 private:
