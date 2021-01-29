@@ -240,7 +240,7 @@ public:
 	/// <returns>ƒtƒ‰ƒO</returns>
 	bool GetIsBlockDestruction()
 	{
-		m_isBlockDestruction;
+		return m_isBlockDestruction;
 	}
 private:
 	/// <summary>

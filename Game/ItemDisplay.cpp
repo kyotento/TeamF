@@ -343,8 +343,8 @@ void ItemDisplay::SwitchItemType()
 void ItemDisplay::LeftClickMouseToMoveHand()
 {
 	const int minDown = -75;
-	const int plus = 3;
-	if (GetKeyDown(VK_LBUTTON))
+	const int plus = 5;
+	if (m_player->GetIsBlockDestruction() && Limit >= maxDownPos)
 	{
 		Limit = minDown;
 	}
