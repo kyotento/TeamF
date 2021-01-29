@@ -326,8 +326,12 @@ void World::DeleteBlock( const CVector3& pos ){
 	}
 
 	m_block = GetBlock(x, y, z);
-	//ブロックのHPを減らす、とりあえず2入れてる
-	m_block->ReduceHP(2);
+	if (m_block == nullptr)
+	{
+		return;
+	}
+	//ブロックのHPを減らす、とりあえず1入れてる
+	m_block->ReduceHP(1);
 	//ブロックのHPが0以上ならこれで終わり
 	if (m_block->GetHP() > 0)
 	{

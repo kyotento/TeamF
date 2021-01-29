@@ -26,6 +26,7 @@ namespace {
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
 	int fallTimer = 0;								//滞空時間。
+	const float timeBlockDestruction = 0.3f;		//ブロック破壊の時間制限
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
@@ -92,6 +93,8 @@ bool Player::Start()
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
 
+	//タイマーに値を入れておく
+	m_timerBlockDestruction = timeBlockDestruction;
 	return true;
 }
 
@@ -122,6 +125,8 @@ void Player::Update()
 			Attack();
 			//インベントリを開く。
 			OpenInventory();
+			//ブロック破壊を実行するかどうか判断する。
+			DecideCanDestroyBlock();
 			//前方にRayを飛ばす。
 			FlyTheRay();
 
@@ -593,17 +598,50 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			}
 		}
 	}
-	//破壊。
-	if (GetKeyDown(VK_LBUTTON) && !m_attackFlag) {
+	//破壊。ここもInputに変えた。
+	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
 		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 	m_attackFlag = false;
 }
 
+//ブロック破壊を実行するかどうか判断する。
+void Player::DecideCanDestroyBlock()
+{
+	//マウス左長押しなら。
+	if (GetKeyInput(VK_LBUTTON))
+	{
+		//タイマーを+する。
+		m_timerBlockDestruction += GetDeltaTimeSec();
+		//タイマーが一定時間以下なら破壊を実行しない。
+		if (m_timerBlockDestruction <= timeBlockDestruction)
+		{
+			m_isBlockDestruction = false;
+		}
+		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
+		else {
+			m_isBlockDestruction = true;
+			m_timerBlockDestruction = 0.0f;
+		}
+	}
+	//マウス長押しされてない場合、マウスを押した瞬間に破壊できるようにタイマーをセットしておく。
+	else {
+		m_isBlockDestruction = false;
+		m_timerBlockDestruction = timeBlockDestruction;
+	}
+}
+
 //レイを前方に飛ばす。
 void Player::FlyTheRay()
-{
-	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
+{								  //マウス左長押しなら。				
+	if (GetKeyDown(VK_RBUTTON) || GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)) {
+		//マウス左長押しかつ破壊フラグがたっていなかったら、処理しない。
+		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction)
+		{
+			return;
+		}
+		
+		
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -623,6 +661,7 @@ void Player::FlyTheRay()
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}
+	
 }
 
 //被ダメ－ジ。

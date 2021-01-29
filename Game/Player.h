@@ -234,6 +234,14 @@ public:
 	{
 		return m_deathFlag;
 	}
+	/// <summary>
+	/// ブロック破壊をした？
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsBlockDestruction()
+	{
+		m_isBlockDestruction;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -296,12 +304,15 @@ private:
 	/// <param name="ray">当たったオブジェクトの判定</param>
 	/// <param name="frontRotAdd">プレイヤーの回転</param>
 	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray , CVector3 frontRotAdd);
+	/// <summary>
+	/// ブロックを破壊するかどうか判断する。
+	/// </summary>
+	void DecideCanDestroyBlock();
 
 	/// <summary>
 	/// プレイヤーの前方にレイを飛ばす。
 	/// </summary>
 	void FlyTheRay();
-
 	/// <summary>
 	/// 死亡処理。
 	/// </summary>
@@ -380,5 +391,7 @@ private:
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 	Game* m_game = nullptr;										//Gameクラス。
+	float m_timerBlockDestruction = 0.0f;						//マウス長押しでブロック破壊する時のタイマー、一定時間経過でブロック破壊を実行する。
+	bool m_isBlockDestruction = false;							//ブロック破壊をしたかどうか、平野が使う。
 };
 
