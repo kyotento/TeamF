@@ -243,7 +243,7 @@ public:
 		return m_isBlockDestruction;
 	}
 	/// <summary>
-	/// プレイヤーが死んでるかどうか取得
+	/// プレイヤーが死んでるかどうか取得。
 	/// </summary>
 	/// <returns>フラグ</returns>
 	bool GetIsDeath()
