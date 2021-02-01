@@ -640,7 +640,9 @@ void Player::FlyTheRay()
 void Player::TakenDamage(int AttackPow)
 {
 	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
-		m_hp -= AttackPow;
+		//防御力の計算。
+		float damage = AttackPow * (1 - m_defensePower * 0.04);
+		m_hp -= damage;
 		
 		//HPを0未満にしない。
 		if (m_hp <= 0) {			
