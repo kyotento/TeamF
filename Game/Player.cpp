@@ -753,8 +753,8 @@ void Player::Stamina()
 	if (m_stamina <= 0) {
 		m_stamina = 0;
 	}
-	if (m_stamina >= 20) {
-		m_stamina = 20;
+	if (m_stamina >= 21) {
+		m_stamina = 21;
 	}
 	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
 
