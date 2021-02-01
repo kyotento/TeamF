@@ -55,6 +55,7 @@ public:
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
 		enPlayerState_excavate,			//物を掘る。
+		enPlayerState_KnockBack,			//ノックバック。
 		enPlayerState_death,			//死んだとき。
 		enPlayerState_num,				//状態の数。
 	};
@@ -216,7 +217,7 @@ public:
 	/// 被ダメージ
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
-	void TakenDamage(int AttackePow);
+	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false);
 
 	/// <summary>
 	/// ゲームのインスタンスを設定する。
@@ -290,6 +291,10 @@ private:
 	/// 攻撃処理。
 	/// </summary>
 	void Attack();
+	/// <summary>
+	/// ノックバック
+	/// </summary>
+	void KnockBack();
 
 	/// <summary>
 	/// インベントリを開く。
@@ -403,5 +408,9 @@ private:
 	Game* m_game = nullptr;										//Gameクラス。
 	float m_timerBlockDestruction = 0.0f;						//マウス長押しでブロック破壊する時のタイマー、一定時間経過でブロック破壊を実行する。
 	bool m_isBlockDestruction = false;							//ブロック破壊をしたかどうか、平野が使う。
+	float m_knockBackTimer = 0.0f;								//ノックバックのタイマー
+	CVector3 m_knockBackDirection = CVector3::Zero();		//ノックバックの方向。
+	float m_knockBack = 1.f;	//ノックバック感度。
+	float m_knoceBackY = 1.f;	//ノックバックY座標。
 };
 

@@ -135,6 +135,8 @@ void Player::Update()
 			FlyTheRay();
 			//スタミナ処理。
 			Stamina();
+			//ノックバック。
+			KnockBack();
 
 			if( GetKeyDown( 'Q' ) ){
 				auto item = m_inventory.TakeItem( m_selItemNum - 1, 1 );
@@ -262,6 +264,10 @@ void Player::Dash()
 	if (GetKeyUp('W')) {
 		m_doubleCilckFlag = true;
 	}
+	if (m_playerState == enPlayerState_KnockBack)
+	{
+		return;
+	}
 	if (m_doubleCilckFlag) {
 		if (m_doubleClickTimer <= doubleClickRug && m_playerState != enPlayerState_run) {
 			m_doubleClickTimer += GetEngine().GetRealDeltaTimeSec();	//タイマーを進める。
@@ -329,7 +335,7 @@ void Player::Move()
 	m_damageCollision->SetPosition(colPos);
 
 	//プレイヤーの状態の変更。
-	if (m_playerState != enPlayerState_run) {
+	if (m_playerState != enPlayerState_run && m_playerState != enPlayerState_KnockBack) {
 		if (stickL.Length() > 0.001f) {
 			m_playerState = enPlayerState_move;
 		}
@@ -529,6 +535,55 @@ void Player::Attack()
 	}
 }
 
+void Player::KnockBack()
+{
+	if (m_playerState == enPlayerState_KnockBack)
+	{
+		float knockBackFrame = 25.f;			//ノックバックするフレーム数(60FPS)。
+
+
+		if (m_knockBackTimer < knockBackFrame) {
+
+			//ノックバック処理。
+			CVector3 direction;
+			direction = m_knockBackDirection;
+			direction.Normalize();
+			direction.y = 0.f;
+			CVector3 moveSpeed = CVector3::Zero();
+			moveSpeed.x += direction.x * m_knockBack * Block::WIDTH;
+			moveSpeed.z += direction.z * m_knockBack * Block::WIDTH;
+
+			//高さの処理。
+			m_knoceBackY = m_knockBack;
+			moveSpeed.y += m_knoceBackY * Block::WIDTH / 2.0f;
+			m_knoceBackY -= m_knoceBackY + 0.5 * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
+			moveSpeed *= 15.0f;
+
+			m_position = m_characon.Execute(moveSpeed);
+			m_skinModelRender->SetPos(m_position);
+
+			//モデルの色を赤みがかったようにする。
+			m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+				mat->SetAlbedoScale({ CVector4::Red() });
+			});
+			m_knockBackTimer += 1;		//タイマーを加算。
+		}
+		else {		//リセット。
+			m_playerState = enPlayerState_idle;
+			m_knockBackTimer = 0.f;
+			m_knoceBackY = 1.f;
+		}
+
+	}
+	else 
+	{		
+		//モデルの色を元に戻す。
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+		mat->SetAlbedoScale({ CVector4::White() });
+		});
+	}
+}
+
 //インベントリを開く。
 void Player::OpenInventory()
 {
@@ -679,7 +734,7 @@ void Player::FlyTheRay()
 }
 
 //被ダメ－ジ。
-void Player::TakenDamage(int AttackPow)
+void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAttacked)
 {
 	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
 		//防御力の計算。
@@ -706,6 +761,12 @@ void Player::TakenDamage(int AttackPow)
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
 			}
 			voice->Play();
+			//攻撃されたのなら、ノックバックする。
+			if (isAttacked) {
+				m_playerState = enPlayerState_KnockBack;
+				m_knockBackDirection = knockBackDirection;
+				m_knockBackDirection.Normalize();
+			}
 		}
 	}
 }

@@ -71,7 +71,8 @@ void Zombie::Attack()
 			attackCol->SetTimer(0);		//寿命１フレーム。
 			attackCol->SetCallback([&](SuicideObj::CCollisionObj::SCallbackParam& param) {
 				if (param.EqualName(L"CPlayer")) {			//名前検索。
-					m_player->TakenDamage(m_attackPow);		//プレイヤーにダメージを与える。
+					CVector3 direction = GetDamageColPos() - GetPos();
+					m_player->TakenDamage(m_attackPow, direction,true);		//プレイヤーにダメージを与える。
 				}
 			});
 		}
