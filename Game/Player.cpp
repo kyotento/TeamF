@@ -26,7 +26,7 @@ namespace {
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
 	int fallTimer = 0;									//滞空時間。
-	int hiddenStamina = 4;								//体力回復用の隠れスタミナ。
+	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
@@ -761,8 +761,19 @@ void Player::Stamina()
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
 		if (!item->GetIsBlock()) {		//todo 仮　実際は食べ物かどうかを判別する。
 			m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
-			hiddenStamina += 4;			//隠れスタミナを上昇する。
+			hiddenStamina = 4;			//隠れスタミナを上昇する。
 			auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+		}
+	}
+	//HP回復処理。
+	if (hiddenStamina > 0 && m_stamina >= 20) {
+		staminaTimer += 1;
+		if(staminaTimer >= 30){
+			if (m_hp < 20) {
+				m_hp += 1;
+			}
+			hiddenStamina -= 1;
+			staminaTimer = 0;
 		}
 	}
 }
