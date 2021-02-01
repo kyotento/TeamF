@@ -22,6 +22,14 @@ NullableItemStack & Inventory::GetNullableItem( unsigned slotNo ){
 	}
 }
 
+std::unique_ptr<ItemStack> Inventory::TakeAllItem(unsigned slotNo) {
+	if (m_slotArray[slotNo]) {
+		return ItemStack::TakeItem(m_slotArray[slotNo], m_slotArray[slotNo].get()->GetNumber());
+	}
+	return std::unique_ptr<ItemStack>();
+}
+
+
 std::unique_ptr<ItemStack> Inventory::TakeItem( unsigned slotNo, int num ){
 	if( m_slotArray[slotNo] ){
 		return ItemStack::TakeItem( m_slotArray[slotNo], num );

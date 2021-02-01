@@ -31,6 +31,8 @@ namespace {
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
+	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 
 Player::Player() : m_inventory(36)
@@ -734,6 +736,32 @@ void Player::Death()
 				SuicideObj::CSE* voice;
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 				voice->Play();
+
+				for (int i = 0; i < 36; i++) {
+					auto item = m_inventory.TakeAllItem(i);
+					if (item) {
+						CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+						pos.y += Block::WIDTH;
+						DropItem* drop = DropItem::CreateDropItem(m_world, std::move(item));
+						CVector3 addPos = CVector3::Zero();
+						if (random() % 2 > 0) {
+							addPos.x += rand() % randomDrop;
+						}
+						else {
+							addPos.x -= rand() % randomDrop;
+						}
+
+						if (random() % 2 > 0) {
+							addPos.z += rand() % randomDrop;
+						}
+						else {
+							addPos.z += rand() % randomDrop;
+						}
+						drop->SetPos(pos+addPos);
+						//drop->SetVelocity(GetFront() * 300);
+					}
+				}
+				
 			}
 		}
 		//リスポーン。
