@@ -58,11 +58,13 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MobGenerator.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="PairBlock.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
@@ -128,10 +130,12 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="CowGenerator.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="MCCharaCon.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MobGenerator.h" />
+    <ClInclude Include="PairBlock.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="ZombieGenerator.h" />

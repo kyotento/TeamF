@@ -182,6 +182,12 @@
     <ClCompile Include="CameraCollisionSolver.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="PairBlock.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -382,6 +388,12 @@
     </ClInclude>
     <ClInclude Include="CameraCollisionSolver.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="PairBlock.h">
+      <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

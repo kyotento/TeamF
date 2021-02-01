@@ -6,6 +6,7 @@
 #include "BlockFactory.h"
 
 bool Block::m_sDestroyMode = false;
+World* Block::m_sWorld = nullptr;
 
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
@@ -58,6 +59,15 @@ void Block::CalcAABB() {
 	}
 }
 
+IntVector3 Block::CalcBlockUnitPos()const {
+	//このブロックの座標求める
+	CVector3 pos = m_model.GetPos();
+	pos.x -= half;
+	pos.z -= half;
+	pos /= WIDTH;
+	return { (int)std::round(pos.x),(int)std::round(pos.y), (int)std::round(pos.z) };
+}
+
 void Block::CalcAddLight(bool isDestroy) {
 	//計算不要
 	if (m_state == enCube_None && !isDestroy) {
@@ -72,14 +82,10 @@ void Block::CalcAddLight(bool isDestroy) {
 	}
 
 	//ワールド
-	World* world = FindGO<World>(L"World");
+	World* world = m_sWorld;
 
 	//このブロックの座標求める
-	CVector3 pos = m_model.GetPos();
-	pos.x -= half;
-	pos.z -= half;
-	pos /= WIDTH;
-	IntVector3 blockpos = { (int)std::round(pos.x),(int)std::round(pos.y), (int)std::round(pos.z) };
+	IntVector3 blockpos = CalcBlockUnitPos();
 
 	//このブロック自体の明るさを設定
 	auto light = world->GetLightData(blockpos);
@@ -199,16 +205,27 @@ void Block::RefleshDrawLighting(World* world, const IntVector3& blockpos, char l
 	}
 	//上下左右前後のブロックのライティング
 	for (int sb = 0; sb < 6; sb++) {
-		IntVector3 samplePos = blockpos + LightUtil::spreadDir[sb];
+		IntVector3 samplePos = blockpos + LightUtil::spreadDir[sb];		
 		Block* block = world->GetBlock(samplePos);
 		if (block) {
+			char blockPow = lightPower;
+			char skyPow = skyLightPower;
+			char* lightPtr = world->GetLightData(samplePos);
+			if (lightPtr) {
+				blockPow = max(blockPow, *lightPtr);
+			}
+			lightPtr = world->GetSkyLightData(samplePos);
+			if (lightPtr) {
+				skyPow = max(skyPow, *lightPtr);
+			}
+
 			if (sb < 4) {
-				if (lightPower >= 0)block->SetLightingData(sb, 0, lightPower);
-				if (skyLightPower >= 0)block->SetLightingData(sb, 2, skyLightPower);
+				if (blockPow >= 0)block->SetLightingData(sb, 0, blockPow);
+				if (skyPow >= 0)block->SetLightingData(sb, 2, skyPow);
 			}
 			else {
-				if (lightPower >= 0)block->SetLightingData(sb - 4, 1, lightPower);
-				if (skyLightPower >= 0)block->SetLightingData(sb - 4, 3, skyLightPower);
+				if (blockPow >= 0)block->SetLightingData(sb - 4, 1, blockPow);
+				if (skyPow >= 0)block->SetLightingData(sb - 4, 3, skyPow);
 			}
 		}
 	}

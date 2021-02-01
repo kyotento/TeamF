@@ -79,9 +79,9 @@ bool Player::Start()
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
-		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone,enCube_OakWood, 
+		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
 		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot
+		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
@@ -595,7 +595,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。
 	if (GetKeyDown(VK_LBUTTON) && !m_attackFlag) {
-		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
+		m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 	m_attackFlag = false;
 }

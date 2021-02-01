@@ -3,6 +3,7 @@
 
 #include "CraftingTable.h"
 #include "WorthOfGod.h"
+#include "Door.h"
 
 #include "BlockRenderingLightParameter.h"
 
@@ -39,7 +40,9 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_GrassHalf] = L"Resource/modelData/GrassHalf.tkm";	
 	FILE_PATH_ARRAY[enCube_GrassStairs] = L"Resource/modelData/GrassStairs.tkm";
 	FILE_PATH_ARRAY[enCube_WoGBlock] = L"Resource/modelData/WoG_Block.tkm";
-	
+	FILE_PATH_ARRAY[enCube_DoorUp] = L"Resource/modelData/DoorU.tkm";
+	FILE_PATH_ARRAY[enCube_DoorDown] = L"Resource/modelData/DoorD.tkm";
+
 	//耐久度
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
 	BLOCK_HP_ARRAY[enCube_Soil] = 4;
@@ -58,6 +61,8 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_HP_ARRAY[enCube_GrassHalf] = 4;
 	BLOCK_HP_ARRAY[enCube_GrassStairs] = 4;
 	BLOCK_HP_ARRAY[enCube_WoGBlock] = 1;
+	BLOCK_HP_ARRAY[enCube_DoorUp] = 8;
+	BLOCK_HP_ARRAY[enCube_DoorDown] = 8;
 
 	//まとめて設定
 	for (int i = 0; i < enCube_Num; i++) {
@@ -92,6 +97,11 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	BLOCK_AABB_ARRAY[enCube_GrassStairs][1].min.y += BLOCK_AABB_ARRAY[enCube_GrassStairs][0].max.y;
 	BLOCK_AABB_ARRAY[enCube_GrassStairs][1].max.y += BLOCK_AABB_ARRAY[enCube_GrassStairs][0].max.y;
 	BLOCK_AABB_ARRAY[enCube_GrassStairs][1].min.x = 0.0f;
+	//ドア
+	BLOCK_OPACITY[enCube_DoorUp] = false;
+	BLOCK_OPACITY[enCube_DoorDown] = false;
+	BLOCK_AABB_ARRAY[enCube_DoorUp][0].max.x -= Block::WIDTH * (13.0f / 16.0f);
+	BLOCK_AABB_ARRAY[enCube_DoorDown][0].max.x -= Block::WIDTH * (13.0f / 16.0f);
 
 	//ブロックのAABBの数カウント
 	for (int i = 0; i < enCube_Num; i++) {
@@ -148,7 +158,7 @@ const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
 	return FILE_PATH_ARRAY[blockType];
 }
 
-std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
+std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType){
 	std::unique_ptr<Block> block;
 
 	//クリック時にアクションを起こすブロックなどは別のクラス。
@@ -158,6 +168,10 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 		break;
 	case enCube_WoGBlock:
 		block = std::make_unique<WorthOfGod>();
+		break;
+	case enCube_DoorUp:
+	case enCube_DoorDown:
+		block = std::make_unique<Door>(blockType == enCube_DoorUp ? true : false);
 		break;
 	default:
 		block = std::make_unique<Block>();
