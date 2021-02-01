@@ -58,6 +58,10 @@ void DropItem::Update()
 
 	//アイテム取得処理。
 	Player* player = m_world->GetPlayer();
+	if (player->GetIsDeath())
+	{
+		return;
+	}
 
 	CVector3 diff = player->GetPos() - GetPos();
 

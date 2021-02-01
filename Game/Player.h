@@ -242,6 +242,14 @@ public:
 	{
 		return m_isBlockDestruction;
 	}
+	/// <summary>
+	/// プレイヤーが死んでるかどうか取得
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsDeath()
+	{
+		return m_playerState == enPlayerState_death;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
