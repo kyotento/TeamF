@@ -2,6 +2,7 @@
 #pragma once
 #include "../BlockType.h"
 #include "Light.h"
+#include "AABB.h"
 
 class Player;
 class World;
@@ -18,15 +19,16 @@ public:
 	//! @brief ポジションをセット。
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
-		
-	//! @brief ワールド座標を使ってポジションをセット。
-	//! ※いずれなくなる関数
-	void SetPosWithWorldPos(const CVector3& worldpos);
 
 	//! @brief モデルのポジションを取得
 	const CVector3& GetModelPos()const {
 		return m_model.GetPos();
 	}
+
+	//! @brief このブロックのAABBを取得
+	const AABB& GetAABB(int index)const;
+	//! @brief このブロックのAABBの数を取得
+	int GetAABBNum() const;
 
 	//! @brief モデルを初期化
 	void InitModel(const wchar_t* filePath);
@@ -35,6 +37,10 @@ public:
 	//! @details この関数はモデルを変更しない。
 	void SetBlockType(EnCube enCube)
 	{
+		if (m_state != enCube) {
+			m_state = enCube;
+			CalcAABB();//AABBの計算
+		}
 		m_state = enCube;
 	}
 	//! @brief ブロックの種類を取得。
@@ -68,6 +74,11 @@ public:
 	void DisableCollision(){
 		m_collision.reset();
 	}
+
+	//! @brief 不透明かどうか取得
+	bool GetIsOpacity()const;
+
+	//HPを設定
 	void SetHP(const int hp)
 	{
 		m_maxHP = hp;
@@ -115,12 +126,21 @@ public:
 	//! @brief ライティング描画の更新
 	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
+	//デストロイモード
+	//デストラクタの挙動を変える
+	static bool m_sDestroyMode;
+
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
+	//! @brief ブロックAABBの最大数
+	static constexpr int BLOCK_AABB_MAXNUM = 2;
 
 private:
 	//! @brief ライティング計算する
 	void CalcAddLight(bool isDestroy = false);
+
+	//! @brief AABBを計算する
+	void CalcAABB();
 
 private:
 	//モデル
@@ -130,11 +150,20 @@ private:
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 
+	//向き
+	enum enMuki {
+		enXm,enZm,enXp,enZp//-X,-Z...
+	};
+	enMuki m_muki = enXm;
+
 	//明るさ
 	CMatrix m_lighting = CMatrix::Zero();
 
+	//AABB
+	std::unique_ptr<AABB[]> m_aabb;
 	//コリジョン
-	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
+	std::unique_ptr<SuicideObj::CCollisionObj[]> m_collision;
+
 	int m_maxHP = 0;
 	int m_hp = 10;
 };

@@ -28,6 +28,11 @@ ItemDictionary::ItemDictionary(){
 	AddBlock( enCube_IronOre, L"鉄鉱石" );
 	AddBlock( enCube_GoldOre, L"金鉱石" );
 	AddBlock( enCube_CraftingTable, L"作業台" );
+	AddBlock( enCube_TorchBlock, L"松明ブロック" );
+	AddBlock( enCube_Torch, L"松明");
+	AddBlock( enCube_GrassHalf, L"草ハーフ");
+	AddBlock( enCube_GrassStairs, L"草階段");
+	AddBlock( enCube_WoGBlock, L"神の怒り" );
 
 	//アセットが入ったフォルダ。
 	std::filesystem::path texDir;

@@ -27,6 +27,10 @@ public:
 	//! @details 普通のGetは参照の取得で、こっちはインベントリから戻り値へアイテムを移動させる。
 	std::unique_ptr<ItemStack> TakeItem( unsigned slotNo, int num );
 
+	//! @brief スロットからアイテムを取る全部取る。
+	//! @details 普通のGetは参照の取得で、こっちはインベントリから戻り値へアイテムを移動させる。
+	std::unique_ptr<ItemStack> TakeAllItem(unsigned slotNo);
+
 	//! @brief 指定した数だけスロットからアイテムを消す。
 	void DeleteItem( unsigned slotNo, int num );
 

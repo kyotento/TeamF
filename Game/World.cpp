@@ -6,6 +6,7 @@
 #include "BiomeManager.h"
 #include "DropItem.h"
 #include "Light.h"
+#include "BlockFactory.h"
 
 namespace {
 	const float timeBlockDurabilityValueRecover = 0.4f;
@@ -34,6 +35,11 @@ World::~World(){
 		e->SetWorld( nullptr );
 		DeleteGO( e );
 	}
+
+	//チャンク削除
+	Block::m_sDestroyMode = true;
+	m_chunkMap.clear();
+	Block::m_sDestroyMode = false;
 }
 
 void World::PostUpdate(){
@@ -291,7 +297,8 @@ void World::ChunkCulling( Chunk& chunk ){
 				continue;
 			}
 
-			if( GetBlock( wx + v.x, y + v.y, wz + v.z ) == nullptr ){
+			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
+			if( neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false ){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -319,8 +326,12 @@ void World::DeleteBlock( const CVector3& pos ){
 	}
 
 	m_block = GetBlock(x, y, z);
-	//ブロックのHPを減らす、とりあえず2入れてる
-	m_block->ReduceHP(2);
+	if (m_block == nullptr)
+	{
+		return;
+	}
+	//ブロックのHPを減らす、とりあえず1入れてる
+	m_block->ReduceHP(1);
 	//ブロックのHPが0以上ならこれで終わり
 	if (m_block->GetHP() > 0)
 	{
@@ -391,7 +402,8 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.y = pos2.y + posList[j].y;
 			pos3.z = pos2.z + posList[j].z;
 
-			if( GetBlock( pos3 ) == nullptr ){
+			auto neighbor = GetBlock(pos3);
+			if (neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}

@@ -17,6 +17,11 @@ enum EnCube
 	enCube_GoldOre,			//金鉱石。
 	enCube_Bedrock,			//岩盤。
 	enCube_CraftingTable,	//クラフティングテーブル。
+	enCube_TorchBlock,		//松明ブロック
+	enCube_Torch,			//松明
+	enCube_GrassHalf,		//草ハーフ
+	enCube_GrassStairs,		//草階段
+	enCube_WoGBlock,		//ラスゴブロック
 	enCube_Glass,			//ガラス。
 	enCube_Num
 };

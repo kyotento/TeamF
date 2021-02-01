@@ -54,6 +54,7 @@
     <ClCompile Include="Animals.cpp" />
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="CameraCollisionSolver.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
@@ -64,9 +65,12 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
+    <ClInclude Include="CameraCollisionSolver.h" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
     <ClCompile Include="CraftingController.cpp" />
@@ -129,6 +133,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>

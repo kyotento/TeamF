@@ -25,6 +25,7 @@ namespace {
 	const float move = 1.0f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
+	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
@@ -32,6 +33,8 @@ namespace {
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
+	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 
 Player::Player() : m_inventory(36)
@@ -81,8 +84,9 @@ bool Player::Start()
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
-		enItem_Rod, enItem_Gold_Ingot, enCube_Grass, enCube_GoldOre, enCube_CobbleStone, enItem_Iron_Ingot,
-		enCube_OakWood,enItem_Diamond,enCube_CraftingTable
+		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone,enCube_OakWood, 
+		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
+		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
@@ -93,6 +97,8 @@ bool Player::Start()
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
 
+	//タイマーに値を入れておく
+	m_timerBlockDestruction = timeBlockDestruction;
 	return true;
 }
 
@@ -123,6 +129,8 @@ void Player::Update()
 			Attack();
 			//インベントリを開く。
 			OpenInventory();
+			//ブロック破壊を実行するかどうか判断する。
+			DecideCanDestroyBlock();
 			//前方にRayを飛ばす。
 			FlyTheRay();
 			//スタミナ処理。
@@ -604,17 +612,50 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			}
 		}
 	}
-	//破壊。
-	if (GetKeyDown(VK_LBUTTON) && !m_attackFlag) {
+	//破壊。ここもInputに変えた。
+	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
 		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 	m_attackFlag = false;
 }
 
+//ブロック破壊を実行するかどうか判断する。
+void Player::DecideCanDestroyBlock()
+{
+	//マウス左長押しなら。
+	if (GetKeyInput(VK_LBUTTON))
+	{
+		//タイマーを+する。
+		m_timerBlockDestruction += GetDeltaTimeSec();
+		//タイマーが一定時間以下なら破壊を実行しない。
+		if (m_timerBlockDestruction <= timeBlockDestruction)
+		{
+			m_isBlockDestruction = false;
+		}
+		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
+		else {
+			m_isBlockDestruction = true;
+			m_timerBlockDestruction = 0.0f;
+		}
+	}
+	//マウス長押しされてない場合、マウスを押した瞬間に破壊できるようにタイマーをセットしておく。
+	else {
+		m_isBlockDestruction = false;
+		m_timerBlockDestruction = timeBlockDestruction;
+	}
+}
+
 //レイを前方に飛ばす。
 void Player::FlyTheRay()
-{
-	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
+{								  //マウス左長押しなら。				
+	if (GetKeyDown(VK_RBUTTON) || GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)) {
+		//マウス左長押しかつ破壊フラグがたっていなかったら、処理しない。
+		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction)
+		{
+			return;
+		}
+		
+		
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -634,6 +675,7 @@ void Player::FlyTheRay()
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}
+	
 }
 
 //被ダメ－ジ。
@@ -708,6 +750,32 @@ void Player::Death()
 				SuicideObj::CSE* voice;
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 				voice->Play();
+
+				for (int i = 0; i < 36; i++) {
+					auto item = m_inventory.TakeAllItem(i);
+					if (item) {
+						CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+						pos.y += Block::WIDTH;
+						DropItem* drop = DropItem::CreateDropItem(m_world, std::move(item));
+						CVector3 addPos = CVector3::Zero();
+						if (random() % 2 > 0) {
+							addPos.x += rand() % randomDrop;
+						}
+						else {
+							addPos.x -= rand() % randomDrop;
+						}
+
+						if (random() % 2 > 0) {
+							addPos.z += rand() % randomDrop;
+						}
+						else {
+							addPos.z += rand() % randomDrop;
+						}
+						drop->SetPos(pos+addPos);
+						//drop->SetVelocity(GetFront() * 300);
+					}
+				}
+				
 			}
 		}
 		//リスポーン。
