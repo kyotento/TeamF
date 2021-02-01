@@ -25,7 +25,9 @@ namespace {
 	const float move = 1.0f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
-	int fallTimer = 0;								//滞空時間。
+	int fallTimer = 0;									//滞空時間。
+	int hiddenStamina = 4;								//体力回復用の隠れスタミナ。
+	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
@@ -123,6 +125,8 @@ void Player::Update()
 			OpenInventory();
 			//前方にRayを飛ばす。
 			FlyTheRay();
+			//スタミナ処理。
+			Stamina();
 
 			if( GetKeyDown( 'Q' ) ){
 				auto item = m_inventory.TakeItem( m_selItemNum - 1, 1 );
@@ -339,6 +343,7 @@ void Player::Jump()
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
+			m_stamina -= 0.2;
 		}
 		//ジャンプ中の処理。
 		if (m_isJump) {					
@@ -543,6 +548,9 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
 		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+			m_stamina -= 0.0003;
+		}
 
 		break;
 	case Player::enPlayerState_run:		//走っているとき。
@@ -551,6 +559,9 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
 		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+			m_stamina -= 0.003;
+		}
 
 		break;
 	case Player::enPlayerState_excavate:	//物を掘る。
@@ -712,7 +723,8 @@ void Player::Death()
 void Player::Respawn()
 {
 	m_deathAddRot = 0.f;					//プレイヤーの回転量の初期化。。
-	m_hp = 20;								//HPの初期化。
+	m_hp = 20.f;								//HPの初期化。
+	m_stamina = 20.f;
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 		mat->SetAlbedoScale({ CVector4::White() });		//モデルの色の初期化。
@@ -731,6 +743,27 @@ void Player::IsDraw()
 	}
 	else{
 		m_skinModelRender->SetIsDraw(true);
+	}
+}
+
+void Player::Stamina()
+{
+	if (m_stamina <= 0) {
+		m_stamina = 0;
+	}
+	if (m_stamina >= 20) {
+		m_stamina = 20;
+	}
+	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
+
+	//飯を食べる処理。
+	if (GetKeyDown(VK_RBUTTON)) {
+		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
+		if (!item->GetIsBlock()) {		//todo 仮　実際は食べ物かどうかを判別する。
+			m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
+			hiddenStamina += 4;			//隠れスタミナを上昇する。
+			auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+		}
 	}
 }
 

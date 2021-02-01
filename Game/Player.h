@@ -121,7 +121,7 @@ public:
 	/// HPを取得する。
 	/// </summary>
 	/// <returns>HP</returns>
-	const int& GetHP()
+	const float& GetHP()
 	{
 		return m_hp;
 	}
@@ -130,7 +130,7 @@ public:
 	/// スタミナを取得する。
 	/// </summary>
 	/// <returns>スタミナ</returns>
-	const int& GetStamina()
+	const float& GetStamina()
 	{
 		return m_stamina;
 	}
@@ -317,6 +317,8 @@ private:
 	/// </summary>
 	void IsDraw();
 
+	void Stamina();
+
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
@@ -349,7 +351,7 @@ private:
 	int FallDamage();		//落下ダメージ。
 
 	float m_hp = 20.f;				//体力。
-	int m_stamina = 20;				//スタミナ。
+	float m_stamina = 20.000f;		//スタミナ。
 	int m_attackPower = 5;			//攻撃力。
 	int m_defensePower = 15;		//防御力。
 	float m_exp = 5.50f;			//経験値。
