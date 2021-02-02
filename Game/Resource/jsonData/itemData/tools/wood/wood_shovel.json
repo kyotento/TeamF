@@ -1,6 +1,6 @@
 {
 	"id": "enItem_Wood_Shovel",
 	"name": "木のシャベル",
-	"sprite": "spriteData/items/Wood_Shovel.dds",
+	"sprite": "spriteData/tools/Wood_Shovel.dds",
 	"stack_limit": 1
 }

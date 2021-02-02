@@ -30,10 +30,10 @@ bool DropItem::Start()
 	m_model.SetScale( myScale );
 
 	//デバッグ用、後で消す。
-	m_model.GetSkinModel().InitMaterialSetting();
+	/*m_model.GetSkinModel().InitMaterialSetting();
 	m_model.GetSkinModel().FindMaterialSetting( []( MaterialSetting* mts){
 		mts->SetAlbedoTexture( CreateTexture("Resource/spriteData/items/Coal.dds") );
-	} );
+	} );*/
 
 	//レイトレモデル。
 	m_raytraceModel.Init( m_model );

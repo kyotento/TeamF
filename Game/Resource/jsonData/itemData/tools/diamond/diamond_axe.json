@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Diamond_Axe",
 	"name": "ダイヤのオノ",
-	"sprite": "spriteData/items/Diamond_Axe.dds",
+	"sprite": "spriteData/tools/Diamond_Axe.dds",
+	"model": "modelData/tools/Diamond_axe.tkm",
 	"stack_limit": 1
 }

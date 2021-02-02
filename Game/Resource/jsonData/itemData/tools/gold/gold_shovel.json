@@ -1,6 +1,6 @@
 {
 	"id": "enItem_Gold_Shovel",
 	"name": "金のシャベル",
-	"sprite": "spriteData/items/Gold_Shovel.dds",
+	"sprite": "spriteData/tools/Gold_Shovel.dds",
 	"stack_limit": 1
 }

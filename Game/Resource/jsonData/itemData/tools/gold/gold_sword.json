@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Gold_Sword",
 	"name": "金の剣",
-	"sprite": "spriteData/items/Gold_Sword.dds",
+	"sprite": "spriteData/tools/Gold_Sword.dds",
+	"model": "modelData/tools/Gold_Sword.tkm",
 	"stack_limit": 1
 }

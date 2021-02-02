@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Stone_Pickaxe",
 	"name": "石のピッケル",
-	"sprite": "spriteData/items/Stone_Pickaxe.dds",
+	"sprite": "spriteData/tools/Stone_Pickaxe.dds",
+	"model": "modelData/tools/Stone_Pickaxe.tkm",
 	"stack_limit": 1
 }

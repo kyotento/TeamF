@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Wood_Sword",
 	"name": "木の剣",
-	"sprite": "spriteData/items/Wood_Sword.dds",
+	"sprite": "spriteData/tools/Wood_Sword.dds",
+	"model": "modelData/tools/Wood_Sword.tkm",
 	"stack_limit": 1
 }

@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Gold_Axe",
 	"name": "金のオノ",
-	"sprite": "spriteData/items/Gold_Axe.dds",
+	"sprite": "spriteData/tools/Gold_Axe.dds",
+	"model": "modelData/tools/Gold_Axe.tkm",
 	"stack_limit": 1
 }

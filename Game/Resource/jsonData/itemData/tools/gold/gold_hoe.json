@@ -1,6 +1,6 @@
 {
 	"id": "enItem_Gold_Hoe",
 	"name": "金のクワ",
-	"sprite": "spriteData/items/Gold_Hoe.dds",
+	"sprite": "spriteData/tools/Gold_Hoe.dds",
 	"stack_limit": 1
 }

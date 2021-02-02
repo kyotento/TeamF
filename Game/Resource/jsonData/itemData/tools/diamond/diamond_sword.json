@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Diamond_Sword",
 	"name": "ダイヤの剣",
-	"sprite": "spriteData/items/Diamond_Sword.dds",
+	"sprite": "spriteData/tools/Diamond_Sword.dds",
+	"model": "modelData/tools/Diamond_Sword.tkm",
 	"stack_limit": 1
 }

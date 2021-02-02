@@ -1,6 +1,6 @@
 {
 	"id": "enItem_Wood_Hoe",
 	"name": "木のクワ",
-	"sprite": "spriteData/items/Wood_Hoe.dds",
+	"sprite": "spriteData/tools/Wood_Hoe.dds",
 	"stack_limit": 1
 }

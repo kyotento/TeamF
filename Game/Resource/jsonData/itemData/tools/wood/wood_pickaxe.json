@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Wood_Pickaxe",
 	"name": "木のピッケル",
-	"sprite": "spriteData/items/Wood_Pickaxe.dds",
+	"sprite": "spriteData/tools/Wood_Pickaxe.dds",
+	"model": "modelData/tools/Wood_Pickaxe.tkm",
 	"stack_limit": 1
 }

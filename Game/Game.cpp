@@ -1,10 +1,8 @@
 #include "stdafx.h"
-#include "Inventory.h"
-#include "DropItem.h"
 #include "Game.h"
 #include "GameCamera.h"
 #include "Player.h"
-#include "Zombie.h"
+#include "ItemDictionary.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
 #include "RecipeFiler.h"
@@ -31,6 +29,10 @@ bool Game::Start()
 
 	//ブロックファクトリ初期化。
 	BlockFactory::Init( L"Resource/jsonData/blockData/" );
+
+	//アイテムを読み込む。
+	ItemDictionary::Instance().LoadItems( L"Resource/jsonData/itemData/" );
+	ItemDictionary::Instance().LoadBlocks( BlockFactory::GetBlockMap() );
 
 	//レシピ読み込み。
 	RecipeFiler recipeFiler;

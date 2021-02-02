@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Iron_Axe",
 	"name": "鉄のオノ",
-	"sprite": "spriteData/items/Iron_Axe.dds",
+	"sprite": "spriteData/tools/Iron_Axe.dds",
+	"model": "modelData/tools/Iron_Axe.tkm",
 	"stack_limit": 1
 }

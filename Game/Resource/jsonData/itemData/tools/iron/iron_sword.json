@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Iron_Sword",
 	"name": "鉄の剣",
-	"sprite": "spriteData/items/Iron_Sword.dds",
+	"sprite": "spriteData/tools/Iron_Sword.dds",
+	"model": "modelData/tools/Iron_Sword.tkm",
 	"stack_limit": 1
 }

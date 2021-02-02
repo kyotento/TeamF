@@ -1,6 +1,6 @@
 {
 	"id": "enItem_Diamond_Hoe",
 	"name": "ダイヤのクワ",
-	"sprite": "spriteData/items/Diamond_Hoe.dds",
+	"sprite": "spriteData/tools/Diamond_Hoe.dds",
 	"stack_limit": 1
 }

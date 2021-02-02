@@ -22,7 +22,7 @@ void BlockFactory::Init( std::filesystem::path jsonFolder){
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
-	for( const auto& entry : st_blockInfo.GetMap() ){
+	for( const auto& entry : GetBlockMap() ){
 		GameObj::InstancingModel* instanceModel = mngr.Load( instanceMax, entry.second.modelPath.c_str() );
 	}
 }
@@ -48,4 +48,8 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	block->SetHP(bInfo.hp);
 
 	return std::move( block );
+}
+
+const std::unordered_map<EnCube, BlockInfo>& BlockFactory::GetBlockMap(){
+	return st_blockInfo.GetMap();
 }

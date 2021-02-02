@@ -1,6 +1,7 @@
 {
 	"id": "enItem_Wood_Axe",
 	"name": "木のオノ",
-	"sprite": "spriteData/items/Wood_Axe.dds",
+	"sprite": "spriteData/tools/Wood_Axe.dds",
+	"model": "modelData/tools/Wood_Axe.tkm",
 	"stack_limit": 1
 }

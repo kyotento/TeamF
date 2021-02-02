@@ -3,7 +3,8 @@
 #include "BlockType.h"
 
 //! @brief ブロックの種類ごとに共通の情報。
-struct BlockInfo{
+class BlockInfo{
+public:
 	std::string name;
 	int hp;
 	std::string usefulTool;
