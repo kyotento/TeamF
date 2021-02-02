@@ -58,6 +58,7 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
+    <ClCompile Include="CraftingController2.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MobGenerator.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="CowGenerator.h" />
+    <ClInclude Include="CraftingController2.h" />
     <ClInclude Include="MCCharaCon.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Light.h" />
