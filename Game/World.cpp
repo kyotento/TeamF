@@ -10,6 +10,8 @@
 
 namespace {
 	const float timeBlockDurabilityValueRecover = 0.4f;
+	const int randomDrop = Block::WIDTH / 2.5f;	//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 
 World::World(){
@@ -341,7 +343,21 @@ void World::DeleteBlock( const CVector3& pos ){
 	{
 		//ドロップアイテムを作成。
 		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
-		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH );
+		CVector3 addPos = CVector3::Zero();
+		if (random() % 2 > 0) {
+			addPos.x += rand() % randomDrop;
+		}
+		else {
+			addPos.x -= rand() % randomDrop;
+		}
+
+		if (random() % 2 > 0) {
+			addPos.z += rand() % randomDrop;
+		}
+		else {
+			addPos.z += rand() % randomDrop;
+		}
+		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH + addPos);
 	}
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );

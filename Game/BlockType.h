@@ -22,5 +22,6 @@ enum EnCube
 	enCube_GrassHalf,		//草ハーフ
 	enCube_GrassStairs,		//草階段
 	enCube_WoGBlock,		//ラスゴブロック
+	enCube_Glass,			//ガラス。
 	enCube_Num
 };

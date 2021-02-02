@@ -55,6 +55,7 @@ public:
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
 		enPlayerState_excavate,			//物を掘る。
+		enPlayerState_KnockBack,			//ノックバック。
 		enPlayerState_death,			//死んだとき。
 		enPlayerState_num,				//状態の数。
 	};
@@ -121,7 +122,7 @@ public:
 	/// HPを取得する。
 	/// </summary>
 	/// <returns>HP</returns>
-	const int& GetHP()
+	const float& GetHP()
 	{
 		return m_hp;
 	}
@@ -130,7 +131,7 @@ public:
 	/// スタミナを取得する。
 	/// </summary>
 	/// <returns>スタミナ</returns>
-	const int& GetStamina()
+	const float& GetStamina()
 	{
 		return m_stamina;
 	}
@@ -216,7 +217,7 @@ public:
 	/// 被ダメージ
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
-	void TakenDamage(int AttackePow);
+	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false);
 
 	/// <summary>
 	/// ゲームのインスタンスを設定する。
@@ -241,6 +242,14 @@ public:
 	bool GetIsBlockDestruction()
 	{
 		return m_isBlockDestruction;
+	}
+	/// <summary>
+	/// プレイヤーが死んでるかどうか取得。
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsDeath()
+	{
+		return m_playerState == enPlayerState_death;
 	}
 private:
 	/// <summary>
@@ -282,6 +291,10 @@ private:
 	/// 攻撃処理。
 	/// </summary>
 	void Attack();
+	/// <summary>
+	/// ノックバック
+	/// </summary>
+	void KnockBack();
 
 	/// <summary>
 	/// インベントリを開く。
@@ -328,6 +341,8 @@ private:
 	/// </summary>
 	void IsDraw();
 
+	void Stamina();
+
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
@@ -360,7 +375,7 @@ private:
 	int FallDamage();		//落下ダメージ。
 
 	float m_hp = 20.f;				//体力。
-	int m_stamina = 20;				//スタミナ。
+	float m_stamina = 20.000f;		//スタミナ。
 	int m_attackPower = 5;			//攻撃力。
 	int m_defensePower = 15;		//防御力。
 	float m_exp = 5.50f;			//経験値。
@@ -393,5 +408,9 @@ private:
 	Game* m_game = nullptr;										//Gameクラス。
 	float m_timerBlockDestruction = 0.0f;						//マウス長押しでブロック破壊する時のタイマー、一定時間経過でブロック破壊を実行する。
 	bool m_isBlockDestruction = false;							//ブロック破壊をしたかどうか、平野が使う。
+	float m_knockBackTimer = 0.0f;								//ノックバックのタイマー
+	CVector3 m_knockBackDirection = CVector3::Zero();		//ノックバックの方向。
+	float m_knockBack = 1.f;	//ノックバック感度。
+	float m_knoceBackY = 1.f;	//ノックバックY座標。
 };
 
