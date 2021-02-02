@@ -18,8 +18,11 @@ namespace {
 	int maxDownPos = 0;
 
 	int Limit = 0;
+	int yPos = 0;
 
 	float UpPosY = 25;
+	float foodHasHandLRPos = 0.0f;
+	float foodHasHandUDPos = 0.0f;
 
 	const float handMullFront = 45.0f;
 	const float blockMullFront = 45.0f;
@@ -33,6 +36,10 @@ namespace {
 
 	bool swich_flag = false;
 	bool initItem_flag = false;
+
+	//とりあえずの変数。
+	int a = 0;
+	bool flag = false;
 }
 
 ItemDisplay::ItemDisplay()
@@ -76,6 +83,8 @@ void ItemDisplay::Update()
 		//クリックしたときのモーション処理。
 		LeftClickMouseToMoveHand();
 
+		//右クリック
+		RightClickMouseToEat();
 		m_skinModelRender->SetScale(m_scale);
 	}
 	else if (m_player->GetIsPlayerDead())
@@ -241,8 +250,8 @@ void ItemDisplay::HandRotation()
 	//サイズと位置をずらす。
 	UpPosY = 0;
 	m_scale = { 0.40f,0.40f,0.40f };
-	m_mullFornt = handMullFront;
-	m_mullCrossProduct = BlockMullCross;
+	m_mullFornt = handMullFront + foodHasHandUDPos;
+	m_mullCrossProduct = BlockMullCross + foodHasHandLRPos;
 }
 //ブロック系の回転。
 void ItemDisplay::BlockRotation()
@@ -356,4 +365,52 @@ void ItemDisplay::LeftClickMouseToMoveHand()
 	m_rotationX.SetRotationDeg(CVector3::AxisX(), Limit);
 	m_rotation.Multiply(m_rotationX);
 	m_skinModelRender->SetRot(m_rotation);
+}
+
+//食べるよん。
+void ItemDisplay::RightClickMouseToEat()
+{
+	if (type == enHand)
+	{
+		//右クリックし続けたら。
+		if (GetKeyInput(VK_RBUTTON))
+		{
+			foodHasHandLRPos = -45.0f;
+			foodHasHandUDPos = -25.0f;
+			m_isUpDownFlag = true;
+		}
+		else
+		{
+			foodHasHandLRPos = 0.0f;
+			foodHasHandUDPos = 0.0f;
+			m_isUpDownFlag = false;
+		}
+		UpDown();	//実際に上下に動かしてるのはここ。
+	}
+}
+//雑です。
+void ItemDisplay::UpDown()
+{
+	const float UPDOWN = 3.0f;
+	const int maxA = 5;
+	if (m_isUpDownFlag && !flag)
+	{
+		UpPosY += UPDOWN;
+		a++;
+		if (a > maxA && !flag)
+		{
+			flag = true; 
+			a = 0;
+		}
+	}
+	else if (m_isUpDownFlag && flag)
+	{
+		UpPosY -= UPDOWN;
+		a++;
+		if (a > maxA && flag)
+		{
+			flag = false;
+			a = 0;
+		}
+	}
 }
