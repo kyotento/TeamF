@@ -655,7 +655,6 @@ void Player::FlyTheRay()
 			return;
 		}
 		
-		
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -675,7 +674,6 @@ void Player::FlyTheRay()
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}
-	
 }
 
 //被ダメ－ジ。
