@@ -886,15 +886,26 @@ void Player::Stamina()
 		m_stamina = 21;
 	}
 	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
-
+	const float maxTimer = 5.0f;
 	//飯を食べる処理。
-	if (GetKeyDown(VK_RBUTTON)) {
+	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (!item->GetIsBlock()) {		//todo 仮　実際は食べ物かどうかを判別する。
-			m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
-			hiddenStamina = 4;			//隠れスタミナを上昇する。
-			auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+		if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
+			m_eatingFlag = true;
+			if (m_eatingTimer >= maxTimer)
+			{
+				m_eatingTimer = 0.0f;
+				m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
+				hiddenStamina = 4;			//隠れスタミナを上昇する。
+				auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+			}
 		}
+	}
+	else
+	{
+		m_eatingFlag = false;
+		m_eatingTimer = 0.0f;
 	}
 	//HP回復処理。
 	if (hiddenStamina > 0 && m_stamina >= 20) {

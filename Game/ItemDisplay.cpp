@@ -250,8 +250,8 @@ void ItemDisplay::HandRotation()
 	//サイズと位置をずらす。
 	UpPosY = 0;
 	m_scale = { 0.40f,0.40f,0.40f };
-	m_mullFornt = handMullFront + foodHasHandUDPos;
-	m_mullCrossProduct = BlockMullCross + foodHasHandLRPos;
+	m_mullFornt = handMullFront;
+	m_mullCrossProduct = BlockMullCross;
 }
 //ブロック系の回転。
 void ItemDisplay::BlockRotation()
@@ -295,8 +295,8 @@ void ItemDisplay::ToolRotation()
 	m_skinModelRender->SetRot(m_rotation);
 	//サイズと位置をずらす。
 	m_scale = { 0.2f,0.225f,0.2f };
-	m_mullFornt = toolMullFront;
-	m_mullCrossProduct = toolMullCross;
+	m_mullFornt = toolMullFront + foodHasHandUDPos;;
+	m_mullCrossProduct = toolMullCross + foodHasHandLRPos;
 	UpPosY = -20;
 }
 //木の棒やインゴット等の回転。
@@ -319,8 +319,8 @@ void ItemDisplay::ItemRotation()
 	//サイズと位置をずらす。
 	UpPosY = -40;
 	m_scale = { 0.10f,0.10f,0.10f };
-	m_mullFornt = itemMullFront;
-	m_mullCrossProduct = itemMullCross;
+	m_mullFornt = itemMullFront + foodHasHandUDPos;
+	m_mullCrossProduct = itemMullCross + foodHasHandLRPos;
 }
 //インベントリに合わせて切り替え(ry。
 void ItemDisplay::SwitchItemType()
@@ -370,23 +370,19 @@ void ItemDisplay::LeftClickMouseToMoveHand()
 //食べるよん。
 void ItemDisplay::RightClickMouseToEat()
 {
-	if (type == enHand)
+	if (m_player->GetIsEating())
 	{
-		//右クリックし続けたら。
-		if (GetKeyInput(VK_RBUTTON))
-		{
-			foodHasHandLRPos = -45.0f;
-			foodHasHandUDPos = -25.0f;
-			m_isUpDownFlag = true;
-		}
-		else
-		{
-			foodHasHandLRPos = 0.0f;
-			foodHasHandUDPos = 0.0f;
-			m_isUpDownFlag = false;
-		}
-		UpDown();	//実際に上下に動かしてるのはここ。
+		foodHasHandLRPos = -35.0f;
+		foodHasHandUDPos = -5.0f;
+		m_isUpDownFlag = true;
 	}
+	else
+	{
+		foodHasHandLRPos = 0.0f;
+		foodHasHandUDPos = 0.0f;
+		m_isUpDownFlag = false;
+	}
+	UpDown();	//実際に上下に動かしてるのはここ。
 }
 //雑です。
 void ItemDisplay::UpDown()

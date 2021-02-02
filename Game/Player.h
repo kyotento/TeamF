@@ -251,6 +251,14 @@ public:
 	{
 		return m_playerState == enPlayerState_death;
 	}
+	/// <summary>
+	/// 食べてるか。
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsEating()
+	{
+		return m_eatingFlag;
+	}
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -357,6 +365,7 @@ private:
 	bool m_flyingflag = false;				//飛べる状態か。
 	bool m_attackFlag = false;				//エネミーに攻撃したか。
 	bool m_deathFlag = false;				//死んだかどうか。
+	bool m_eatingFlag = false;				//食べてるかどうか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -368,6 +377,7 @@ private:
 	float m_doubleClickTimer = 0.0f;						//ダブルクリックの判定時間。
 	float m_doubleClickTimerC = 0.0f;						//ダブルクリックの判定時間(クリエイティブ)。
 	float m_deathAddRot = 0.f;								//死亡時の回転総数。
+	float m_eatingTimer = 0.0f;
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
 	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
