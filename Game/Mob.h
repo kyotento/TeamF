@@ -25,7 +25,7 @@ protected:
 	void SetChanceDropping(int chanceDropping)
 	{
 		//アイテムをドロップさせる確率は1～100％。
-		//if (chanceDropping > 0 && chanceDropping < 101)
+		if (chanceDropping > 0 && chanceDropping < 101)
 		{
 			m_chanceDropping = chanceDropping;
 		}
@@ -33,7 +33,7 @@ protected:
 	//ドロップするアイテムを設定する。
 	void SetDropItemId(int itemId)
 	{
-		//if (itemId > enCube_None && itemId < enAllItem_Num)
+		if (itemId > enCube_None && itemId < enAllItem_Num)
 		{
 			m_itemId = itemId;
 		}

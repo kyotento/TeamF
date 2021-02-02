@@ -15,10 +15,10 @@ Mob::Mob(EnEntity enEntity) : Entity(enEntity_Cow)
 void Mob::DroppingItem(CVector3 pos)
 {
 	//ドロップするアイテムが設定されているかつ、ドロップする確率が0より上だった場合。
-	//if (m_itemId != enCube_None && m_chanceDropping > 0)
+	if (m_itemId != enCube_None && m_chanceDropping > 0)
 	{
-		int rand = random() % 101;
-		//if (rand < m_chanceDropping) 
+		int rand = random() % 100;
+		if (rand < m_chanceDropping) 
 		{
 			//ドロップアイテムを作成。
 			DropItem* dropItem = DropItem::CreateDropItem(m_world, m_itemId);
