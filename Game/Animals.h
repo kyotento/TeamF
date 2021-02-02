@@ -1,10 +1,10 @@
 #pragma once
 #include"Player.h"
-#include"Entity.h"
 #include"GameMode.h"
 #include "../physics/character/CCharacterController.h"
+#include "Mob.h"
 
-class Animals : public Entity
+class Animals : public Mob
 {
 public:
 	Animals(EnEntity enEntity = enEntity_None);

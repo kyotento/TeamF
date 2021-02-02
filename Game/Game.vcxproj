@@ -61,6 +61,7 @@
     <ClCompile Include="CraftingController2.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Mob.cpp" />
     <ClCompile Include="MobGenerator.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="MCCharaCon.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Mob.h" />
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
