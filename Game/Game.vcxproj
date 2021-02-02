@@ -54,6 +54,7 @@
     <ClCompile Include="Animals.cpp" />
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="BlockInfoDictionary.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
@@ -61,8 +62,10 @@
     <ClCompile Include="MobGenerator.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="Utf8ToSjis.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="Animals.h" />
+    <ClInclude Include="BlockInfoDictionary.h" />
     <ClInclude Include="ClickEvent.h" />
     <ClCompile Include="ClickEvent.cpp" />
     <ClCompile Include="CraftingController.cpp" />
@@ -124,6 +127,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="Utf8ToSjis.h" />
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>

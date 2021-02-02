@@ -3,10 +3,10 @@
 #include "ItemType.h"
 #include "RecipeManager.h"
 #include "Item.h"
-#include <nlohmann_json/json.hpp>
+#include <headerOnlyLib/json.hpp>
 
 //! @brief レシピファイル読み込み用のエラーメッセージを表示して落とす。
-void messageAbort( std::filesystem::path filePath, const std::string& msg ){
+static void messageAbort( std::filesystem::path filePath, const std::string& msg ){
 	std::string fileName = "file: " + filePath.filename().string() + '\n';
 
 	std::string text = fileName + msg;

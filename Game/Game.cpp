@@ -29,13 +29,15 @@ bool Game::Start()
 	m_gameMode.reset(NewGO<GameMode>());
 	m_gameMode->SetName(L"gamemode");
 
-	m_world = std::make_unique<World>();
+	//ブロックファクトリ初期化。
+	BlockFactory::Init( L"Resource/jsonData/blockData/" );
 
 	//レシピ読み込み。
-	// TODO: Worldの初期化より前に読むとエラーになる。いつかこのわかりにくい依存はどうにかしたい。
 	RecipeFiler recipeFiler;
 	recipeFiler.SetFolder(L"Resource/jsonData/recipeData/");
 	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
+	m_world = std::make_unique<World>();
 
 	//プレイヤーの生成。
 	Player* player = m_world->CreateEntity<Player>();

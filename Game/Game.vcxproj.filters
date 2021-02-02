@@ -166,6 +166,12 @@
       <Filter>generator</Filter>
     </ClCompile>
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="BlockInfoDictionary.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Utf8ToSjis.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -349,6 +355,12 @@
       <Filter>generator</Filter>
     </ClInclude>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="BlockInfoDictionary.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Utf8ToSjis.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

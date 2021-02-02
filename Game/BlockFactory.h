@@ -8,9 +8,8 @@
 class BlockFactory{
 public:
 
-	//! @brief モデルを読み込む。この関数を始めに呼ぶこと。
-	//! @details インスタンシング描画に使用するモデルを読み込む。CreateBlockより前に呼ばれていなければならない。
-	static void LoadInstancingModels(int instanceMax);
+	//! @brief json情報を使用して初期化。この関数を始めに呼ぶこと。
+	static void Init(std::filesystem::path jsonFolder);
 
 	//! @brief モデルパスを取得。 Item クラスが使用する。
 	static const wchar_t* GetModelPath( EnCube blockType );
@@ -18,6 +17,5 @@ public:
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
 	static std::unique_ptr<Block> CreateBlock( EnCube blockType );
-
 };
 

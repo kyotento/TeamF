@@ -1,53 +1,34 @@
 #include "stdafx.h"
 #include "BlockFactory.h"
+#include "BlockInfoDictionary.h"
+#include "Chunk.h"
+#include "RandomMapMaker.h"
 
 #include "CraftingTable.h"
 
-static const wchar_t* FILE_PATH_ARRAY[enCube_Num]{};
-static int BLOCK_HP_ARRAY[enCube_Num]{};
+namespace{
+	//ブロック情報を格納するクラス。
+	BlockInfoDictionary st_blockInfo;
+}
 
-void BlockFactory::LoadInstancingModels( int instanceMax ){
+void BlockFactory::Init( std::filesystem::path jsonFolder){
 
-	FILE_PATH_ARRAY[enCube_Grass] = L"Resource/modelData/GrassBlock.tkm";
-	FILE_PATH_ARRAY[enCube_Soil] = L"Resource/modelData/soilBlock.tkm";
-	FILE_PATH_ARRAY[enCube_Stone] = L"Resource/modelData/stoneBlock.tkm";
-	FILE_PATH_ARRAY[enCube_CobbleStone] = L"Resource/modelData/cobbleStone.tkm";
-	FILE_PATH_ARRAY[enCube_OakLog] = L"Resource/modelData/oakLog.tkm";
-	FILE_PATH_ARRAY[enCube_OakWood] = L"Resource/modelData/oakWood.tkm";
-	FILE_PATH_ARRAY[enCube_OakLeaf] = L"Resource/modelData/leafBlock.tkm";
-	FILE_PATH_ARRAY[enCube_CoalOre] = L"Resource/modelData/coalOre.tkm";
-	FILE_PATH_ARRAY[enCube_IronOre] = L"Resource/modelData/ironOre.tkm";
-	FILE_PATH_ARRAY[enCube_GoldOre] = L"Resource/modelData/goldOre.tkm";
-	FILE_PATH_ARRAY[enCube_Bedrock] = L"Resource/modelData/GrassBlock.tkm";
-	FILE_PATH_ARRAY[enCube_CraftingTable] = L"Resource/modelData/craftingTable.tkm";
+	//ブロック情報のロード。
+	st_blockInfo.Load( jsonFolder );
 
-	BLOCK_HP_ARRAY[enCube_Grass] = 4;
-	BLOCK_HP_ARRAY[enCube_Soil] = 4;
-	BLOCK_HP_ARRAY[enCube_Stone] = 16;
-	BLOCK_HP_ARRAY[enCube_CobbleStone] = 16;
-	BLOCK_HP_ARRAY[enCube_OakLog] = 8;
-	BLOCK_HP_ARRAY[enCube_OakWood] = 12;
-	BLOCK_HP_ARRAY[enCube_OakLeaf] = 2;
-	BLOCK_HP_ARRAY[enCube_CoalOre] = 20;
-	BLOCK_HP_ARRAY[enCube_IronOre] = 28;
-	BLOCK_HP_ARRAY[enCube_GoldOre] = 36;
-	BLOCK_HP_ARRAY[enCube_Bedrock] = 40;
-	BLOCK_HP_ARRAY[enCube_CraftingTable] = 4;
-
+	//インスタンシングモデルのロード
+	int loadEdge = 1 * 2 * Chunk::WIDTH;
+	int instanceMax = loadEdge * loadEdge * ( int( RandomMapMaker::m_maxHeight ) + 1 );
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
-	for( auto type : FILE_PATH_ARRAY ){
-		if( !type )continue;
-
-		GameObj::InstancingModel* instanceModel = mngr.Load( instanceMax, type );
-		
-		instanceModel->SetIsFrustumCulling( true );
+	for( const auto& entry : st_blockInfo.GetMap() ){
+		GameObj::InstancingModel* instanceModel = mngr.Load( instanceMax, entry.second.modelPath.c_str() );
 	}
 }
 
 const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
-	return FILE_PATH_ARRAY[blockType];
+	return st_blockInfo.GetInfo(blockType).modelPath.c_str();
 }
 
 std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
@@ -59,10 +40,12 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	} else{
 		block = std::make_unique<Block>();
 	}
+
+	BlockInfo bInfo = st_blockInfo.GetInfo( blockType );
 		
-	block->InitModel(FILE_PATH_ARRAY[blockType]);
+	block->InitModel(bInfo.modelPath.c_str());
 	block->SetBlockType( blockType );
-	block->SetHP(BLOCK_HP_ARRAY[blockType]);
+	block->SetHP(bInfo.hp);
 
 	return std::move( block );
 }
