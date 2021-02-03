@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Enemy.h"
 
-Enemy::Enemy(EnEntity enEntity) : Entity(enEntity)
+Enemy::Enemy(EnEntity enEntity) : Mob(enEntity)
 {
 	//スキンモデルを生成。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
@@ -195,6 +195,7 @@ void Enemy::Death()
 			m_deathAddRot += oneFrameRot;
 		}
 		else {		//回転し終わったら敵を消す。
+			DroppingItem(m_position);
 			DeleteGO(this);
 		}
 

@@ -182,6 +182,12 @@
     <ClCompile Include="CameraCollisionSolver.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="CraftingController2.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Mob.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -382,6 +388,12 @@
     </ClInclude>
     <ClInclude Include="CameraCollisionSolver.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingController2.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Mob.h">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

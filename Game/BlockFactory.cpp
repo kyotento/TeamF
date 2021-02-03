@@ -41,7 +41,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_WoGBlock] = L"Resource/modelData/WoG_Block.tkm";
 	
 	//‘Ï‹v“x
-	FILE_PATH_ARRAY[enCube_Glass] = L"Resource/modelData/GlassBlock.tkm";
+	FILE_PATH_ARRAY[enCube_Glass] = L"Resource/modelData/GrassBlock.tkm";
 
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
 	BLOCK_HP_ARRAY[enCube_Soil] = 4;

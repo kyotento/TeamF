@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Animals.h"
 
-Animals::Animals(EnEntity enEntity) : Entity(enEntity)
+Animals::Animals(EnEntity enEntity) : Mob(enEntity)
 {
 	//スキンモデルを生成。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
