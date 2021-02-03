@@ -13,11 +13,11 @@ std::unique_ptr<ItemStack> RecipeManager::GetResult( const int width, const int 
 
 		if( itemArray[i] != enCube_None ){
 
-			left = min( left, i % 3 );
-			right = max( right, i % 3 );
+			left = min( left, i % width);
+			right = max( right, i % width);
 
-			up = min( up, i / 3 );
-			bottom = max( bottom, i / 3 );
+			up = min( up, i / width);
+			bottom = max( bottom, i / width);
 		}
 	}
 

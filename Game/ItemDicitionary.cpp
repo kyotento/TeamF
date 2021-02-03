@@ -33,6 +33,8 @@ ItemDictionary::ItemDictionary(){
 	AddBlock( enCube_GrassHalf, L"草ハーフ");
 	AddBlock( enCube_GrassStairs, L"草階段");
 	AddBlock( enCube_WoGBlock, L"神の怒り" );
+	AddBlock( enCube_DoorUp, L"ドア(上)" );
+	AddBlock( enCube_DoorDown, L"ドア(下)" );
 
 	//アセットが入ったフォルダ。
 	std::filesystem::path texDir;

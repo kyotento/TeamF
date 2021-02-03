@@ -86,8 +86,12 @@ public:
 	bool PlaceBlock(const CVector3& pos, std::unique_ptr<Block> block);
 
 	//ワールド座標をBlock::WIDTHで割ったものを元に。
-	//ブロックを破壊、プレイヤー用。
-	void DeleteBlock(const CVector3& pos);
+	//ブロックにダメージを与える、プレイヤー用。
+	void DamegeBlock(const CVector3& pos);
+
+	//無条件にブロックを破壊。アイテムドロップなし
+	//座標はワールド座標をBlock::WIDTHで割ったもの
+	void DestroyBlockNoDrop(const IntVector3& pos);
 
 	//一つのブロックの周りのブロックのカリング処理をする。
 	void AroundBlock(const CVector3& pos);

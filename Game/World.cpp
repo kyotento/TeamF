@@ -10,6 +10,8 @@
 
 namespace {
 	const float timeBlockDurabilityValueRecover = 0.4f;
+	const int randomDrop = Block::WIDTH / 2.5f;	//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 
 World::World(){
@@ -27,6 +29,9 @@ World::World(){
 
 	//名前を設定
 	SetName(L"World");
+
+	//ブロッククラスにポインタを設定
+	Block::SetWorldPtr(this);
 }
 
 World::~World(){
@@ -40,6 +45,9 @@ World::~World(){
 	Block::m_sDestroyMode = true;
 	m_chunkMap.clear();
 	Block::m_sDestroyMode = false;
+
+	//ブロッククラスのポインタを設定
+	Block::SetWorldPtr(nullptr);
 }
 
 void World::PostUpdate(){
@@ -88,6 +96,10 @@ void World::PostUpdate(){
 			//全エンティティをループ
 			for( Entity* e : m_entities ){
 
+				if (!e->UseBulletColision()) {
+					continue;
+				}
+
 				const IntRect eCube = IntRect::CreateWithCenter(
 					IntVector3( e->GetPos() / Block::WIDTH ), m_collisionEnableRange );
 
@@ -111,6 +123,10 @@ void World::PostUpdate(){
 
 		//有効化ループ。
 		for( Entity* e : m_entities ){
+
+			if (!e->UseBulletColision()) {
+				continue;
+			}
 
 			const IntRect eCube = IntRect::CreateWithCenter(
 				IntVector3( e->GetPos() / Block::WIDTH ), m_collisionEnableRange );
@@ -308,7 +324,7 @@ void World::ChunkCulling( Chunk& chunk ){
 	} );
 }
 
-void World::DeleteBlock( const CVector3& pos ){
+void World::DamegeBlock( const CVector3& pos ){
 	//タイマーを0にする
 	m_timer = 0.0f;
 	int x = (int)std::floorf( pos.x );
@@ -341,7 +357,21 @@ void World::DeleteBlock( const CVector3& pos ){
 	{
 		//ドロップアイテムを作成。
 		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
-		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH );
+		CVector3 addPos = CVector3::Zero();
+		if (random() % 2 > 0) {
+			addPos.x += rand() % randomDrop;
+		}
+		else {
+			addPos.x -= rand() % randomDrop;
+		}
+
+		if (random() % 2 > 0) {
+			addPos.z += rand() % randomDrop;
+		}
+		else {
+			addPos.z += rand() % randomDrop;
+		}
+		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH + addPos);
 	}
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );
@@ -351,6 +381,19 @@ void World::DeleteBlock( const CVector3& pos ){
 	//ブロック破壊されたらnullにする
 	m_block = nullptr;
 
+}
+
+void World::DestroyBlockNoDrop(const IntVector3& pos) {
+	Chunk* chunk = GetChunkFromWorldPos(pos.x, pos.z);
+	if (!chunk) {
+		return;
+	}
+	int x = Chunk::CalcInChunkCoord(pos.x);
+	int z = Chunk::CalcInChunkCoord(pos.z);
+
+	//破壊
+	chunk->DeleteBlock(x, pos.y, z);
+	AroundBlock({ (float)pos.x,(float)pos.y,(float)pos.z });
 }
 
 bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
@@ -366,10 +409,48 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );
 
-	if( !chunk->PlaceBlock( x, y, z, std::move( block ) ) ){
-		return false;
+	if (block->GetBlockType() == enCube_DoorUp || block->GetBlockType() == enCube_DoorDown) {
+		//ドア
+		CVector3 pos2 = pos;
+		if (block->GetBlockType() == enCube_DoorUp) {
+			pos2.y -= 1.0f;
+		}
+		else {
+			pos2.y += 1.0f;
+		}
+		int x2 = (int)std::floorf(pos2.x);
+		int y2 = (int)std::floorf(pos2.y);
+		int z2 = (int)std::floorf(pos2.z);
+		x2 = Chunk::CalcInChunkCoord(x);
+		z2 = Chunk::CalcInChunkCoord(z);
+
+		if (!chunk->CanPlaceBlock(x, y, z) || !chunk->CanPlaceBlock(x2, y2, z2)) {
+			return false;
+		}
+
+		std::unique_ptr<Block> block2; 
+		if (block->GetBlockType() == enCube_DoorUp) {
+			block2 = BlockFactory::CreateBlock(enCube_DoorDown);
+		}
+		else {
+			block2 = BlockFactory::CreateBlock(enCube_DoorUp);
+		}
+
+		chunk->PlaceBlock(x, y, z, std::move(block));
+		chunk->PlaceBlock(x2, y2, z2, std::move(block2));
+
+		chunk->GetBlock(x2,y2,z2)->SetMuki(chunk->GetBlock(x, y, z)->GetMuki());
+
+		AroundBlock(pos);
+		AroundBlock(pos2);
 	}
-	AroundBlock( pos );
+	else {
+		//通常のブロックの設置
+		if (!chunk->PlaceBlock(x, y, z, std::move(block))) {
+			return false;
+		}
+		AroundBlock(pos);
+	}
 
 	return true;
 }

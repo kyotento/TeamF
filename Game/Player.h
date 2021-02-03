@@ -1,6 +1,5 @@
 #pragma once
 #include "Block.h"
-#include "../physics/character/CCharacterController.h"
 #include "Entity.h"
 #include "Inventory.h"
 #include "MCCharaCon.h"
@@ -56,6 +55,7 @@ public:
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
 		enPlayerState_excavate,			//物を掘る。
+		enPlayerState_KnockBack,			//ノックバック。
 		enPlayerState_death,			//死んだとき。
 		enPlayerState_num,				//状態の数。
 	};
@@ -106,7 +106,18 @@ public:
 		}
 		return m_skinModelRender->GetPos();
 	}
-
+	/// <summary>
+	/// 右手の座標を取得。
+	/// </summary>
+	/// <returns>右手のボーン座標。</returns>
+	const CVector3& GetRightHandPos()  const
+	{
+		if (!m_rightHandBone)
+		{
+			return CVector3::Zero();
+		}
+		return m_rightHandBone->GetPosition();
+	}
 	//! @brief 回転を取得。
 	CQuaternion GetRot() const {
 		return m_rotation;
@@ -217,7 +228,7 @@ public:
 	/// 被ダメージ
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
-	void TakenDamage(int AttackePow);
+	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false);
 
 	/// <summary>
 	/// ゲームのインスタンスを設定する。
@@ -250,6 +261,14 @@ public:
 	bool GetIsDeath()
 	{
 		return m_playerState == enPlayerState_death;
+	}
+	/// <summary>
+	/// 食べてるか。
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsEating()
+	{
+		return m_eatingFlag;
 	}
 private:
 	/// <summary>
@@ -291,6 +310,10 @@ private:
 	/// 攻撃処理。
 	/// </summary>
 	void Attack();
+	/// <summary>
+	/// ノックバック
+	/// </summary>
+	void KnockBack();
 
 	/// <summary>
 	/// インベントリを開く。
@@ -339,6 +362,7 @@ private:
 
 	void Stamina();
 
+	void Shoulder();
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
@@ -353,6 +377,7 @@ private:
 	bool m_flyingflag = false;				//飛べる状態か。
 	bool m_attackFlag = false;				//エネミーに攻撃したか。
 	bool m_deathFlag = false;				//死んだかどうか。
+	bool m_eatingFlag = false;				//食べてるかどうか。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。
@@ -364,10 +389,12 @@ private:
 	float m_doubleClickTimer = 0.0f;						//ダブルクリックの判定時間。
 	float m_doubleClickTimerC = 0.0f;						//ダブルクリックの判定時間(クリエイティブ)。
 	float m_deathAddRot = 0.f;								//死亡時の回転総数。
+	float m_eatingTimer = 0.0f;
 	const float m_gravity = 0.65f;							//重力。
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
 	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
 
+	int upDownY = 0;
 	int FallDamage();		//落下ダメージ。
 
 	float m_hp = 20.f;				//体力。
@@ -384,6 +411,7 @@ private:
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
+	CQuaternion m_shoulderBoneRot = CQuaternion::Identity();		//肩の骨の回転。
 
 	Inventory m_inventory; //アイテムを保管するインベントリ。
 	std::unique_ptr<GUI::RootNode> m_openedGUI; //現在開いているGUI
@@ -396,7 +424,9 @@ private:
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	Bone* m_headBone;												//頭の骨。
-
+	Bone* m_rightHandBone;											//右手の骨。
+	Bone* m_shoulderBone;											//肩の骨。
+	
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
@@ -406,5 +436,9 @@ private:
 
 	float m_timerBlockDestruction = 0.0f;						//マウス長押しでブロック破壊する時のタイマー、一定時間経過でブロック破壊を実行する。
 	bool m_isBlockDestruction = false;							//ブロック破壊をしたかどうか、平野が使う。
+	float m_knockBackTimer = 0.0f;								//ノックバックのタイマー
+	CVector3 m_knockBackDirection = CVector3::Zero();		//ノックバックの方向。
+	float m_knockBack = 1.f;	//ノックバック感度。
+	float m_knoceBackY = 1.f;	//ノックバックY座標。
 };
 

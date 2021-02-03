@@ -5,6 +5,7 @@
 enum EnCube
 {
 	enCube_None = -1,
+
 	enCube_Grass,
 	enCube_Soil,
 	enCube_Stone,			//石。
@@ -23,5 +24,8 @@ enum EnCube
 	enCube_GrassStairs,		//草階段
 	enCube_WoGBlock,		//ラスゴブロック
 	enCube_Glass,			//ガラス。
+	enCube_DoorUp,			//ドア(上部分)	
+	enCube_DoorDown,		//ドア(下部分)
+
 	enCube_Num
 };

@@ -25,6 +25,23 @@ public:
 		return m_model.GetPos();
 	}
 
+	enum enMuki {
+		enXm, enZm, enXp, enZp//-X,-Z...
+	};
+
+	//! @brief 向きをセット
+	void SetMuki(enMuki muki) {
+		m_muki = muki;
+		m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki));
+		CalcAABB();
+		DisableCollision();
+		EnableCollision();
+	}
+	//! @brief 向きを取得
+	enMuki GetMuki()const {
+		return m_muki;
+	}
+
 	//! @brief このブロックのAABBを取得
 	const AABB& GetAABB(int index)const;
 	//! @brief このブロックのAABBの数を取得
@@ -126,6 +143,11 @@ public:
 	//! @brief ライティング描画の更新
 	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
+	//! @brief ワールドを設定
+	static void SetWorldPtr(World* world) {
+		m_sWorld = world;
+	}
+
 	//デストロイモード
 	//デストラクタの挙動を変える
 	static bool m_sDestroyMode;
@@ -142,6 +164,10 @@ private:
 	//! @brief AABBを計算する
 	void CalcAABB();
 
+protected:
+	//! @brief ブロック単位の座標を計算する
+	IntVector3 CalcBlockUnitPos()const;
+
 private:
 	//モデル
 	GameObj::CInstancingModelRender m_model;
@@ -151,9 +177,6 @@ private:
 	EnCube m_state = enCube_None;
 
 	//向き
-	enum enMuki {
-		enXm,enZm,enXp,enZp//-X,-Z...
-	};
 	enMuki m_muki = enXm;
 
 	//明るさ
@@ -166,5 +189,9 @@ private:
 
 	int m_maxHP = 0;
 	int m_hp = 10;
+
+protected:
+	//ワールドポインタ
+	static World* m_sWorld;
 };
 

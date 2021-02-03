@@ -126,19 +126,31 @@ int LightUtil::SpreadDark(World* world, char oldLightPower, const IntVector3& po
 						Block* block = world->GetBlock(samplePos);
 						if (block) {
 							if (isSkyLight) {
+								char power = *light;
+								auto lightptr = world->GetSkyLightData(samplePos);
+								if (lightptr) {
+									power = max(power, *lightptr);
+								}
+								
 								if (sb < 4) {
-									block->SetLightingData(sb, 2, *light);
+									block->SetLightingData(sb, 2, power);
 								}
 								else {
-									block->SetLightingData(sb - 4, 3, *light);
+									block->SetLightingData(sb - 4, 3, power);
 								}
 							}
 							else {
+								char power = *light;
+								auto lightptr = world->GetLightData(samplePos);
+								if (lightptr) {
+									power = max(power, *lightptr);
+								}
+
 								if (sb < 4) {
-									block->SetLightingData(sb, 0, *light);
+									block->SetLightingData(sb, 0, power);
 								}
 								else {
-									block->SetLightingData(sb - 4, 1, *light);
+									block->SetLightingData(sb - 4, 1, power);
 								}
 							}
 						}
@@ -211,7 +223,7 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 			for (int y = Chunk::HEIGHT-1; y >= 0; y--) {
 				auto light = chunk->GetSkyLightData(x, y, z);
 				auto block = chunk->GetBlock(x, y, z);
-				if (block) {
+				if (block && block->GetIsOpacity()) {
 					//ブロックに衝突(遮蔽されている)
 					*light = 0;
 					break;
@@ -254,13 +266,6 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 
 void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 	//これより上にブロックがあるか検索
-	/*for (int y = pos.y + 1; y < Chunk::HEIGHT; y++) {
-		IntVector3 sampPos = { pos.x, y, pos.z };
-		auto block = m_world->GetBlock(sampPos);
-		if (block) {
-			return;//あるなら終わり
-		}
-	}*/
 	if (pos.y != Chunk::HEIGHT - 1) {//一番上じゃない
 		IntVector3 sampPos = { pos.x, pos.y + 1, pos.z };
 		auto light = m_world->GetSkyLightData(sampPos);
@@ -303,8 +308,6 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			}
 		}
 
-
-
 		//周囲からの伝播と描画更新
 		for (int y = pos.y - 1; y >= 0; y--) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
@@ -338,11 +341,17 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 						IntVector3 samplePos = sampPos + LightUtil::spreadDir[sb];
 						Block* block = m_world->GetBlock(samplePos);
 						if (block) {
+							char power = *light;
+							auto lightptr = m_world->GetSkyLightData(samplePos);
+							if (lightptr) {
+								power = max(power, *lightptr);
+							}
+
 							if (sb < 4) {
-								block->SetLightingData(sb, 2, *light);
+								block->SetLightingData(sb, 2, power);
 							}
 							else {
-								block->SetLightingData(sb - 4, 3, *light);
+								block->SetLightingData(sb - 4, 3, power);
 							}
 						}
 					}
@@ -375,11 +384,17 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 						IntVector3 samplePos = sampPos + LightUtil::spreadDir[sb];
 						Block* block = m_world->GetBlock(samplePos);
 						if (block) {
+							char power = *light;
+							auto lightptr = m_world->GetSkyLightData(samplePos);
+							if (lightptr) {
+								power = max(power, *lightptr);
+							}
+
 							if (sb < 4) {
-								block->SetLightingData(sb, 2, *light);
+								block->SetLightingData(sb, 2, power);
 							}
 							else {
-								block->SetLightingData(sb - 4, 3, *light);
+								block->SetLightingData(sb - 4, 3, power);
 							}
 						}
 					}

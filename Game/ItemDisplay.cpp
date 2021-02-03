@@ -18,8 +18,11 @@ namespace {
 	int maxDownPos = 0;
 
 	int Limit = 0;
+	int yPos = 0;
 
 	float UpPosY = 25;
+	float foodHasHandLRPos = 0.0f;
+	float foodHasHandUDPos = 0.0f;
 
 	const float handMullFront = 45.0f;
 	const float blockMullFront = 45.0f;
@@ -33,6 +36,10 @@ namespace {
 
 	bool swich_flag = false;
 	bool initItem_flag = false;
+
+	//とりあえずの変数。
+	int a = 0;
+	bool flag = false;
 }
 
 ItemDisplay::ItemDisplay()
@@ -63,12 +70,8 @@ void ItemDisplay::Update()
 	}
 
 	if (!m_player->GetIsPlayerDead()) {
-		CameraModeChangeToDisplay();
-		//追従処理。
-		Follow();
 
-		//回転
-		Rotation();
+		CameraModeChangeToDisplay();
 
 		//切り替えの処理。
 		Switching();
@@ -76,6 +79,8 @@ void ItemDisplay::Update()
 		//クリックしたときのモーション処理。
 		LeftClickMouseToMoveHand();
 
+		//右クリック
+		RightClickMouseToEat();
 		m_skinModelRender->SetScale(m_scale);
 	}
 	else if (m_player->GetIsPlayerDead())
@@ -177,11 +182,17 @@ void ItemDisplay::CameraModeChangeToDisplay()
 {
 	if (m_gameCamera->GetCameraMode() == m_cameraDisplayMode)
 	{
-		m_skinModelRender->SetIsDraw(true);
+		//追従処理。
+		Follow();
+		//回転
+		Rotation();
 	}
 	else
 	{
-		m_skinModelRender->SetIsDraw(false);
+		//右手のボーンの処理。
+		NotFPSCameraOfRightHandDraw();
+		//右手の回転処理
+		NotFPSCameraOfItemRotation();
 	}
 }
 //再度。
@@ -286,8 +297,8 @@ void ItemDisplay::ToolRotation()
 	m_skinModelRender->SetRot(m_rotation);
 	//サイズと位置をずらす。
 	m_scale = { 0.2f,0.225f,0.2f };
-	m_mullFornt = toolMullFront;
-	m_mullCrossProduct = toolMullCross;
+	m_mullFornt = toolMullFront + foodHasHandUDPos;;
+	m_mullCrossProduct = toolMullCross + foodHasHandLRPos;
 	UpPosY = -20;
 }
 //木の棒やインゴット等の回転。
@@ -310,8 +321,8 @@ void ItemDisplay::ItemRotation()
 	//サイズと位置をずらす。
 	UpPosY = -40;
 	m_scale = { 0.10f,0.10f,0.10f };
-	m_mullFornt = itemMullFront;
-	m_mullCrossProduct = itemMullCross;
+	m_mullFornt = itemMullFront + foodHasHandUDPos;
+	m_mullCrossProduct = itemMullCross + foodHasHandLRPos;
 }
 //インベントリに合わせて切り替え(ry。
 void ItemDisplay::SwitchItemType()
@@ -338,7 +349,6 @@ void ItemDisplay::SwitchItemType()
 		}
 	}
 }
-
 //クリックに合わせて動かすよん。
 void ItemDisplay::LeftClickMouseToMoveHand()
 {
@@ -356,4 +366,72 @@ void ItemDisplay::LeftClickMouseToMoveHand()
 	m_rotationX.SetRotationDeg(CVector3::AxisX(), Limit);
 	m_rotation.Multiply(m_rotationX);
 	m_skinModelRender->SetRot(m_rotation);
+}
+//食べるよん。
+void ItemDisplay::RightClickMouseToEat()
+{
+	if (m_player->GetIsEating())
+	{
+		foodHasHandLRPos = -35.0f;
+		foodHasHandUDPos = -5.0f;
+		m_isUpDownFlag = true;
+	}
+	else
+	{
+		foodHasHandLRPos = 0.0f;
+		foodHasHandUDPos = 0.0f;
+		m_isUpDownFlag = false;
+	}
+	UpDown();	//実際に上下に動かしてるのはここ。
+}
+//雑に食べてる表現。
+void ItemDisplay::UpDown()
+{
+	const float UPDOWN = 3.0f;
+	const int maxA = 5;
+	if (m_isUpDownFlag && !flag)
+	{
+		UpPosY += UPDOWN;
+		a++;
+		if (a > maxA && !flag)
+		{
+			flag = true; 
+			a = 0;
+		}
+	}
+	else if (m_isUpDownFlag && flag)
+	{
+		UpPosY -= UPDOWN;
+		a++;
+		if (a > maxA && flag)
+		{
+			flag = false;
+			a = 0;
+		}
+	}
+}
+//FPS以外の時のモデル処理。
+void ItemDisplay::NotFPSCameraOfRightHandDraw()
+{
+	m_position = m_player->GetRightHandPos();
+	m_skinModelRender->SetPos(m_position);
+	if (type == enHand)
+	{
+		m_skinModelRender->SetIsDraw(false);
+	}
+}
+//FPS以外の時の回転
+void ItemDisplay::NotFPSCameraOfItemRotation()
+{
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+	//ここで斜めにずらします。
+	m_rotation = m_player->GetRot();
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(), m_radianY);
+	m_rotation.Multiply(m_rotationX);
+	//モデルへ。
+	m_skinModelRender->SetRot(m_rotation);
+	//スケールの変更
+	m_scale = { 0.35f,0.35f,0.35f };
 }
