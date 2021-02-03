@@ -112,9 +112,10 @@ void Player::Update()
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
 
-	//頭の骨を取得。
+	//骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
-
+	m_shoulderBone = m_skinModelRender->FindBone(L"Bone008");
+	m_rightHandBone = m_skinModelRender->FindBone(L"Bone009");
 	//死んでないとき。
 	if (m_playerState != enPlayerState_death) {
 		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
@@ -446,7 +447,7 @@ void Player::Turn()
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
 	m_skinModelRender->SetRot(modelRot);
 	Headbang();
-
+	Shoulder();
 	//右方向と正面方向のベクトルの計算。
 	m_right = { -1.0f,0.0f,0.0f };
 	m_rotation.Multiply(m_right);
@@ -709,8 +710,8 @@ void Player::FlyTheRay()
 		{
 			return;
 		}
-		
-		
+		const int up = 75;
+		upDownY = up;
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -919,7 +920,21 @@ void Player::Stamina()
 		}
 	}
 }
-
+//肩
+void Player::Shoulder()
+{
+	const int Down = 5;
+	m_shoulderBoneRot.SetRotationDeg(CVector3::AxisX(), upDownY);
+	m_shoulderBone->SetRotationOffset(m_shoulderBoneRot);
+	if (upDownY > 0)
+	{
+		upDownY -= Down;
+	}
+	else
+	{
+		upDownY = 0;
+	}
+}
 //todo Debug専用。
 void Player::Test()
 {
