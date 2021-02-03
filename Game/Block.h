@@ -1,8 +1,11 @@
 //! @file
 #pragma once
 #include "../BlockType.h"
+#include "Light.h"
+#include "AABB.h"
 
 class Player;
+class World;
 
 //! @brief ブロックの情報とモデルレンダーを持つクラス。
 //! @details 生成には BlockFactory を使用してほしい。
@@ -17,29 +20,44 @@ public:
 	//! @details Worldは1ブロック1単位で座標を運用しているため、モデルにはブロックの幅を乗算した値を設定している。
 	void SetPos( int x, int y, int z );
 
-	/// <summary>
-	/// ワールド座標を使ってポジションをセット。
-	/// </summary>
-	/// <param name="worldpos">ワールド座標</param>
-	void SetPosWithWorldPos(const CVector3& worldpos);
-
 	//! @brief モデルのポジションを取得
 	const CVector3& GetModelPos()const {
 		return m_model.GetPos();
 	}
 
-	//! @brief モデルを初期化
-	void InitModel(const wchar_t* filePath) {
-		//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
-		m_model.Init(0, filePath);
-		m_model.SetRot(CQuaternion(CVector3::AxisY(),((CMath::RandomInt() % 4) * CMath::PI_HALF)));//モデルランダムで回転
-		m_raytraceModel.Init(m_model);
+	enum enMuki {
+		enXm, enZm, enXp, enZp//-X,-Z...
+	};
+
+	//! @brief 向きをセット
+	void SetMuki(enMuki muki) {
+		m_muki = muki;
+		m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki));
+		CalcAABB();
+		DisableCollision();
+		EnableCollision();
 	}
+	//! @brief 向きを取得
+	enMuki GetMuki()const {
+		return m_muki;
+	}
+
+	//! @brief このブロックのAABBを取得
+	const AABB& GetAABB(int index)const;
+	//! @brief このブロックのAABBの数を取得
+	int GetAABBNum() const;
+
+	//! @brief モデルを初期化
+	void InitModel(const wchar_t* filePath);
 
 	//! @brief ブロックの種類を設定。
 	//! @details この関数はモデルを変更しない。
 	void SetBlockType(EnCube enCube)
 	{
+		if (m_state != enCube) {
+			m_state = enCube;
+			CalcAABB();//AABBの計算
+		}
 		m_state = enCube;
 	}
 	//! @brief ブロックの種類を取得。
@@ -54,6 +72,7 @@ public:
 		m_model.SetIsDraw( isDraw );
 	}
 
+	//! @brief 当たり判定が有効か取得。
 	bool IsCollisionEnabled() const{
 		return m_collision.operator bool();
 	}
@@ -65,11 +84,18 @@ public:
 		return false;
 	}
 
+	//! @brief 当たり判定の有効化。
 	void EnableCollision();
 
+	//! @brief 当たり判定の無効化。
 	void DisableCollision(){
 		m_collision.reset();
 	}
+
+	//! @brief 不透明かどうか取得
+	bool GetIsOpacity()const;
+
+	//HPを設定
 	void SetHP(const int hp)
 	{
 		m_maxHP = hp;
@@ -85,16 +111,87 @@ public:
 	{
 		m_hp -= attack;
 	}
+	//ブロックの耐久値を全快させる
+	void RestoresBlockDurabilityValue()
+	{
+		m_hp = m_maxHP;
+	}
+
+	//! @brief ライティング状態の設定。
+	void SetLightingData(int row, int column, char lightpower) {
+		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "???????x???????O???")
+		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
+		if (column < 2) {
+			m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];//ブロックライト
+		}
+		else {
+			m_lighting.m[row][column] = LightUtil::DRAWING_SKY_LIGHT[lightpower];//スカイライト
+		}
+	}
+	//! @brief ライティングを行う。
+	void Lighting(int row, int column, char lightpower) {
+		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "???????x???????O???")
+		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
+		//より明るい方を使用
+		if (column < 2) {
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);//ブロックライト
+		}
+		else {
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_SKY_LIGHT[lightpower]);//スカイライト
+		}
+	}
+	//! @brief ライティング描画の更新
+	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
+
+	//! @brief ワールドを設定
+	static void SetWorldPtr(World* world) {
+		m_sWorld = world;
+	}
+
+	//デストロイモード
+	//デストラクタの挙動を変える
+	static bool m_sDestroyMode;
+
 	//! @brief ブロックの幅、奥行き、高さ。
 	static constexpr float WIDTH = 140;
+	//! @brief ブロックAABBの最大数
+	static constexpr int BLOCK_AABB_MAXNUM = 2;
+
 private:
+	//! @brief ライティング計算する
+	void CalcAddLight(bool isDestroy = false);
+
+	//! @brief AABBを計算する
+	void CalcAABB();
+
+protected:
+	//! @brief ブロック単位の座標を計算する
+	IntVector3 CalcBlockUnitPos()const;
+
+private:
+	//モデル
 	GameObj::CInstancingModelRender m_model;
-	CRayTracingModelRender m_raytraceModel;
+	CRayTracingModelRender m_raytraceModel;//レイトレ用
+
 	//! @brief ブロックの種類。
 	EnCube m_state = enCube_None;
 
-	std::unique_ptr<SuicideObj::CCollisionObj> m_collision;
+	//向き
+	enMuki m_muki = enXm;
+
+	//明るさ
+	CMatrix m_lighting = CMatrix::Zero();
+
+	//AABB
+	std::unique_ptr<AABB[]> m_aabb;
+	//コリジョン
+	std::unique_ptr<SuicideObj::CCollisionObj[]> m_collision;
+
 	int m_maxHP = 0;
 	int m_hp = 10;
+
+protected:
+	//ワールドポインタ
+	static World* m_sWorld;
 };
 

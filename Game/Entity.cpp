@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include "World.h"
 
-Entity::Entity(EnEntity enEntity) : m_enEntity(enEntity)
+Entity::Entity(EnEntity enEntity, bool useBulletColision) : m_enEntity(enEntity), m_useBulletColision(useBulletColision)
 {}
 
 Entity::~Entity()

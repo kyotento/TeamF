@@ -4,6 +4,8 @@
 #include "Player.h";
 #include "ItemStack.h"
 
+DropItem::DropItem() : Entity(enEntity_None, true) {}
+
 DropItem * DropItem::CreateDropItem( World * world, std::unique_ptr<ItemStack>&& item ){
 	DropItem* drop = world->CreateEntity<DropItem>();
 	drop->SetItemStack( std::move(item) );
@@ -65,6 +67,11 @@ void DropItem::Update()
 
 	//アイテム取得処理。
 	Player* player = m_world->GetPlayer();
+	//プレイヤー死んでたらアイテムを取得させない。
+	if (player->GetIsDeath())
+	{
+		return;
+	}
 
 	CVector3 diff = player->GetPos() - GetPos();
 

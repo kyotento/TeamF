@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "Title.h"
+#include "Config.h"
 
 namespace {
 	bool isStart = false;		//ゲームが実行されて一度だけ呼ばれる。
@@ -15,7 +16,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	initparam.SDUnityChanScale = 2.5f;//スケール設定
 	initparam.isAtmosphericFog = true;//大気フォグ有効化
-	initparam.isPointFiltering = true;//テクスチャポイントフィルタリング有効化
+	//initparam.isPointFiltering = true;//テクスチャポイントフィルタリング有効化
 	//initparam.isCreateMipmap = false; //ミップマップ生成無効化
 
 	//解像度
@@ -26,6 +27,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initparam.limitFps = 60;		//フレームレート上限
 	initparam.standardFps = 60;		//動作フレームレート※これいじるとゲームスピードが変わる(処理実行回数が増える)
 
+	initparam.variableFpsMaxSec = 0.1f;
 	initparam.useVSync = false;
 	initparam.isWindowMode = true;
 	//initparam.windowStyle = WS_POPUP | WS_BORDER ;		//ウィンドウスタイル
@@ -52,8 +54,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//フォグの設定
 	SetEnableFog(true);				//有効
-	SetFogDistance(3000.0f);		//フォグが完全にかかりきる距離
-	SetFogStartDistance(2800.0f);	//フォグが始まる距離
+	SetFogDistance(3000);			//フォグが完全にかかりきる距離
+	SetFogStartDistance(2800);		//フォグが始まる距離
 	SetFogHeightScale(0.1f);		//高さ方向へのフォグのかかり具合	
 
 	//ゲームループ。

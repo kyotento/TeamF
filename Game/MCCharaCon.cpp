@@ -2,6 +2,7 @@
 #include "MCCharaCon.h"
 #include "World.h"
 #include "Block.h"
+#include "AABB.h"
 
 namespace {
 	const CVector3 BLOCK_SIZE = Block::WIDTH * 0.5f;
@@ -38,6 +39,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 	//i=0→XZ移動
 	//i=1→Y移動
 	std::vector<Block*> rtnBlocks;//接触するブロック
+	std::list<AABB> aabbs;//接触するブロックのAABB
 	for (int i = 0; i < 2; i++) {
 		bool useDownOffset = false;
 
@@ -83,44 +85,50 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 			minMove = min(Block::WIDTH*0.5f, m_colSize.y);
 		}
 
+		//高さオフセット
+		//ハーフブロックを歩いて越えるためのもの
+		float heightOffset = i == 0 ? Block::WIDTH * 0.5f : 0.0f;
+
 		int ColCnt = 0;
 		while (ColCnt < 5) {
 			rtnBlocks.clear();
-			
-			//シフト移動時は縁に仮想壁ブロックを追加
-			constexpr int MAX_SIZE_VW = 16;
-			std::unique_ptr<Block> virtualBlock[MAX_SIZE_VW];
+			aabbs.clear();
+
+			//シフト移動時は縁に仮想壁AABBを追加
 			if (i == 0 && isShiftMoveMode) {
 				//キャラAABB
 				CVector3 min = nowPos - m_colSize, max = nowPos + m_colSize;
-				min.y = nowPos.y - Block::WIDTH / 2.0f - 1.0f;
-				max.y = nowPos.y - Block::WIDTH / 2.0f;
+				min.y = nowPos.y - 2.0f;// -Block::WIDTH / 2.0f - 1.0f;
+				max.y = nowPos.y - 1.0f;// -Block::WIDTH / 2.0f;
+
 				//足元のブロック取得
 				if (GetBlocks(min, max, rtnBlocks)) {
+					//足場からAABB作る
 					CVector3 createAABBmin, createAABBmax;
 					bool first = true;
 					for (auto block : rtnBlocks) {
-						//ブロックAABB
-						CVector3 blockMin = block->GetModelPos() - BLOCK_SIZE, blockMax = block->GetModelPos() + BLOCK_SIZE;
-						blockMin.y = block->GetModelPos().y;
-						blockMax.y = block->GetModelPos().y + Block::WIDTH;
-						//足元接触判定
-						if (CMath::ColAABBs(min, max, blockMin, blockMax)) {
-							if (first) {
-								createAABBmin = blockMin;
-								createAABBmax = blockMax;
-								first = false;
-							}
-							else {
-								createAABBmin.Min(blockMin);
-								createAABBmax.Max(blockMax);
+						for (int aabbind = 0; aabbind < block->GetAABBNum(); aabbind++) {
+							//ブロックAABB
+							AABB blockAABB = block->GetAABB(aabbind);
+
+							//足元接触判定
+							if (CMath::ColAABBs(min, max, blockAABB.min, blockAABB.max)) {
+								if (first) {
+									createAABBmin = blockAABB.min;
+									createAABBmax = blockAABB.max;
+									first = false;
+								}
+								else {
+									createAABBmin.Min(blockAABB.min);
+									createAABBmax.Max(blockAABB.max);
+								}
 							}
 						}
 					}
+
 					//仮想ブロックの作成
 					if (!first) {
-						int ci = 0;
-
+						//int ci = 0;
 						createAABBmax.x += Block::WIDTH;
 						createAABBmin.x -= Block::WIDTH;
 						for (int bi = 0; bi < (createAABBmax.x - createAABBmin.x) / Block::WIDTH; bi++) {
@@ -129,21 +137,22 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 							setPos.y = createAABBmin.y + Block::WIDTH;
 							setPos.z = createAABBmin.z - (Block::WIDTH * 0.5f) - (m_colSize.z * 2.0f - m_offset);
 
-							virtualBlock[ci] = std::make_unique<Block>();
-							virtualBlock[ci]->SetPosWithWorldPos(setPos);
-							rtnBlocks.push_back(virtualBlock[ci].get());
-							//m_aabbReender2[ci].Init(virtualBlock[ci]->GetModelPos()- BLOCK_SIZE, virtualBlock[ci]->GetModelPos() + BLOCK_SIZE, { 0.0f,0.0f,1.0f,1.0f });
-							ci++;
-							DW_ERRORBOX(ci == MAX_SIZE_VW, "シフト移動エラー")
+							AABB virtualAABB;
+							//作成
+							virtualAABB.min = setPos - BLOCK_SIZE, virtualAABB.max = setPos + BLOCK_SIZE;
+							virtualAABB.min.y = setPos.y;
+							virtualAABB.max.y = setPos.y + Block::WIDTH;
+							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 
 							setPos.z = createAABBmax.z + (Block::WIDTH * 0.5f) + (m_colSize.z * 2.0f - m_offset);
 
-							virtualBlock[ci] = std::make_unique<Block>();
-							virtualBlock[ci]->SetPosWithWorldPos(setPos);
-							//m_aabbReender2[ci].Init(virtualBlock[ci]->GetModelPos() - BLOCK_SIZE, virtualBlock[ci]->GetModelPos() + BLOCK_SIZE, { 0.0f,0.0f,1.0f,1.0f });
-							rtnBlocks.push_back(virtualBlock[ci].get());
-							ci++;
-							DW_ERRORBOX(ci > MAX_SIZE_VW, "シフト移動エラー")
+							//作成
+							virtualAABB.min = setPos - BLOCK_SIZE, virtualAABB.max = setPos + BLOCK_SIZE;
+							virtualAABB.min.y = setPos.y;
+							virtualAABB.max.y = setPos.y + Block::WIDTH;
+							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 						}
 						createAABBmax.x += -Block::WIDTH;
 						createAABBmin.x -= -Block::WIDTH;
@@ -156,21 +165,22 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 							setPos.y = createAABBmin.y + Block::WIDTH;
 							setPos.x = createAABBmin.x - (Block::WIDTH * 0.5f) - (m_colSize.x * 2.0f - m_offset);
 
-							virtualBlock[ci] = std::make_unique<Block>();
-							virtualBlock[ci]->SetPosWithWorldPos(setPos);
-							//m_aabbReender2[ci].Init(virtualBlock[ci]->GetModelPos() - BLOCK_SIZE, virtualBlock[ci]->GetModelPos() + BLOCK_SIZE, { 0.0f,0.0f,1.0f,1.0f });
-							rtnBlocks.push_back(virtualBlock[ci].get());
-							ci++;
-							DW_ERRORBOX(ci == MAX_SIZE_VW, "シフト移動エラー")
+							AABB virtualAABB;
+							//作成
+							virtualAABB.min = setPos - BLOCK_SIZE, virtualAABB.max = setPos + BLOCK_SIZE;
+							virtualAABB.min.y = setPos.y;
+							virtualAABB.max.y = setPos.y + Block::WIDTH;
+							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 
 							setPos.x = createAABBmax.x + (Block::WIDTH * 0.5f) + (m_colSize.x * 2.0f - m_offset);
 
-							virtualBlock[ci] = std::make_unique<Block>();
-							virtualBlock[ci]->SetPosWithWorldPos(setPos);
-							//m_aabbReender2[ci].Init(virtualBlock[ci]->GetModelPos() - BLOCK_SIZE, virtualBlock[ci]->GetModelPos() + BLOCK_SIZE, { 0.0f,0.0f,1.0f,1.0f });
-							rtnBlocks.push_back(virtualBlock[ci].get());
-							ci++;
-							DW_ERRORBOX(ci > MAX_SIZE_VW, "シフト移動エラー")
+							//作成
+							virtualAABB.min = setPos - BLOCK_SIZE, virtualAABB.max = setPos + BLOCK_SIZE;
+							virtualAABB.min.y = setPos.y;
+							virtualAABB.max.y = setPos.y + Block::WIDTH;
+							aabbs.emplace_back(virtualAABB);
+							//m_aabbReender2[ci++].Init(virtualAABB.min, virtualAABB.max, { 0.0f,0.0f,1.0f,1.0f });
 						}
 					}
 				}
@@ -194,32 +204,33 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 
 			//キャラAABB
 			CVector3 min = nowPos - m_colSize, max = nowPos + m_colSize;
-			min.y = nowPos.y; max.y = nowPos.y + m_colSize.y;
+			min.y = nowPos.y + heightOffset; max.y = nowPos.y + m_colSize.y;
 
 			//キャラクターのAABBに接触するブロック達を取得
 			if (!GetBlocks(min, max, rtnBlocks)) {
 				return CVector3::Zero();
 			}			
+			//AABBをリスト化
+			for (auto block : rtnBlocks) {
+				for (int aabbind = 0; aabbind < block->GetAABBNum(); aabbind++) {
+					aabbs.emplace_back(block->GetAABB(aabbind));
+				}
+			}
 
 			bool isHit = false;
-			if (!rtnBlocks.empty()) {
+			if (!aabbs.empty()) {
 				float minimumDistance = -1.0f;
 
 				while (true) {
 					//キャラに一番近いブロックを求める
 					float distance = -1.0f;
 					CVector3 NearBlockMin, NearBlockMax;
-					for (auto block : rtnBlocks) {
-						//ブロックAABB
-						CVector3 blockMin = block->GetModelPos() - BLOCK_SIZE, blockMax = block->GetModelPos() + BLOCK_SIZE;
-						blockMin.y = block->GetModelPos().y;
-						blockMax.y = block->GetModelPos().y + Block::WIDTH;
-
+					for (const AABB& aabb : aabbs) {
 						//最も中心同士の距離が近いブロックと判定
-						CVector3 pushD = (min + max) * 0.5f - (blockMin + blockMax) * 0.5f;
+						CVector3 pushD = (min + max) * 0.5f - (aabb.min + aabb.max) * 0.5f;
 						if (minimumDistance < pushD.LengthSq() && (distance < 0.0f || distance > pushD.LengthSq())) {
 							distance = pushD.LengthSq();
-							NearBlockMin = blockMin, NearBlockMax = blockMax;
+							NearBlockMin = aabb.min, NearBlockMax = aabb.max;
 						}
 					}
 					minimumDistance = distance;
@@ -233,7 +244,7 @@ const CVector3& MCCharaCon::Execute(CVector3& moveSpeed, float deltaTime) {
 					for (int pushCnt = 0; pushCnt < Block::WIDTH * 2; pushCnt++) {
 						//キャラAABB更新
 						min = nowPos - m_colSize, max = nowPos + m_colSize;
-						min.y = nowPos.y; max.y = nowPos.y + m_colSize.y;
+						min.y = nowPos.y + heightOffset; max.y = nowPos.y + m_colSize.y;
 
 						//衝突判定
 						if (CMath::ColAABBs(min, max, NearBlockMin, NearBlockMax)) {

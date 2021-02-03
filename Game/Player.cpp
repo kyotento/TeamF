@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "DropItem.h"
 #include"Animals.h"
+#include "PlayerArmor.h"		
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -25,14 +26,19 @@ namespace {
 	const float move = 1.0f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
-	int fallTimer = 0;								//滞空時間。
+	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
+	int fallTimer = 0;									//滞空時間。
+	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
+	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
+	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 
-Player::Player() : m_inventory(36)
+Player::Player() : m_inventory(36), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -48,6 +54,7 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
+	DeleteGO(m_playerArmor);
 }
 
 #include "ItemStack.h"
@@ -79,8 +86,9 @@ bool Player::Start()
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
-		enItem_Rod, enItem_Gold_Ingot, enCube_Grass, enCube_GoldOre, enCube_CobbleStone, enItem_Iron_Ingot,
-		enCube_OakWood,enItem_Diamond,enCube_CraftingTable
+		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
+		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
+		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
@@ -91,6 +99,12 @@ bool Player::Start()
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
 
+	//アーマークラス生成。
+	m_playerArmor = NewGO<PlayerArmor>();
+	m_playerArmor->SetPlayerSkinModel(m_skinModelRender);
+
+	//タイマーに値を入れておく
+	m_timerBlockDestruction = timeBlockDestruction;
 	return true;
 }
 
@@ -104,9 +118,10 @@ void Player::Update()
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
 
-	//頭の骨を取得。
+	//骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
-
+	m_shoulderBone = m_skinModelRender->FindBone(L"Bone008");
+	m_rightHandBone = m_skinModelRender->FindBone(L"Bone009");
 	//死んでないとき。
 	if (m_playerState != enPlayerState_death) {
 		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
@@ -121,8 +136,14 @@ void Player::Update()
 			Attack();
 			//インベントリを開く。
 			OpenInventory();
+			//ブロック破壊を実行するかどうか判断する。
+			DecideCanDestroyBlock();
 			//前方にRayを飛ばす。
 			FlyTheRay();
+			//スタミナ処理。
+			Stamina();
+			//ノックバック。
+			KnockBack();
 
 			if( GetKeyDown( 'Q' ) ){
 				auto item = m_inventory.TakeItem( m_selItemNum - 1, 1 );
@@ -250,6 +271,10 @@ void Player::Dash()
 	if (GetKeyUp('W')) {
 		m_doubleCilckFlag = true;
 	}
+	if (m_playerState == enPlayerState_KnockBack)
+	{
+		return;
+	}
 	if (m_doubleCilckFlag) {
 		if (m_doubleClickTimer <= doubleClickRug && m_playerState != enPlayerState_run) {
 			m_doubleClickTimer += GetEngine().GetRealDeltaTimeSec();	//タイマーを進める。
@@ -317,7 +342,7 @@ void Player::Move()
 	m_damageCollision->SetPosition(colPos);
 
 	//プレイヤーの状態の変更。
-	if (m_playerState != enPlayerState_run) {
+	if (m_playerState != enPlayerState_run && m_playerState != enPlayerState_KnockBack) {
 		if (stickL.Length() > 0.001f) {
 			m_playerState = enPlayerState_move;
 		}
@@ -339,6 +364,7 @@ void Player::Jump()
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
+			m_stamina -= 0.2;
 		}
 		//ジャンプ中の処理。
 		if (m_isJump) {					
@@ -427,7 +453,7 @@ void Player::Turn()
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
 	m_skinModelRender->SetRot(modelRot);
 	Headbang();
-
+	Shoulder();
 	//右方向と正面方向のベクトルの計算。
 	m_right = { -1.0f,0.0f,0.0f };
 	m_rotation.Multiply(m_right);
@@ -516,6 +542,55 @@ void Player::Attack()
 	}
 }
 
+void Player::KnockBack()
+{
+	if (m_playerState == enPlayerState_KnockBack)
+	{
+		float knockBackFrame = 25.f;			//ノックバックするフレーム数(60FPS)。
+
+
+		if (m_knockBackTimer < knockBackFrame) {
+
+			//ノックバック処理。
+			CVector3 direction;
+			direction = m_knockBackDirection;
+			direction.Normalize();
+			direction.y = 0.f;
+			CVector3 moveSpeed = CVector3::Zero();
+			moveSpeed.x += direction.x * m_knockBack * Block::WIDTH;
+			moveSpeed.z += direction.z * m_knockBack * Block::WIDTH;
+
+			//高さの処理。
+			m_knoceBackY = m_knockBack;
+			moveSpeed.y += m_knoceBackY * Block::WIDTH / 2.0f;
+			m_knoceBackY -= m_knoceBackY + 0.5 * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
+			moveSpeed *= 15.0f;
+
+			m_position = m_characon.Execute(moveSpeed);
+			m_skinModelRender->SetPos(m_position);
+
+			//モデルの色を赤みがかったようにする。
+			m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+				mat->SetAlbedoScale({ CVector4::Red() });
+			});
+			m_knockBackTimer += 1;		//タイマーを加算。
+		}
+		else {		//リセット。
+			m_playerState = enPlayerState_idle;
+			m_knockBackTimer = 0.f;
+			m_knoceBackY = 1.f;
+		}
+
+	}
+	else 
+	{		
+		//モデルの色を元に戻す。
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
+		mat->SetAlbedoScale({ CVector4::White() });
+		});
+	}
+}
+
 //インベントリを開く。
 void Player::OpenInventory()
 {
@@ -543,6 +618,9 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
 		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+			m_stamina -= 0.0003;
+		}
 
 		break;
 	case Player::enPlayerState_run:		//走っているとき。
@@ -551,6 +629,9 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().Play(enAnimationClip_move, 0.3f);
 		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+			m_stamina -= 0.003;
+		}
 
 		break;
 	case Player::enPlayerState_excavate:	//物を掘る。
@@ -588,21 +669,55 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 				if (item->GetIsBlock()) {		//ブロック。
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
 					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
+					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
 				}
 			}
 		}
 	}
-	//破壊。
-	if (GetKeyDown(VK_LBUTTON) && !m_attackFlag) {
-		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
+	//破壊。ここもInputに変えた。
+	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
+		m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 	m_attackFlag = false;
 }
 
+//ブロック破壊を実行するかどうか判断する。
+void Player::DecideCanDestroyBlock()
+{
+	//マウス左長押しなら。
+	if (GetKeyInput(VK_LBUTTON))
+	{
+		//タイマーを+する。
+		m_timerBlockDestruction += GetDeltaTimeSec();
+		//タイマーが一定時間以下なら破壊を実行しない。
+		if (m_timerBlockDestruction <= timeBlockDestruction)
+		{
+			m_isBlockDestruction = false;
+		}
+		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
+		else {
+			m_isBlockDestruction = true;
+			m_timerBlockDestruction = 0.0f;
+		}
+	}
+	//マウス長押しされてない場合、マウスを押した瞬間に破壊できるようにタイマーをセットしておく。
+	else {
+		m_isBlockDestruction = false;
+		m_timerBlockDestruction = timeBlockDestruction;
+	}
+}
+
 //レイを前方に飛ばす。
 void Player::FlyTheRay()
-{
-	if (GetKeyDown(VK_RBUTTON) || GetKeyDown(VK_LBUTTON)) {
+{								  //マウス左長押しなら。				
+	if (GetKeyDown(VK_RBUTTON) || GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)) {
+		//マウス左長押しかつ破壊フラグがたっていなかったら、処理しない。
+		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction)
+		{
+			return;
+		}
+		const int up = 75;
+		upDownY = up;
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -625,10 +740,12 @@ void Player::FlyTheRay()
 }
 
 //被ダメ－ジ。
-void Player::TakenDamage(int AttackPow)
+void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAttacked)
 {
 	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
-		m_hp -= AttackPow;
+		//防御力の計算。
+		float damage = AttackPow * (1 - m_defensePower * 0.04);
+		m_hp -= damage;
 		
 		//HPを0未満にしない。
 		if (m_hp <= 0) {			
@@ -650,6 +767,12 @@ void Player::TakenDamage(int AttackPow)
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
 			}
 			voice->Play();
+			//攻撃されたのなら、ノックバックする。
+			if (isAttacked) {
+				m_playerState = enPlayerState_KnockBack;
+				m_knockBackDirection = knockBackDirection;
+				m_knockBackDirection.Normalize();
+			}
 		}
 	}
 }
@@ -694,6 +817,32 @@ void Player::Death()
 				SuicideObj::CSE* voice;
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
 				voice->Play();
+
+				for (int i = 0; i < 36; i++) {
+					auto item = m_inventory.TakeAllItem(i);
+					if (item) {
+						CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+						pos.y += Block::WIDTH;
+						DropItem* drop = DropItem::CreateDropItem(m_world, std::move(item));
+						CVector3 addPos = CVector3::Zero();
+						if (random() % 2 > 0) {
+							addPos.x += rand() % randomDrop;
+						}
+						else {
+							addPos.x -= rand() % randomDrop;
+						}
+
+						if (random() % 2 > 0) {
+							addPos.z += rand() % randomDrop;
+						}
+						else {
+							addPos.z += rand() % randomDrop;
+						}
+						drop->SetPos(pos+addPos);
+						//drop->SetVelocity(GetFront() * 300);
+					}
+				}
+				
 			}
 		}
 		//リスポーン。
@@ -711,7 +860,8 @@ void Player::Death()
 void Player::Respawn()
 {
 	m_deathAddRot = 0.f;					//プレイヤーの回転量の初期化。。
-	m_hp = 20;								//HPの初期化。
+	m_hp = 20.f;								//HPの初期化。
+	m_stamina = 20.f;
 	m_playerState = enPlayerState_idle;		//プレイヤーの状態の初期化。
 	m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 		mat->SetAlbedoScale({ CVector4::White() });		//モデルの色の初期化。
@@ -733,6 +883,63 @@ void Player::IsDraw()
 	}
 }
 
+void Player::Stamina()
+{
+	if (m_stamina <= 0) {
+		m_stamina = 0;
+	}
+	if (m_stamina >= 21) {
+		m_stamina = 21;
+	}
+	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
+	const float maxTimer = 5.0f;
+	//飯を食べる処理。
+	if (GetKeyInput(VK_RBUTTON)) {
+		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
+		if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
+			m_eatingFlag = true;
+			if (m_eatingTimer >= maxTimer)
+			{
+				m_eatingTimer = 0.0f;
+				m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
+				hiddenStamina = 4;			//隠れスタミナを上昇する。
+				auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+			}
+		}
+	}
+	else
+	{
+		m_eatingFlag = false;
+		m_eatingTimer = 0.0f;
+	}
+	//HP回復処理。
+	if (hiddenStamina > 0 && m_stamina >= 20) {
+		staminaTimer += 1;
+		if(staminaTimer >= 30){
+			if (m_hp < 20) {
+				m_hp += 1;
+			}
+			hiddenStamina -= 1;
+			staminaTimer = 0;
+		}
+	}
+}
+//肩
+void Player::Shoulder()
+{
+	const int Down = 5;
+	m_shoulderBoneRot.SetRotationDeg(CVector3::AxisX(), upDownY);
+	m_shoulderBone->SetRotationOffset(m_shoulderBoneRot);
+	if (upDownY > 0)
+	{
+		upDownY -= Down;
+	}
+	else
+	{
+		upDownY = 0;
+	}
+}
 //todo Debug専用。
 void Player::Test()
 {

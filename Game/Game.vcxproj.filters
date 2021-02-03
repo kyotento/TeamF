@@ -151,26 +151,61 @@
     </ClCompile>
     <ClCompile Include="ZombieGenerator.cpp">
       <Filter>generator</Filter>
+	</ClCompile>
+    <ClCompile Include="BlockRenderingLightParameter.cpp">
+      <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Sun.cpp" />
     <ClCompile Include="MobGenerator.cpp">
       <Filter>generator</Filter>
     </ClCompile>
-    <ClCompile Include="ZombieGenerator.cpp" />
+
     <ClCompile Include="Cow.cpp">
       <Filter>Entity\Mob</Filter>
     </ClCompile>
     <ClCompile Include="Animals.cpp">
       <Filter>Entity\Mob</Filter>
     </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>menu</Filter>
+    </ClCompile>
     <ClCompile Include="CowGenerator.cpp">
       <Filter>generator</Filter>
     </ClCompile>
-    <ClCompile Include="Config.cpp" />
+
+
+    <ClCompile Include="ZombieGenerator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
+    <ClCompile Include="WorthOfGod.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
     <ClCompile Include="BlockInfoDictionary.cpp">
       <Filter>Block</Filter>
     </ClCompile>
     <ClCompile Include="Utf8ToSjis.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraCollisionSolver.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CraftingController2.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Mob.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="PairBlock.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerArmor.cpp">
+      <Filter>Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,25 +376,61 @@
     <ClInclude Include="ZombieGenerator.h">
       <Filter>generator</Filter>
     </ClInclude>
+    <ClInclude Include="BlockRenderingLightParameter.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Block</Filter>
+    </ClInclude>
     <ClInclude Include="MobGenerator.h">
       <Filter>generator</Filter>
     </ClInclude>
-    <ClInclude Include="ZombieGenerator.h" />
+
     <ClInclude Include="Cow.h">
       <Filter>Entity\Mob</Filter>
     </ClInclude>
     <ClInclude Include="Animals.h">
       <Filter>Entity\Mob</Filter>
     </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>menu</Filter>
+    </ClInclude>
     <ClInclude Include="CowGenerator.h">
       <Filter>generator</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h" />
+
+    <ClInclude Include="ZombieGenerator.h">
+      <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Util</Filter>
+    </ClInclude>
     <ClInclude Include="BlockInfoDictionary.h">
       <Filter>Block</Filter>
     </ClInclude>
     <ClInclude Include="Utf8ToSjis.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="WorthOfGod.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraCollisionSolver.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerArmor.h">
+      <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingController2.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Mob.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="PairBlock.h">
+      <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -544,6 +615,10 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png">
       <Filter>sprite\button</Filter>
     </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
+    <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

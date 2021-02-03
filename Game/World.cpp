@@ -5,6 +5,14 @@
 #include "IntRect.h"
 #include "BiomeManager.h"
 #include "DropItem.h"
+#include "Light.h"
+#include "BlockFactory.h"
+
+namespace {
+	const float timeBlockDurabilityValueRecover = 0.4f;
+	const int randomDrop = Block::WIDTH / 2.5f;	//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());	//らんちゅう。
+}
 
 World::World(){
 	bool result = infoFile.Read();
@@ -21,6 +29,9 @@ World::World(){
 
 	//名前を設定
 	SetName(L"World");
+
+	//ブロッククラスにポインタを設定
+	Block::SetWorldPtr(this);
 }
 
 World::~World(){
@@ -29,6 +40,14 @@ World::~World(){
 		e->SetWorld( nullptr );
 		DeleteGO( e );
 	}
+
+	//チャンク削除
+	Block::m_sDestroyMode = true;
+	m_chunkMap.clear();
+	Block::m_sDestroyMode = false;
+
+	//ブロッククラスのポインタを設定
+	Block::SetWorldPtr(nullptr);
 }
 
 void World::PostUpdate(){
@@ -77,6 +96,10 @@ void World::PostUpdate(){
 			//全エンティティをループ
 			for( Entity* e : m_entities ){
 
+				if (!e->UseBulletColision()) {
+					continue;
+				}
+
 				const IntRect eCube = IntRect::CreateWithCenter(
 					IntVector3( e->GetPos() / Block::WIDTH ), m_collisionEnableRange );
 
@@ -100,6 +123,10 @@ void World::PostUpdate(){
 
 		//有効化ループ。
 		for( Entity* e : m_entities ){
+
+			if (!e->UseBulletColision()) {
+				continue;
+			}
 
 			const IntRect eCube = IntRect::CreateWithCenter(
 				IntVector3( e->GetPos() / Block::WIDTH ), m_collisionEnableRange );
@@ -171,6 +198,34 @@ void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	chunk->SetBlock( x, y, z, std::move( block ) );
 }
 
+char* World::GetLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetLightData(x, y, z);
+	}
+	return nullptr;
+}
+
+char* World::GetSkyLightData(int x, int y, int z) {
+	if (y < 0 || Chunk::HEIGHT <= y) {
+		return nullptr;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(x, z);
+	if (chunk) {
+		x = Chunk::CalcInChunkCoord(x);
+		z = Chunk::CalcInChunkCoord(z);
+		return chunk->GetSkyLightData(x, y, z);
+	}
+	return nullptr;
+}
+
 Chunk* World::GetChunk( int x, int z ){
 	auto pair = std::make_pair( x, z );
 	if( m_chunkMap.count( pair ) == 0 ){
@@ -200,10 +255,6 @@ void World::LoadChunk( int x, int z ){
 	if( !IsExistChunk( x, z ) ){
 		Chunk* chunk = CreateChunk( x, z );
 
-		//ファイルから読み込む。
-		ChunkFiler filer;
-		bool readResult = filer.Read( *chunk );
-
 		//ファイルにチャンクが存在しなかったか、存在はしたが生成が済んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
@@ -211,12 +262,23 @@ void World::LoadChunk( int x, int z ){
 
 		//埋まったブロックを非表示にする。
 		ChunkCulling( *chunk );
+
+		//スカイライトの計算を行う
+		SkyLight skylight(this);
+		skylight.CalcSkyLight(chunk);
 	} else{
 		Chunk* chunk = GetChunk( x, z );
+
 		//チャンクが存在はしたが生成が住んでない場合。
 		if( !chunk->IsGenerated() ){
 			m_mapMaker.GenerateChunk( *chunk );
+
+			//埋まったブロックを非表示にする。
 			ChunkCulling( *chunk );
+
+			//スカイライトの計算を行う
+			SkyLight skylight(this);
+			skylight.CalcSkyLight(chunk);
 		}
 	}
 }
@@ -251,7 +313,8 @@ void World::ChunkCulling( Chunk& chunk ){
 				continue;
 			}
 
-			if( GetBlock( wx + v.x, y + v.y, wz + v.z ) == nullptr ){
+			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
+			if( neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false ){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -261,7 +324,9 @@ void World::ChunkCulling( Chunk& chunk ){
 	} );
 }
 
-void World::DeleteBlock( const CVector3& pos ){
+void World::DamegeBlock( const CVector3& pos ){
+	//タイマーを0にする
+	m_timer = 0.0f;
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
@@ -276,11 +341,15 @@ void World::DeleteBlock( const CVector3& pos ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
-	auto block = GetBlock(x, y, z);
-	//ブロックのHPを減らす、とりあえず2入れてる
-	block->ReduceHP(2);
+	m_block = GetBlock(x, y, z);
+	if (m_block == nullptr)
+	{
+		return;
+	}
+	//ブロックのHPを減らす、とりあえず1入れてる
+	m_block->ReduceHP(1);
 	//ブロックのHPが0以上ならこれで終わり
-	if (block->GetHP() > 0)
+	if (m_block->GetHP() > 0)
 	{
 		return;
 	}
@@ -288,13 +357,43 @@ void World::DeleteBlock( const CVector3& pos ){
 	{
 		//ドロップアイテムを作成。
 		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
-		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH );
+		CVector3 addPos = CVector3::Zero();
+		if (random() % 2 > 0) {
+			addPos.x += rand() % randomDrop;
+		}
+		else {
+			addPos.x -= rand() % randomDrop;
+		}
+
+		if (random() % 2 > 0) {
+			addPos.z += rand() % randomDrop;
+		}
+		else {
+			addPos.z += rand() % randomDrop;
+		}
+		dropItem->SetPos( CVector3( x + 0.5f, y + 0.5f, z + 0.5f ) * Block::WIDTH + addPos);
 	}
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );
 
 	chunk->DeleteBlock(x, y, z);
 	AroundBlock(pos);
+	//ブロック破壊されたらnullにする
+	m_block = nullptr;
+
+}
+
+void World::DestroyBlockNoDrop(const IntVector3& pos) {
+	Chunk* chunk = GetChunkFromWorldPos(pos.x, pos.z);
+	if (!chunk) {
+		return;
+	}
+	int x = Chunk::CalcInChunkCoord(pos.x);
+	int z = Chunk::CalcInChunkCoord(pos.z);
+
+	//破壊
+	chunk->DeleteBlock(x, pos.y, z);
+	AroundBlock({ (float)pos.x,(float)pos.y,(float)pos.z });
 }
 
 bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
@@ -310,10 +409,48 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );
 
-	if( !chunk->PlaceBlock( x, y, z, std::move( block ) ) ){
-		return false;
+	if (block->GetBlockType() == enCube_DoorUp || block->GetBlockType() == enCube_DoorDown) {
+		//ドア
+		CVector3 pos2 = pos;
+		if (block->GetBlockType() == enCube_DoorUp) {
+			pos2.y -= 1.0f;
+		}
+		else {
+			pos2.y += 1.0f;
+		}
+		int x2 = (int)std::floorf(pos2.x);
+		int y2 = (int)std::floorf(pos2.y);
+		int z2 = (int)std::floorf(pos2.z);
+		x2 = Chunk::CalcInChunkCoord(x);
+		z2 = Chunk::CalcInChunkCoord(z);
+
+		if (!chunk->CanPlaceBlock(x, y, z) || !chunk->CanPlaceBlock(x2, y2, z2)) {
+			return false;
+		}
+
+		std::unique_ptr<Block> block2; 
+		if (block->GetBlockType() == enCube_DoorUp) {
+			block2 = BlockFactory::CreateBlock(enCube_DoorDown);
+		}
+		else {
+			block2 = BlockFactory::CreateBlock(enCube_DoorUp);
+		}
+
+		chunk->PlaceBlock(x, y, z, std::move(block));
+		chunk->PlaceBlock(x2, y2, z2, std::move(block2));
+
+		chunk->GetBlock(x2,y2,z2)->SetMuki(chunk->GetBlock(x, y, z)->GetMuki());
+
+		AroundBlock(pos);
+		AroundBlock(pos2);
 	}
-	AroundBlock( pos );
+	else {
+		//通常のブロックの設置
+		if (!chunk->PlaceBlock(x, y, z, std::move(block))) {
+			return false;
+		}
+		AroundBlock(pos);
+	}
 
 	return true;
 }
@@ -346,12 +483,27 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.y = pos2.y + posList[j].y;
 			pos3.z = pos2.z + posList[j].z;
 
-			if( GetBlock( pos3 ) == nullptr ){
+			auto neighbor = GetBlock(pos3);
+			if (neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}
 		}
 
 		block->SetIsDraw( doNotCulling );
+	}
+}
+
+void World::Update()
+{
+	if (m_block != nullptr) {
+		m_timer += GetDeltaTimeSec();
+		if (m_timer >= timeBlockDurabilityValueRecover)
+		{
+			m_timer = 0.0f;
+			m_block->RestoresBlockDurabilityValue();
+			m_block = nullptr;
+		}
+
 	}
 }

@@ -30,11 +30,14 @@ bool Zombie::Start()
 	m_characon.SetPosition(m_position);
 
 	m_hp = 20;					//体力の設定。
-	m_attackPow = 1;			//攻撃力の設定。
+	m_attackPow = 3;			//攻撃力の設定。
 	m_knockBack = 0.5f;			//ノックバック倍率。
 
 	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
 	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
+
+	SetDropItemId(enCube_Stone);
+	SetChanceDropping(100);
 
 	return true;
 }
@@ -71,7 +74,8 @@ void Zombie::Attack()
 			attackCol->SetTimer(0);		//寿命１フレーム。
 			attackCol->SetCallback([&](SuicideObj::CCollisionObj::SCallbackParam& param) {
 				if (param.EqualName(L"CPlayer")) {			//名前検索。
-					m_player->TakenDamage(m_attackPow);		//プレイヤーにダメージを与える。
+					CVector3 direction = GetDamageColPos() - GetPos();
+					m_player->TakenDamage(m_attackPow, direction,true);		//プレイヤーにダメージを与える。
 				}
 			});
 		}
