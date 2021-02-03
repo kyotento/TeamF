@@ -5,25 +5,62 @@
 #include "RandomMapMaker.h"
 
 #include "CraftingTable.h"
+#include "WorthOfGod.h"
+#include "Door.h"
+
+#include "BlockRenderingLightParameter.h"
 
 namespace{
 	//ブロック情報を格納するクラス。
 	BlockInfoDictionary st_blockInfo;
+
+	constexpr float BLOCK_SIZE_HALF = Block::WIDTH * 0.5f;
 }
 
-void BlockFactory::Init( std::filesystem::path jsonFolder){
+SkinModelEffectShader BlockFactory::m_s_ps;
 
+int BlockFactory::m_instanceMax = -1;
+
+void BlockFactory::Init( std::filesystem::path jsonFolder){
 	//ブロック情報のロード。
 	st_blockInfo.Load( jsonFolder );
 
+	//シェーダー読み込み
+	D3D_SHADER_MACRO macros[] = {
+		"INSTANCING", "1",
+		NULL, NULL
+	};
+	m_s_ps.Load( "Preset/shader/_u_blockShader.fx", "PSMain_McBlockRenderGBuffer", Shader::EnType::PS, "INSTANCING", macros );
+
 	//インスタンシングモデルのロード
 	int loadEdge = 1 * 2 * Chunk::WIDTH;
-	int instanceMax = loadEdge * loadEdge * ( int( RandomMapMaker::m_maxHeight ) + 1 );
+	m_instanceMax = loadEdge * loadEdge * ( int( RandomMapMaker::m_maxHeight ) + 1 );
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
 	for( const auto& entry : GetBlockMap() ){
-		GameObj::InstancingModel* instanceModel = mngr.Load( instanceMax, entry.second.modelPath.c_str() );
+		GameObj::InstancingModel* instanceModel = mngr.Load( m_instanceMax, entry.second.modelPath.c_str() );
+		instanceModel->SetIsFrustumCulling( true );
+		instanceModel->SetIsFrustumCulling( true );
+
+		//ライティング用IInstanceDataを設定
+		instanceModel->AddIInstanceData( L"BlockRenderingLightParameter", std::make_unique<BlockRenderingLightParameter>( m_instanceMax ) );
+		//シェーダー設定
+		instanceModel->GetModelRender().GetSkinModel().FindMaterialSetting(
+			[&]( MaterialSetting* mat ){
+				mat->SetPS( &m_s_ps );
+			}
+		);
+	}
+}
+
+void BlockFactory::FindBlockModel( std::function<void( GameObj::InstancingModel* )> func ){
+	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
+	for( auto entry : GetBlockMap() ){
+		GameObj::InstancingModel* instanceModel = mngr.Load( m_instanceMax, entry.second.modelPath.c_str() );
+
+		//処理実行
+		func( instanceModel );
 	}
 }
 
@@ -35,17 +72,25 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	std::unique_ptr<Block> block;
 
 	//クリック時にアクションを起こすブロックなどは別のクラス。
-	if( blockType == enCube_CraftingTable ){
+	switch( blockType ){
+	case enCube_CraftingTable:
 		block = std::make_unique<CraftingTable>();
-	} else{
+		break;
+	case enCube_WoGBlock:
+		block = std::make_unique<WorthOfGod>();
+		break;
+	case enCube_DoorUp:
+	case enCube_DoorDown:
+		block = std::make_unique<Door>( blockType == enCube_DoorUp ? true : false );
+		break;
+	default:
 		block = std::make_unique<Block>();
+		break;
 	}
 
-	BlockInfo bInfo = st_blockInfo.GetInfo( blockType );
-		
-	block->InitModel(bInfo.modelPath.c_str());
-	block->SetBlockType( blockType );
-	block->SetHP(bInfo.hp);
+	//共通情報を使って初期化。
+	const BlockInfo& bInfo = st_blockInfo.GetInfo( blockType );
+	block->Init( &bInfo );
 
 	return std::move( block );
 }

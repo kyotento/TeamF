@@ -314,7 +314,7 @@ void World::ChunkCulling( Chunk& chunk ){
 			}
 
 			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
-			if( neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false ){//ブロックない or 透明ブロック
+			if( neighbor == nullptr || neighbor->GetIsOpacity() == false ){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -484,7 +484,7 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.z = pos2.z + posList[j].z;
 
 			auto neighbor = GetBlock(pos3);
-			if (neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false) {//ブロックない or 透明ブロック
+			if (neighbor == nullptr || neighbor->GetIsOpacity() == false) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}

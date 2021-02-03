@@ -1,0 +1,7 @@
+{
+	"id": "enCube_TorchBlock",
+	"name": "松明ブロック",
+	"model": "modelData/TorchBlock.tkm",
+	"hp": 1,
+	"light": 14
+}

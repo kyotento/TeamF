@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BlockInfoDictionary.h"
+#include "Block.h"
 #include <headerOnlyLib/json.hpp>
 #include <headerOnlyLib/nameof.hpp>
 #include "Utf8ToSjis.h"
@@ -72,6 +73,7 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 
 			//ブロック情報を新規作成。
 			BlockInfo& bInfo = m_infoMap[blockId];
+			bInfo.id = blockId;
 
 			//名前の取得
 			bInfo.name = UTF8toSjis( jObj["name"].get<std::string>() );
@@ -86,6 +88,43 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 			//有用ツールの取得(デフォルトでは空文字)
 			if( jObj.find( "tool" ) != jObj.end() ){
 				bInfo.usefulTool = jObj["tool"].get<std::string>();
+			}
+
+			//AABBの取得(デフォルトでは立方体1個)
+			if( jObj.find( "aabb" ) != jObj.end() ){
+				nl::json posArray = jObj["aabb"];
+				
+				for( nl::json::iterator itr = posArray.begin(); itr != posArray.end(); itr++ ){
+					AABB& aabb = bInfo.aabbArray.emplace_back();
+
+					aabb.min.x = ( *itr )[0].get<float>();
+					aabb.min.y = ( *itr )[1].get<float>();
+					aabb.min.z = ( *itr )[2].get<float>();
+					aabb.min *= Block::WIDTH;
+
+					itr++;
+
+					aabb.max.x = ( *itr )[0].get<float>();
+					aabb.max.y = ( *itr )[1].get<float>();
+					aabb.max.z = ( *itr )[2].get<float>();
+					aabb.max *= Block::WIDTH;
+				}
+			} else{
+				AABB& aabb = bInfo.aabbArray.emplace_back();
+				aabb.min = CVector3(-0.5f, 0, -0.5f);
+				aabb.min *= Block::WIDTH;
+				aabb.max = CVector3( 0.5f, 1, 0.5f );
+				aabb.max *= Block::WIDTH;
+			}
+
+			//明るさの取得(デフォルトでは0)
+			if( jObj.find( "light" ) != jObj.end() ){
+				bInfo.light = jObj["light"].get<int>();
+			}
+
+			//不透明の取得(デフォルトではfalse)
+			if( jObj.find( "opacity" ) != jObj.end() ){
+				bInfo.isOpacity = jObj["opacity"].get<bool>();
 			}
 
 

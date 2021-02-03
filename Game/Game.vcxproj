@@ -54,6 +54,7 @@
     <ClCompile Include="Animals.cpp" />
     <ClCompile Include="Biome.cpp" />
     <ClCompile Include="BiomeManager.cpp" />
+    <ClCompile Include="BlockInfo.cpp" />
     <ClCompile Include="CameraCollisionSolver.cpp" />
     <ClCompile Include="BlockInfoDictionary.cpp" />
     <ClCompile Include="Config.cpp" />
@@ -75,6 +76,7 @@
     <ClCompile Include="Utf8ToSjis.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="AABB.h" />
+    <ClInclude Include="BlockInfo.h" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
     <ClInclude Include="CameraCollisionSolver.h" />

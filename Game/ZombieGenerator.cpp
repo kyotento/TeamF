@@ -15,7 +15,7 @@ void ZombieGenerator::Init()
 void ZombieGenerator::NewGOMob(const CVector3& pos) 
 {
 	//Zombie* zombie = NewGO<Zombie>();
-	//プレイヤーの生成。
+	//プレイヤーの生成。デバッグ用、コメントアウト。
 	/*Zombie* zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
 	zombie->SetPos(pos);*/
 }

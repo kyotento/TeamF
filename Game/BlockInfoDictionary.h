@@ -1,15 +1,6 @@
 //! @file
 #pragma once
-#include "BlockType.h"
-
-//! @brief ブロックの種類ごとに共通の情報。
-class BlockInfo{
-public:
-	std::string name;
-	int hp;
-	std::string usefulTool;
-	std::filesystem::path modelPath;
-};
+#include "BlockInfo.h"
 
 //! @brief ブロック情報をロード、格納するクラス。
 class BlockInfoDictionary{
