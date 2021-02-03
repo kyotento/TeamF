@@ -61,13 +61,10 @@ void PlayerArmor::GetBonePos()
 		m_position[i] = m_bone[i]->GetPosition();
 		CQuaternion modelRot;						//モデルの回転量。
 		modelRot = m_playerSkinModel->GetRot();		//モデルの回転量を取得。
-		
-		//CMatrix worldBone;							//骨のワールド行列。
-		//worldBone = m_bone[i]->GetWorldMatrix();
 
-		//if (i >= 6) {
-		//	m_position[i].y += 40.f;
-		//}
+		if (i >= 2 && i<= 3) {
+			m_position[i].y += 5.f;
+		}
 
 		CQuaternion boneRot;
 		boneRot.SetRotation(CVector3::AxisZ(), CMath::PI_HALF);//回転を補正
