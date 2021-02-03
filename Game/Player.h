@@ -106,7 +106,18 @@ public:
 		}
 		return m_skinModelRender->GetPos();
 	}
-
+	/// <summary>
+	/// 右手の座標を取得。
+	/// </summary>
+	/// <returns>右手のボーン座標。</returns>
+	const CVector3& GetRightHandPos()  const
+	{
+		if (!m_rightHandBone)
+		{
+			return CVector3::Zero();
+		}
+		return m_rightHandBone->GetPosition();
+	}
 	//! @brief 回転を取得。
 	CQuaternion GetRot() const {
 		return m_rotation;
@@ -351,6 +362,7 @@ private:
 
 	void Stamina();
 
+	void Shoulder();
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
 	/// </summary>
@@ -382,6 +394,7 @@ private:
 	const float m_creativeSpeedMag = 3.f;					//クリエイティブの飛行中の移動速度の倍率。	
 	const int installableBlockNum = 4;						//ブロック設置可能距離(ブロック距離)。
 
+	int upDownY = 0;
 	int FallDamage();		//落下ダメージ。
 
 	float m_hp = 20.f;				//体力。
@@ -398,6 +411,7 @@ private:
 
 	CQuaternion m_rotation = CQuaternion::Identity();			//クォータニオン。
 	CQuaternion m_headBoneRot = CQuaternion::Identity();		//頭の骨の回転。
+	CQuaternion m_shoulderBoneRot = CQuaternion::Identity();		//肩の骨の回転。
 
 	Inventory m_inventory; //アイテムを保管するインベントリ。
 	std::unique_ptr<GUI::RootNode> m_openedGUI; //現在開いているGUI
@@ -410,7 +424,9 @@ private:
 	std::unique_ptr<SuicideObj::CCollisionObj> m_damageCollision;		//攻撃被弾判定用コリジョン。
 
 	Bone* m_headBone;												//頭の骨。
-
+	Bone* m_rightHandBone;											//右手の骨。
+	Bone* m_shoulderBone;											//肩の骨。
+	
 	GameCamera* m_gameCamera = nullptr;							//ゲームカメラ。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。

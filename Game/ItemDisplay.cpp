@@ -70,12 +70,8 @@ void ItemDisplay::Update()
 	}
 
 	if (!m_player->GetIsPlayerDead()) {
-		CameraModeChangeToDisplay();
-		//追従処理。
-		Follow();
 
-		//回転
-		Rotation();
+		CameraModeChangeToDisplay();
 
 		//切り替えの処理。
 		Switching();
@@ -186,11 +182,17 @@ void ItemDisplay::CameraModeChangeToDisplay()
 {
 	if (m_gameCamera->GetCameraMode() == m_cameraDisplayMode)
 	{
-		m_skinModelRender->SetIsDraw(true);
+		//追従処理。
+		Follow();
+		//回転
+		Rotation();
 	}
 	else
 	{
-		m_skinModelRender->SetIsDraw(false);
+		//右手のボーンの処理。
+		NotFPSCameraOfRightHandDraw();
+		//右手の回転処理
+		NotFPSCameraOfItemRotation();
 	}
 }
 //再度。
@@ -347,7 +349,6 @@ void ItemDisplay::SwitchItemType()
 		}
 	}
 }
-
 //クリックに合わせて動かすよん。
 void ItemDisplay::LeftClickMouseToMoveHand()
 {
@@ -366,7 +367,6 @@ void ItemDisplay::LeftClickMouseToMoveHand()
 	m_rotation.Multiply(m_rotationX);
 	m_skinModelRender->SetRot(m_rotation);
 }
-
 //食べるよん。
 void ItemDisplay::RightClickMouseToEat()
 {
@@ -384,7 +384,7 @@ void ItemDisplay::RightClickMouseToEat()
 	}
 	UpDown();	//実際に上下に動かしてるのはここ。
 }
-//雑です。
+//雑に食べてる表現。
 void ItemDisplay::UpDown()
 {
 	const float UPDOWN = 3.0f;
@@ -409,4 +409,29 @@ void ItemDisplay::UpDown()
 			a = 0;
 		}
 	}
+}
+//FPS以外の時のモデル処理。
+void ItemDisplay::NotFPSCameraOfRightHandDraw()
+{
+	m_position = m_player->GetRightHandPos();
+	m_skinModelRender->SetPos(m_position);
+	if (type == enHand)
+	{
+		m_skinModelRender->SetIsDraw(false);
+	}
+}
+//FPS以外の時の回転
+void ItemDisplay::NotFPSCameraOfItemRotation()
+{
+	//プレイヤーの回転を持ってくる
+	m_radianY = m_player->GetRadianY();
+	//ここで斜めにずらします。
+	m_rotation = m_player->GetRot();
+	CQuaternion m_rotationX;
+	m_rotationX.SetRotationDeg(CVector3::AxisX(), m_radianY);
+	m_rotation.Multiply(m_rotationX);
+	//モデルへ。
+	m_skinModelRender->SetRot(m_rotation);
+	//スケールの変更
+	m_scale = { 0.35f,0.35f,0.35f };
 }

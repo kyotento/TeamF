@@ -125,6 +125,16 @@ private:
 	/// 上下に動かす。
 	/// </summary>
 	void UpDown();
+
+	/// <summary>
+	/// FPS視点以外の時の右手の処理。
+	/// 右手の名前はBone008
+	/// </summary>
+	void NotFPSCameraOfRightHandDraw();
+	/// <summary>
+	/// FPS視点以外の時の回転処理。
+	/// </summary>
+	void NotFPSCameraOfItemRotation();
 private:
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;	//モデル。
 	CVector3 m_position = CVector3::Zero();					//モデルを表示する座標。
