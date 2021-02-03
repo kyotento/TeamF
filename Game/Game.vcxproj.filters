@@ -182,8 +182,14 @@
     <ClCompile Include="CameraCollisionSolver.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="CraftingController2.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="Mob.cpp">
+      <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="PairBlock.cpp">
       <Filter>Block</Filter>
@@ -388,6 +394,12 @@
     </ClInclude>
     <ClInclude Include="CameraCollisionSolver.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CraftingController2.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Mob.h">
+      <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
       <Filter>Block</Filter>

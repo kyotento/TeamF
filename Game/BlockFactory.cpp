@@ -44,6 +44,8 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_DoorDown] = L"Resource/modelData/DoorD.tkm";
 
 	//耐久度
+	FILE_PATH_ARRAY[enCube_Glass] = L"Resource/modelData/GrassBlock.tkm";
+
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
 	BLOCK_HP_ARRAY[enCube_Soil] = 4;
 	BLOCK_HP_ARRAY[enCube_Stone] = 16;
@@ -74,6 +76,7 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 		BLOCK_LIGHT_ARRAY[i] = 0;
 		BLOCK_OPACITY[i] = true;
 	}
+	BLOCK_HP_ARRAY[enCube_Glass] = 4;
 
 	//松明ブロック
 	BLOCK_LIGHT_ARRAY[enCube_TorchBlock] = 14;

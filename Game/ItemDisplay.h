@@ -117,6 +117,14 @@ private:
 	/// 左クリックで右手動くよ。
 	/// </summary>
 	void LeftClickMouseToMoveHand();
+	/// <summary>
+	/// 右クリックで食べるpositionに動かす。
+	/// </summary>
+	void RightClickMouseToEat();
+	/// <summary>
+	/// 上下に動かす。
+	/// </summary>
+	void UpDown();
 private:
 	GameObj::CSkinModelRender* m_skinModelRender = nullptr;	//モデル。
 	CVector3 m_position = CVector3::Zero();					//モデルを表示する座標。
@@ -135,6 +143,7 @@ private:
 	int m_playerSelectNum = 0;								//プレイヤーが持っている番号
 
 	bool m_isItemChangeFlag = false;						//持ってるもの切り替えたかどうか。
+	bool m_isUpDownFlag = false;							//食べてるときに
 
 	Player* m_player = nullptr;								//プレイヤーのインスタンス。
 	GameCamera* m_gameCamera = nullptr;						//ゲームカメライェア。

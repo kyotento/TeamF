@@ -23,7 +23,8 @@ enum EnCube
 	enCube_GrassHalf,		//草ハーフ
 	enCube_GrassStairs,		//草階段
 	enCube_WoGBlock,		//ラスゴブロック
-	enCube_DoorUp,			//ドア(上部分)
+	enCube_Glass,			//ガラス。
+	enCube_DoorUp,			//ドア(上部分)	
 	enCube_DoorDown,		//ドア(下部分)
 
 	enCube_Num
