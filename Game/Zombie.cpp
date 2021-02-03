@@ -36,6 +36,9 @@ bool Zombie::Start()
 	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
 	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
 
+	SetDropItemId(enCube_Stone);
+	SetChanceDropping(100);
+
 	return true;
 }
 
@@ -71,7 +74,8 @@ void Zombie::Attack()
 			attackCol->SetTimer(0);		//寿命１フレーム。
 			attackCol->SetCallback([&](SuicideObj::CCollisionObj::SCallbackParam& param) {
 				if (param.EqualName(L"CPlayer")) {			//名前検索。
-					m_player->TakenDamage(m_attackPow);		//プレイヤーにダメージを与える。
+					CVector3 direction = GetDamageColPos() - GetPos();
+					m_player->TakenDamage(m_attackPow, direction,true);		//プレイヤーにダメージを与える。
 				}
 			});
 		}

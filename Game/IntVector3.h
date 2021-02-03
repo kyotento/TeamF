@@ -50,6 +50,12 @@ struct IntVector3{
 		vec *= v;
 		return vec;
 	}
+
+	[[nodiscard]] 
+	static constexpr IntVector3 Zero() noexcept
+	{
+		return{ 0, 0, 0 };
+	}
 };
 
 namespace std{
