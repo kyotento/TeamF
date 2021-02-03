@@ -31,13 +31,13 @@ void PlayerArmor::InitModel()
 		m_skinModelArmor[i]->SetScale(m_scale);
 	}
 	m_skinModelArmor[0]->Init(L"Resource/modelData/armor/Iron_Helmet.tkm");
-	//m_skinModelArmor[1]->Init(L"Resource/modelData/armor/Iron_ChestPlate.tkm");
-	//m_skinModelArmor[2]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
-	//m_skinModelArmor[3]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
-	//m_skinModelArmor[4]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
-	//m_skinModelArmor[5]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
-	//m_skinModelArmor[6]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
-	//m_skinModelArmor[7]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
+	m_skinModelArmor[1]->Init(L"Resource/modelData/armor/Iron_ChestPlate.tkm");
+	m_skinModelArmor[2]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
+	m_skinModelArmor[3]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
+	m_skinModelArmor[4]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
+	m_skinModelArmor[5]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
+	m_skinModelArmor[6]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
+	m_skinModelArmor[7]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
 }
 
 //œî•ñŽæ“¾B
@@ -70,7 +70,9 @@ void PlayerArmor::GetBonePos()
 		//}
 
 		CQuaternion boneRot;
-		boneRot = m_bone[i]->GetRotation();
+		boneRot.SetRotation(CVector3::AxisZ(), CMath::PI_HALF);//‰ñ“]‚ð•â³
+		boneRot.Concatenate(CQuaternion(CVector3::AxisX(), CMath::PI));//‰ñ“]‚ð•â³
+		boneRot.Concatenate(m_bone[i]->GetRotation());
 
 		m_skinModelArmor[i]->SetPos(m_position[i]);
 		m_skinModelArmor[i]->SetRot(boneRot);
