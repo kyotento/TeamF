@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "DropItem.h"
 #include"Animals.h"
+#include "PlayerArmor.h"		
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -53,6 +54,7 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
+	DeleteGO(m_playerArmor);
 }
 
 #include "ItemStack.h"
@@ -96,6 +98,10 @@ bool Player::Start()
 	//プレイヤーのパラメーター生成。
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
+
+	//アーマークラス生成。
+	m_playerArmor = NewGO<PlayerArmor>();
+	m_playerArmor->SetPlayerSkinModel(m_skinModelRender);
 
 	//タイマーに値を入れておく
 	m_timerBlockDestruction = timeBlockDestruction;

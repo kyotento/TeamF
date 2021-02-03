@@ -12,6 +12,7 @@ class GameMode;
 class ItemDisplay;
 class PlayerParameter;
 class PlayerDeath;
+class PlayerArmor;
 class Game;
 namespace GUI{
 	class RootNode;
@@ -401,6 +402,8 @@ private:
 	PlayerParameter* m_playerParameter = nullptr;				//プレイヤーのパラメーター。
 	PlayerDeath* m_playerDeath = nullptr;						//プレイヤーの死亡時の画像処理。
 	Game* m_game = nullptr;										//Gameクラス。
+	PlayerArmor* m_playerArmor = nullptr;						//プレイヤーのアーマー。
+
 	float m_timerBlockDestruction = 0.0f;						//マウス長押しでブロック破壊する時のタイマー、一定時間経過でブロック破壊を実行する。
 	bool m_isBlockDestruction = false;							//ブロック破壊をしたかどうか、平野が使う。
 };

@@ -63,6 +63,7 @@
     <ClCompile Include="MobGenerator.cpp" />
     <ClCompile Include="Cow.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="PlayerArmor.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="MobGenerator.h" />
+    <ClInclude Include="PlayerArmor.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="ZombieGenerator.h" />
