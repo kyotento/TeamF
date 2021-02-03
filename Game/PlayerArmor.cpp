@@ -20,7 +20,7 @@ bool PlayerArmor::Start()
 
 void PlayerArmor::Update()
 {
-	GetBonePos();		//骨座標を取得。
+	SetArmorPos();		//アーマーの座標と回転設定。
 }
 
 //各モデルの初期化。
@@ -40,7 +40,7 @@ void PlayerArmor::InitModel()
 	m_skinModelArmor[7]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
 }
 
-//骨情報取得。
+//アーマーの座標と回転設定。
 void PlayerArmor::GetBoneInfor()
 {
 	m_bone[0] = m_playerSkinModel->FindBone(L"Bone002");
@@ -54,7 +54,7 @@ void PlayerArmor::GetBoneInfor()
 }
 
 //骨座標を取得。
-void PlayerArmor::GetBonePos()
+void PlayerArmor::SetArmorPos()
 {
 
 	for (int i = 0; i < m_armorNum; i++) {

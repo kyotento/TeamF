@@ -20,9 +20,9 @@ public:
 	void GetBoneInfor();
 
 	/// <summary>
-	/// 骨座標の取得。
+	/// アーマーの座標と回転設定。
 	/// </summary>
-	void GetBonePos();
+	void SetArmorPos();
 
 	/// <summary>
 	/// プレイヤーのスキンモデルを設定する。
