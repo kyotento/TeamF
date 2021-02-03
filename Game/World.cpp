@@ -94,6 +94,10 @@ void World::PostUpdate(){
 			//全エンティティをループ
 			for( Entity* e : m_entities ){
 
+				if (!e->UseBulletColision()) {
+					continue;
+				}
+
 				const IntRect eCube = IntRect::CreateWithCenter(
 					IntVector3( e->GetPos() / Block::WIDTH ), m_collisionEnableRange );
 
@@ -117,6 +121,10 @@ void World::PostUpdate(){
 
 		//有効化ループ。
 		for( Entity* e : m_entities ){
+
+			if (!e->UseBulletColision()) {
+				continue;
+			}
 
 			const IntRect eCube = IntRect::CreateWithCenter(
 				IntVector3( e->GetPos() / Block::WIDTH ), m_collisionEnableRange );

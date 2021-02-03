@@ -10,6 +10,7 @@ class ItemStack;
 class DropItem : public Entity
 {
 public:
+	DropItem();
 
 	//! @brief 引数のワールドとアイテムを使用してドロップアイテムを作成します。
 	//! @param item 設定するアイテム。右辺値参照なので入れる前にstd::move()が必要です。

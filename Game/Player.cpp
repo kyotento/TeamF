@@ -32,7 +32,7 @@ namespace {
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
 }
 
-Player::Player() : m_inventory(36)
+Player::Player() : m_inventory(36), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");

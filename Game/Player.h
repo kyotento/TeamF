@@ -1,6 +1,5 @@
 #pragma once
 #include "Block.h"
-#include "../physics/character/CCharacterController.h"
 #include "Entity.h"
 #include "Inventory.h"
 #include "MCCharaCon.h"

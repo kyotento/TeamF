@@ -14,7 +14,7 @@ class World;
 //! @author Takayama
 class Entity : public IGameObject{
 public:
-	Entity(EnEntity enEntity = enEntity_None);
+	Entity(EnEntity enEntity = enEntity_None, bool useBulletColision = false);
 
 	virtual ~Entity();
 
@@ -32,8 +32,14 @@ public:
 	{
 		return m_enEntity;
 	}
+
+	bool UseBulletColision()const {
+		return m_useBulletColision;
+	}
+
 protected:
 	World* m_world = nullptr;
 	EnEntity m_enEntity = enEntity_None;
+	bool m_useBulletColision = false;
 };
 
