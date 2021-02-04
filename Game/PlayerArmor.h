@@ -38,6 +38,18 @@ public:
 		m_playerSkinModel = skin;
 	}
 
+	/// <summary>
+	/// 防具の材質。
+	/// </summary>
+	enum ArmorMaterial
+	{
+		enArmorMaterial_Leather,
+		enArmorMaterial_Iron,
+		enArmorMaterial_Goiden,
+		enArmorMaterial_Diamond,
+		enArmorMaterial_Num
+	};
+
 private:
 
 	static const int m_ArmorPutNum = 4;					//アーマーの部位の数。
