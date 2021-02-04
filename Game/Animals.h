@@ -88,8 +88,8 @@ protected:
 	float m_knoceBackY = 1.f;			//ノックバックY座標。
 
 	const float m_moveSpeed = 100.0f;				//移動速度。
-	const float m_characonRadius = 40.f;			//キャラコンの半径。
-	const float m_characonHeight = 160.f;			//キャラコンの高さ。
+	const float m_characonRadius = 75.f;			//キャラコンの半径。
+	const float m_characonHeight = 5.f;			//キャラコンの高さ。
 
 	float m_fallSpeed = 0.8f;						//落下速度。
 	float m_jumpSpeed = 1.f;						//ジャンプ速度。

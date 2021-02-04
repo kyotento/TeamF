@@ -33,7 +33,8 @@ bool Cow::Start()
 	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";		//ボイス。
 	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";		//ボイス。
 
-
+	SetDropItemId(enCube_GoldOre);
+	SetChanceDropping(100);
 
 	return true;
 }
