@@ -7,12 +7,12 @@ Animals::Animals(EnEntity enEntity) : Mob(enEntity)
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_characonPos = m_position;
 	//キャラコンの初期化。
-	m_characon.Init(m_characonRadius*5, m_characonHeight*10, m_characonPos);
+	m_characon.Init(m_characonRadius, m_characonHeight, m_characonPos);
 	m_characon.SetIsDrawCollider(true);
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
 	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
-	m_damageCollision->CreateCapsule(colPos, m_rot, m_characonRadius*3, m_characonHeight*3);
+	m_damageCollision->CreateCapsule(colPos, m_rot, m_characonRadius, m_characonHeight);
 	m_damageCollision->SetTimer(enNoTimer);				//寿命無し。
 	m_damageCollision->SetName(L"CAnimals");
 	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
@@ -118,6 +118,7 @@ void Animals::Death()
 			m_deathAddRot += oneFrameRot;
 		}
 		else {		//回転し終わったら敵を消す。
+			DroppingItem(m_position);
 			DeleteGO(this);
 		}
 

@@ -20,9 +20,15 @@ public:
 	void GetBoneInfor();
 
 	/// <summary>
-	/// 骨座標の取得。
+	/// アーマーの座標と回転設定。
 	/// </summary>
-	void GetBonePos();
+	void SetArmorPos();
+
+	/// <summary>
+	/// モデルを描画するかどうか。
+	/// </summary>
+	/// <param name="draw">描画するかどうか</param>
+	void IsDraw(bool draw);
 
 	/// <summary>
 	/// プレイヤーのスキンモデルを設定する。
@@ -34,7 +40,10 @@ public:
 
 private:
 
-	static const int m_armorNum = 8;
+	static const int m_ArmorPutNum = 4;					//アーマーの部位の数。
+	static const int m_armorNum = 8;					//アーマーのモデルの数。
+
+	bool m_isPutArmor[m_ArmorPutNum] = { false,false,false,false };
 	
 	float m_scale = 1.5f;											//スケール。
 	CVector3 m_position[m_armorNum] = { CVector3::Zero() };			//座標。

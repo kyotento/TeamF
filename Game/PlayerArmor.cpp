@@ -20,7 +20,7 @@ bool PlayerArmor::Start()
 
 void PlayerArmor::Update()
 {
-	GetBonePos();		//骨座標を取得。
+	SetArmorPos();		//アーマーの座標と回転設定。
 }
 
 //各モデルの初期化。
@@ -31,16 +31,16 @@ void PlayerArmor::InitModel()
 		m_skinModelArmor[i]->SetScale(m_scale);
 	}
 	m_skinModelArmor[0]->Init(L"Resource/modelData/armor/Iron_Helmet.tkm");
-	//m_skinModelArmor[1]->Init(L"Resource/modelData/armor/Iron_ChestPlate.tkm");
-	//m_skinModelArmor[2]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
-	//m_skinModelArmor[3]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
-	//m_skinModelArmor[4]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
-	//m_skinModelArmor[5]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
-	//m_skinModelArmor[6]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
-	//m_skinModelArmor[7]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
+	m_skinModelArmor[1]->Init(L"Resource/modelData/armor/Iron_ChestPlate.tkm");
+	m_skinModelArmor[2]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
+	m_skinModelArmor[3]->Init(L"Resource/modelData/armor/Iron_ChestPlate2.tkm");
+	m_skinModelArmor[4]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
+	m_skinModelArmor[5]->Init(L"Resource/modelData/armor/Iron_leggings.tkm");
+	m_skinModelArmor[6]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
+	m_skinModelArmor[7]->Init(L"Resource/modelData/armor/Iron_boots.tkm");
 }
 
-//骨情報取得。
+//アーマーの座標と回転設定。
 void PlayerArmor::GetBoneInfor()
 {
 	m_bone[0] = m_playerSkinModel->FindBone(L"Bone002");
@@ -54,25 +54,39 @@ void PlayerArmor::GetBoneInfor()
 }
 
 //骨座標を取得。
-void PlayerArmor::GetBonePos()
+void PlayerArmor::SetArmorPos()
 {
 
 	for (int i = 0; i < m_armorNum; i++) {
 		m_position[i] = m_bone[i]->GetPosition();
 		CQuaternion modelRot;						//モデルの回転量。
 		modelRot = m_playerSkinModel->GetRot();		//モデルの回転量を取得。
-		
-		//CMatrix worldBone;							//骨のワールド行列。
-		//worldBone = m_bone[i]->GetWorldMatrix();
 
-		//if (i >= 6) {
-		//	m_position[i].y += 40.f;
-		//}
+		if (i >= 2 && i<= 3) {
+			m_position[i].y += 5.f;
+		}
 
 		CQuaternion boneRot;
-		boneRot = m_bone[i]->GetRotation();
+		boneRot.SetRotation(CVector3::AxisZ(), CMath::PI_HALF);//回転を補正
+		boneRot.Concatenate(CQuaternion(CVector3::AxisX(), CMath::PI));//回転を補正
+		boneRot.Concatenate(m_bone[i]->GetRotation());
 
 		m_skinModelArmor[i]->SetPos(m_position[i]);
 		m_skinModelArmor[i]->SetRot(boneRot);
+	}
+}
+
+//モデルの描画をする。
+void PlayerArmor::IsDraw(bool draw)
+{
+	if (draw) {
+		for (int i = 0; i < m_armorNum; i++) {
+			m_skinModelArmor[i]->SetIsDraw(true);
+		}
+	}
+	else {
+		for (int i = 0; i < m_armorNum; i++) {
+			m_skinModelArmor[i]->SetIsDraw(false);
+		}
 	}
 }

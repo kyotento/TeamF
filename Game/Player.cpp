@@ -364,7 +364,9 @@ void Player::Jump()
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
-			m_stamina -= 0.2;
+			if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+				m_stamina -= 0.2;			//サバイバルモードの時のみスタミナを減らす。
+			}
 		}
 		//ジャンプ中の処理。
 		if (m_isJump) {					
@@ -877,9 +879,11 @@ void Player::IsDraw()
 {
 	if (m_gameCamera->GetCameraMode() == EnMode_FPS) {
 		m_skinModelRender->SetIsDraw(false);
+		m_playerArmor->IsDraw(false);
 	}
 	else{
 		m_skinModelRender->SetIsDraw(true);
+		m_playerArmor->IsDraw(true);
 	}
 }
 
@@ -896,7 +900,11 @@ void Player::Stamina()
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+		if (item == nullptr)
+		{
+
+		}
+		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)

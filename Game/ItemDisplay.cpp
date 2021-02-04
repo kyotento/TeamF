@@ -14,7 +14,7 @@ namespace {
 	int DownPosY = 0;
 	int DownPosZ = 0;
 
-	int minDownPos = -50;
+	int minDownPos = -30;
 	int maxDownPos = 0;
 
 	int Limit = 0;
@@ -53,6 +53,7 @@ ItemDisplay::~ItemDisplay()
 
 bool ItemDisplay::Start()
 {
+	m_player = FindGO<Player>();
 	//モデル生成
 	InitModel();
 	return true;
@@ -93,8 +94,8 @@ void ItemDisplay::Update()
 void ItemDisplay::InitModel()
 {
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
-	m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
-	type = enHand;
+	m_isItemChangeFlag = true;
+	Switching();
 }
 //モデルの追従。
 void ItemDisplay::Follow()
@@ -387,7 +388,7 @@ void ItemDisplay::RightClickMouseToEat()
 //雑に食べてる表現。
 void ItemDisplay::UpDown()
 {
-	const float UPDOWN = 3.0f;
+	const float UPDOWN = 0.5f;
 	const int maxA = 5;
 	if (m_isUpDownFlag && !flag)
 	{
