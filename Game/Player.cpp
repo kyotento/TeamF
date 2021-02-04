@@ -900,7 +900,11 @@ void Player::Stamina()
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+		if (item == nullptr)
+		{
+
+		}
+		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)
