@@ -75,3 +75,18 @@ void PlayerArmor::SetArmorPos()
 		m_skinModelArmor[i]->SetRot(boneRot);
 	}
 }
+
+//ƒ‚ƒfƒ‹‚Ì•`‰æ‚ğ‚·‚éB
+void PlayerArmor::IsDraw(bool draw)
+{
+	if (draw) {
+		for (int i = 0; i < m_armorNum; i++) {
+			m_skinModelArmor[i]->SetIsDraw(true);
+		}
+	}
+	else {
+		for (int i = 0; i < m_armorNum; i++) {
+			m_skinModelArmor[i]->SetIsDraw(false);
+		}
+	}
+}

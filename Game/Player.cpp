@@ -877,9 +877,11 @@ void Player::IsDraw()
 {
 	if (m_gameCamera->GetCameraMode() == EnMode_FPS) {
 		m_skinModelRender->SetIsDraw(false);
+		m_playerArmor->IsDraw(false);
 	}
 	else{
 		m_skinModelRender->SetIsDraw(true);
+		m_playerArmor->IsDraw(true);
 	}
 }
 
