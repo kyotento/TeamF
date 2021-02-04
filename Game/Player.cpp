@@ -16,6 +16,7 @@
 #include "Menu.h"
 #include "DropItem.h"
 #include"Animals.h"
+#include "PlayerArmor.h"		
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -37,7 +38,7 @@ namespace {
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 
-Player::Player() : m_inventory(36)
+Player::Player() : m_inventory(36), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -53,6 +54,7 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
+	DeleteGO(m_playerArmor);
 }
 
 #include "ItemStack.h"
@@ -84,9 +86,9 @@ bool Player::Start()
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
-		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone,enCube_OakWood, 
+		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
 		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot
+		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
@@ -96,6 +98,10 @@ bool Player::Start()
 	//プレイヤーのパラメーター生成。
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
+
+	//アーマークラス生成。
+	m_playerArmor = NewGO<PlayerArmor>();
+	m_playerArmor->SetPlayerSkinModel(m_skinModelRender);
 
 	//タイマーに値を入れておく
 	m_timerBlockDestruction = timeBlockDestruction;
@@ -670,7 +676,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。ここもInputに変えた。
 	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
-		m_world->DeleteBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
+		m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
 	}
 	m_attackFlag = false;
 }
@@ -731,7 +737,6 @@ void Player::FlyTheRay()
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}
-	
 }
 
 //被ダメ－ジ。

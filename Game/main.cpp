@@ -31,6 +31,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	initparam.limitFps = 60;		//フレームレート上限
 	initparam.standardFps = 60;		//動作フレームレート※これいじるとゲームスピードが変わる(処理実行回数が増える)
 
+	initparam.variableFpsMaxSec = 0.1f;
 	initparam.useVSync = false;
 	initparam.isWindowMode = true;
 	//initparam.windowStyle = WS_POPUP | WS_BORDER ;		//ウィンドウスタイル

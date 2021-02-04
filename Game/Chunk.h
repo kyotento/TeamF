@@ -85,6 +85,12 @@ public:
 		}
 		return false;
 	}
+
+	//指定位置にブロックを設置可能か？
+	bool CanPlaceBlock(const int x, const int y, const int z)const
+	{
+		return m_blockArray[x][y][z] == nullptr;
+	}
 	
 	//ブロックを削除 チャンク座標でブロックを削除。
 	void DeleteBlock(const int x, const int y, const int z) {
