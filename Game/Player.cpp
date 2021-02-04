@@ -364,7 +364,9 @@ void Player::Jump()
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
-			m_stamina -= 0.2;
+			if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+				m_stamina -= 0.2;			//サバイバルモードの時のみスタミナを減らす。
+			}
 		}
 		//ジャンプ中の処理。
 		if (m_isJump) {					
