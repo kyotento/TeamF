@@ -26,10 +26,16 @@ public:
 	/// </summary>
 	void DeleteTitleSelect();
 
+	void TitleBGM();
 private:
 
 	GameObj::CSpriteRender* m_spriteRender = nullptr;
 
 	std::unique_ptr<TitleSelect> m_titleSelect;
+	SuicideObj::CSE* m_bgm;
+
+	const wchar_t* m_bgmName;		//BGM
+	const wchar_t* m_clickName;		//click
+	bool m_isBgmFlag = false;		//àÍìxÇæÇØê∂ê¨ÅB
 };
 
