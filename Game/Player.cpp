@@ -37,8 +37,8 @@ namespace {
 	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
-
-Player::Player() : m_inventory(36), Entity(enEntity_None, true)
+					//装備スロットのため拡張。
+Player::Player() : m_inventory(40), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
