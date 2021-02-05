@@ -129,14 +129,13 @@ void Zombie::AttackSun()
 	if (second < sunsetSecond && second > sunriseSecond)
 	{
 		//タイマー加算。
-		m_sunDamageTimer += GetEngine().GetStandardFrameRate();
+		m_sunDamageTimer += GetEngine().GetRealDeltaTimeSec();
 		if (m_sunDamageTimer >= sunDamageTime)
 		{
 			//とりあえずダメージ1。
 			TakenDamage(1);
 			//タイマー1。
 			m_sunDamageTimer = 0.0f;
-			
 
 		}
 	}

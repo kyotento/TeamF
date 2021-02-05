@@ -516,10 +516,11 @@ void Player::Headbang()
 //攻撃処理。
 void Player::Attack()
 {
-	SuicideObj::CSE* se;
-	se = NewGO<SuicideObj::CSE>(m_attackName);
-	se->SetVolume(0.25f);
+	
 	if (GetKeyDown(VK_LBUTTON)) {
+		SuicideObj::CSE* se;
+		se = NewGO<SuicideObj::CSE>(m_attackName);
+		se->SetVolume(0.25f);
 		se->Play();
 		//攻撃判定の座標。
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
@@ -541,13 +542,11 @@ void Player::Attack()
 				Enemy* enemy = param.GetClass<Enemy>();
 				enemy->TakenDamage(m_attackPower);
 				m_attackFlag = true;
-				se->Play();
 			}
 			if (param.EqualName(L"CAnimals")) {			//名前検索。
 				Animals* animals = param.GetClass<Animals>();
 				animals->TakenDamage(m_attackPower);
 				m_attackFlag = true;
-				se->Play();
 			}
 		});
 	}
