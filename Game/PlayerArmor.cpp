@@ -76,6 +76,15 @@ void PlayerArmor::SetArmorPos()
 	}
 }
 
+//モデルの素材変更。
+void PlayerArmor::MaterialChange()
+{
+	//todo BlockFactoryみたいにする。
+	if (m_armorMaterial[0] == enArmorMaterial_Leather) {
+		m_skinModelArmor[0]->Init(L"Resource/modelData/armor/Leather_Helmet.tkm");
+	}
+}
+
 //モデルの描画をする。
 void PlayerArmor::IsDraw(bool draw)
 {

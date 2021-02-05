@@ -25,6 +25,11 @@ public:
 	void SetArmorPos();
 
 	/// <summary>
+	/// 防具の素材変更。
+	/// </summary>
+	void MaterialChange();
+
+	/// <summary>
 	/// モデルを描画するかどうか。
 	/// </summary>
 	/// <param name="draw">描画するかどうか</param>
@@ -52,8 +57,11 @@ public:
 
 private:
 
+
 	static const int m_ArmorPutNum = 4;					//アーマーの部位の数。
 	static const int m_armorNum = 8;					//アーマーのモデルの数。
+
+	ArmorMaterial m_armorMaterial[m_ArmorPutNum] = { enArmorMaterial_Num,enArmorMaterial_Num,enArmorMaterial_Num,enArmorMaterial_Num };		//アーマーの種類。
 
 	bool m_isPutArmor[m_ArmorPutNum] = { false,false,false,false };
 	
