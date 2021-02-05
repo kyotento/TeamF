@@ -413,16 +413,16 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		//ƒxƒbƒh
 		CVector3 pos2 = pos;
 		if (block->GetBlockType() == enCube_BedHead) {
-			pos2 += CVector3(block->GetMukiDir().x, block->GetMukiDir().y, block->GetMukiDir().z)*-1.0f;
+			pos2 += CVector3((float)block->GetMukiDir().x, (float)block->GetMukiDir().y, (float)block->GetMukiDir().z)*-1.0f;
 		}
 		else {
-			pos2 += CVector3(block->GetMukiDir().x, block->GetMukiDir().y, block->GetMukiDir().z);
+			pos2 += CVector3((float)block->GetMukiDir().x, (float)block->GetMukiDir().y, (float)block->GetMukiDir().z);
 		}
 		int x2 = (int)std::floorf(pos2.x);
 		int y2 = (int)std::floorf(pos2.y);
 		int z2 = (int)std::floorf(pos2.z);
-		x2 = Chunk::CalcInChunkCoord(x);
-		z2 = Chunk::CalcInChunkCoord(z);
+		x2 = Chunk::CalcInChunkCoord(x2);
+		z2 = Chunk::CalcInChunkCoord(z2);
 
 		if (!chunk->CanPlaceBlock(x, y, z) || !chunk->CanPlaceBlock(x2, y2, z2)) {
 			return false;

@@ -28,10 +28,11 @@ public:
 
 	CFont font;
 	void HUDRender( int HUDNum ) override{
+		//座標表示
 		std::wstringstream str;
 		CVector3 pos = GetPos() / Block::WIDTH;
 		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
-		font.Draw( str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, {0.5f, 0.5f} );
+		font.Draw( str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, {0.5f, 0.5f} );		
 	}
 
 	/// <summary>
@@ -54,8 +55,9 @@ public:
 		enPlayerState_move,				//移動。
 		enPlayerState_run,				//走っているとき。
 		enPlayerState_excavate,			//物を掘る。
-		enPlayerState_KnockBack,			//ノックバック。
+		enPlayerState_KnockBack,		//ノックバック。
 		enPlayerState_death,			//死んだとき。
+		enPlayerState_sleep,			//睡眠中。
 		enPlayerState_num,				//状態の数。
 	};
 
@@ -115,6 +117,14 @@ public:
 	void SetPos( const CVector3& pos ) override{
 		m_position = pos;
 		m_characon.SetPosition( pos );
+	}
+
+	/// <summary>
+	/// リスポーン地点の変更
+	/// </summary>
+	/// <param name="pos">新しいリスポーン地点の座標</param>
+	void SetRespawnPos(const CVector3& pos) {
+		m_respawnPos = pos;
 	}
 
 	/// <summary>
@@ -251,6 +261,14 @@ public:
 		return m_playerState == enPlayerState_death;
 	}
 	/// <summary>
+	/// プレイヤーが寝ているか取得。
+	/// </summary>
+	/// <returns>フラグ</returns>
+	bool GetIsSleep()
+	{
+		return m_playerState == enPlayerState_sleep;
+	}
+	/// <summary>
 	/// 食べてるか。
 	/// </summary>
 	/// <returns>フラグ</returns>
@@ -258,6 +276,20 @@ public:
 	{
 		return m_eatingFlag;
 	}
+
+	/// <summary>
+	/// 睡眠状態に切り替え
+	/// </summary>
+	void SwitchSleep()
+	{
+		if (m_playerState == enPlayerState_sleep) {
+			m_playerState = enPlayerState_idle;
+		}
+		else {
+			m_playerState = enPlayerState_sleep;
+		}
+	}
+
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
