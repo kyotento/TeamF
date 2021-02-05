@@ -66,7 +66,7 @@ namespace GUI::Controller {
 			}
 		}
 
-		if (slotNo != resultSlot) {
+		if (slotNo < resultSlot) {
 			//通常のクリック操作。
 			InventoryController::OnClickSlot(event, slotNo);
 		}

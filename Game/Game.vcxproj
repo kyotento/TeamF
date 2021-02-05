@@ -60,6 +60,7 @@
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="CraftingController2.cpp" />
+    <ClCompile Include="EquipmentController.cpp" />
     <ClCompile Include="MCCharaCon.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mob.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="CowGenerator.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="CraftingController2.h" />
+    <ClInclude Include="EquipmentController.h" />
     <ClInclude Include="MCCharaCon.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Light.h" />
