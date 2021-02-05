@@ -160,7 +160,6 @@ public:
 	{
 		return m_entities;
 	}
-	void Update() override;
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
 	void LoadChunk(int x, int z);
