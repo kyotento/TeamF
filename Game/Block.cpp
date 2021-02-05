@@ -11,6 +11,13 @@ World* Block::m_sWorld = nullptr;
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
 
+	constexpr IntVector3 mukiDir[] = {
+		{-1,0, 0},
+		{ 0,0,-1},
+		{ 1,0, 0},
+		{ 0,0, 1}
+	};
+
 	//AABBを回転する
 	void RotAABB(const CQuaternion& rot, AABB& aabb) {
 		CVector3 A = aabb.min, B = aabb.max;
@@ -32,6 +39,13 @@ Block::~Block(){
 		m_state = enCube_None;
 		CalcAddLight(true);
 	}
+}
+
+const IntVector3& Block::GetMukiDir()const {
+	return mukiDir[m_muki];
+}
+const IntVector3& Block::GetMukiDir(enMuki muki)const {
+	return mukiDir[muki];
 }
 
 const AABB& Block::GetAABB(int index) const{
@@ -236,8 +250,10 @@ void Block::InitModel(const wchar_t* filePath) {
 	m_model.Init(0, filePath);
 	m_model.SetParamPtr(&m_lighting);//ライティング情報の設定
 
-	//向きはランダム
-	m_muki = (enMuki)(CMath::RandomInt() % 4);
+	if (m_muki == enMuki::enNum) {
+		//向きはランダム
+		m_muki = (enMuki)(CMath::RandomInt() % 4);
+	}
 	m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki));
 
 	//レイトレモデル

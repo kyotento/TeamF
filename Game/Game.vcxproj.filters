@@ -194,6 +194,9 @@
     <ClCompile Include="PairBlock.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="Bed.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -405,6 +408,9 @@
       <Filter>Block</Filter>
     </ClInclude>
     <ClInclude Include="PairBlock.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Bed.h">
       <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>

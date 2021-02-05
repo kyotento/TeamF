@@ -37,7 +37,8 @@ public:
 
 	//! @brief ブロックを生成する。
 	//! @param blockType ブロックの種類。
-	static std::unique_ptr<Block> CreateBlock( EnCube blockType );		
+	//! @param muki ブロックの向き。
+	static std::unique_ptr<Block> CreateBlock( EnCube blockType, Block::enMuki muki = Block::enMuki::enNum );
 
 private:
 	//ブロック描画シェーダー

@@ -3,6 +3,7 @@
 #include "../BlockType.h"
 #include "Light.h"
 #include "AABB.h"
+#include "IntVector3.h"
 
 class Player;
 class World;
@@ -26,9 +27,14 @@ public:
 	}
 
 	enum enMuki {
-		enXm, enZm, enXp, enZp//-X,-Z...
+		enXm, enZm, enXp, enZp,//-X,-Z...
+		enNum
 	};
 
+	//! @brief 向きを初期化(ブロック作成時にのみ使用)
+	void InitMuki(enMuki muki) {
+		m_muki = muki;
+	}
 	//! @brief 向きをセット
 	void SetMuki(enMuki muki) {
 		m_muki = muki;
@@ -41,6 +47,8 @@ public:
 	enMuki GetMuki()const {
 		return m_muki;
 	}
+	const IntVector3& GetMukiDir()const;
+	const IntVector3& GetMukiDir(enMuki muki)const;
 
 	//! @brief このブロックのAABBを取得
 	const AABB& GetAABB(int index)const;
@@ -177,7 +185,7 @@ private:
 	EnCube m_state = enCube_None;
 
 	//向き
-	enMuki m_muki = enXm;
+	enMuki m_muki = enMuki::enNum;
 
 	//明るさ
 	CMatrix m_lighting = CMatrix::Zero();

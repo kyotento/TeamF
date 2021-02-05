@@ -84,9 +84,9 @@ bool Player::Start()
 	//TODO: デバッグ専用
 	//プレイヤーにテスト用アイテムを持たせる。
 	int itemArray[] = {
-		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
+		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_BedHead, enCube_DoorDown,
 		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood
+		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood, enCube_CobbleStone
 	};
 	for( int i : itemArray ){
 		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
