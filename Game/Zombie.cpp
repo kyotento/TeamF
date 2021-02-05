@@ -36,7 +36,7 @@ bool Zombie::Start()
 	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
 	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
 
-	SetDropItemId(enCube_Stone);
+	SetDropItemId(enCube_CoalOre);
 	SetChanceDropping(100);
 
 	return true;
