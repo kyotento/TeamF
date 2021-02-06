@@ -210,6 +210,12 @@
     <ClCompile Include="BlockInfo.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="Chest.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestInventory.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -438,6 +444,12 @@
     </ClInclude>
     <ClInclude Include="BlockInfo.h">
       <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Chest.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestInventory.h">
+      <Filter>GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

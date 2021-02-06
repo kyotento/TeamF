@@ -8,6 +8,8 @@
 #include "WorthOfGod.h"
 #include "Door.h"
 
+#include "Chest.h"
+
 #include "BlockRenderingLightParameter.h"
 
 namespace{
@@ -82,6 +84,9 @@ std::unique_ptr<Block> BlockFactory::CreateBlock( EnCube blockType ){
 	case enCube_DoorUp:
 	case enCube_DoorDown:
 		block = std::make_unique<Door>( blockType == enCube_DoorUp ? true : false );
+		break;
+	case enCube_Chest:
+		block = std::make_unique<Chest>();
 		break;
 	default:
 		block = std::make_unique<Block>();
