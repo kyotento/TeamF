@@ -51,6 +51,11 @@ public:
 		return m_item.GetID();
 	}
 
+	//! @brief アイテムの属性を取得。
+	unsigned GetToolID() const override {
+		return m_item.GetToolID();
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_item.GetStackLimit();

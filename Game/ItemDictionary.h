@@ -32,6 +32,9 @@ public:
 	//! @exception std::out_of_range w’è‚³‚ê‚½id•¶š—ñ‚ª‘¶İ‚µ‚È‚¢ê‡B
 	Item& GetItem( const std::string& id ) noexcept(false);
 
+	void SetToolMap();
+
+	EnTool DetermineToolId(std::string itemid);
 private:
 	ItemDictionary() = default;
 	ItemDictionary( const ItemDictionary& is ) = delete;
@@ -39,5 +42,7 @@ private:
 	std::array<Item, enAllItem_Num> m_array{};
 
 	std::unordered_map<std::string, Item*> m_nameMap;
+
+    const char* m_toolMap[enTool_Num];
 };
 

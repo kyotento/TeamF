@@ -48,3 +48,18 @@ enum EnItem{
 	//ブロックを含むすべてのアイテムの数
 	enAllItem_Num,
 };
+
+//アイテムの属性を決める、
+enum EnTool
+{
+	enTool_None = -1,		//何もなし。
+	enTool_Sword,		//剣。
+	enTool_Pickaxe,		//ピッケル。
+	enTool_Shovel,		//シャベル。
+	enTool_Axe,			//斧。
+	enTool_Hoe,			//鍬。
+	enTool_Cube,		//ブロック。
+
+
+	enTool_Num,			//属性の数。
+};

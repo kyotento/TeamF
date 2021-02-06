@@ -23,6 +23,11 @@ public:
 		return enCube_None;
 	}
 
+	//! @brief アイテムの属性を取得。
+	virtual unsigned GetToolID() const {
+		return enCube_None;
+	}
+
 	/// <summary>
 	/// ブロックか、ツールかを取得する。
 	/// </summary>

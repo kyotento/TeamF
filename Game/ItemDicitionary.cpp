@@ -29,6 +29,8 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 	using namespace std::filesystem;
 	namespace nl = nlohmann;
 	
+	SetToolMap();
+
 	//フォルダ内のファイルをすべて処理。
 	for( recursive_directory_iterator itr( folderPath ), end; itr != end; itr++ ){
 
@@ -63,6 +65,9 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 				throw "フォルダにブロックjsonが混じっています。\n分けてください。";
 			}
 
+			//アイテムの属性を決める。
+			EnTool toolId = DetermineToolId(strItemId);
+
 			//名前の取得
 			std::wstring itemName;
 			{
@@ -92,6 +97,7 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 
 			//アイテムの登録。
 			m_array[itemId] = Item( EnItem( itemId ), itemName.c_str(), stackLimit, spritePath, modelPath );
+			m_array[itemId].m_toolId = toolId;
 
 			//enum名->アイテム、のMapへ登録。
 			m_nameMap.emplace( strItemId, &m_array[itemId] );
@@ -144,4 +150,29 @@ static std::string AddResorcePath( std::string path ){
 	}
 
 	return path;
+}
+
+void ItemDictionary::SetToolMap()
+{
+	m_toolMap[enTool_Sword] = "Sword";
+	m_toolMap[enTool_Pickaxe] = "Pickaxe";
+	m_toolMap[enTool_Shovel] = "Shovel";
+	m_toolMap[enTool_Axe] = "Axe";
+	m_toolMap[enTool_Hoe] = "Hoe";
+	m_toolMap[enTool_Cube] = "Cube";
+}
+
+EnTool ItemDictionary::DetermineToolId(std::string itemid)
+{
+	for (int i = 0; i < enTool_Num; i++)
+	{
+		int strPos = itemid.find(m_toolMap[i]);
+		//文字列検索がヒットしたら。
+		if (strPos != std::string::npos)
+		{
+			return EnTool(i);
+		}
+	}
+	//何もヒットしなかったら。
+	return enTool_None;
 }

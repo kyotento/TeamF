@@ -29,6 +29,11 @@ public:
 		return m_id;
 	}
 
+	//! @brief このアイテムの属性を取得。
+	unsigned GetToolID() const {
+		return m_toolId;
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_limitNumber;
@@ -77,4 +82,7 @@ private:
 
 	//3Dモデルのパス。
 	std::filesystem::path m_modelPath;
+
+	//アイテムの属性。
+	unsigned m_toolId = enTool_None;
 };
