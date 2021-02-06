@@ -3,5 +3,6 @@
 	"name": "木のオノ",
 	"sprite": "spriteData/tools/Wood_Axe.dds",
 	"model": "modelData/tools/Wood_Axe.tkm",
-	"stack_limit": 1
+	"stack_limit": 1,
+	"tool_level": 1
 }

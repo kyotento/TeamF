@@ -2,5 +2,6 @@
 	"id": "enCube_Chest",
 	"name": "チェスト",
 	"model": "modelData/chest.tkm",
-	"hp": 15
+	"hp": 15,
+	"tool": "enTool_Axe"
 }

@@ -34,6 +34,11 @@ public:
 		return m_toolId;
 	}
 
+	//! @brief このアイテムのツールレベル(木:1～ダイヤ:5)を取得
+	int GetToolLevel() const{
+		return m_toolLevel;
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_limitNumber;
@@ -85,4 +90,7 @@ private:
 
 	//アイテムの属性。
 	unsigned m_toolId = enTool_None;
+
+	//ツールレベル。木:1からダイヤ:5まで
+	int m_toolLevel = 1;
 };

@@ -2,5 +2,6 @@
 	"id": "enCube_Grass",
 	"name": "草",
 	"model": "modelData/GrassBlock.tkm",
-	"hp": 4
+	"hp": 4,
+	"tool": "enTool_Shovel"
 }

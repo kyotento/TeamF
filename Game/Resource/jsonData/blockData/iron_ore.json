@@ -2,5 +2,6 @@
 	"id": "enCube_IronOre",
 	"name": "鉄鉱石",
 	"model": "modelData/ironOre.tkm",
-	"hp": 28
+	"hp": 28,
+	"tool": "enTool_Pickaxe"
 }

@@ -29,13 +29,23 @@ static std::string AddResorcePath( std::string path ){
 	return path;
 }
 
+enum Job{
+	LOAD,
+	TOOL,
+};
+
 void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 	//enumの名前->値のマップを作成。
-	std::unordered_map<std::string_view, EnCube> enumMap;
+	std::unordered_map<std::string_view, EnCube> blockEnumMap;
+	std::unordered_map<std::string_view, EnTool> toolEnumMap;
 
 	for( int i = enCube_None + 1; i < enCube_Num; i++ ){
 		EnCube e = EnCube( i );
-		enumMap.emplace( NAMEOF_ENUM( e ), e );
+		blockEnumMap.emplace( NAMEOF_ENUM( e ), e );
+	}
+	for( int i = enTool_None + 1; i < enTool_Num; i++ ){
+		EnTool e = EnTool( i );
+		toolEnumMap.emplace( NAMEOF_ENUM( e ), e );
 	}
 
 	using namespace std::filesystem;
@@ -56,6 +66,8 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 			continue;
 		}
 
+		Job job = LOAD;
+
 		try{
 			//ファイルを開く
 			std::ifstream ifs( file );
@@ -69,7 +81,7 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 
 			//ブロックIDを確認。
 			const std::string blockIdStr = jObj["id"].get<std::string>();
-			const EnCube blockId = enumMap.at( blockIdStr );
+			const EnCube blockId = blockEnumMap.at( blockIdStr );
 
 			//ブロック情報を新規作成。
 			BlockInfo& bInfo = m_infoMap[blockId];
@@ -86,8 +98,9 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 			bInfo.hp = jObj["hp"].get<int>();
 
 			//有用ツールの取得(デフォルトでは空文字)
+			job = TOOL;
 			if( jObj.find( "tool" ) != jObj.end() ){
-				bInfo.usefulTool = jObj["tool"].get<std::string>();
+				bInfo.usefulTool = toolEnumMap.at( jObj["tool"].get<std::string>() );
 			}
 
 			//AABBの取得(デフォルトでは立方体1個)
@@ -131,8 +144,17 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 		} catch( nl::detail::exception& ex ){
 			messageAbort( file, ex.what() );
 
-		} catch( std::out_of_range ){
-			messageAbort( file, "指定されたIDがBlockType.hに存在しません。" );
+		} catch( std::out_of_range& ex){
+			switch( job ){
+			case LOAD:
+				messageAbort( file, "指定されたIDがBlockType.hに存在しません。" );
+				break;
+			case TOOL:
+				messageAbort( file, "指定されたツールがItemType.hのEnToolに存在しません。" );
+				break;
+			default:
+				messageAbort( file, std::string("不明なエラー") + ex.what());
+			}
 
 		} catch( const char* exMsg ){
 			messageAbort( file, exMsg );

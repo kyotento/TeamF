@@ -3,5 +3,6 @@
 	"name": "ダイヤのピッケル",
 	"sprite": "spriteData/tools/Diamond_Pickaxe.dds",
 	"model": "modelData/tools/Diamond_Pickaxe.tkm",
-	"stack_limit": 1
+	"stack_limit": 1,
+	"tool_level": 5
 }

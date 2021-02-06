@@ -2,5 +2,6 @@
 	"id": "enItem_Iron_Hoe",
 	"name": "鉄のクワ",
 	"sprite": "spriteData/tools/Iron_Hoe.dds",
-	"stack_limit": 1
+	"stack_limit": 1,
+	"tool_level": 3
 }

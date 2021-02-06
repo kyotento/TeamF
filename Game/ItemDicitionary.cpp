@@ -65,9 +65,6 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 				throw "フォルダにブロックjsonが混じっています。\n分けてください。";
 			}
 
-			//アイテムの属性を決める。
-			EnTool toolId = DetermineToolId(strItemId);
-
 			//名前の取得
 			std::wstring itemName;
 			{
@@ -97,7 +94,15 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 
 			//アイテムの登録。
 			m_array[itemId] = Item( EnItem( itemId ), itemName.c_str(), stackLimit, spritePath, modelPath );
+
+			//アイテムの属性を決める。
+			EnTool toolId = DetermineToolId( strItemId );
 			m_array[itemId].m_toolId = toolId;
+
+			//ツールのレベルを取得
+			if( jObj.find( "tool_level" ) != jObj.end() ){
+				m_array[itemId].m_toolLevel = jObj["tool_level"].get<int>();
+			}
 
 			//enum名->アイテム、のMapへ登録。
 			m_nameMap.emplace( strItemId, &m_array[itemId] );
