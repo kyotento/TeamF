@@ -58,8 +58,6 @@ enum EnTool
 	enTool_Shovel,		//シャベル。
 	enTool_Axe,			//斧。
 	enTool_Hoe,			//鍬。
-	enTool_Cube,		//ブロック。
-
 
 	enTool_Num,			//属性の数。
 };

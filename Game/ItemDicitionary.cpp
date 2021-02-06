@@ -159,7 +159,6 @@ void ItemDictionary::SetToolMap()
 	m_toolMap[enTool_Shovel] = "Shovel";
 	m_toolMap[enTool_Axe] = "Axe";
 	m_toolMap[enTool_Hoe] = "Hoe";
-	m_toolMap[enTool_Cube] = "Cube";
 }
 
 EnTool ItemDictionary::DetermineToolId(std::string itemid)
