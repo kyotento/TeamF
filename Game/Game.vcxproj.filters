@@ -204,6 +204,9 @@
     <ClCompile Include="PlayerArmor.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
+    <ClCompile Include="EquipmentController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
     <ClCompile Include="BlockInfo.cpp">
       <Filter>Block</Filter>
     </ClCompile>
@@ -429,6 +432,9 @@
     </ClInclude>
     <ClInclude Include="PairBlock.h">
       <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipmentController.h">
+      <Filter>GUI\Controller</Filter>
     </ClInclude>
     <ClInclude Include="BlockInfo.h">
       <Filter>Block</Filter>

@@ -31,6 +31,8 @@ bool Config::Start()
 	m_position[3] = { 0.5f,0.6125f };
 	m_spriteRender[3].SetPos(m_position[3]);
 
+	m_clickName = L"Resource/soundData/game/click.wav";
+
 	for (int i = 0; i < m_buttonNum; i++) {
 		m_spriteRender[i].SetScale(m_scale);
 	}
@@ -86,7 +88,11 @@ void Config::ChangeColor()
 //画像をクリックしたときの処理。
 void Config::ClickProcess()
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(m_clickName);
+	se->SetVolume(0.1f);
 	if (GetKeyDown(VK_LBUTTON)) {		//左クリックした時。
+		se->Play();
 		if (Click() == 0) {			//-.
 			m_chunk -= 1;
 		}

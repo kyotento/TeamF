@@ -440,5 +440,9 @@ private:
 	CVector3 m_knockBackDirection = CVector3::Zero();		//ノックバックの方向。
 	float m_knockBack = 1.f;	//ノックバック感度。
 	float m_knoceBackY = 1.f;	//ノックバックY座標。
+
+	const wchar_t* m_damageName;		//ダメージ。
+	const wchar_t* m_attackName;		//攻撃
+	const wchar_t* m_putName;			//物を置く。
 };
 

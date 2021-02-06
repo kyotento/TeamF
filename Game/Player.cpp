@@ -37,8 +37,8 @@ namespace {
 	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
-
-Player::Player() : m_inventory(36), Entity(enEntity_None, true)
+					//装備スロットのため拡張。
+Player::Player() : m_inventory(40), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -68,6 +68,9 @@ bool Player::Start()
 	//レイトレモデル初期化
 	m_raytraceModel.Init(*m_skinModelRender);
 
+	m_damageName = L"Resource/soundData/player/damage.wav";
+	m_attackName = L"Resource/soundData/player/attack.wav";
+	m_putName = L"Resource/soundData/player/put.wav";
 	//キャラコンの初期化。
 	const float characonRadius = 50.f;					//キャラコンの半径。
 	const float characonHeight = 160.f;					//キャラコンの高さ。
@@ -513,7 +516,12 @@ void Player::Headbang()
 //攻撃処理。
 void Player::Attack()
 {
+	
 	if (GetKeyDown(VK_LBUTTON)) {
+		SuicideObj::CSE* se;
+		se = NewGO<SuicideObj::CSE>(m_attackName);
+		se->SetVolume(0.25f);
+		se->Play();
 		//攻撃判定の座標。
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -650,8 +658,10 @@ void Player::StateManagement()
 //オブジェクトの設置と破壊。
 void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, CVector3 frontRotAdd)
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(m_putName);
+	se->SetVolume(0.5f);
 	frontRotAdd.Normalize();
-
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;		//設置する場所。
@@ -669,6 +679,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
 			if (item != nullptr) {
 				if (item->GetIsBlock()) {		//ブロック。
+					se->Play();
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
 					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
 					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
@@ -748,7 +759,6 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 		//防御力の計算。
 		float damage = AttackPow * (1 - m_defensePower * 0.04);
 		m_hp -= damage;
-		
 		//HPを0未満にしない。
 		if (m_hp <= 0) {			
 			m_hp = 0;
@@ -763,10 +773,12 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 			SuicideObj::CSE* voice;
 			//２種類からランダムで音が鳴る。
 			if (CMath::RandomZeroToOne() > 0.5f) {
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
+				voice->SetVolume(0.25f);
 			}
 			else {
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
+				voice->SetVolume(0.25f);
 			}
 			voice->Play();
 			//攻撃されたのなら、ノックバックする。
@@ -896,7 +908,7 @@ void Player::Stamina()
 		m_stamina = 21;
 	}
 	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
-	const float maxTimer = 5.0f;
+	const float maxTimer = 3.0f;
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。

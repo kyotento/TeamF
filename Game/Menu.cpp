@@ -19,6 +19,8 @@ bool Menu::Start()
 	m_spriteRender[1].Init(L"Resource/spriteData/GameEndButton.dds");
 	m_spriteRender[2].Init(L"Resource/spriteData/ConfigurationButton.dds");
 
+	m_clickName = L"Resource/soundData/game/click.wav";
+
 	for (int i = 0; i < m_buttonNum; i++) {
 		m_position[i] = { 0.5f,0.4f };
 		float posY = 0.125f * i;		//Y座標の加算値。
@@ -71,14 +73,21 @@ void Menu::ChangeColor()
 // クリックしたときの処理。
 void Menu::ClickProcess()
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(m_clickName);
+	se->SetVolume(0.1f);
+
 	if (GetKeyDown(VK_LBUTTON)) {		//左クリックした時。
 		if (Click() == enMenu_ReturnToTitle) {
+			se->Play();
 			m_game->TransToTitle();
 		}
 		else if (Click() == enMenu_GameEnd) {
+			se->Play();
 			GetEngine().BreakGameLoop();
 		}
 		else if (Click() == enMenu_Config) {
+			se->Play();
 			Config* config = NewGO<Config>();
 			config->SetBackClass(config->enMenu);
 			m_game->DeleteEscMenu();
