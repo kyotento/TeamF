@@ -1,4 +1,5 @@
 #pragma once
+#include "ItemType.h"
 #include "BlockType.h"
 #include "AABB.h"
 
@@ -12,7 +13,7 @@ public:
 	//ブロックの耐久値
 	int hp = 1;
 	//破壊に有効なツール
-	std::string usefulTool;
+	EnTool usefulTool = enTool_None;
 	//モデルパス
 	std::filesystem::path modelPath;
 	//AABB

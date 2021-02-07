@@ -3,5 +3,6 @@
 	"name": "金のオノ",
 	"sprite": "spriteData/tools/Gold_Axe.dds",
 	"model": "modelData/tools/Gold_Axe.tkm",
-	"stack_limit": 1
+	"stack_limit": 1,
+	"tool_level": 4
 }

@@ -2,5 +2,6 @@
 	"id": "enCube_OakLeaf",
 	"name": "オークの葉",
 	"model": "modelData/leafBlock.tkm",
-	"hp": 2
+	"hp": 2,
+	"tool": "enTool_Sword"
 }

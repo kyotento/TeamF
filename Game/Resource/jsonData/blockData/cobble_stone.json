@@ -2,5 +2,6 @@
 	"id": "enCube_CobbleStone",
 	"name": "丸石",
 	"model": "modelData/cobbleStone.tkm",
-	"hp": 16
+	"hp": 16,
+	"tool": "enTool_Pickaxe"
 }

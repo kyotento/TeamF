@@ -2,5 +2,6 @@
 	"id": "enItem_Diamond_Shovel",
 	"name": "ダイヤのシャベル",
 	"sprite": "spriteData/tools/Diamond_Shovel.dds",
-	"stack_limit": 1
+	"stack_limit": 1,
+	"tool_level": 5
 }

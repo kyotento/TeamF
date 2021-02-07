@@ -3,5 +3,6 @@
 	"name": "ダイヤの剣",
 	"sprite": "spriteData/tools/Diamond_Sword.dds",
 	"model": "modelData/tools/Diamond_Sword.tkm",
-	"stack_limit": 1
+	"stack_limit": 1,
+	"tool_level": 5
 }

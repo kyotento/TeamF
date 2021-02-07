@@ -89,6 +89,11 @@ public:
 		return m_bInfo->isOpacity;
 	}
 
+	//! @brief 有用なツールのEnumを取得。
+	EnTool GetUsefulTool() const{
+		return m_bInfo->usefulTool;
+	}
+
 	//! @brief 初期化。
 	void Init( const BlockInfo* bInfo );
 
