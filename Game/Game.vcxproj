@@ -73,6 +73,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="PlayerArmor.cpp" />
     <ClCompile Include="PairBlock.cpp" />
+    <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="PlayerArmor.h" />
     <ClInclude Include="PairBlock.h" />
+    <ClInclude Include="PlayerInventoryFiler.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="Utf8ToSjis.h" />

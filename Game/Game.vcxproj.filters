@@ -216,6 +216,7 @@
     <ClCompile Include="ChestInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerInventoryFiler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -451,6 +452,7 @@
     <ClInclude Include="ChestInventory.h">
       <Filter>GUI\View</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInventoryFiler.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">

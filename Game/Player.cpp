@@ -16,7 +16,8 @@
 #include "Menu.h"
 #include "DropItem.h"
 #include"Animals.h"
-#include "PlayerArmor.h"		
+#include "PlayerArmor.h"
+#include "PlayerInventoryFiler.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -55,6 +56,9 @@ Player::~Player()
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
 	DeleteGO(m_playerArmor);
+
+	PlayerInventoryFiler pIFiler;
+	pIFiler.SavePlayerInventory(m_inventory);
 }
 
 #include "ItemStack.h"
