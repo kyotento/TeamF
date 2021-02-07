@@ -89,3 +89,6 @@ obj/
 
 #World info
 *.winfo
+
+#file of playerinventory
+*.cag

@@ -18,6 +18,7 @@
 #include"Animals.h"
 #include "PlayerArmor.h"
 #include "PlayerInventoryFiler.h"
+#include "NullableItemStack.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -57,6 +58,7 @@ Player::~Player()
 	DeleteGO(m_playerDeath);
 	DeleteGO(m_playerArmor);
 
+	//インベントリを保存する。
 	PlayerInventoryFiler pIFiler;
 	pIFiler.SavePlayerInventory(m_inventory);
 }
@@ -91,16 +93,34 @@ bool Player::Start()
 	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
 
 	//TODO: デバッグ専用
-	//プレイヤーにテスト用アイテムを持たせる。
-	int itemArray[] = {
-		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
-		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
-		enCube_Chest
-	};
-	for( int i : itemArray ){
-		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
-		m_inventory.AddItem( item );
+	PlayerInventoryFiler pIFiler;
+	bool isLoad = pIFiler.LoadPlayerInventory();
+	//プレイヤーのインベントリ情報がロードできなかったら。
+	if (!isLoad) {
+		//プレイヤーにテスト用アイテムを持たせる。
+		int itemArray[] = {
+			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
+			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
+			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
+			enCube_Chest
+		};
+		for (int i : itemArray) {
+			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
+			m_inventory.AddItem(item);
+		}
+	}
+	else {
+		//ロード出来たら、インベントリにアイテムを設定していく。
+		for (int i = 0; i < 40; i++)
+		{
+			auto item = pIFiler.GetItem(i);
+			int itemId = item.GetID();
+			if (itemId != enCube_None)
+			{
+				auto itemStack = std::make_unique<ItemStack>(Item::GetItem(itemId), item.GetNumber());
+				m_inventory.SetItem(i,std::move(itemStack));
+			}
+		}
 	}
 
 	//プレイヤーのパラメーター生成。
