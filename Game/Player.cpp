@@ -111,14 +111,17 @@ bool Player::Start()
 	}
 	else {
 		//ロード出来たら、インベントリにアイテムを設定していく。
+		auto& iV = pIFiler.GetInventory();
 		for (int i = 0; i < 40; i++)
 		{
-			auto item = pIFiler.GetItem(i);
-			int itemId = item.GetID();
-			if (itemId != enCube_None)
+			auto& null = iV.GetNullableItem(i);
+			if (null.GetID() != enCube_None)
 			{
-				auto itemStack = std::make_unique<ItemStack>(Item::GetItem(itemId), item.GetNumber());
-				m_inventory.SetItem(i,std::move(itemStack));
+				auto& item = iV.GetItem(i);
+				auto itemId = item.get()->GetID();
+
+				auto itemStack = std::make_unique<ItemStack>(Item::GetItem(itemId), item.get()->GetNumber());
+				m_inventory.SetItem(i, std::move(itemStack));
 			}
 		}
 	}

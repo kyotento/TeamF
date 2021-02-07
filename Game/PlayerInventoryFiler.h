@@ -14,9 +14,10 @@ public:
 	//プレイヤーインベントリをセーブする。
 	void SavePlayerInventory(Inventory& inventory);
 
-	NullableItemStack& GetItem(const int slot)
+	//ロードしたインベントリを取得。
+	Inventory& GetInventory()
 	{
-		return m_inventory.GetNullableItem(slot);
+		return m_inventory;
 	}
 private:
 	Inventory m_inventory;

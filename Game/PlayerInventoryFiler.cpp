@@ -1,26 +1,8 @@
 #include "stdafx.h"
 #include "PlayerInventoryFiler.h"
 #include "NullableItemStack.h"
-#include "ItemStack.h"
-
-#include "Player.h"
-#include "Game.h"
-#include "GameCamera.h"
-#define _USE_MATH_DEFINES //M_PI 円周率呼び出し
-#include <math.h> 
+#include "ItemStack.h" 
 #include "Item.h"
-#include "GameMode.h"
-#include "World.h"
-#include "PlayerInventory.h"
-#include "BlockFactory.h"
-#include "DamegeScreenEffect.h"
-#include "Enemy.h"
-#include "PlayerParameter.h"
-#include "PlayerDeath.h"
-#include "Menu.h"
-#include "DropItem.h"
-#include"Animals.h"
-#include "PlayerArmor.h"
 
 namespace
 {
@@ -50,10 +32,9 @@ namespace
 		 {
 			 auto& it = Item::GetItem(itemId);
 			 //アイテムを生成し、インベントリに設定する。
-			 //auto item = std::make_unique<ItemStack>(Item::GetItem(itemId), number);
-			 auto item = std::make_unique<ItemStack>(Item::GetItem(1), number);
+			 auto item = std::make_unique<ItemStack>(Item::GetItem(itemId), number);
+			 //auto item = std::make_unique<ItemStack>(Item::GetItem(i), number);
 			 m_inventory.SetItem(i, std::move(item));
-			 //m_inventory.AddItem(item);
 		 }
 	 }
 	 fclose(fp);
