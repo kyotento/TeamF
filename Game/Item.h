@@ -5,7 +5,7 @@
 
 class ItemImage;
 
-//! @brief アイテムの種類を表すクラス。 #GetItem(unsigned) で取得する。
+//! @brief アイテムの種類を表すクラス。 #GetItem(int) で取得する。
 //! @details あくまで種類を表すもので、実際のアイテムは ItemStack で扱う。
 //! @author Takayama
 class Item{
@@ -17,7 +17,7 @@ public:
 
 	//! @brief アイテムidからアイテムを取得。
 	//! @details ブロックidもアイテムidとして扱うことができる。
-	static Item& GetItem( unsigned id );
+	static Item& GetItem( int id );
 
 	//! @briefアイテムの文字列idからアイテムを取得。
 	//! @param strId EnItem、EnCubeをそのまま文字列にしたもの。
@@ -25,12 +25,12 @@ public:
 	static Item& GetItem( const std::string& strId ) noexcept(false);
 
 	//! @brief このアイテムのidを取得。
-	unsigned GetID() const{
+	int GetID() const{
 		return m_id;
 	}
 
 	//! @brief このアイテムの属性を取得。
-	unsigned GetToolID() const {
+	int GetToolID() const {
 		return m_toolId;
 	}
 
@@ -72,7 +72,7 @@ private:
 	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath, const std::filesystem::path& modelPath );
 
 	//! アイテムID
-	unsigned m_id = enCube_None;
+	int m_id = enCube_None;
 
 	//! スタック上限
 	int m_limitNumber = 64;
@@ -89,7 +89,7 @@ private:
 	std::filesystem::path m_modelPath;
 
 	//アイテムの属性。
-	unsigned m_toolId = enTool_None;
+	int m_toolId = enTool_None;
 
 	//ツールレベル。木:1からダイヤ:5まで
 	int m_toolLevel = 1;

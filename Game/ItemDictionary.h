@@ -23,7 +23,7 @@ public:
 
 	//! @brief アイテムをid番号から取得。
 	//! @param id EnCube か EnItem
-	Item& GetItem( unsigned int id ){
+	Item& GetItem( int id ){
 		return m_array[id];
 	}
 

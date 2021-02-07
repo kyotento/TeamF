@@ -3,7 +3,7 @@
 #include "ItemImage.h"
 #include "ItemDictionary.h"
 
-Item& Item::GetItem( unsigned id ){
+Item& Item::GetItem( int id ){
 	return ItemDictionary::Instance().GetItem( id );
 }
 
