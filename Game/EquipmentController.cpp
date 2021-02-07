@@ -8,6 +8,7 @@ namespace {
 	const unsigned craftSlot = 4;
 	const unsigned playerSlot = 35;
 	const unsigned equipSlot = 4;
+	int equipSlotList[4] = { enTool_Helmet,enTool_Plate,enTool_Leggings,enTool_Boots };
 }
 
 namespace GUI::Controller {
@@ -61,9 +62,14 @@ namespace GUI::Controller {
 					//スロットとマウスカーソルのアイテムが違っていたら。
 					if (m_grabed->GetID() != result->GetID())
 					{
+						if (!DetermineItemPlaced(slotNo, m_grabed->GetToolID()))
+						{
+							return;
+						}
 						//マウスカーソルのアイテムが一個だけだったら。
 						if (m_grabed->GetNumber() == 1)
 						{
+
 							//マウスカーソルとスロットのアイテムを入れ替える。
 							m_grabed.swap(result);
 							auto& pSlot = m_playerInventory.GetItem(slotNo + playerSlot- craftSlot);
@@ -107,8 +113,14 @@ namespace GUI::Controller {
 			{
 				//カーソルが何かアイテムを持っていたら。
 				if (m_grabed != nullptr) {
+					//カーソルが該当のアイテムじゃなかったら何もしない。
+					if (!DetermineItemPlaced(slotNo, m_grabed->GetToolID()))
+					{
+						return;
+					}
 					//インベントリーに1個だけアイテムを追加する。
 					auto& slot = m_inventory.GetItem(slotNo);
+			
 					slot = std::make_unique<ItemStack>(m_grabed->GetItem(), 1);
 					auto& pSlot = m_playerInventory.GetItem(slotNo + playerSlot- craftSlot);
 					//プレイヤースロットのアイテムも変える。
@@ -132,4 +144,17 @@ namespace GUI::Controller {
 			}
 		}
 	}
+
+	bool EquipmentController::DetermineItemPlaced(int slots,const int itemId)
+	{
+		slots = slots - craftSlot;
+		if (itemId == equipSlotList[slots-1])
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
+

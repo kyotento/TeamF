@@ -22,6 +22,8 @@ namespace GUI {
 			//! @brief インベントリースロットをクリックしたときに呼ばれる関数。
 			void OnClickSlot(Event::ClickEvent& event, unsigned slotNo);
 
+
+			bool DetermineItemPlaced(int slots,const int itemId);
 		private:
 			Inventory& m_playerInventory;
 		};

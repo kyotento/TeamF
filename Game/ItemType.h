@@ -58,6 +58,10 @@ enum EnTool
 	enTool_Shovel,		//シャベル。
 	enTool_Axe,			//斧。
 	enTool_Hoe,			//鍬。
+	enTool_Helmet,		//ヘルメット。
+	enTool_Plate,		//プレート。
+	enTool_Leggings,	//レギンス(ズボン)。
+	enTool_Boots,		//ブーツ。
 
 	enTool_Num,			//属性の数。
 };
