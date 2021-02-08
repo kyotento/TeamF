@@ -16,7 +16,9 @@
 #include "Menu.h"
 #include "DropItem.h"
 #include"Animals.h"
-#include "PlayerArmor.h"		
+#include "PlayerArmor.h"
+#include "PlayerInventoryFiler.h"
+#include "NullableItemStack.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -37,8 +39,8 @@ namespace {
 	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
-
-Player::Player() : m_inventory(36), Entity(enEntity_None, true)
+					//装備スロットのため拡張。
+Player::Player() : m_inventory(40), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -55,6 +57,10 @@ Player::~Player()
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
 	DeleteGO(m_playerArmor);
+
+	//インベントリを保存する。
+	PlayerInventoryFiler pIFiler;
+	pIFiler.SavePlayerInventory(m_inventory);
 }
 
 #include "ItemStack.h"
@@ -87,15 +93,37 @@ bool Player::Start()
 	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
 
 	//TODO: デバッグ専用
-	//プレイヤーにテスト用アイテムを持たせる。
-	int itemArray[] = {
-		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
-		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood
-	};
-	for( int i : itemArray ){
-		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
-		m_inventory.AddItem( item );
+	PlayerInventoryFiler pIFiler;
+	bool isLoad = pIFiler.LoadPlayerInventory();
+	//プレイヤーのインベントリ情報がロードできなかったら。
+	if (!isLoad) {
+		//プレイヤーにテスト用アイテムを持たせる。
+		int itemArray[] = {
+			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
+			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
+			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
+			enCube_Chest
+		};
+		for (int i : itemArray) {
+			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
+			m_inventory.AddItem(item);
+		}
+	}
+	else {
+		//ロード出来たら、インベントリにアイテムを設定していく。
+		auto& iV = pIFiler.GetInventory();
+		for (int i = 0; i < 40; i++)
+		{
+			auto& null = iV.GetNullableItem(i);
+			if (null.GetID() != enCube_None)
+			{
+				auto& item = iV.GetItem(i);
+				auto itemId = item.get()->GetID();
+
+				auto itemStack = std::make_unique<ItemStack>(Item::GetItem(itemId), item.get()->GetNumber());
+				m_inventory.SetItem(i, std::move(itemStack));
+			}
+		}
 	}
 
 	//プレイヤーのパラメーター生成。
@@ -516,10 +544,11 @@ void Player::Headbang()
 //攻撃処理。
 void Player::Attack()
 {
-	SuicideObj::CSE* se;
-	se = NewGO<SuicideObj::CSE>(m_attackName);
-	se->SetVolume(0.25f);
+	
 	if (GetKeyDown(VK_LBUTTON)) {
+		SuicideObj::CSE* se;
+		se = NewGO<SuicideObj::CSE>(m_attackName);
+		se->SetVolume(0.25f);
 		se->Play();
 		//攻撃判定の座標。
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
@@ -541,13 +570,11 @@ void Player::Attack()
 				Enemy* enemy = param.GetClass<Enemy>();
 				enemy->TakenDamage(m_attackPower);
 				m_attackFlag = true;
-				se->Play();
 			}
 			if (param.EqualName(L"CAnimals")) {			//名前検索。
 				Animals* animals = param.GetClass<Animals>();
 				animals->TakenDamage(m_attackPower);
 				m_attackFlag = true;
-				se->Play();
 			}
 		});
 	}

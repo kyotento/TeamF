@@ -38,4 +38,5 @@ void WorldInfoFile::Write(){
 void WorldInfoFile::SetRandomSeed(){
 	std::random_device ra;
 	m_info.randomSeed = ra();
+	m_random.seed( m_info.randomSeed );
 }

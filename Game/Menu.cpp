@@ -2,6 +2,8 @@
 #include "Menu.h"
 #include "Game.h"
 #include "Config.h"
+#include "PlayerInventoryFiler.h"
+#include "Player.h"
 
 Menu::Menu()
 {
@@ -84,6 +86,13 @@ void Menu::ClickProcess()
 		}
 		else if (Click() == enMenu_GameEnd) {
 			se->Play();
+			Player* player = FindGO<Player>(L"player");
+			if (player != nullptr)
+			{
+				//インベントリを保存する。
+				PlayerInventoryFiler pIFiler;
+				pIFiler.SavePlayerInventory(player->GetInventory());
+			}
 			GetEngine().BreakGameLoop();
 		}
 		else if (Click() == enMenu_Config) {

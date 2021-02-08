@@ -14,10 +14,11 @@ namespace GUI{
 
 		~PlayerInventory();
 	private:
-		//クラフト用の2×2マスと成果物の1マス。
+		//クラフト用の2×2マスと成果物の1マスと装備スロットの4マス。
 		Inventory m_craftingSlots;
 
 		std::unique_ptr<Controller::InventoryController> m_controller;
+		std::unique_ptr<Controller::InventoryController> m_equipmentController;
 	};
 
 }

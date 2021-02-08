@@ -1,0 +1,7 @@
+{
+	"id": "enCube_Soil",
+	"name": "土",
+	"model": "modelData/soilBlock.tkm",
+	"hp": 4,
+	"tool": "enTool_Shovel"
+}

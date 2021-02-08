@@ -1,10 +1,8 @@
 #include "stdafx.h"
-#include "Inventory.h"
-#include "DropItem.h"
 #include "Game.h"
 #include "GameCamera.h"
 #include "Player.h"
-#include "Zombie.h"
+#include "ItemDictionary.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
 #include "RecipeFiler.h"
@@ -32,16 +30,22 @@ bool Game::Start()
 	m_gameMode.reset(NewGO<GameMode>());
 	m_gameMode->SetName(L"gamemode");
 
-	m_world = std::make_unique<World>();
+	//ブロックファクトリ初期化。
+	BlockFactory::Init( L"Resource/jsonData/blockData/" );
+
+	//アイテムを読み込む。
+	ItemDictionary::Instance().LoadItems( L"Resource/jsonData/itemData/" );
+	ItemDictionary::Instance().LoadBlocks( BlockFactory::GetBlockMap() );
 
 	m_bgmName = L"Resource/soundData/game/gamebgm.wav";
 	m_clickName = L"Resource/soundData/game/click.wav";
 
 	//レシピ読み込み。
-	// TODO: Worldの初期化より前に読むとエラーになる。いつかこのわかりにくい依存はどうにかしたい。
 	RecipeFiler recipeFiler;
-	recipeFiler.SetFolder(L"Resource/recipeData/");
+	recipeFiler.SetFolder(L"Resource/jsonData/recipeData/");
 	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
+	m_world = std::make_unique<World>();
 
 	//プレイヤーの生成。
 	Player* player = m_world->CreateEntity<Player>();

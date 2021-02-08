@@ -1,9 +1,5 @@
 #include "stdafx.h"
 #include "resource.h"
-
-#include "RandomMapMaker.h"
-#include "Game.h"
-#include "World.h"
 #include "Title.h"
 #include "Config.h"
 
@@ -44,7 +40,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	GetEngine().InitGame(hInstance, hPrevInstance, lpCmdLine, nCmdShow, "Minecraft2", initparam, LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1)));
 	
 	//”»’è•\Ž¦
-//	SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
+	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
 	if (isStart == false)
 	{

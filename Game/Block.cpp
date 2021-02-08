@@ -28,34 +28,48 @@ Block::~Block(){
 	if (m_sDestroyMode) {
 		return;
 	}
-	if (m_state != enCube_None) {
-		m_state = enCube_None;
+	if (m_bInfo->id != enCube_None) {
+		m_bInfo = &BlockInfo::NONE_BLOCK;
 		CalcAddLight(true);
 	}
 }
 
-const AABB& Block::GetAABB(int index) const{
-	return m_aabb[index];
-}
-int Block::GetAABBNum() const {
-	return BlockFactory::GetAABBNum(m_state);
-}
+void Block::Init( const BlockInfo * bInfo ){
+	m_bInfo = bInfo;
+	m_hp = bInfo->hp;
 
-bool Block::GetIsOpacity()const {
-	return BlockFactory::GetIsOpacity(m_state);
+	//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
+	m_model.Init( 0, bInfo->modelPath.c_str() );
+	m_model.SetParamPtr( &m_lighting );//ライティング情報の設定
+
+	//向きはランダム
+	m_muki = (enMuki)( CMath::RandomInt() % 4 );
+	m_model.SetRot( CQuaternion( CVector3::AxisY(), CMath::PI_HALF * m_muki ) );
+
+	CalcAABB();
+
+	//レイトレモデル
+	m_raytraceModel.Init( m_model );
+
+	//デフォの明るさ
+	for( int _1 = 0; _1 < 4; _1++ ){
+		for( int _2 = 0; _2 < 4; _2++ ){
+			SetLightingData( _1, _2, 0 );
+		}
+	}
 }
 
 void Block::CalcAABB() {
-	auto aabbNum = BlockFactory::GetAABBNum(m_state);
-	m_aabb = std::make_unique<AABB[]>(aabbNum);
-	for (int i = 0; i < aabbNum; i++) {
+	m_aabb.clear();
+
+	for(const AABB& infoAabb : m_bInfo->aabbArray ){
 		//ブロックAABB
-		m_aabb[i] = BlockFactory::GetAABB(m_state, i);
+		AABB& aabb = m_aabb.emplace_back( infoAabb );
 		//回転
-		RotAABB(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki), m_aabb[i]);
+		RotAABB( CQuaternion( CVector3::AxisY(), CMath::PI_HALF * m_muki ), aabb );
 		//位置
-		m_aabb[i].min += GetModelPos();
-		m_aabb[i].max += GetModelPos();
+		aabb.min += GetModelPos();
+		aabb.max += GetModelPos();
 	}
 }
 
@@ -70,7 +84,7 @@ IntVector3 Block::CalcBlockUnitPos()const {
 
 void Block::CalcAddLight(bool isDestroy) {
 	//計算不要
-	if (m_state == enCube_None && !isDestroy) {
+	if (m_bInfo->id == enCube_None && !isDestroy) {
 		return;
 	}
 
@@ -78,7 +92,7 @@ void Block::CalcAddLight(bool isDestroy) {
 	char lightPower = 0;
 	char skyLightPower = 0;
 	if (!isDestroy) {
-		lightPower = BlockFactory::GetLight(m_state);
+		lightPower = m_bInfo->light;
 	}
 
 	//ワールド
@@ -95,7 +109,7 @@ void Block::CalcAddLight(bool isDestroy) {
 	auto skyLight = world->GetSkyLightData(blockpos);
 
 	//透明ブロック
-	if (BlockFactory::GetIsOpacity(m_state) == false) {
+	if (m_bInfo->isOpacity == false) {
 		skyLightPower = *skyLight;
 		if (!isDestroy && lightPower < *light) {
 			lightPower = *light;
@@ -231,36 +245,15 @@ void Block::RefleshDrawLighting(World* world, const IntVector3& blockpos, char l
 	}
 }
 
-void Block::InitModel(const wchar_t* filePath) {
-	//instanceMaxはすでにモデルがロードされている場合は使われないので値が何でも関係ない。
-	m_model.Init(0, filePath);
-	m_model.SetParamPtr(&m_lighting);//ライティング情報の設定
-
-	//向きはランダム
-	m_muki = (enMuki)(CMath::RandomInt() % 4);
-	m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki));
-
-	//レイトレモデル
-	m_raytraceModel.Init(m_model);
-
-	//デフォの明るさ
-	for (int _1 = 0; _1 < 4; _1++) {
-		for (int _2 = 0; _2 < 4; _2++) {
-			SetLightingData(_1, _2, 0);
-		}
-	}
-}
-
 void Block::SetPos( int x, int y, int z ){
 	CVector3 pos{ x * WIDTH + half, y * WIDTH, z * WIDTH + half };
 
 	//AABB
-	if (m_aabb) {
-		auto aabbNum = BlockFactory::GetAABBNum(m_state);
+	if (m_aabb.empty() == false) {
 		CVector3 move = pos - m_model.GetPos();
-		for (int i = 0; i < aabbNum; i++) {
-			m_aabb[i].min += move;
-			m_aabb[i].max += move;
+		for( AABB& aabb : m_aabb ){
+			aabb.min += move;
+			aabb.max += move;
 		}
 	}
 
@@ -269,11 +262,10 @@ void Block::SetPos( int x, int y, int z ){
 
 	//当たり判定
 	if (m_collision) {
-		auto aabbNum = BlockFactory::GetAABBNum(m_state);
-		for (int i = 0; i < aabbNum; i++) {
+		for( int i = 0; i < m_aabb.size(); i++ ){
 			CVector3 colpos = pos;
-			colpos += m_aabb[i].min + (m_aabb[i].max - m_aabb[i].min) / 2.0f;
-			m_collision[i].SetPosition(colpos);
+			colpos += m_aabb[i].min + ( m_aabb[i].max - m_aabb[i].min ) / 2.0f;
+			m_collision[i].SetPosition( colpos );
 		}
 	}
 
@@ -283,27 +275,28 @@ void Block::SetPos( int x, int y, int z ){
 }
 
 void Block::EnableCollision(){
-	if( !m_collision ){
-		auto aabbNum = BlockFactory::GetAABBNum(m_state);
-		m_collision = std::make_unique<SuicideObj::CCollisionObj[]>(aabbNum);
-		for (int i = 0; i < aabbNum; i++) {
+	if( m_collision == nullptr ){
+		m_collision = std::make_unique<SuicideObj::CCollisionObj[]>( m_aabb.size() );
+		for ( int i = 0; i < m_aabb.size(); i++ ) {
 			AABB aabb = m_aabb[i];
 			aabb.min -= m_model.GetPos();
 			aabb.max -= m_model.GetPos();
 
-			m_collision[i].SetIsStaticObject(true);
-			m_collision[i].CreateBox(CVector3::Zero(), CQuaternion::Identity(), aabb.max - aabb.min);
-			m_collision[i].SetTimer(enNoTimer);
-			m_collision[i].SetIsHurtCollision(true);	//自分から判定をとらない。
-			m_collision[i].SetName(L"Block");			//コリジョンに名前。
-			m_collision[i].SetPointer(this);			//ポインタを設定。
+			SuicideObj::CCollisionObj& collision = m_collision[i];
+			
+			collision.SetIsStaticObject(true);
+			collision.CreateBox(CVector3::Zero(), CQuaternion::Identity(), aabb.max - aabb.min);
+			collision.SetTimer(enNoTimer);
+			collision.SetIsHurtCollision(true);	//自分から判定をとらない。
+			collision.SetName(L"Block");		//コリジョンに名前。
+			collision.SetPointer(this);			//ポインタを設定。
 			//m_collision[i.GetCollisionObject().setUserIndex(enBlock);
 			//m_collision[i.GetCollisionObject().setUserPointer(this);		
 
 			CVector3 pos = m_model.GetPos();
 			pos += aabb.min + (aabb.max - aabb.min) / 2.0f;
 
-			m_collision[i].SetPosition(pos);
+			collision.SetPosition(pos);
 		}
 	}
 }

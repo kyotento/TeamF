@@ -5,7 +5,7 @@
 
 class ItemImage;
 
-//! @brief アイテムの種類を表すクラス。 #GetItem(unsigned) で取得する。
+//! @brief アイテムの種類を表すクラス。 #GetItem(int) で取得する。
 //! @details あくまで種類を表すもので、実際のアイテムは ItemStack で扱う。
 //! @author Takayama
 class Item{
@@ -17,7 +17,7 @@ public:
 
 	//! @brief アイテムidからアイテムを取得。
 	//! @details ブロックidもアイテムidとして扱うことができる。
-	static Item& GetItem( unsigned id );
+	static Item& GetItem( int id );
 
 	//! @briefアイテムの文字列idからアイテムを取得。
 	//! @param strId EnItem、EnCubeをそのまま文字列にしたもの。
@@ -25,8 +25,18 @@ public:
 	static Item& GetItem( const std::string& strId ) noexcept(false);
 
 	//! @brief このアイテムのidを取得。
-	unsigned GetID() const{
+	int GetID() const{
 		return m_id;
+	}
+
+	//! @brief このアイテムの属性を取得。
+	int GetToolID() const {
+		return m_toolId;
+	}
+
+	//! @brief このアイテムのツールレベル(木:1～ダイヤ:5)を取得
+	int GetToolLevel() const{
+		return m_toolLevel;
 	}
 
 	//! @brief スタック上限を取得。
@@ -62,7 +72,7 @@ private:
 	Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::filesystem::path& spritePath, const std::filesystem::path& modelPath );
 
 	//! アイテムID
-	unsigned m_id = enCube_None;
+	int m_id = enCube_None;
 
 	//! スタック上限
 	int m_limitNumber = 64;
@@ -73,6 +83,14 @@ private:
 	//アイテム画像。
 	std::unique_ptr<ItemImage> m_image;
 
+	static constexpr int INSTANCE_MODEL_MAX = 500;
+
 	//3Dモデルのパス。
 	std::filesystem::path m_modelPath;
+
+	//アイテムの属性。
+	int m_toolId = enTool_None;
+
+	//ツールレベル。木:1からダイヤ:5まで
+	int m_toolLevel = 1;
 };

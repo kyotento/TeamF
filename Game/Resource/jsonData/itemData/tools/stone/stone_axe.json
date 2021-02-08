@@ -1,0 +1,8 @@
+{
+	"id": "enItem_Stone_Axe",
+	"name": "石のオノ",
+	"sprite": "spriteData/tools/Stone_Axe.dds",
+	"model": "modelData/tools/Stone_Axe.tkm",
+	"stack_limit": 1,
+	"tool_level": 2
+}

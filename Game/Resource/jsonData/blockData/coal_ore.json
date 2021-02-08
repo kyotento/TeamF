@@ -1,0 +1,7 @@
+{
+	"id": "enCube_CoalOre",
+	"name": "石炭鉱石",
+	"model": "modelData/coalOre.tkm",
+	"hp": 20,
+	"tool": "enTool_Pickaxe"
+}
