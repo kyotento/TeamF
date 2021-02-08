@@ -23,7 +23,7 @@ namespace {
 	const float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
 	const float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;						//プレイヤーの移動速度。
-	const float move = 1.5f;							//移動速度(基本的には触らない)。
+	const float move = 2.f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.1f;					//ダブルクリック判定になる間合い。
 	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
