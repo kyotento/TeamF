@@ -113,6 +113,10 @@ public:
 	{
 		return m_hp;
 	}
+	float GetHP_Ratio() const
+	{
+		return (float)m_hp / m_bInfo->hp;
+	}
 	//HP‚ðŒ¸‚ç‚·
 	void ReduceHP(const int attack)
 	{
