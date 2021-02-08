@@ -38,10 +38,20 @@ namespace {
 	float noiseMultiply = 100.f;
 	int noiseMultiply2 = 10000;
 	float seed = 13;
+
+	//プレイヤー生成周辺には木を生成させない。
+	const int noGeneratePosition = 15;
+	const int noGenerateScope = 8;
 }
 
 void TreeGenerator::GenerateTree(const int x, const int y, const int z)
 {
+	float diff = abs(noGeneratePosition - x);
+	float diff2 = abs(noGeneratePosition - z);
+	if (diff + diff2 < noGenerateScope)
+	{
+		return;
+	}
 	//木が生成されたら。
 	if (GenerateWood(x, y, z))
 	{

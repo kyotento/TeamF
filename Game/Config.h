@@ -60,6 +60,8 @@ private:
 	float m_scale = 2.f;			//ボタンのスケール。		
 
 	Game* m_game = nullptr;			//ゲーム。
+
+	const wchar_t* m_clickName;		//click
 //	Title* m_title = nullptr;		//タイトル。
 
 	CFont m_font;					//フォント。

@@ -48,6 +48,9 @@ World::~World(){
 
 	//ブロッククラスのポインタを設定
 	Block::SetWorldPtr(nullptr);
+
+	//チャンクデータを保存する。
+	SaveChunk();
 }
 
 void World::PostUpdate(){
@@ -324,7 +327,7 @@ void World::ChunkCulling( Chunk& chunk ){
 			}
 
 			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
-			if( neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false ){//ブロックない or 透明ブロック
+			if( neighbor == nullptr || neighbor->GetIsOpacity() == false ){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -419,7 +422,48 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 	x = Chunk::CalcInChunkCoord( x );
 	z = Chunk::CalcInChunkCoord( z );
 
-	if (block->GetBlockType() == enCube_DoorUp || block->GetBlockType() == enCube_DoorDown) {
+	if (block->GetBlockType() == enCube_BedHead || block->GetBlockType() == enCube_BedLeg) {
+		//ベッド
+		CVector3 pos2 = pos;
+		if (block->GetBlockType() == enCube_BedHead) {
+			pos2 += CVector3((float)block->GetMukiDir().x, (float)block->GetMukiDir().y, (float)block->GetMukiDir().z)*-1.0f;
+		}
+		else {
+			pos2 += CVector3((float)block->GetMukiDir().x, (float)block->GetMukiDir().y, (float)block->GetMukiDir().z);
+		}
+		int x2 = (int)std::floorf(pos2.x);
+		int y2 = (int)std::floorf(pos2.y);
+		int z2 = (int)std::floorf(pos2.z);
+
+		Chunk* chunk2 = GetChunkFromWorldPos(x2, z2);
+		if (!chunk2) {
+			chunk2 = CreateChunkFromWorldPos(x2, z2);
+		}
+
+		x2 = Chunk::CalcInChunkCoord(x2);
+		z2 = Chunk::CalcInChunkCoord(z2);
+
+		//2つおけるか?
+		if (!chunk->CanPlaceBlock(x, y, z) || !chunk2->CanPlaceBlock(x2, y2, z2)) {
+			return false;
+		}
+
+		//ペアのパーツ作成
+		std::unique_ptr<Block> block2;
+		if (block->GetBlockType() == enCube_BedHead) {
+			block2 = BlockFactory::CreateBlock(enCube_BedLeg, block->GetMuki());
+		}
+		else {
+			block2 = BlockFactory::CreateBlock(enCube_BedHead, block->GetMuki());
+		}
+
+		chunk->PlaceBlock(x, y, z, std::move(block));
+		chunk2->PlaceBlock(x2, y2, z2, std::move(block2));
+
+		AroundBlock(pos);
+		AroundBlock(pos2);
+	}
+	else if (block->GetBlockType() == enCube_DoorUp || block->GetBlockType() == enCube_DoorDown) {
 		//ドア
 		CVector3 pos2 = pos;
 		if (block->GetBlockType() == enCube_DoorUp) {
@@ -434,10 +478,12 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		x2 = Chunk::CalcInChunkCoord(x);
 		z2 = Chunk::CalcInChunkCoord(z);
 
+		//2つおけるか?
 		if (!chunk->CanPlaceBlock(x, y, z) || !chunk->CanPlaceBlock(x2, y2, z2)) {
 			return false;
 		}
 
+		//ペアのパーツ作成
 		std::unique_ptr<Block> block2; 
 		if (block->GetBlockType() == enCube_DoorUp) {
 			block2 = BlockFactory::CreateBlock(enCube_DoorDown);
@@ -494,12 +540,26 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.z = pos2.z + posList[j].z;
 
 			auto neighbor = GetBlock(pos3);
-			if (neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false) {//ブロックない or 透明ブロック
+			if (neighbor == nullptr || neighbor->GetIsOpacity() == false) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}
 		}
 
 		block->SetIsDraw( doNotCulling );
+	}
+}
+
+void World::SaveChunk()
+{
+	//全てのチャンクデータを保存する。
+	for (auto itr = m_chunkMap.begin(); itr != m_chunkMap.end();) {
+
+		Chunk& chunk = itr->second;
+		const int x = chunk.GetX(), z = chunk.GetZ();
+
+		ChunkFiler filer;
+		filer.Write(chunk);
+		itr = m_chunkMap.erase(itr);
 	}
 }

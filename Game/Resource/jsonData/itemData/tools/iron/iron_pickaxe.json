@@ -1,0 +1,8 @@
+{
+	"id": "enItem_Iron_Pickaxe",
+	"name": "鉄のピッケル",
+	"sprite": "spriteData/tools/Iron_Pickaxe.dds",
+	"model": "modelData/tools/Iron_Pickaxe.tkm",
+	"stack_limit": 1,
+	"tool_level": 3
+}

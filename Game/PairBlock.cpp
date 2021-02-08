@@ -3,6 +3,9 @@
 #include "World.h"
 
 PairBlock::~PairBlock() {
+	if (m_sDestroyMode) {
+		return;
+	}
 	if (m_pairType != enCube_None) {
 		//指定方向に隣接する指定タイプのブロックを破壊する
 		IntVector3 pos = CalcBlockUnitPos() + m_pairOnDir;

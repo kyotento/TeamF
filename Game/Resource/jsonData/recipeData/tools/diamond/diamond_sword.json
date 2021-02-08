@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shaped", 
+  "pattern": [
+    "X",
+    "X",
+    "#"
+  ],
+  "key": {
+    "#": "enItem_Rod",
+    "X": "enItem_Diamond"
+  },
+  "result": "enItem_Diamond_Sword"
+}

@@ -1,0 +1,12 @@
+{
+	"id": "enCube_DoorDown",
+	"name": "ドア(下)",
+	"model": "modelData/DoorD.tkm",
+	"hp": 8,
+	"tool": "enTool_Axe",
+	"opacity": false,
+	"aabb": [
+		[-0.5, 0, -0.5],
+		[-0.3125, 1, 0.5]
+	]
+}

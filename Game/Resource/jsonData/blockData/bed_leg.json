@@ -1,0 +1,12 @@
+{
+  "id": "enCube_BedLeg",
+  "name": "ベッド(足)",
+  "model": "modelData/BedLeg.tkm",
+  "hp": 8,
+  "tool": "enTool_Axe",
+  "opacity": false,
+  "aabb": [
+    [ -0.5, 0, -0.5 ],
+    [ 0.5, 0.5625, 0.5 ]
+  ]
+}

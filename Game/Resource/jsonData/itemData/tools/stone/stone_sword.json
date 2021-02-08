@@ -1,0 +1,8 @@
+{
+	"id": "enItem_Stone_Sword",
+	"name": "石の剣",
+	"sprite": "spriteData/tools/Stone_Sword.dds",
+	"model": "modelData/tools/Stone_Sword.tkm",
+	"stack_limit": 1,
+	"tool_level": 2
+}

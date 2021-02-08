@@ -3,6 +3,8 @@
 #include "../BlockType.h"
 #include "Light.h"
 #include "AABB.h"
+#include "IntVector3.h"
+#include "BlockInfo.h"
 
 class Player;
 class World;
@@ -25,10 +27,12 @@ public:
 		return m_model.GetPos();
 	}
 
+	//向き
+	//※実際のブロックの向きと名前が一致してないかも
 	enum enMuki {
-		enXm, enZm, enXp, enZp//-X,-Z...
+		enXm, enZm, enXp, enZp,//-X,-Z...
+		enNum
 	};
-
 	//! @brief 向きをセット
 	void SetMuki(enMuki muki) {
 		m_muki = muki;
@@ -41,29 +45,23 @@ public:
 	enMuki GetMuki()const {
 		return m_muki;
 	}
+	const IntVector3& GetMukiDir()const;
+	static const IntVector3& GetMukiDir(enMuki muki);
 
 	//! @brief このブロックのAABBを取得
-	const AABB& GetAABB(int index)const;
-	//! @brief このブロックのAABBの数を取得
-	int GetAABBNum() const;
-
-	//! @brief モデルを初期化
-	void InitModel(const wchar_t* filePath);
-
-	//! @brief ブロックの種類を設定。
-	//! @details この関数はモデルを変更しない。
-	void SetBlockType(EnCube enCube)
-	{
-		if (m_state != enCube) {
-			m_state = enCube;
-			CalcAABB();//AABBの計算
-		}
-		m_state = enCube;
+	const AABB& GetAABB( int index )const{
+	 	return m_aabb[index];
 	}
+
+	//! @brief このブロックのAABBの数を取得
+	int GetAABBNum() const{
+		return m_bInfo->aabbArray.size();
+	}
+
 	//! @brief ブロックの種類を取得。
 	EnCube GetBlockType() const
 	{
-		return m_state;
+		return m_bInfo->id;
 	}
 
 	//! @brief モデルの描画をするかどうかを設定。
@@ -93,14 +91,18 @@ public:
 	}
 
 	//! @brief 不透明かどうか取得
-	bool GetIsOpacity()const;
-
-	//HPを設定
-	void SetHP(const int hp)
-	{
-		m_maxHP = hp;
-		m_hp = hp;
+	bool GetIsOpacity()const{
+		return m_bInfo->isOpacity;
 	}
+
+	//! @brief 有用なツールのEnumを取得。
+	EnTool GetUsefulTool() const{
+		return m_bInfo->usefulTool;
+	}
+
+	//! @brief 初期化。
+	void Init( const BlockInfo* bInfo, enMuki muki );
+
 	//HPを取得
 	const int GetHP() const
 	{
@@ -114,7 +116,7 @@ public:
 	//ブロックの耐久値を全快させる
 	void RestoresBlockDurabilityValue()
 	{
-		m_hp = m_maxHP;
+		m_hp = m_bInfo->hp;
 	}
 
 	//! @brief ライティング状態の設定。
@@ -173,21 +175,20 @@ private:
 	GameObj::CInstancingModelRender m_model;
 	CRayTracingModelRender m_raytraceModel;//レイトレ用
 
-	//! @brief ブロックの種類。
-	EnCube m_state = enCube_None;
+	//! @brief ブロックの種類ごとに共通の情報。
+	const BlockInfo* m_bInfo;
 
 	//向き
-	enMuki m_muki = enXm;
+	enMuki m_muki = enMuki::enNum;
 
 	//明るさ
 	CMatrix m_lighting = CMatrix::Zero();
 
 	//AABB
-	std::unique_ptr<AABB[]> m_aabb;
+	std::vector<AABB> m_aabb;
 	//コリジョン
 	std::unique_ptr<SuicideObj::CCollisionObj[]> m_collision;
 
-	int m_maxHP = 0;
 	int m_hp = 10;
 
 protected:

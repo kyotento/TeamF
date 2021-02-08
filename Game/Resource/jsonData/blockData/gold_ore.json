@@ -1,0 +1,7 @@
+{
+	"id": "enCube_GoldOre",
+	"name": "金鉱石",
+	"model": "modelData/goldOre.tkm",
+	"hp": 36,
+	"tool": "enTool_Pickaxe"
+}

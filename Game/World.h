@@ -160,6 +160,9 @@ public:
 	{
 		return m_entities;
 	}
+
+	//チャンクデータを保存する。
+	void SaveChunk();
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
 	void LoadChunk(int x, int z);

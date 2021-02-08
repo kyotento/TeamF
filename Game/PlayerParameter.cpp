@@ -264,6 +264,11 @@ void PlayerParameter::PostRender()
 		inv.GetNullableItem( i ).Draw( itemPos, scale );
 		itemPos.x += moveX;
 	}
+
+	//睡眠状態
+	if (m_player->GetIsSleep()) {
+		m_font.Draw(L"睡眠中。リスポーン地点が変更されました。", { 0.0f , 0.7f }, CVector4::White(), 0.5f, { 0.0f, 0.0f });
+	}
 }
 
 void PlayerParameter::StopMoveToChange()

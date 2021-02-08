@@ -2,6 +2,8 @@
 #include "Menu.h"
 #include "Game.h"
 #include "Config.h"
+#include "PlayerInventoryFiler.h"
+#include "Player.h"
 
 Menu::Menu()
 {
@@ -18,6 +20,8 @@ bool Menu::Start()
 	m_spriteRender[0].Init(L"Resource/spriteData/ReturnToTitleButton.dds");
 	m_spriteRender[1].Init(L"Resource/spriteData/GameEndButton.dds");
 	m_spriteRender[2].Init(L"Resource/spriteData/ConfigurationButton.dds");
+
+	m_clickName = L"Resource/soundData/game/click.wav";
 
 	for (int i = 0; i < m_buttonNum; i++) {
 		m_position[i] = { 0.5f,0.4f };
@@ -71,14 +75,33 @@ void Menu::ChangeColor()
 // クリックしたときの処理。
 void Menu::ClickProcess()
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(m_clickName);
+	se->SetVolume(0.1f);
+
 	if (GetKeyDown(VK_LBUTTON)) {		//左クリックした時。
 		if (Click() == enMenu_ReturnToTitle) {
+			se->Play();
 			m_game->TransToTitle();
 		}
 		else if (Click() == enMenu_GameEnd) {
+			se->Play();
+			Player* player = FindGO<Player>(L"player");
+			if (player != nullptr)
+			{
+				//インベントリを保存する。
+				PlayerInventoryFiler pIFiler;
+				pIFiler.SavePlayerInventory(player->GetInventory());
+			}
+			World* world = FindGO<World>();
+			if (world != nullptr)
+			{
+				world->SaveChunk();
+			}
 			GetEngine().BreakGameLoop();
 		}
 		else if (Click() == enMenu_Config) {
+			se->Play();
 			Config* config = NewGO<Config>();
 			config->SetBackClass(config->enMenu);
 			m_game->DeleteEscMenu();
