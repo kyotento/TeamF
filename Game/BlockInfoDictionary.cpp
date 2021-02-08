@@ -140,6 +140,10 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 				bInfo.isOpacity = jObj["opacity"].get<bool>();
 			}
 
+			//テクスチャに透明要素あるか取得(デフォルトではfalse)
+			if (jObj.find("transTex") != jObj.end()) {
+				bInfo.isTransTexture = jObj["transTex"].get<bool>();
+			}			
 
 		} catch( nl::detail::exception& ex ){
 			messageAbort( file, ex.what() );

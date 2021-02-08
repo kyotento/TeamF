@@ -3,5 +3,6 @@
 	"name": "オークの葉",
 	"model": "modelData/leafBlock.tkm",
 	"hp": 2,
-	"tool": "enTool_Sword"
+	"tool": "enTool_Sword",
+	"transTex": true
 }
