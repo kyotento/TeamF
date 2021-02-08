@@ -55,13 +55,27 @@ public:
 		enArmorMaterial_Num
 	};
 
-private:
+	/// <summary>
+	/// アーマーのパーツ。
+	/// </summary>
+	enum ArmorPart
+	{
+		enArmorPart_Helmet,
+		enArmorPart_ChestPlate,
+		enArmorPart_ChestPlate2,
+		enArmorPart_Leggings,
+		enArmorPart_Boots,
+		enArmorPart_Num
+	};
 
+private:
 
 	static const int m_ArmorPutNum = 4;					//アーマーの部位の数。
 	static const int m_armorNum = 8;					//アーマーのモデルの数。
 
 	ArmorMaterial m_armorMaterial[m_ArmorPutNum] = { enArmorMaterial_Num,enArmorMaterial_Num,enArmorMaterial_Num,enArmorMaterial_Num };		//アーマーの種類。
+	ArmorPart m_armorPart[m_ArmorPutNum + 1] = { enArmorPart_Num ,enArmorPart_Num ,enArmorPart_Num ,enArmorPart_Num };		//アーマーの部位の種類。
+
 
 	bool m_isPutArmor[m_ArmorPutNum] = { false,false,false,false };
 	
