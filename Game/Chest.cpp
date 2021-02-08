@@ -17,7 +17,7 @@ Chest::Chest() : m_inventory(27)
 
 Chest::~Chest()
 {
-	for (int i = 0; i < 27; i++) {
+	/*for (int i = 0; i < 27; i++) {
 		auto item = m_inventory.TakeAllItem(i);
 		if (item) {
 			CVector3 pos =  GetModelPos();
@@ -39,7 +39,7 @@ Chest::~Chest()
 			}
 			drop->SetPos(pos + addPos);
 		}
-	}
+	}*/
 }
 
 bool Chest::OnClick(Player * player) {

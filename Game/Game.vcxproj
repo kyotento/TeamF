@@ -224,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\Chest.png" />
     <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
