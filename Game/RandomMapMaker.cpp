@@ -62,7 +62,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 				m_treeGenerator.GenerateTree(wx, wy, wz);
 			}
 			else if (state == enBiome_Desert) {
-				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_OakLog));
+				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Sand));
 			}
 		
 		
@@ -76,7 +76,7 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 					EnCube bType = enCube_Soil;
 					if (state == enBiome_Desert)
 					{
-						bType = enCube_OakLog;
+						bType = enCube_Sand;
 					}
 				
 					//ˆê”Ô‰º‚É‚ÍŠâ”Õ‚ğİ’u‚·‚é

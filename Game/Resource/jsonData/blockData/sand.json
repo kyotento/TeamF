@@ -1,0 +1,7 @@
+{
+  "id": "enCube_Sand",
+  "name": "砂",
+  "model": "modelData/sand.tkm",
+  "hp": 4,
+  "tool": "enTool_Shovel"
+}
