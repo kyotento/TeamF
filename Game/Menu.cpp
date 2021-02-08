@@ -93,6 +93,11 @@ void Menu::ClickProcess()
 				PlayerInventoryFiler pIFiler;
 				pIFiler.SavePlayerInventory(player->GetInventory());
 			}
+			World* world = FindGO<World>();
+			if (world != nullptr)
+			{
+				world->SaveChunk();
+			}
 			GetEngine().BreakGameLoop();
 		}
 		else if (Click() == enMenu_Config) {

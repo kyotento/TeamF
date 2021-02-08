@@ -48,6 +48,9 @@ World::~World(){
 
 	//ブロッククラスのポインタを設定
 	Block::SetWorldPtr(nullptr);
+
+	//チャンクデータを保存する。
+	SaveChunk();
 }
 
 void World::PostUpdate(){
@@ -501,5 +504,19 @@ void World::AroundBlock( const CVector3& pos ){
 		}
 
 		block->SetIsDraw( doNotCulling );
+	}
+}
+
+void World::SaveChunk()
+{
+	//全てのチャンクデータを保存する。
+	for (auto itr = m_chunkMap.begin(); itr != m_chunkMap.end();) {
+
+		Chunk& chunk = itr->second;
+		const int x = chunk.GetX(), z = chunk.GetZ();
+
+		ChunkFiler filer;
+		filer.Write(chunk);
+		itr = m_chunkMap.erase(itr);
 	}
 }
