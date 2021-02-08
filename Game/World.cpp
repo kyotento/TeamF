@@ -41,16 +41,16 @@ World::~World(){
 		DeleteGO( e );
 	}
 
+	//チャンクデータを保存する。
+	SaveChunk();
+
 	//チャンク削除
 	Block::m_sDestroyMode = true;
 	m_chunkMap.clear();
 	Block::m_sDestroyMode = false;
 
 	//ブロッククラスのポインタを設定
-	Block::SetWorldPtr(nullptr);
-
-	//チャンクデータを保存する。
-	SaveChunk();
+	Block::SetWorldPtr(nullptr);	
 }
 
 void World::PostUpdate(){
