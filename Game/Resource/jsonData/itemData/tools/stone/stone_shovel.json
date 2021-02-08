@@ -1,0 +1,7 @@
+{
+	"id": "enItem_Stone_Shovel",
+	"name": "石のシャベル",
+	"sprite": "spriteData/tools/Stone_Shovel.dds",
+	"stack_limit": 1,
+	"tool_level": 2
+}

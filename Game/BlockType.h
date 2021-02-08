@@ -28,6 +28,7 @@ enum EnCube
 	enCube_DoorDown,		//ドア(下部分)
 	enCube_BedHead,			//ベッド(頭側)
 	enCube_BedLeg,			//ベッド(足側)
+	enCube_Chest,			//チェスト。
 
 	enCube_Num
 };

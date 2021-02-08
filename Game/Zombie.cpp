@@ -1,5 +1,15 @@
 #include "stdafx.h"
 #include "Zombie.h"
+#include "Sun.h"
+
+namespace {
+	//日没。
+	float sunsetSecond = 64800.0f;
+	//日の出。
+	float sunriseSecond = 21600.0f;
+	//太陽が出てるときにダメージを受ける感覚。
+	float sunDamageTime = 5.0f;
+}
 
 
 Zombie::Zombie() : Enemy(enEntity_Zombie)
@@ -36,7 +46,7 @@ bool Zombie::Start()
 	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
 	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
 
-	SetDropItemId(enCube_Stone);
+	SetDropItemId(enCube_CoalOre);
 	SetChanceDropping(100);
 
 	return true;
@@ -60,6 +70,7 @@ void Zombie::Update()
 	}
 	KnockBack();	//ノックバック処理。
 	Death();		//死亡判定
+	AttackSun();	//太陽によるダメージ。
 }
 
 //攻撃処理。
@@ -100,4 +111,32 @@ CVector3 Zombie::GetDamageColPos()
 	CVector3 DamageColPos = (rightHandBonePos + leftHandBonePos) / 2;	//ダメージ判定の座標。
 
 	return DamageColPos;
+}
+
+void Zombie::AttackSun()
+{
+	if (m_sun == nullptr)
+	{
+		m_sun = FindGO<Sun>();
+		return;
+	}
+
+	//現時刻を取得。
+	float second = m_sun->GetSecond();
+
+	//時刻が日没より前、あるいは日の出より後の場合。
+	//ダメージを受ける。
+	if (second < sunsetSecond && second > sunriseSecond)
+	{
+		//タイマー加算。
+		m_sunDamageTimer += GetEngine().GetRealDeltaTimeSec();
+		if (m_sunDamageTimer >= sunDamageTime)
+		{
+			//とりあえずダメージ1。
+			TakenDamage(1);
+			//タイマー1。
+			m_sunDamageTimer = 0.0f;
+
+		}
+	}
 }

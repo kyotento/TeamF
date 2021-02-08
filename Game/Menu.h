@@ -45,7 +45,9 @@ private:
 	CVector2 m_scPos[m_buttonNum] = { CVector2::Zero() };			//スクリーン空間座標左上。
 	CVector2 m_scPos2[m_buttonNum] = { CVector2::Zero() };			//スクリーン空間座標右下。
 	float m_scale = 2.f;			//ボタンのスケール。		
-	
+	const wchar_t* m_clickName;		//click
+
+
 	Game* m_game = nullptr;			//ゲーム。
 };
 

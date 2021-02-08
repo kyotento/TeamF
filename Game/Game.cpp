@@ -1,10 +1,8 @@
 #include "stdafx.h"
-#include "Inventory.h"
-#include "DropItem.h"
 #include "Game.h"
 #include "GameCamera.h"
 #include "Player.h"
-#include "Zombie.h"
+#include "ItemDictionary.h"
 #include "BlockType.h"
 #include "BlockFactory.h"
 #include "RecipeFiler.h"
@@ -22,7 +20,9 @@ Game::Game()
 
 
 Game::~Game()
-{}
+{
+	DeleteGO(m_bgm);
+}
 
 bool Game::Start()
 {
@@ -30,13 +30,22 @@ bool Game::Start()
 	m_gameMode.reset(NewGO<GameMode>());
 	m_gameMode->SetName(L"gamemode");
 
-	m_world = std::make_unique<World>();
+	//ブロックファクトリ初期化。
+	BlockFactory::Init( L"Resource/jsonData/blockData/" );
+
+	//アイテムを読み込む。
+	ItemDictionary::Instance().LoadItems( L"Resource/jsonData/itemData/" );
+	ItemDictionary::Instance().LoadBlocks( BlockFactory::GetBlockMap() );
+
+	m_bgmName = L"Resource/soundData/game/gamebgm.wav";
+	m_clickName = L"Resource/soundData/game/click.wav";
 
 	//レシピ読み込み。
-	// TODO: Worldの初期化より前に読むとエラーになる。いつかこのわかりにくい依存はどうにかしたい。
 	RecipeFiler recipeFiler;
-	recipeFiler.SetFolder(L"Resource/recipeData/");
+	recipeFiler.SetFolder(L"Resource/jsonData/recipeData/");
 	recipeFiler.LoadRecipe(RecipeManager::Instance());
+
+	m_world = std::make_unique<World>();
 
 	//プレイヤーの生成。
 	Player* player = m_world->CreateEntity<Player>();
@@ -50,7 +59,7 @@ bool Game::Start()
 
 	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
 	m_zombieGenerator->SetWorld(m_world.get());
-	
+	//
 	m_cowGenerator.reset(NewGO<CowGenerator>());
 	m_cowGenerator->SetWorld(m_world.get());
 
@@ -63,19 +72,25 @@ void Game::Update()
 {
 	m_world->SetChunkCoadRange(m_chunkRange);		//読み込みチャンクの更新。
 	EscMenu();
+	GameBGM();
 }
 
 void Game::EscMenu()
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(m_clickName);
+	se->SetVolume(0.1f);
 	if (GetKeyDown(VK_ESCAPE)) {
 		if (m_menu == nullptr && !m_isEscMenu) {
 			m_config = FindGO<Config>();
 			if ( m_config == nullptr) {
 				NewEscMenu();
+				se->Play();
 			}
 		}
 		else{
 			if (m_isEscMenu) {			//生成されているとき。
+				se->Play();
 				DeleteEscMenu();
 				m_isEscMenu = false;
 			}
@@ -102,4 +117,19 @@ void Game::TransToTitle()
 {
 	DeleteGO(this);
 	NewGO<Title>();		
+}
+
+void Game::GameBGM()
+{
+	if (!m_isBgmFlag) {
+		//BGM
+		m_bgm = NewGO<SuicideObj::CSE>(m_bgmName);
+		m_bgm->SetVolume(0.1f);
+		m_bgm->Play();
+		m_isBgmFlag = true;
+	}
+	if (!m_bgm->GetIsPlaying())
+	{
+		m_isBgmFlag = false;
+	}
 }

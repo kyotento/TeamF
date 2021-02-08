@@ -1,0 +1,7 @@
+{
+	"id": "enCube_OakLog",
+	"name": "オークの木材",
+	"model": "modelData/oakLog.tkm",
+	"hp": 8,
+	"tool": "enTool_Axe"
+}

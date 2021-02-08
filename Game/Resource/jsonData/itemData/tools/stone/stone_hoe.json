@@ -1,0 +1,7 @@
+{
+	"id": "enItem_Stone_Hoe",
+	"name": "石のクワ",
+	"sprite": "spriteData/tools/Stone_Hoe.dds",
+	"stack_limit": 1,
+	"tool_level": 2
+}

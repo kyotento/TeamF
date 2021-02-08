@@ -1,115 +1,186 @@
 #include "stdafx.h"
 #include "ItemDictionary.h"
-#include "BlockFactory.h"
+#include "BlockInfoDictionary.h"
+#include <headerOnlyLib/json.hpp>
+#include <headerOnlyLib/nameof.hpp>
+#include "Utf8ToSjis.h"
+
+void messageAbort( std::filesystem::path filePath, const std::string& msg );
+std::string AddResorcePath( std::string path );
 
 Item& ItemDictionary::GetItem( const std::string & id ){
 	return *( m_nameMap.at( id ) );
 }
 
-void ItemDictionary::AddBlockWithStrID( EnCube id, const char* stringId, const wchar_t * name ){
-	m_array[id] = Item( id, name, 64, BlockFactory::GetModelPath( id ) );
-	m_nameMap.emplace( stringId, &m_array[id] );
+void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
+	//enumの名前->値のマップを作成。
+	std::unordered_map<std::string_view, int> enumMap;
+	{
+		for( int i = enCube_None + 1; i < enCube_Num; i++ ){
+			EnCube e = EnCube( i );
+			enumMap.emplace( NAMEOF_ENUM( e ), e );
+		}
+		for( int i = enCube_Num; i < enAllItem_Num; i++ ){
+			EnItem e = EnItem( i );
+			enumMap.emplace( NAMEOF_ENUM( e ), e );
+		}
+	}
+
+	using namespace std::filesystem;
+	namespace nl = nlohmann;
+	
+	SetToolMap();
+
+	//フォルダ内のファイルをすべて処理。
+	for( recursive_directory_iterator itr( folderPath ), end; itr != end; itr++ ){
+
+		path file = ( *itr ).path();
+
+		//特殊なファイルはスキップ。
+		if( ( *itr ).is_regular_file() == false ){
+			continue;
+		}
+		
+		//大文字小文字を区別しない文字列比較。拡張子がjsonでなければスキップ。
+		if( _wcsicmp( file.extension().c_str(), L".json" ) != 0 ){
+			continue;
+		}
+
+		try{
+			//ファイルを開く
+			std::ifstream ifs( file );
+			if( ifs.good() == false ){
+				throw "ファイルを開けませんでした。";
+			}
+			
+			//json読み込み
+			nl::json jObj;
+			ifs >> jObj;
+
+			//ブロックIDを確認。
+			const std::string strItemId = jObj["id"].get<std::string>();
+			const int itemId = enumMap.at( strItemId );
+
+			if( itemId < enCube_Num ){
+				throw "フォルダにブロックjsonが混じっています。\n分けてください。";
+			}
+
+			//名前の取得
+			std::wstring itemName;
+			{
+				const std::string strName = UTF8toSjis( jObj["name"].get<std::string>() );
+				itemName = utf8toWide( strName );
+			}
+
+			//スプライトパスの取得
+			path spritePath;
+			if( jObj.find( "sprite" ) != jObj.end() ){
+				spritePath = jObj["sprite"].get<std::string>();
+				spritePath = AddResorcePath( spritePath.string() );
+			}
+
+			//モデルパスの取得
+			path modelPath = "Resource/modelData/tools/Wood_Sword.tkm";
+			if( jObj.find( "model" ) != jObj.end() ){
+				modelPath = jObj["model"].get<std::string>();
+				modelPath = AddResorcePath( modelPath.string() );
+			}
+
+			//スタック制限の取得
+			int stackLimit = 64;
+			if( jObj.find( "stack_limit" ) != jObj.end() ){
+				stackLimit = jObj["stack_limit"].get<int>();
+			}
+
+			//アイテムの登録。
+			m_array[itemId] = Item( EnItem( itemId ), itemName.c_str(), stackLimit, spritePath, modelPath );
+
+			//アイテムの属性を決める。
+			EnTool toolId = DetermineToolId( strItemId );
+			m_array[itemId].m_toolId = toolId;
+
+			//ツールのレベルを取得
+			if( jObj.find( "tool_level" ) != jObj.end() ){
+				m_array[itemId].m_toolLevel = jObj["tool_level"].get<int>();
+			}
+
+			//enum名->アイテム、のMapへ登録。
+			m_nameMap.emplace( strItemId, &m_array[itemId] );
+
+		} catch( nl::detail::exception& ex ){
+			messageAbort( file, ex.what() );
+
+		} catch( std::out_of_range ){
+			messageAbort( file, "指定されたIDがItemType.hに存在しません。" );
+
+		} catch( const char* exMsg ){
+			messageAbort( file, exMsg );
+		}
+
+	}
 }
 
-ItemDictionary::ItemDictionary(){
+void ItemDictionary::LoadBlocks( const std::unordered_map<EnCube, BlockInfo>& blockMap ){
 
-	//enum名文字列と合わせて登録するためのマクロ。
-#define AddBlock(id, name) AddBlockWithStrID(id, #id, name);
+	for( const auto& entry : blockMap ){
+		const BlockInfo& bInfo = entry.second;
+		EnCube itemId = entry.first;
 
-	//ブロックからアイテム化したアイテムを登録。
-	AddBlock( enCube_Grass, L"草" );
-	AddBlock( enCube_Soil, L"土" );
-	AddBlock( enCube_Stone, L"石" );
-	AddBlock( enCube_CobbleStone, L"丸石" );
-	AddBlock( enCube_OakLeaf, L"葉" );
-	AddBlock( enCube_OakLog, L"オークの原木" );
-	AddBlock( enCube_OakWood, L"オークの木材" );
-	AddBlock( enCube_CoalOre, L"石炭鉱石" );
-	AddBlock( enCube_IronOre, L"鉄鉱石" );
-	AddBlock( enCube_GoldOre, L"金鉱石" );
-	AddBlock( enCube_CraftingTable, L"作業台" );
-	AddBlock( enCube_TorchBlock, L"松明ブロック" );
-	AddBlock( enCube_Torch, L"松明");
-	AddBlock( enCube_GrassHalf, L"草ハーフ");
-	AddBlock( enCube_GrassStairs, L"草階段");
-	AddBlock( enCube_WoGBlock, L"神の怒り" );
-	AddBlock( enCube_DoorUp, L"ドア(上)" );
-	AddBlock( enCube_DoorDown, L"ドア(下)" );
-	AddBlock( enCube_BedHead, L"ベッド(頭側)" );
-	AddBlock( enCube_BedLeg, L"ベッド(足側)" );
+		//ブロックアイテムの登録。
+		m_array[itemId] = Item( itemId, utf8toWide(bInfo.name).c_str(), 64, bInfo.modelPath );
+		//enum名->アイテム、のMapへ登録。
+		m_nameMap.emplace( NAMEOF_ENUM(itemId).data(), &m_array[itemId] );
+	}
+}
 
-	//アセットが入ったフォルダ。
-	std::filesystem::path texDir;
-	std::filesystem::path modelDir;
+//! @brief ブロックjson読み込み用のエラーメッセージを表示して落とす。
+static void messageAbort( std::filesystem::path filePath, const std::string& msg ){
+	std::string fileName = "file: " + filePath.filename().string() + '\n';
 
-	//スタック上限。
-	int stackLimit;
+	std::string text = fileName + msg;
 
-	//アイテムを登録する関数オブジェクト。
-	auto AddItemWithStrID =
-		[&]( EnItem id, const char* stringId, const wchar_t * name, std::string resource, bool haveModel = false){
+	MessageBox( NULL, text.c_str(), "アイテムjson読み込み失敗。", MB_OK );
 
-		std::filesystem::path modelPath = "Resource/modelData/tools/Wood_Sword.tkm";
-		if( haveModel ){
-			modelPath.assign(modelDir / ( resource + ".tkm" ));
+	abort();
+}
+
+//! @brief パスに"Resource/"を付け加える。
+static std::string AddResorcePath( std::string path ){
+	if( path.substr( 0, 1 ) == "/" ){
+		path = path.substr( 1 );
+	}
+
+	if( path.substr( 0, 9 ) != "Resource/" ){
+		path = "Resource/" + path;
+	}
+
+	return path;
+}
+
+void ItemDictionary::SetToolMap()
+{
+	m_toolMap[enTool_Sword] = "Sword";
+	m_toolMap[enTool_Pickaxe] = "Pickaxe";
+	m_toolMap[enTool_Shovel] = "Shovel";
+	m_toolMap[enTool_Axe] = "Axe";
+	m_toolMap[enTool_Hoe] = "Hoe";
+	m_toolMap[enTool_Helmet] = "Helmet";
+	m_toolMap[enTool_Plate] = "Plate";
+	m_toolMap[enTool_Leggings] = "Leggins";
+	m_toolMap[enTool_Boots] = "Boots";
+}
+
+EnTool ItemDictionary::DetermineToolId(std::string itemid)
+{
+	for (int i = 0; i < enTool_Num; i++)
+	{
+		int strPos = itemid.find(m_toolMap[i]);
+		//文字列検索がヒットしたら。
+		if (strPos != std::string::npos)
+		{
+			return EnTool(i);
 		}
-		m_array[id] = Item( id, name, stackLimit, texDir / (resource + ".dds"), modelPath);
-		m_nameMap.emplace( stringId, &( m_array[id] ) );
-	};
-
-	//enum名文字列と合わせて登録するためのマクロ。
-#define AddItem(id, name, ...) AddItemWithStrID(id, #id, name, __VA_ARGS__);
-
-	//ブロックではないアイテムを登録。
-
-	//ツールではないアイテム類。
-	stackLimit = 64;
-	texDir.assign( "Resource/spriteData/items" );
-
-	AddItem( enItem_Rod, L"棒", "Rod" );
-	AddItem( enItem_Coal, L"石炭", "Coal" );
-	AddItem( enItem_Charcoal, L"木炭", "Charcoal" );
-	AddItem( enItem_Iron_Ingot, L"鉄インゴッド", "Iron_Ingot" );
-	AddItem( enItem_Gold_Ingot, L"金インゴッド", "Gold_Ingot" );
-	AddItem( enItem_Diamond, L"ダイアモンド", "Diamond" );
-
-	//ツール類
-	stackLimit = 1;
-	texDir.assign( "Resource/spriteData/tools" );
-	modelDir.assign( "Resource/modelData/tools" );
-
-	//木のツール類
-	AddItem( enItem_Wood_Sword, L"木の剣", "Wood_Sword", true);
-	AddItem( enItem_Wood_Pickaxe, L"木のピッケル", "Wood_Pickaxe" );
-	AddItem( enItem_Wood_Shovel, L"木のシャベル", "Wood_Shovel" );
-	AddItem( enItem_Wood_Axe, L"木のオノ", "Wood_Axe");
-	AddItem( enItem_Wood_Hoe, L"木のクワ", "Wood_Hoe");
-
-	//石のツール類
-	AddItem( enItem_Stone_Sword, L"石の剣", "Stone_Sword", true );
-	AddItem( enItem_Stone_Pickaxe, L"石のピッケル", "Stone_Pickaxe");
-	AddItem( enItem_Stone_Shovel, L"石のシャベル", "Stone_Shovel");
-	AddItem( enItem_Stone_Axe, L"石のオノ", "Stone_Axe");
-	AddItem( enItem_Stone_Hoe, L"石のクワ", "Stone_Hoe");
-
-	//鉄のツール類
-	AddItem( enItem_Iron_Sword, L"鉄の剣", "Iron_Sword", true );
-	AddItem( enItem_Iron_Pickaxe, L"鉄のピッケル", "Iron_Pickaxe" );
-	AddItem( enItem_Iron_Shovel, L"鉄のシャベル", "Iron_Shovel");
-	AddItem( enItem_Iron_Axe, L"鉄のオノ", "Iron_Axe");
-	AddItem( enItem_Iron_Hoe, L"鉄のクワ", "Iron_Hoe");
-
-	//金のツール類
-	AddItem( enItem_Gold_Sword, L"金の剣", "Gold_Sword", true );
-	AddItem( enItem_Gold_Pickaxe, L"金のピッケル", "Gold_Pickaxe");
-	AddItem( enItem_Gold_Shovel, L"金のシャベル", "Gold_Shovel");
-	AddItem( enItem_Gold_Axe, L"金のオノ", "Gold_Axe");
-	AddItem( enItem_Gold_Hoe, L"金のクワ", "Gold_Hoe");
-
-	//ダイヤのツール類
-	AddItem( enItem_Diamond_Sword, L"ダイヤの剣", "Diamond_Sword", true );
-	AddItem( enItem_Diamond_Pickaxe, L"ダイヤのピッケル", "Diamond_Pickaxe");
-	AddItem( enItem_Diamond_Shovel, L"ダイヤのシャベル", "Diamond_Shovel");
-	AddItem( enItem_Diamond_Axe, L"ダイヤのオノ", "Diamond_Axe" );
-	AddItem( enItem_Diamond_Hoe, L"ダイヤのクワ", "Diamond_Hoe" );
+	}
+	//何もヒットしなかったら。
+	return enTool_None;
 }

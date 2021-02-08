@@ -19,11 +19,6 @@ RandomMapMaker::~RandomMapMaker()
 void RandomMapMaker::Init( World* world, std::mt19937& seedGenerator ){
 	m_world = world;
 
-	int loadEdge = m_world->GetChunkLoadRange() * 2 * Chunk::WIDTH;
-
-	//ブロックファクトリを初期化
-	BlockFactory::LoadInstancingModels(loadEdge * loadEdge * ( int(m_maxHeight) + 1 ) );
-
 	//同じマップを生成しないようにシード生成
 	m_seedX = seedGenerator() % 101;
 	m_seedZ = seedGenerator() % 101;

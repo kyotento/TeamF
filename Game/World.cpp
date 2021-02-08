@@ -85,6 +85,16 @@ void World::PostUpdate(){
 	}
 
 	{
+		if (m_block != nullptr) {
+			m_timer += GetDeltaTimeSec();
+			if (m_timer >= timeBlockDurabilityValueRecover)
+			{
+				m_timer = 0.0f;
+				m_block->RestoresBlockDurabilityValue();
+				m_block = nullptr;
+			}
+
+		}
 		//範囲内のブロックのコリジョンを有効化する。範囲外は無効化する。
 
 		//無効化ループ
@@ -314,7 +324,7 @@ void World::ChunkCulling( Chunk& chunk ){
 			}
 
 			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
-			if( neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false ){//ブロックない or 透明ブロック
+			if( neighbor == nullptr || neighbor->GetIsOpacity() == false ){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -527,26 +537,12 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.z = pos2.z + posList[j].z;
 
 			auto neighbor = GetBlock(pos3);
-			if (neighbor == nullptr || BlockFactory::GetIsOpacity(neighbor->GetBlockType()) == false) {//ブロックない or 透明ブロック
+			if (neighbor == nullptr || neighbor->GetIsOpacity() == false) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}
 		}
 
 		block->SetIsDraw( doNotCulling );
-	}
-}
-
-void World::Update()
-{
-	if (m_block != nullptr) {
-		m_timer += GetDeltaTimeSec();
-		if (m_timer >= timeBlockDurabilityValueRecover)
-		{
-			m_timer = 0.0f;
-			m_block->RestoresBlockDurabilityValue();
-			m_block = nullptr;
-		}
-
 	}
 }

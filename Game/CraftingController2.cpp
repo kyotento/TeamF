@@ -12,9 +12,15 @@ namespace GUI::Controller {
 	}
 
 	CraftingController2::~CraftingController2() {
+		const unsigned resultSlot = 4;
 		//GUIを閉じたときにクラフトテーブルのアイテムを返却する。
-		for (auto& item : m_inventory) {
-			m_playerInventory.AddItem(item);
+		int number = 0;
+		for (auto& item : m_inventory) 
+		{	//クラフトスロットのところだけアイテムを返却する。
+			if (number <= resultSlot) {
+				m_playerInventory.AddItem(item);
+			}
+			number++;
 		}
 	}
 
@@ -66,7 +72,7 @@ namespace GUI::Controller {
 			}
 		}
 
-		if (slotNo != resultSlot) {
+		if (slotNo < resultSlot) {
 			//通常のクリック操作。
 			InventoryController::OnClickSlot(event, slotNo);
 		}

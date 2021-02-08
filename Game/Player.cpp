@@ -16,6 +16,9 @@
 #include "Menu.h"
 #include "DropItem.h"
 #include"Animals.h"
+#include "PlayerArmor.h"
+#include "PlayerInventoryFiler.h"
+#include "NullableItemStack.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -36,8 +39,8 @@ namespace {
 	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
-
-Player::Player() : m_inventory(36), Entity(enEntity_None, true)
+					//装備スロットのため拡張。
+Player::Player() : m_inventory(40), Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -53,6 +56,11 @@ Player::~Player()
 	DeleteGO(m_skinModelRender);
 	DeleteGO(m_playerParameter);
 	DeleteGO(m_playerDeath);
+	DeleteGO(m_playerArmor);
+
+	//インベントリを保存する。
+	PlayerInventoryFiler pIFiler;
+	pIFiler.SavePlayerInventory(m_inventory);
 }
 
 #include "ItemStack.h"
@@ -66,6 +74,9 @@ bool Player::Start()
 	//レイトレモデル初期化
 	m_raytraceModel.Init(*m_skinModelRender);
 
+	m_damageName = L"Resource/soundData/player/damage.wav";
+	m_attackName = L"Resource/soundData/player/attack.wav";
+	m_putName = L"Resource/soundData/player/put.wav";
 	//キャラコンの初期化。
 	const float characonRadius = 50.f;					//キャラコンの半径。
 	const float characonHeight = 160.f;					//キャラコンの高さ。
@@ -82,20 +93,46 @@ bool Player::Start()
 	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
 
 	//TODO: デバッグ専用
-	//プレイヤーにテスト用アイテムを持たせる。
-	int itemArray[] = {
-		enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_BedHead, enCube_DoorDown,
-		enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-		enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood, enCube_CobbleStone
-	};
-	for( int i : itemArray ){
-		auto item = std::make_unique<ItemStack>( Item::GetItem( i ), Item::GetItem( i ).GetStackLimit() );
-		m_inventory.AddItem( item );
+	PlayerInventoryFiler pIFiler;
+	bool isLoad = pIFiler.LoadPlayerInventory();
+	//プレイヤーのインベントリ情報がロードできなかったら。
+	if (!isLoad) {
+		//プレイヤーにテスト用アイテムを持たせる。
+		int itemArray[] = {
+			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
+			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
+			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
+			enCube_Chest
+		};
+		for (int i : itemArray) {
+			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
+			m_inventory.AddItem(item);
+		}
+	}
+	else {
+		//ロード出来たら、インベントリにアイテムを設定していく。
+		auto& iV = pIFiler.GetInventory();
+		for (int i = 0; i < 40; i++)
+		{
+			auto& null = iV.GetNullableItem(i);
+			if (null.GetID() != enCube_None)
+			{
+				auto& item = iV.GetItem(i);
+				auto itemId = item.get()->GetID();
+
+				auto itemStack = std::make_unique<ItemStack>(Item::GetItem(itemId), item.get()->GetNumber());
+				m_inventory.SetItem(i, std::move(itemStack));
+			}
+		}
 	}
 
 	//プレイヤーのパラメーター生成。
 	m_playerParameter = NewGO<PlayerParameter>();
 	m_playerParameter->SetPlayerIns(this);
+
+	//アーマークラス生成。
+	m_playerArmor = NewGO<PlayerArmor>();
+	m_playerArmor->SetPlayerSkinModel(m_skinModelRender);
 
 	//タイマーに値を入れておく
 	m_timerBlockDestruction = timeBlockDestruction;
@@ -112,9 +149,10 @@ void Player::Update()
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
 
-	//頭の骨を取得。
+	//骨を取得。
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
-
+	m_shoulderBone = m_skinModelRender->FindBone(L"Bone008");
+	m_rightHandBone = m_skinModelRender->FindBone(L"Bone009");
 	//死んでないとき。
 	if (m_playerState != enPlayerState_death) {
 		//移動処理。GUIが開かれているとき、入力は遮断しているが、重力の処理は通常通り行う。
@@ -357,7 +395,9 @@ void Player::Jump()
 		|| m_flyingMode == false) {										//クリエイティブのフライモードでないとき。
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
-			m_stamina -= 0.2;
+			if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
+				m_stamina -= 0.2;			//サバイバルモードの時のみスタミナを減らす。
+			}
 		}
 		//ジャンプ中の処理。
 		if (m_isJump) {					
@@ -446,7 +486,7 @@ void Player::Turn()
 	modelRot.SetRotationDeg(CVector3::AxisY(), m_degreeY + 180.0f);
 	m_skinModelRender->SetRot(modelRot);
 	Headbang();
-
+	Shoulder();
 	//右方向と正面方向のベクトルの計算。
 	m_right = { -1.0f,0.0f,0.0f };
 	m_rotation.Multiply(m_right);
@@ -504,7 +544,12 @@ void Player::Headbang()
 //攻撃処理。
 void Player::Attack()
 {
+	
 	if (GetKeyDown(VK_LBUTTON)) {
+		SuicideObj::CSE* se;
+		se = NewGO<SuicideObj::CSE>(m_attackName);
+		se->SetVolume(0.25f);
+		se->Play();
 		//攻撃判定の座標。
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -641,8 +686,10 @@ void Player::StateManagement()
 //オブジェクトの設置と破壊。
 void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, CVector3 frontRotAdd)
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(m_putName);
+	se->SetVolume(0.5f);
 	frontRotAdd.Normalize();
-
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;		//設置する場所。
@@ -660,6 +707,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
 			if (item != nullptr) {
 				if (item->GetIsBlock()) {		//ブロック。
+					se->Play();
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
 					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
 					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
@@ -709,8 +757,8 @@ void Player::FlyTheRay()
 		{
 			return;
 		}
-		
-		
+		const int up = 75;
+		upDownY = up;
 		int reyLength = installableBlockNum * Block::WIDTH;		//レイの長さ。		 
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -730,7 +778,6 @@ void Player::FlyTheRay()
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
 	}
-	
 }
 
 //被ダメ－ジ。
@@ -740,7 +787,6 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 		//防御力の計算。
 		float damage = AttackPow * (1 - m_defensePower * 0.04);
 		m_hp -= damage;
-		
 		//HPを0未満にしない。
 		if (m_hp <= 0) {			
 			m_hp = 0;
@@ -755,10 +801,12 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 			SuicideObj::CSE* voice;
 			//２種類からランダムで音が鳴る。
 			if (CMath::RandomZeroToOne() > 0.5f) {
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage1.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
+				voice->SetVolume(0.25f);
 			}
 			else {
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-damage2.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
+				voice->SetVolume(0.25f);
 			}
 			voice->Play();
 			//攻撃されたのなら、ノックバックする。
@@ -871,9 +919,11 @@ void Player::IsDraw()
 {
 	if (m_gameCamera->GetCameraMode() == EnMode_FPS) {
 		m_skinModelRender->SetIsDraw(false);
+		m_playerArmor->IsDraw(false);
 	}
 	else{
 		m_skinModelRender->SetIsDraw(true);
+		m_playerArmor->IsDraw(true);
 	}
 }
 
@@ -886,11 +936,15 @@ void Player::Stamina()
 		m_stamina = 21;
 	}
 	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
-	const float maxTimer = 5.0f;
+	const float maxTimer = 3.0f;
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+		if (item == nullptr)
+		{
+
+		}
+		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)
@@ -919,7 +973,21 @@ void Player::Stamina()
 		}
 	}
 }
-
+//肩
+void Player::Shoulder()
+{
+	const int Down = 5;
+	m_shoulderBoneRot.SetRotationDeg(CVector3::AxisX(), upDownY);
+	m_shoulderBone->SetRotationOffset(m_shoulderBoneRot);
+	if (upDownY > 0)
+	{
+		upDownY -= Down;
+	}
+	else
+	{
+		upDownY = 0;
+	}
+}
 //todo Debug専用。
 void Player::Test()
 {
