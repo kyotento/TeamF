@@ -22,6 +22,8 @@ public:
 	char light = 0;
 	//不透明ならtrue
 	bool isOpacity = true;
+	//テクスチャに透明要素あるか?
+	bool isTransTexture = false;
 
 	//enCube_None用のInfo
 	static const BlockInfo NONE_BLOCK;

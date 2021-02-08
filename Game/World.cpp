@@ -41,16 +41,16 @@ World::~World(){
 		DeleteGO( e );
 	}
 
+	//チャンクデータを保存する。
+	SaveChunk();
+
 	//チャンク削除
 	Block::m_sDestroyMode = true;
 	m_chunkMap.clear();
 	Block::m_sDestroyMode = false;
 
 	//ブロッククラスのポインタを設定
-	Block::SetWorldPtr(nullptr);
-
-	//チャンクデータを保存する。
-	SaveChunk();
+	Block::SetWorldPtr(nullptr);	
 }
 
 void World::PostUpdate(){
@@ -327,7 +327,7 @@ void World::ChunkCulling( Chunk& chunk ){
 			}
 
 			auto neighbor = GetBlock(wx + v.x, y + v.y, wz + v.z);
-			if( neighbor == nullptr || neighbor->GetIsOpacity() == false ){//ブロックない or 透明ブロック
+			if( neighbor == nullptr || neighbor->GetIsOpacity() == false || neighbor->GetIsTransTexture() == true){//ブロックない or 透明ブロック
 				doCulling = false;
 				break;
 			}
@@ -540,7 +540,7 @@ void World::AroundBlock( const CVector3& pos ){
 			pos3.z = pos2.z + posList[j].z;
 
 			auto neighbor = GetBlock(pos3);
-			if (neighbor == nullptr || neighbor->GetIsOpacity() == false) {//ブロックない or 透明ブロック
+			if (neighbor == nullptr || neighbor->GetIsOpacity() == false || neighbor->GetIsTransTexture() == true) {//ブロックない or 透明ブロック
 				doNotCulling = true;
 				break;
 			}

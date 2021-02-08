@@ -95,6 +95,11 @@ public:
 		return m_bInfo->isOpacity;
 	}
 
+	//! @brief テクスチャに透明要素あるか取得
+	bool GetIsTransTexture()const {
+		return m_bInfo->isTransTexture;
+	}
+
 	//! @brief 有用なツールのEnumを取得。
 	EnTool GetUsefulTool() const{
 		return m_bInfo->usefulTool;
