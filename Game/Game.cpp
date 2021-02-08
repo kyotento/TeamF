@@ -59,7 +59,7 @@ bool Game::Start()
 
 	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
 	m_zombieGenerator->SetWorld(m_world.get());
-	//
+	
 	m_cowGenerator.reset(NewGO<CowGenerator>());
 	m_cowGenerator->SetWorld(m_world.get());
 

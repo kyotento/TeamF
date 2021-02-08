@@ -167,6 +167,15 @@ public:
 	}
 
 	/// <summary>
+	/// 経験値を加算する。
+	/// </summary>
+	/// <param name="exp">加算する経験値量</param>
+	void AddExp(const float exp)
+	{
+		m_exp += exp;
+	}
+
+	/// <summary>
 	/// 経験値を取得する。
 	/// </summary>
 	/// <returns>経験値</returns>
@@ -433,7 +442,7 @@ private:
 	float m_stamina = 20.000f;		//スタミナ。
 	int m_attackPower = 5;			//攻撃力。
 	int m_defensePower = 15;		//防御力。
-	float m_exp = 5.50f;			//経験値。
+	float m_exp = 0.f;			//経験値。
 	int m_selItemNum = 0;			//プレイヤーが選択したアイテム番号（インベントリ番号）。
 
 	CVector3 m_position = CVector3::One() * 15.0f* Block::WIDTH;				//プレイヤーの座標。
