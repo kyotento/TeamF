@@ -337,7 +337,7 @@ void World::ChunkCulling( Chunk& chunk ){
 	} );
 }
 
-void World::DamegeBlock( const CVector3& pos ){
+const Block* World::DamegeBlock( const CVector3& pos ){
 	//タイマーを0にする
 	m_timer = 0.0f;
 	int x = (int)std::floorf( pos.x );
@@ -345,7 +345,7 @@ void World::DamegeBlock( const CVector3& pos ){
 	int z = (int)std::floorf( pos.z );
 	if (y == RandomMapMaker::m_minHeight)
 	{
-		return;
+		return nullptr;
 	}
 
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
@@ -357,14 +357,14 @@ void World::DamegeBlock( const CVector3& pos ){
 	m_block = GetBlock(x, y, z);
 	if (m_block == nullptr)
 	{
-		return;
+		return nullptr;
 	}
 	//ブロックのHPを減らす、とりあえず1入れてる
 	m_block->ReduceHP(1);
 	//ブロックのHPが0以上ならこれで終わり
 	if (m_block->GetHP() > 0)
 	{
-		return;
+		return m_block;
 	}
 	//ブロックをポップ。
 	{
@@ -394,6 +394,7 @@ void World::DamegeBlock( const CVector3& pos ){
 	//ブロック破壊されたらnullにする
 	m_block = nullptr;
 
+	return m_block;
 }
 
 void World::DestroyBlockNoDrop(const IntVector3& pos) {
