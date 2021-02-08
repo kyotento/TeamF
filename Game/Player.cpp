@@ -27,7 +27,7 @@ namespace {
 	const float moveMult = 8.0f;						//プレイヤーの移動速度。
 	const float move = 2.f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
-	const float doubleClickRug = 0.1f;					//ダブルクリック判定になる間合い。
+	const float doubleClickRug = 0.15f;					//ダブルクリック判定になる間合い。
 	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。

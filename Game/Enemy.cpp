@@ -196,6 +196,7 @@ void Enemy::Death()
 		}
 		else {		//回転し終わったら敵を消す。
 			DroppingItem(m_position);
+			m_player->AddExp(m_exp);		//プレイヤーの経験値を加算する。
 			DeleteGO(this);
 		}
 

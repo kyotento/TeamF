@@ -102,6 +102,7 @@ protected:
 
 	int m_hp = 0;				//体力。
 	int m_attackPow = 0;		//攻撃力。
+	float m_exp = 0.f;			//取得経験値量。
 	float m_knockBack = 1.f;	//ノックバック感度。
 	float m_knoceBackY = 1.f;	//ノックバックY座標。
 

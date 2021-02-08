@@ -41,6 +41,7 @@ bool Zombie::Start()
 
 	m_hp = 20;					//体力の設定。
 	m_attackPow = 3;			//攻撃力の設定。
+	m_exp = 0.7;				//取得経験値量。
 	m_knockBack = 0.5f;			//ノックバック倍率。
 
 	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
