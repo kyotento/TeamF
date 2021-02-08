@@ -48,7 +48,7 @@ public:
 		return m_muki;
 	}
 	const IntVector3& GetMukiDir()const;
-	const IntVector3& GetMukiDir(enMuki muki)const;
+	static const IntVector3& GetMukiDir(enMuki muki);
 
 	//! @brief ‚±‚ÌƒuƒƒbƒN‚ÌAABB‚ğæ“¾
 	const AABB& GetAABB(int index)const;

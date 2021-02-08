@@ -421,10 +421,17 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		int x2 = (int)std::floorf(pos2.x);
 		int y2 = (int)std::floorf(pos2.y);
 		int z2 = (int)std::floorf(pos2.z);
+
+		Chunk* chunk2 = GetChunkFromWorldPos(x2, z2);
+		if (!chunk2) {
+			chunk2 = CreateChunkFromWorldPos(x2, z2);
+		}
+
 		x2 = Chunk::CalcInChunkCoord(x2);
 		z2 = Chunk::CalcInChunkCoord(z2);
 
-		if (!chunk->CanPlaceBlock(x, y, z) || !chunk->CanPlaceBlock(x2, y2, z2)) {
+		//2‚Â‚¨‚¯‚é‚©?
+		if (!chunk->CanPlaceBlock(x, y, z) || !chunk2->CanPlaceBlock(x2, y2, z2)) {
 			return false;
 		}
 
@@ -438,7 +445,7 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		}
 
 		chunk->PlaceBlock(x, y, z, std::move(block));
-		chunk->PlaceBlock(x2, y2, z2, std::move(block2));
+		chunk2->PlaceBlock(x2, y2, z2, std::move(block2));
 
 		AroundBlock(pos);
 		AroundBlock(pos2);
@@ -458,6 +465,7 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		x2 = Chunk::CalcInChunkCoord(x);
 		z2 = Chunk::CalcInChunkCoord(z);
 
+		//2‚Â‚¨‚¯‚é‚©?
 		if (!chunk->CanPlaceBlock(x, y, z) || !chunk->CanPlaceBlock(x2, y2, z2)) {
 			return false;
 		}

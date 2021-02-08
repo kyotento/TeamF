@@ -4,7 +4,7 @@
 class Bed : public PairBlock
 {
 public:
-	Bed(bool isHeadParts, enMuki muki);
+	Bed(bool isHeadParts, const IntVector3& pairOnDir);
 
 	bool OnClick(Player* player) override;
 };

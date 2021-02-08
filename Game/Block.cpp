@@ -12,9 +12,9 @@ namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
 
 	constexpr IntVector3 mukiDir[] = {
-		{-1,0, 0},
-		{ 0,0,-1},
 		{ 1,0, 0},
+		{ 0,0,-1},
+		{-1,0, 0},
 		{ 0,0, 1}
 	};
 
@@ -44,7 +44,7 @@ Block::~Block(){
 const IntVector3& Block::GetMukiDir()const {
 	return mukiDir[m_muki];
 }
-const IntVector3& Block::GetMukiDir(enMuki muki)const {
+const IntVector3& Block::GetMukiDir(enMuki muki) {
 	return mukiDir[muki];
 }
 
@@ -254,7 +254,7 @@ void Block::InitModel(const wchar_t* filePath) {
 		//向きはランダム
 		m_muki = (enMuki)(CMath::RandomInt() % 4);
 	}
-	m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki));
+	m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * (int)m_muki));
 
 	//レイトレモデル
 	m_raytraceModel.Init(m_model);

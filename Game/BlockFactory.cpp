@@ -44,8 +44,8 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	FILE_PATH_ARRAY[enCube_DoorUp] = L"Resource/modelData/DoorU.tkm";
 	FILE_PATH_ARRAY[enCube_DoorDown] = L"Resource/modelData/DoorD.tkm";
 	FILE_PATH_ARRAY[enCube_Glass] = L"Resource/modelData/GrassBlock.tkm";
-	FILE_PATH_ARRAY[enCube_BedHead] = L"Resource/modelData/cobbleStone.tkm";
-	FILE_PATH_ARRAY[enCube_BedLeg] = L"Resource/modelData/cobbleStone.tkm";
+	FILE_PATH_ARRAY[enCube_BedHead] = L"Resource/modelData/BedHead.tkm";
+	FILE_PATH_ARRAY[enCube_BedLeg] = L"Resource/modelData/BedLeg.tkm";
 	
 	//耐久度
 	BLOCK_HP_ARRAY[enCube_Grass] = 4;
@@ -114,6 +114,8 @@ void BlockFactory::LoadInstancingModels( int instanceMax ){
 	//ベッド
 	BLOCK_OPACITY[enCube_BedHead] = false;
 	BLOCK_OPACITY[enCube_BedLeg] = false;
+	BLOCK_AABB_ARRAY[enCube_BedHead][0].max.y *= (9.0f / 16.0f);
+	BLOCK_AABB_ARRAY[enCube_BedLeg][0].max.y *= (9.0f / 16.0f);
 	
 	//ブロックのAABBの数カウント
 	for (int i = 0; i < enCube_Num; i++) {
@@ -189,8 +191,8 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 	case enCube_BedLeg:
 		if (muki == Block::enMuki::enNum) {
 			muki = (Block::enMuki)(CMath::RandomInt() % 4);
-		}
-		block = std::make_unique<Bed>(blockType == enCube_BedHead ? true : false, muki);
+		}		
+		block = std::make_unique<Bed>(blockType == enCube_BedHead ? true : false, Block::GetMukiDir(muki));
 		break;
 	default:
 		block = std::make_unique<Block>();
