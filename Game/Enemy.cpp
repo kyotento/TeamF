@@ -121,14 +121,14 @@ void Enemy::TakenDamage(int attackDamage)
 //被ダメ時のダメージ音。
 void Enemy::DamageVoice()
 {
-	SuicideObj::CSE* voice;
-	if (m_hp <= 0) {		//死亡時。
-		voice = NewGO<SuicideObj::CSE>(m_deathVoice);
-	}
-	else {			//死んでないとき。
-		voice = NewGO<SuicideObj::CSE>(m_damageVoice);
-	}
-	voice->Play();
+	//SuicideObj::CSE* voice;
+	//if (m_hp <= 0) {		//死亡時。
+	//	voice = NewGO<SuicideObj::CSE>(m_deathVoice);
+	//}
+	//else {			//死んでないとき。
+	//	voice = NewGO<SuicideObj::CSE>(m_damageVoice);
+	//}
+	//voice->Play();
 }
 
 //ノックバック処理。
