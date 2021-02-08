@@ -27,15 +27,12 @@ public:
 		return m_model.GetPos();
 	}
 
+	//向き
+	//※実際のブロックの向きと名前が一致してないかも
 	enum enMuki {
 		enXm, enZm, enXp, enZp,//-X,-Z...
 		enNum
 	};
-
-	//! @brief 向きを初期化(ブロック作成時にのみ使用)
-	void InitMuki(enMuki muki) {
-		m_muki = muki;
-	}
 	//! @brief 向きをセット
 	void SetMuki(enMuki muki) {
 		m_muki = muki;
@@ -104,7 +101,7 @@ public:
 	}
 
 	//! @brief 初期化。
-	void Init( const BlockInfo* bInfo );
+	void Init( const BlockInfo* bInfo, enMuki muki );
 
 	//HPを取得
 	const int GetHP() const

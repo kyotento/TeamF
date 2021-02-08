@@ -42,13 +42,15 @@ Block::~Block(){
 }
 
 const IntVector3& Block::GetMukiDir()const {
+	DW_ERRORBOX(m_muki < 0 || m_muki >= enMuki::enNum, "Block::GetMukiDir()\n異常な向きが指定されています")
 	return mukiDir[m_muki];
 }
 const IntVector3& Block::GetMukiDir(enMuki muki) {
+	DW_ERRORBOX(muki < 0 || muki >= enMuki::enNum, "Block::GetMukiDir()\n異常な向きが指定されています")
 	return mukiDir[muki];
 }
 
-void Block::Init( const BlockInfo * bInfo ){
+void Block::Init( const BlockInfo * bInfo, enMuki muki ){
 	m_bInfo = bInfo;
 	m_hp = bInfo->hp;
 
@@ -56,8 +58,9 @@ void Block::Init( const BlockInfo * bInfo ){
 	m_model.Init( 0, bInfo->modelPath.c_str() );
 	m_model.SetParamPtr( &m_lighting );//ライティング情報の設定
 
-	//向きはランダム
-	m_muki = (enMuki)( CMath::RandomInt() % 4 );
+	//向き
+	DW_ERRORBOX(muki < 0 || muki >= enMuki::enNum, "Block::Init()\n異常な向きが指定されています")
+	m_muki = muki;
 	m_model.SetRot( CQuaternion( CVector3::AxisY(), CMath::PI_HALF * m_muki ) );
 
 	CalcAABB();

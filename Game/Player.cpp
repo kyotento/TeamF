@@ -102,7 +102,7 @@ bool Player::Start()
 			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
 			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
 			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
-			enCube_Chest
+			enCube_Chest, enCube_BedHead
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -709,8 +709,10 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 				if (item->GetIsBlock()) {		//ブロック。
 					se->Play();
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
-					m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())));
-					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
+					if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())))) {
+						//設置に成功したらインベントリのブロック数減らす
+						auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
+					}
 				}
 			}
 		}

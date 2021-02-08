@@ -74,6 +74,11 @@ const wchar_t * BlockFactory::GetModelPath( EnCube blockType ){
 std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki muki){
 	std::unique_ptr<Block> block;
 
+	//ランダム向き
+	if (muki == Block::enMuki::enNum) {
+		muki = (Block::enMuki)(CMath::RandomInt() % 4);
+	}
+
 	//クリック時にアクションを起こすブロックなどは別のクラス。
 	switch( blockType ){
 	case enCube_CraftingTable:
@@ -91,9 +96,6 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 		break;
 	case enCube_BedHead:
 	case enCube_BedLeg:
-		if (muki == Block::enMuki::enNum) {
-			muki = (Block::enMuki)(CMath::RandomInt() % 4);
-		}		
 		block = std::make_unique<Bed>(blockType == enCube_BedHead ? true : false, Block::GetMukiDir(muki));
 		break;
 	default:
@@ -103,7 +105,7 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 
 	//共通情報を使って初期化。
 	const BlockInfo& bInfo = st_blockInfo.GetInfo( blockType );
-	block->Init( &bInfo );
+	block->Init( &bInfo, muki );
 
 	return std::move( block );
 }
