@@ -23,9 +23,9 @@ namespace {
 	const float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
 	const float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;						//プレイヤーの移動速度。
-	const float move = 1.0f;							//移動速度(基本的には触らない)。
+	const float move = 1.5f;							//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
-	const float doubleClickRug = 0.2f;					//ダブルクリック判定になる間合い。
+	const float doubleClickRug = 0.1f;					//ダブルクリック判定になる間合い。
 	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
@@ -196,7 +196,6 @@ void Player::KeyBoardInput()
 	Dash();		//走る処理。
 
 	//各キー入力により移動量を計算
-	//if (!m_doubleCilckFlag) {
 	if (GetKeyInput('W')) {
 		stickL.y = -move;
 	}
@@ -280,12 +279,12 @@ void Player::Dash()
 			m_doubleClickTimer += GetEngine().GetRealDeltaTimeSec();	//タイマーを進める。
 		}
 		if (m_doubleClickTimer <= doubleClickRug) {
-			if (GetKeyDown('W')) {		//走らせる。
+			if (GetKeyDown('W') && m_stamina > 6) {		//走らせる。
 				m_playerState = enPlayerState_run;
 				m_runFlag = true;
 			}
-
-			if (GetKeyUp('W') && m_runFlag) {
+			
+			if ((GetKeyUp('W') || m_stamina <= 6) && m_runFlag) {
 				m_playerState = enPlayerState_idle;		//走るのをやめる。
 				m_doubleClickTimer = 0.f;
 				m_doubleCilckFlag = false;
@@ -300,11 +299,11 @@ void Player::Dash()
 	}
 
 	//Ctrl+W。
-	if (GetKeyInput('W') && GetKeyInput(VK_CONTROL)) {
+	if (GetKeyInput('W') && GetKeyInput(VK_CONTROL) && m_stamina > 6) {
 		m_playerState = enPlayerState_run;
 	}
 	if (m_playerState == enPlayerState_run) {
-		if (GetKeyUp('W') || GetKeyUp(VK_CONTROL)) {
+		if (GetKeyUp('W') || GetKeyUp(VK_CONTROL) || m_stamina <= 7) {
 			m_playerState = enPlayerState_move;
 		}
 	}
