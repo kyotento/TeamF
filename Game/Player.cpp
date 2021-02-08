@@ -92,6 +92,11 @@ bool Player::Start()
 	m_damageCollision->SetClass(this);					//クラスのポインタを取得。
 	m_damageCollision->SetIsHurtCollision(true);		//自分から判定をとらない。
 
+	//ブロック破壊モデル
+	m_blockCrackModel.Init(L"Resource/modelData/crack.tkm");
+	m_blockCrackModel.SetIsDraw(false);
+	//m_blockCrackModel.InitPostDraw(PostDrawModelRender::enBlendMode::enAlpha);
+
 	//TODO: デバッグ専用
 	PlayerInventoryFiler pIFiler;
 	bool isLoad = pIFiler.LoadPlayerInventory();
@@ -718,7 +723,21 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。ここもInputに変えた。
 	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
-		m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;					//破壊。
+		const Block* block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;//破壊。
+		//ブロック破壊モデル表示
+		if (block) {
+			m_blockCrackModel.SetIsDraw(true);
+			m_blockCrackModel.SetPos(block->GetModelPos());
+			m_blockCrackModel.RefreshWorldMatrix();//モーションブラーが出ないように更新
+			m_blockCrackModel.GetSkinModel().FindMaterialSetting(
+				[&](MaterialSetting* mat) {
+				mat->SetUVOffset({-0.1f*((int)(block->GetHP_Ratio()*10.0f)),0.0f});//UVアニメーション
+				}
+			);
+		}
+		else {
+			m_blockCrackModel.SetIsDraw(false);
+		}
 	}
 	m_attackFlag = false;
 }
@@ -746,6 +765,9 @@ void Player::DecideCanDestroyBlock()
 	else {
 		m_isBlockDestruction = false;
 		m_timerBlockDestruction = timeBlockDestruction;
+
+		//ブロック破壊モデル非表示
+		m_blockCrackModel.SetIsDraw(false);
 	}
 }
 
