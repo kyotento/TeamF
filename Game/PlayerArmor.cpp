@@ -1,8 +1,16 @@
 #include "stdafx.h"
 #include "PlayerArmor.h"
+#include "Player.h"
+#include "Item.h"
+#include "ItemStack.h"
 
 namespace {
 	static const wchar_t* ARMOR_FILE_PATH_ARRAY[4][4 + 1];
+
+	const int HelmetSlots = 36;
+	const int ChestPlateSlots = 37;
+	const int LegggingsSlots = 38;
+	const int BootsSlots = 39;
 }
 
 PlayerArmor::PlayerArmor()
@@ -27,10 +35,10 @@ PlayerArmor::PlayerArmor()
 	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Goiden][enArmorPart_Boots] = L"Resource/modelData/armor/Golden_Boots.tkm";
 
 	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_Helmet] = L"Resource/modelData/armor/Diamond_Helmet.tkm";
-	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_ChestPlate] = L"Resource/modelData/armor/Diamond_Helmet.tkm";
-	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_ChestPlate2] = L"Resource/modelData/armor/Diamond_Helmet.tkm";
-	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_Leggings] = L"Resource/modelData/armor/Diamond_Helmet.tkm";
-	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_Boots] = L"Resource/modelData/armor/Diamond_Helmet.tkm";
+	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_ChestPlate] = L"Resource/modelData/armor/Diamond_ChestPlate.tkm";
+	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_ChestPlate2] = L"Resource/modelData/armor/Diamond_ChestPlate2.tkm";
+	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_Leggings] = L"Resource/modelData/armor/Diamond_leggings.tkm";
+	ARMOR_FILE_PATH_ARRAY[enArmorMaterial_Diamond][enArmorPart_Boots] = L"Resource/modelData/armor/Diamond_Boots.tkm";
 }
 
 
@@ -109,8 +117,47 @@ void PlayerArmor::SetArmorPos()
 //モデルの素材変更。
 void PlayerArmor::MaterialChange()
 {
+	//装備中のアイテムIDを取得。
+	auto helmetId = m_player->GetInventory().GetNullableItem(HelmetSlots).GetID();
+	auto chestPlateId = m_player->GetInventory().GetNullableItem(ChestPlateSlots).GetID();
+	auto leggingsId = m_player->GetInventory().GetNullableItem(LegggingsSlots).GetID();
+	auto bootsId = m_player->GetInventory().GetNullableItem(BootsSlots).GetID();
+
+	//ID違ってたら。
+	if (m_helmetId != helmetId && helmetId != enCube_None)
+	{
+		//防具変更。
+		m_helmetId = helmetId;
+		MaterialChangeHelmet(m_helmetId);
+
+	}
+
+	if (m_chestPlateId != chestPlateId && chestPlateId != enCube_None)
+	{
+		//防具変更。
+		m_chestPlateId = chestPlateId;
+		MaterialChangeChestPlate(m_chestPlateId);
+
+	}
+
+	if (m_leggingsId != leggingsId && leggingsId != enCube_None)
+	{
+		//防具変更。
+		m_leggingsId = leggingsId;
+		MaterialChangeLeggings(m_leggingsId);
+
+	}
+
+	if (m_bootsId != bootsId && bootsId != enCube_None)
+	{
+		//防具変更。
+		m_bootsId = bootsId;
+		MaterialChangeBoots(m_bootsId);
+
+	}
+
 	//todo プレイヤーから防具情報を取得する。
-	ArmorMaterial helmet = enArmorMaterial_Leather;
+	/*ArmorMaterial helmet = enArmorMaterial_Leather;
 	ArmorMaterial chestPlate = enArmorMaterial_Leather;
 	ArmorMaterial leggings = enArmorMaterial_Leather;
 	ArmorMaterial boots = enArmorMaterial_Leather;
@@ -122,8 +169,58 @@ void PlayerArmor::MaterialChange()
 	m_skinModelArmor[4]->Init(ARMOR_FILE_PATH_ARRAY[leggings][enArmorPart_Leggings]);
 	m_skinModelArmor[5]->Init(ARMOR_FILE_PATH_ARRAY[leggings][enArmorPart_Leggings]);
 	m_skinModelArmor[6]->Init(ARMOR_FILE_PATH_ARRAY[boots][enArmorPart_Boots]);
-	m_skinModelArmor[7]->Init(ARMOR_FILE_PATH_ARRAY[boots][enArmorPart_Boots]);
+	m_skinModelArmor[7]->Init(ARMOR_FILE_PATH_ARRAY[boots][enArmorPart_Boots]);*/
 	
+}
+
+void PlayerArmor::MaterialChangeHelmet(unsigned itemId)
+{
+	DeleteGO(m_skinModelArmor[0]);
+	m_skinModelArmor[0] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[0]->SetScale(m_scale);
+	m_skinModelArmor[0]->Init(Item::GetItem(itemId).GetModelPath().c_str());
+}
+
+void PlayerArmor::MaterialChangeChestPlate(unsigned itemId)
+{
+	DeleteGO(m_skinModelArmor[1]);
+	DeleteGO(m_skinModelArmor[2]);
+	DeleteGO(m_skinModelArmor[3]);
+	m_skinModelArmor[1] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[1]->SetScale(m_scale);
+	m_skinModelArmor[1]->Init(Item::GetItem(itemId).GetModelPath().c_str());
+	std::filesystem::path path = Item::GetItem(itemId+1).GetModelPath();
+	m_skinModelArmor[2] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[2]->SetScale(m_scale);
+	m_skinModelArmor[2]->Init(path.c_str());
+	m_skinModelArmor[3] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[3]->SetScale(m_scale);
+	m_skinModelArmor[3]->Init(path.c_str());
+	
+}
+
+void PlayerArmor::MaterialChangeLeggings(unsigned itemId)
+{
+	DeleteGO(m_skinModelArmor[4]);
+	DeleteGO(m_skinModelArmor[5]);
+	m_skinModelArmor[4] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[4]->SetScale(m_scale);
+	m_skinModelArmor[4]->Init(Item::GetItem(itemId).GetModelPath().c_str());
+	m_skinModelArmor[5] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[5]->SetScale(m_scale);
+	m_skinModelArmor[5]->Init(Item::GetItem(itemId).GetModelPath().c_str());
+}
+
+void PlayerArmor::MaterialChangeBoots(unsigned itemId)
+{
+	DeleteGO(m_skinModelArmor[6]);
+	DeleteGO(m_skinModelArmor[7]);
+	m_skinModelArmor[6] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[6]->SetScale(m_scale);
+	m_skinModelArmor[6]->Init(Item::GetItem(itemId).GetModelPath().c_str());
+	m_skinModelArmor[7] = NewGO<GameObj::CSkinModelRender>();
+	m_skinModelArmor[7]->SetScale(m_scale);
+	m_skinModelArmor[7]->Init(Item::GetItem(itemId).GetModelPath().c_str());
 }
 
 //モデルの描画をする。
@@ -140,3 +237,4 @@ void PlayerArmor::IsDraw(bool draw)
 		}
 	}
 }
+

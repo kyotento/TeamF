@@ -132,6 +132,14 @@ public:
 	}
 
 	/// <summary>
+	/// エンティティの有効切替時の処理
+	/// </summary>
+	/// <param name="enable"></param>
+	void SetEnableEntityInner(bool enable)override {
+		//プレイヤーは無効化されないでしょ
+	}
+
+	/// <summary>
 	/// リスポーン地点の変更
 	/// </summary>
 	/// <param name="pos">新しいリスポーン地点の座標</param>

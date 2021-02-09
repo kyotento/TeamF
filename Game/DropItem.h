@@ -34,6 +34,15 @@ public:
 		return m_collision.GetPos();
 	}
 
+	/// <summary>
+	/// エンティティの有効切替時の処理
+	/// </summary>
+	/// <param name="enable"></param>
+	void SetEnableEntityInner(bool enable)override {
+		m_collision.GetCollision().SetEnable(enable);
+		m_model.SetEnable(enable);
+	}
+
 	bool Start() override;
 	void Update() override;
 

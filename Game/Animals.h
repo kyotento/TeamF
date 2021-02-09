@@ -60,6 +60,15 @@ public:
 		m_characonPos = pos;
 	}
 
+	/// <summary>
+	/// エンティティの有効切替時の処理
+	/// </summary>
+	/// <param name="enable"></param>
+	void SetEnableEntityInner(bool enable)override{
+		m_damageCollision->SetEnable(enable);
+		m_skinModelRender->SetEnable(enable);
+	}
+
 	//スケールの指定。
 	void SetScale(const CVector3& scale)
 	{
