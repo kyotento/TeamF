@@ -56,6 +56,11 @@ public:
 		return m_item.GetToolID();
 	}
 
+	//! @brief このアイテムのツールレベル(木:1～ダイヤ:5)を取得
+	int GetToolLevel() const {
+		return m_item.GetToolLevel();
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_item.GetStackLimit();

@@ -8,7 +8,6 @@ DropItem::DropItem() : Entity(enEntity_None, true) {}
 
 DropItem * DropItem::CreateDropItem( World * world, std::unique_ptr<ItemStack>&& item ){
 	DropItem* drop = world->CreateEntity<DropItem>();
-	drop->SetItemStack( std::move(item) );
 	return drop;
 }
 
@@ -24,6 +23,10 @@ void DropItem::SetItemStack( std::unique_ptr<ItemStack>&& item ){
 
 bool DropItem::Start()
 {
+	SuicideObj::CSE* se;
+	se = NewGO<SuicideObj::CSE>(L"Resource/soundData/block/blockdestroy.wav");
+	se->SetVolume(1.0f);
+	se->Play();
 	//スケールはブロックの4分の1。
 	const CVector3 myScale = CVector3::One() * 0.25f;
 
@@ -79,7 +82,10 @@ void DropItem::Update()
 	const float catchLength = Block::WIDTH;
 
 	if( diff.LengthSq() < catchLength * catchLength ){
-
+		SuicideObj::CSE* se;
+		se = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/get.wav");
+		se->SetVolume(0.3f);
+		se->Play();
 		player->GetInventory().AddItem( m_itemStack );
 
 		if( m_itemStack == nullptr ){

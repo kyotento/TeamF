@@ -138,6 +138,12 @@ public:
 	void SetRespawnPos(const CVector3& pos) {
 		m_respawnPos = pos;
 	}
+	/// <summary>
+	/// リスポーン地点の取得
+	/// </summary>
+	const CVector3& GetRespawnPos() {
+		return m_respawnPos;
+	}
 
 	/// <summary>
 	/// HPを取得する。
@@ -243,11 +249,15 @@ public:
 	/// </summary>
 	void CloseGUI();
 
+
 	/// <summary>
-	/// 被ダメージ
+	/// 被ダメージ。
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
-	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false);
+	/// <param name="knockBackDirection">ノックバックベクトル</param>
+	/// <param name="isAttacked"></param>
+	/// <param name="ignoreDefence">防御力を無視するか</param>
+	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false, bool ignoreDefence = false);
 
 	/// <summary>
 	/// ゲームのインスタンスを設定する。
@@ -403,6 +413,11 @@ private:
 
 	void Stamina();
 
+	/// <summary>
+	/// 空腹時のダメージ。
+	/// </summary>
+	void HungryDamage();
+
 	void Shoulder();
 	/// <summary>
 	/// スペースをダブルクリックしたかどうか。
@@ -484,7 +499,11 @@ private:
 	float m_knoceBackY = 1.f;	//ノックバックY座標。
 
 	const wchar_t* m_damageName;		//ダメージ。
-	const wchar_t* m_attackName;		//攻撃
+	const wchar_t* m_attackName;		//攻撃。
 	const wchar_t* m_putName;			//物を置く。
+	const wchar_t* m_walkName;			//歩く。
+	const wchar_t* m_strikeName;		//叩く。
+
+	SuicideObj::CSE* m_walk;
 };
 

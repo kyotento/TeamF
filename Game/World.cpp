@@ -337,7 +337,7 @@ void World::ChunkCulling( Chunk& chunk ){
 	} );
 }
 
-const Block* World::DamegeBlock( const CVector3& pos ){
+const Block* World::DamegeBlock( const CVector3& pos, EnTool toolType, int toolLevel ){
 	//タイマーを0にする
 	m_timer = 0.0f;
 	int x = (int)std::floorf( pos.x );
@@ -359,8 +359,13 @@ const Block* World::DamegeBlock( const CVector3& pos ){
 	{
 		return nullptr;
 	}
-	//ブロックのHPを減らす、とりあえず1入れてる
-	m_block->ReduceHP(1);
+	//ダメージを算出
+	int damege = 1;
+	if (m_block->GetUsefulTool() == toolType) {
+		damege = toolLevel*2;
+	}
+	//ブロックのHPを減らす
+	m_block->ReduceHP(damege);
 	//ブロックのHPが0以上ならこれで終わり
 	if (m_block->GetHP() > 0)
 	{
@@ -378,7 +383,7 @@ const Block* World::DamegeBlock( const CVector3& pos ){
 	//ブロックをポップ。
 	{
 		//ドロップアイテムを作成。
-		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
+		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetDropItem() );
 		CVector3 addPos = CVector3::Zero();
 		if (random() % 2 > 0) {
 			addPos.x += rand() % randomDrop;

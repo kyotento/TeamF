@@ -92,3 +92,6 @@ obj/
 
 #file of playerinventory
 *.cag
+
+#file of respawn point
+*.rspwn
