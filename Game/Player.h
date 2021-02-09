@@ -434,6 +434,8 @@ private:
 	/// <returns>doubleClickFlag</returns>
 	bool SpaceDoubleClick();
 
+	void Defence();
+
 	bool m_isJump = false;					//飛んでいるか。
 	bool m_doubleCilckFlag = false;			//ダブルクリックフラグ。
 	bool m_runFlag = false;					//走っているか。
