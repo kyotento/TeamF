@@ -22,23 +22,35 @@ protected:
 
 	}
 	//アイテムをドロップする確率を設定する。
-	void SetChanceDropping(int chanceDropping)
+	void SetChanceDropping(int chanceDropping, bool isRare = false)
 	{
 		//アイテムをドロップさせる確率は1～100％。
 		if (chanceDropping > 0 && chanceDropping < 101)
 		{
-			m_chanceDropping = chanceDropping;
+			if (isRare) {
+				m_rareChanceDropping = chanceDropping;
+			}
+			else {
+				m_chanceDropping = chanceDropping;
+			}
 		}
 	}
 	//ドロップするアイテムを設定する。
-	void SetDropItemId(int itemId)
+	void SetDropItemId(int itemId, bool isRare = false)
 	{
 		if (itemId > enCube_None && itemId < enAllItem_Num)
 		{
-			m_itemId = itemId;
+			if (isRare) {
+				m_rareItemId = itemId;
+			}
+			else {
+				m_itemId = itemId;
+			}
 		}
 	}
 	int m_itemId = enCube_None;		//ドロップするアイテムの種類、Noneだったらドロップしない。
 	int m_chanceDropping = 0;		//アイテムをドロップさせる確率、1～100％。
+	int m_rareItemId = enCube_None;
+	int m_rareChanceDropping = 0;
 };
 

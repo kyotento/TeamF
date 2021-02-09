@@ -18,10 +18,21 @@ void Mob::DroppingItem(CVector3 pos)
 	if (m_itemId != enCube_None && m_chanceDropping > 0)
 	{
 		int rand = random() % 100;
-		if (rand < m_chanceDropping) 
+		int dropItemId = enCube_None;
+
+		if (m_rareItemId != enCube_None && rand < m_rareChanceDropping)
 		{
+			//レアドロップ
+			dropItemId = m_rareItemId;
+		}
+		else if (rand < m_chanceDropping)
+		{
+			dropItemId = m_itemId;
+		}
+
+		if (dropItemId != enCube_None) {
 			//ドロップアイテムを作成。
-			DropItem* dropItem = DropItem::CreateDropItem(m_world, m_itemId);
+			DropItem* dropItem = DropItem::CreateDropItem(m_world, dropItemId);
 			CVector3 addPos = CVector3::Zero();
 			if (random() % 2 > 0) {
 				addPos.x += random() % randomDrop;
