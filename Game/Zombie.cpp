@@ -43,8 +43,8 @@ bool Zombie::Start()
 	m_attackPow = 3;			//攻撃力の設定。
 	m_knockBack = 0.5f;			//ノックバック倍率。
 
-	m_damageVoice = L"Resource/soundData/enemy/cat1.wav";
-	m_deathVoice = L"Resource/soundData/enemy/cat2.wav";
+	m_damageVoice = L"Resource/soundData/enemy/zombiedamage.wav";
+	m_deathVoice = L"Resource/soundData/enemy/zombiedeath.wav";
 
 	SetDropItemId(enCube_CoalOre);
 	SetChanceDropping(100);

@@ -82,8 +82,8 @@ private:
 	std::unique_ptr <ZombieGenerator> m_zombieGenerator;//ゾンビツクール。
 	std::unique_ptr <Menu> m_menu;						//メニュー。
 	std::unique_ptr <CowGenerator> m_cowGenerator;
-	SuicideObj::CSE* m_bgm;
 
+	SuicideObj::CSE* m_bgm = nullptr;
 	Config* m_config = nullptr;
 
 	const wchar_t* m_bgmName;

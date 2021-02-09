@@ -140,6 +140,7 @@ void Block::CalcAddLight(bool isDestroy) {
 
 	//”j‰óŽž
 	if (isDestroy) {
+
 		//TODO ‚¢‚Á‚©‚¢‚Å‚¢‚¢?
 		for (int sb = 0; sb < 6; sb++) {
 			//Žü‚è‚©‚çŒõ‚ð“`”À‚³‚¹‚é
