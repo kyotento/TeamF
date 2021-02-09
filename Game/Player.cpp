@@ -33,6 +33,8 @@ namespace {
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
+	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
+
 	bool isWalkFlag = false;
 	bool isStrikeFlag = true;
 	bool isBlockDestroy = false;
@@ -121,7 +123,10 @@ bool Player::Start()
 			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
 			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
 			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
-			enCube_Chest, enCube_BedLeg
+			enCube_Chest, enCube_BedHead,
+			enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
+			enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
+			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -152,6 +157,7 @@ bool Player::Start()
 	//アーマークラス生成。
 	m_playerArmor = NewGO<PlayerArmor>();
 	m_playerArmor->SetPlayerSkinModel(m_skinModelRender);
+	m_playerArmor->SetPlayer(this);
 
 	//タイマーに値を入れておく
 	m_timerBlockDestruction = timeBlockDestruction;
@@ -166,6 +172,10 @@ void Player::Update()
 	}
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
+	}
+	//EscMenuが開かれているとき処理をしない。
+	if (m_game->GetIsEscMenu()) {
+		return;
 	}
 
 	//骨を取得。
@@ -192,6 +202,8 @@ void Player::Update()
 			FlyTheRay();
 			//スタミナ処理。
 			Stamina();
+			//空腹ダメージ。
+			HungryDamage();
 			//ノックバック。
 			KnockBack();
 
@@ -766,8 +778,19 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。ここもInputに変えた。
 	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
-		const Block* block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;//破壊。
-		//ブロック破壊モデル表示
+		auto& item = m_inventory.GetItem(m_selItemNum - 1);
+		const Block* block = nullptr;
+		
+		//破壊。
+		//アイテムを持っているかで分岐
+		if (item) {
+			block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH, (EnTool)item->GetToolID(), item->GetToolLevel());
+		}
+		else {
+			block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH);
+		}
+
+		//ひび割れモデル表示
 		if (block) {
 			m_blockCrackModel.SetIsDraw(true);
 			m_blockCrackModel.SetPos(block->GetModelPos());
@@ -860,14 +883,20 @@ void Player::FlyTheRay()
 }
 
 //被ダメ－ジ。
-void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAttacked)
+void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAttacked, bool ignoreDefence)
 {
 	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
-		//防御力の計算。
-		float damage = AttackPow * (1 - m_defensePower * 0.04);
+
+		float damage = AttackPow;		//被ダメ。
+
+		if (!ignoreDefence) {
+			//防御力の計算。
+			damage = AttackPow * (1 - m_defensePower * 0.04);
+		}
 		m_hp -= damage;
+
 		//HPを0未満にしない。
-		if (m_hp <= 0) {			
+		if (m_hp < 1) {			
 			m_hp = 0;
 		}
 
@@ -924,9 +953,10 @@ void Player::Death()
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 			mat->SetAlbedoScale({ CVector4::Red() });
 		});
-		//死亡時の画像。
+		//死亡時のUI。
 		if (m_playerDeath == nullptr) {
 			m_playerDeath = NewGO<PlayerDeath>();
+			m_playerDeath->SetExp(m_exp);
 
 			//死亡中一度だけ実行
 			{
@@ -1052,6 +1082,22 @@ void Player::Stamina()
 		}
 	}
 }
+
+//空腹時のダメージ。
+void Player::HungryDamage()
+{
+	if (m_stamina <= 0 && m_hp > 0) {		//スタミナが０のとき。
+		hungryDamageTimer++;
+		if (hungryDamageTimer >= 60) {
+			TakenDamage(1, CVector3::Zero(), false, true);
+			hungryDamageTimer = 0;
+		}
+	}
+	else{
+		hungryDamageTimer = 0;
+	}
+}
+
 //肩
 void Player::Shoulder()
 {
@@ -1067,6 +1113,7 @@ void Player::Shoulder()
 		upDownY = 0;
 	}
 }
+
 //todo Debug専用。
 void Player::Test()
 {

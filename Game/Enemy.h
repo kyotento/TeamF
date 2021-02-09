@@ -3,6 +3,7 @@
 #include "../physics/character/CCharacterController.h"
 #include "GameMode.h"
 #include "Mob.h"
+#include "Game.h"
 class World;
 class Enemy : public Mob
 {
@@ -61,6 +62,15 @@ public:
 		m_position = pos;
 		m_characon.SetPosition( pos );
 		m_characonPos = pos;
+	}
+
+	/// <summary>
+	/// エンティティの有効切替時の処理
+	/// </summary>
+	/// <param name="enable"></param>
+	void SetEnableEntityInner(bool enable)override {
+		m_damageCollision->SetEnable(enable);
+		m_skinModelRender->SetEnable(enable);
 	}
 
 	//エネミーのアニメーション。
@@ -138,6 +148,7 @@ protected:
 	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
 	Player* m_player = nullptr;									//プレイヤー。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+	Game* m_game = nullptr;										//Game。
 
 };
 

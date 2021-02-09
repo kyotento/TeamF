@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Config.h"
-//#include "Title.h"
 #include "Game.h"
 
 Config::Config()
@@ -107,14 +106,6 @@ void Config::ClickProcess()
 				m_game->SetChunkRange(m_chunk);
 				DeleteGO(this);
 			}
-			//if (m_backclass == enTitle) {
-			//	//タイトルのボタンを生成する。
-			//	m_title->NewTitleSelect();
-			//	SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
-			//	SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
-			//	m_game->SetChunkRange(m_chunk);
-			//	DeleteGO(this);
-			//}
 		}
 		//描画距離を大きくし過ぎると、重過ぎるため上限を設定。
 		if (m_chunk <= 1) {

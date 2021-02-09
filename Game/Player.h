@@ -132,6 +132,14 @@ public:
 	}
 
 	/// <summary>
+	/// エンティティの有効切替時の処理
+	/// </summary>
+	/// <param name="enable"></param>
+	void SetEnableEntityInner(bool enable)override {
+		//プレイヤーは無効化されないでしょ
+	}
+
+	/// <summary>
 	/// リスポーン地点の変更
 	/// </summary>
 	/// <param name="pos">新しいリスポーン地点の座標</param>
@@ -250,11 +258,15 @@ public:
 	/// </summary>
 	void CloseGUI();
 
+
 	/// <summary>
-	/// 被ダメージ
+	/// 被ダメージ。
 	/// </summary>
 	/// <param name="AttackePow">攻撃力</param>
-	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false);
+	/// <param name="knockBackDirection">ノックバックベクトル</param>
+	/// <param name="isAttacked"></param>
+	/// <param name="ignoreDefence">防御力を無視するか</param>
+	void TakenDamage(int AttackePow, CVector3 knockBackDirection = CVector3::Zero(),bool isAttacked = false, bool ignoreDefence = false);
 
 	/// <summary>
 	/// ゲームのインスタンスを設定する。
@@ -409,6 +421,11 @@ private:
 	void IsDraw();
 
 	void Stamina();
+
+	/// <summary>
+	/// 空腹時のダメージ。
+	/// </summary>
+	void HungryDamage();
 
 	void Shoulder();
 	/// <summary>

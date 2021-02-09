@@ -47,8 +47,12 @@ bool Zombie::Start()
 	m_damageVoice = L"Resource/soundData/enemy/zombiedamage.wav";
 	m_deathVoice = L"Resource/soundData/enemy/zombiedeath.wav";
 
+	//アイテムドロップ
 	SetDropItemId(enCube_CoalOre);
 	SetChanceDropping(100);
+	//レアドロップ
+	SetDropItemId(enCube_WoGBlock, true);
+	SetChanceDropping(5, true);
 
 	return true;
 }
@@ -59,6 +63,12 @@ void Zombie::Update()
 	if (m_position.y <= 3.f) {
 		return;
 	}
+
+	//EscMenuが開いているとき更新を止める。
+	if (m_game->GetIsEscMenu()) {
+		return;
+	}
+
 	//エネミーが存在しているときのみ。
 	if (m_enemyState != enEnemy_death) {
 		Tracking();				//プレイヤーを追跡する処理。

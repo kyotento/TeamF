@@ -25,6 +25,10 @@ Enemy::Enemy(EnEntity enEntity) : Mob(enEntity)
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
+	//Gameクラスのインスタンスを取得。
+	if (m_game == nullptr) {
+		m_game = FindGO<Game>();
+	}
 }
 
 Enemy::~Enemy()

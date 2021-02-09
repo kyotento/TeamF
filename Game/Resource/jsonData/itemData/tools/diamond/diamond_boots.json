@@ -1,0 +1,8 @@
+{
+	"id": "enItem_Diamond_Boots",
+	"name": "ダイヤの靴",
+	"sprite": "spriteData/armor/Diamond_Boots.dds",
+	"model": "modelData/armor/Diamond_Boots.tkm",
+	"stack_limit": 1,
+	"tool_level": 5
+}
