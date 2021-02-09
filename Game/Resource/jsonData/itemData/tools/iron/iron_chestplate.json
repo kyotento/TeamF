@@ -1,7 +1,7 @@
 {
 	"id": "enItem_Iron_ChestPlate",
 	"name": "鉄の鎧",
-	"sprite": "spriteData/tools/Iron_Sword.dds",
+	"sprite": "spriteData/armor/Iron_ChestPlate.dds",
 	"model": "modelData/armor/Iron_ChestPlate.tkm",
 	"stack_limit": 1,
 	"tool_level": 5

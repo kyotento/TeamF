@@ -1,7 +1,7 @@
 {
 	"id": "enItem_Gold_Leggings",
 	"name": "金のズボン",
-	"sprite": "spriteData/tools/Gold_Sword.dds",
+	"sprite": "spriteData/armor/Golden_leggings.dds",
 	"model": "modelData/armor/Golden_leggings.tkm",
 	"stack_limit": 1,
 	"tool_level": 5
