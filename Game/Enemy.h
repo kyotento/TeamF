@@ -3,6 +3,7 @@
 #include "../physics/character/CCharacterController.h"
 #include "GameMode.h"
 #include "Mob.h"
+#include "Game.h"
 class World;
 class Enemy : public Mob
 {
@@ -138,6 +139,7 @@ protected:
 	CRayTracingModelRender m_raytraceModel;						//レイトレモデル。
 	Player* m_player = nullptr;									//プレイヤー。
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
+	Game* m_game = nullptr;										//Game。
 
 };
 

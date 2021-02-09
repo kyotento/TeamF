@@ -154,6 +154,10 @@ void Player::Update()
 	if (m_gameMode == nullptr) {
 		m_gameMode = FindGO<GameMode>(L"gamemode");
 	}
+	//EscMenu‚ªŠJ‚©‚ê‚Ä‚¢‚é‚Æ‚«ˆ—‚ð‚µ‚È‚¢B
+	if (m_game->GetIsEscMenu()) {
+		return;
+	}
 
 	//œ‚ðŽæ“¾B
 	m_headBone = m_skinModelRender->FindBone(L"Bone002");
