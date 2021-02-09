@@ -233,6 +233,9 @@ void Player::Update()
 	IsDraw();
 
 	Test();
+
+	//防御力きめるー。
+	Defence();
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
@@ -1128,5 +1131,26 @@ void Player::Test()
 	}
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
 		m_exp += 0.3f;
+	}
+}
+
+void Player::Defence()
+{
+	m_defensePower = 0;
+	if (m_inventory.GetNullableItem(36).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(36).get()->GetToolLevel();
+	}
+	if (m_inventory.GetNullableItem(37).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(37).get()->GetToolLevel();
+	}
+	if (m_inventory.GetNullableItem(38).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(38).get()->GetToolLevel();
+	}
+	if (m_inventory.GetNullableItem(39).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(39).get()->GetToolLevel();
 	}
 }
