@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "###",
+      "###",
+      "###"
+    ],
+    "key": {
+      "#": "enItem_Iron_Ingot"
+    },
+    "result": "enCube_IronOre"
+  }

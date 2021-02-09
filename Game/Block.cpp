@@ -38,6 +38,7 @@ Block::~Block(){
 	if (m_bInfo->id != enCube_None) {
 		m_bInfo = &BlockInfo::NONE_BLOCK;
 		CalcAddLight(true);
+
 	}
 }
 
