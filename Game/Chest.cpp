@@ -17,10 +17,20 @@ Chest::Chest() : m_inventory(27)
 
 Chest::~Chest()
 {
+	
+}
+
+bool Chest::OnClick(Player * player) {
+	player->OpenGUI(std::make_unique<GUI::ChestInventory>(player->GetInventory(),m_inventory));
+	return true;
+}
+
+void Chest::GenerateDropItem()
+{
 	for (int i = 0; i < 27; i++) {
 		auto item = m_inventory.TakeAllItem(i);
 		if (item) {
-			CVector3 pos =  GetModelPos();
+			CVector3 pos = GetModelPos();
 			pos.y += Block::WIDTH;
 			DropItem* drop = DropItem::CreateDropItem(m_sWorld, std::move(item));
 			CVector3 addPos = CVector3::Zero();
@@ -40,9 +50,4 @@ Chest::~Chest()
 			drop->SetPos(pos + addPos);
 		}
 	}
-}
-
-bool Chest::OnClick(Player * player) {
-	player->OpenGUI(std::make_unique<GUI::ChestInventory>(player->GetInventory(),m_inventory));
-	return true;
 }

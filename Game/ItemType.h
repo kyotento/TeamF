@@ -62,6 +62,7 @@ enum EnTool
 	enTool_Plate,		//プレート。
 	enTool_Leggings,	//レギンス(ズボン)。
 	enTool_Boots,		//ブーツ。
+	enTool_Foods,		//食料。
 
 	enTool_Num,			//属性の数。
 };

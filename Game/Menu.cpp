@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Config.h"
 #include "PlayerInventoryFiler.h"
+#include "RespawnPointFiler.h"
 #include "Player.h"
 
 Menu::Menu()
@@ -86,18 +87,27 @@ void Menu::ClickProcess()
 		}
 		else if (Click() == enMenu_GameEnd) {
 			se->Play();
+
 			Player* player = FindGO<Player>(L"player");
 			if (player != nullptr)
 			{
 				//インベントリを保存する。
 				PlayerInventoryFiler pIFiler;
 				pIFiler.SavePlayerInventory(player->GetInventory());
+
+				//リスポーン地点を保存
+				RespawnPointFiler rpFiler;
+				rpFiler.Save(player->GetRespawnPos());
 			}
+
 			World* world = FindGO<World>();
 			if (world != nullptr)
 			{
+				//チャンクを保存
 				world->SaveChunk();
 			}
+
+			//ゲームループを抜ける
 			GetEngine().BreakGameLoop();
 		}
 		else if (Click() == enMenu_Config) {

@@ -366,10 +366,19 @@ const Block* World::DamegeBlock( const CVector3& pos ){
 	{
 		return m_block;
 	}
+	//ブロックが破壊された。
+	else {
+		//ブロックがチェストだったら。
+		if (m_block->GetBlockType() == enCube_Chest)
+		{
+			//ドロップアイテムを生成する。
+			m_block->DestroyedPlayer();
+		}
+	}
 	//ブロックをポップ。
 	{
 		//ドロップアイテムを作成。
-		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
+		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetDropItem() );
 		CVector3 addPos = CVector3::Zero();
 		if (random() % 2 > 0) {
 			addPos.x += rand() % randomDrop;

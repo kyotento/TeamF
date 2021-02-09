@@ -18,6 +18,7 @@
 #include"Animals.h"
 #include "PlayerArmor.h"
 #include "PlayerInventoryFiler.h"
+#include "RespawnPointFiler.h"
 #include "NullableItemStack.h"
 
 namespace {
@@ -34,6 +35,8 @@ namespace {
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
 
+	bool m_isWalkFlag = false;
+	bool m_isStrikeFlag = true;
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
@@ -62,11 +65,20 @@ Player::~Player()
 	//インベントリを保存する。
 	PlayerInventoryFiler pIFiler;
 	pIFiler.SavePlayerInventory(m_inventory);
+
+	//リスポーン地点を保存
+	RespawnPointFiler rpFiler;
+	rpFiler.Save(GetRespawnPos());
 }
 
 #include "ItemStack.h"
 bool Player::Start()
 {
+	//リスポーン地点の設定
+	RespawnPointFiler rpFiler;
+	rpFiler.Load(m_respawnPos);
+	m_position = m_respawnPos;
+
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelRender->Init(L"Resource/modelData/player.tkm", m_animationClip, enAnimationClip_Num);
@@ -78,6 +90,8 @@ bool Player::Start()
 	m_damageName = L"Resource/soundData/player/damage.wav";
 	m_attackName = L"Resource/soundData/player/attack.wav";
 	m_putName = L"Resource/soundData/player/put.wav";
+	m_walkName = L"Resource/soundData/player/walk.wav";
+	m_strikeName = L"Resource/soundData/player/strike.wav";
 	//キャラコンの初期化。
 	const float characonRadius = 50.f;					//キャラコンの半径。
 	const float characonHeight = 160.f;					//キャラコンの高さ。
@@ -108,7 +122,7 @@ bool Player::Start()
 			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
 			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
 			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
-			enCube_Chest, enCube_BedHead
+			enCube_Chest, enCube_BedLeg
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -387,6 +401,21 @@ void Player::Move()
 	if (m_playerState != enPlayerState_run && m_playerState != enPlayerState_KnockBack) {
 		if (stickL.Length() > 0.001f) {
 			m_playerState = enPlayerState_move;
+			if (!m_isWalkFlag && m_characon.IsOnGround()) {
+				//BGM
+				m_walk = NewGO<SuicideObj::CSE>(m_walkName);
+				m_walk->SetVolume(0.25f);
+				m_walk->Play();
+				m_isWalkFlag = true;
+			}
+			else if (!m_characon.IsOnGround())
+			{
+
+			}
+			else if (!m_walk->GetIsPlaying())
+			{
+				m_isWalkFlag = false;
+			}
 		}
 		else {
 			m_playerState = enPlayerState_idle;
@@ -557,10 +586,6 @@ void Player::Attack()
 {
 	
 	if (GetKeyDown(VK_LBUTTON)) {
-		SuicideObj::CSE* se;
-		se = NewGO<SuicideObj::CSE>(m_attackName);
-		se->SetVolume(0.25f);
-		se->Play();
 		//攻撃判定の座標。
 		CVector3 frontAddRot = m_front;			//プレイヤーの向き。
 		CQuaternion rot;						//計算用使い捨て。
@@ -580,11 +605,19 @@ void Player::Attack()
 			if (param.EqualName(L"CEnemy")) {			//名前検索。
 				Enemy* enemy = param.GetClass<Enemy>();
 				enemy->TakenDamage(m_attackPower);
+				SuicideObj::CSE* se;
+				se = NewGO<SuicideObj::CSE>(m_attackName);
+				se->SetVolume(0.25f);
+				se->Play();
 				m_attackFlag = true;
 			}
 			if (param.EqualName(L"CAnimals")) {			//名前検索。
 				Animals* animals = param.GetClass<Animals>();
 				animals->TakenDamage(m_attackPower);
+				SuicideObj::CSE* se;
+				se = NewGO<SuicideObj::CSE>(m_attackName);
+				se->SetVolume(0.25f);
+				se->Play();
 				m_attackFlag = true;
 			}
 		});
@@ -755,6 +788,18 @@ void Player::DecideCanDestroyBlock()
 	//マウス左長押しなら。
 	if (GetKeyInput(VK_LBUTTON))
 	{
+		SuicideObj::CSE* se;
+		se = NewGO<SuicideObj::CSE>(m_strikeName);
+		se->SetVolume(0.25f);
+		if (m_isStrikeFlag)
+		{
+			se->Play();
+			m_isStrikeFlag = false;
+		}
+		else if (!se->GetIsPlaying())
+		{
+			m_isStrikeFlag = true;
+		}
 		//タイマーを+する。
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
@@ -894,7 +939,7 @@ void Player::Death()
 				m_gameCamera->SetRollDeg(CMath::RandomZeroToOne() > 0.5f ? 90.0f : -90.0f, true);
 				//ダメージボイス
 				SuicideObj::CSE* voice;
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/voice/_game_necromancer-oldwoman-death1.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
 				voice->Play();
 
 				for (int i = 0; i < 36; i++) {
@@ -973,13 +1018,13 @@ void Player::Stamina()
 		m_stamina = 21;
 	}
 	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
-	const float maxTimer = 3.0f;
+	const float maxTimer = 1.5f;
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (item == nullptr)
+		if (item == nullptr || item->GetToolID() != enTool_Foods)
 		{
-
+			return;
 		}
 		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。

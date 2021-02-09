@@ -75,6 +75,7 @@
     <ClCompile Include="PlayerArmor.cpp" />
     <ClCompile Include="PairBlock.cpp" />
     <ClCompile Include="PlayerInventoryFiler.cpp" />
+    <ClCompile Include="RespawnPointFiler.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="PlayerArmor.h" />
     <ClInclude Include="PairBlock.h" />
     <ClInclude Include="PlayerInventoryFiler.h" />
+    <ClInclude Include="RespawnPointFiler.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="Utf8ToSjis.h" />
@@ -224,6 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <ImageContentTask Include="Resource\sprite\Chest.png" />
     <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
