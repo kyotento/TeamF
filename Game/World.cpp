@@ -9,6 +9,7 @@
 #include "BlockFactory.h"
 
 namespace {
+	constexpr int ENTITY_DELETE_CHUNK_AREA_OFFSET = 2;//表示チャンク+ENTITY_DELETE_CHUNK_AREA_OFFSETの範囲を超えた場所のエンティティは死ぬ
 	const float timeBlockDurabilityValueRecover = 0.4f;
 	const int randomDrop = Block::WIDTH / 2.5f;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
@@ -58,6 +59,7 @@ void World::PostUpdate(){
 	Player* player = GetPlayer();
 	if( player ){
 		const CVector3 pPosV = player->GetPos() / Block::WIDTH;
+		bool isChunkReload = false;//チャンクの作成or削除したか?
 
 		//チャンク読み込み範囲正方形。
 		IntRect chunkSquare = IntRect::CreateWithCenter(
@@ -66,7 +68,9 @@ void World::PostUpdate(){
 
 		//読み込まれていないチャンクを読み込む。
 		chunkSquare.for_each( [&]( int x, int, int z ){
-			LoadChunk( x, z );
+			if (LoadChunk(x, z)) {
+				isChunkReload = true;
+			}
 		} );
 
 		//範囲外のチャンクを書き出してメモリから消す。
@@ -80,9 +84,39 @@ void World::PostUpdate(){
 				ChunkFiler filer;
 				filer.Write( chunk );
 				itr = m_chunkMap.erase( itr );
+				isChunkReload = true;
 
 			} else{
 				itr++;
+			}
+		}
+
+		//チャンク読み込み範囲内のエンティティのみ有効化
+		if (isChunkReload) {
+			CVector3 min, max;
+			min.x = chunkSquare.minPos.x; min.y = chunkSquare.minPos.y; min.z = chunkSquare.minPos.z;
+			min *= Chunk::WIDTH * Block::WIDTH;
+			max.x = chunkSquare.minPos.x + chunkSquare.edgeLength.x; max.y = chunkSquare.minPos.y + chunkSquare.edgeLength.y; max.z = chunkSquare.minPos.z + chunkSquare.edgeLength.z;
+			max *= Chunk::WIDTH * Block::WIDTH;
+
+			CVector3 minBig = min, maxBig = max;
+			minBig -= Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
+			maxBig += Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
+
+			for (Entity* e : m_entities) {
+				if (e == player) { continue; }//プレイヤは無視
+				if (CMath::ColAABBs(min, max, e->GetPos() - CVector3::One(), e->GetPos() + CVector3::One())) {
+					e->SetEnableEntity(true);
+				}
+				else {
+					if (!CMath::ColAABBs(minBig, maxBig, e->GetPos() - CVector3::One(), e->GetPos() + CVector3::One())) {
+						//離れまくったエンティティは削除
+						DeleteGO(e);
+					}
+					else {
+						e->SetEnableEntity(false);
+					}
+				}
 			}
 		}
 	}
@@ -264,7 +298,7 @@ Chunk * World::CreateChunk( int x, int z ){
 	return chunk;
 }
 
-void World::LoadChunk( int x, int z ){
+bool World::LoadChunk( int x, int z ){
 	if( !IsExistChunk( x, z ) ){
 		Chunk* chunk = CreateChunk( x, z );
 
@@ -279,7 +313,10 @@ void World::LoadChunk( int x, int z ){
 		//スカイライトの計算を行う
 		SkyLight skylight(this);
 		skylight.CalcSkyLight(chunk);
-	} else{
+
+		return true;
+	} 
+	else{
 		Chunk* chunk = GetChunk( x, z );
 
 		//チャンクが存在はしたが生成が住んでない場合。
@@ -293,6 +330,8 @@ void World::LoadChunk( int x, int z ){
 			SkyLight skylight(this);
 			skylight.CalcSkyLight(chunk);
 		}
+
+		return false;
 	}
 }
 

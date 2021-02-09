@@ -165,7 +165,7 @@ public:
 	void SaveChunk();
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
-	void LoadChunk(int x, int z);
+	bool LoadChunk(int x, int z);
 
 	//! @brief チャンクごとに埋まっているブロックを非表示にする
 	void ChunkCulling(Chunk& chunk);

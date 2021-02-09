@@ -24,6 +24,19 @@ public:
 	//! @brief 座標を設定。
 	virtual void SetPos( const CVector3& pos ) = 0;
 
+	//! @brief エンティティが有効か取得。
+	bool GetEnableEntity()const {
+		return m_enable;
+	}
+	//! @brief エンティティ有効無効を設定。
+	void SetEnableEntity(bool enable) {
+		m_enable = enable;
+		SetEnableEntityInner(enable);
+		SetEnable(enable);//ゲームオブジェクト自体も
+	}
+	//! @brief エンティティ有効無効を設定したあとの処理。
+	virtual void SetEnableEntityInner(bool enable) = 0;
+
 	void SetWorld( World* world ){
 		m_world = world;
 	}
@@ -41,5 +54,6 @@ protected:
 	World* m_world = nullptr;
 	EnEntity m_enEntity = enEntity_None;
 	bool m_useBulletColision = false;
+	bool m_enable = true;
 };
 
