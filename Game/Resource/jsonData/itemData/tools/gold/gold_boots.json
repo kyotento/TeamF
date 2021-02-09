@@ -1,7 +1,7 @@
 {
 	"id": "enItem_Gold_Boots",
 	"name": "金の靴",
-	"sprite": "spriteData/tools/Gold_Sword.dds",
+	"sprite": "spriteData/armor/Golden_Boots.dds",
 	"model": "modelData/armor/Golden_Boots.tkm",
 	"stack_limit": 1,
 	"tool_level": 5

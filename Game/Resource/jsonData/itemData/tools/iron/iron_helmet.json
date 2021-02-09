@@ -1,7 +1,7 @@
 {
 	"id": "enItem_Iron_Helmet",
 	"name": "鉄の兜",
-	"sprite": "spriteData/tools/Iron_Sword.dds",
+	"sprite": "spriteData/armor/Iron_Helmet.dds",
 	"model": "modelData/armor/Iron_Helmet.tkm",
 	"stack_limit": 1,
 	"tool_level": 5
