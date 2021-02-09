@@ -159,6 +159,12 @@ public:
 		m_sWorld = world;
 	}
 
+	//プレイヤーに破壊された時の処理。
+	virtual void DestroyedPlayer()
+	{
+
+	}
+
 	//デストロイモード
 	//デストラクタの挙動を変える
 	static bool m_sDestroyMode;

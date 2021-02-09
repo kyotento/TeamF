@@ -366,6 +366,15 @@ const Block* World::DamegeBlock( const CVector3& pos ){
 	{
 		return m_block;
 	}
+	//ブロックが破壊された。
+	else {
+		//ブロックがチェストだったら。
+		if (m_block->GetBlockType() == enCube_Chest)
+		{
+			//ドロップアイテムを生成する。
+			m_block->DestroyedPlayer();
+		}
+	}
 	//ブロックをポップ。
 	{
 		//ドロップアイテムを作成。
