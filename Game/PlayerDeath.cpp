@@ -63,6 +63,26 @@ void PlayerDeath::ChangeColor()
 	}
 }
 
+void PlayerDeath::PostRender() {
+
+	wchar_t font[256];
+	swprintf_s(font, L"死んでしまった！");
+	m_font.DrawScreenPos(font, { 300.f,160.f }, CVector4::Red(), { 2.f,2.f },
+		CVector2::Zero(),
+		0.0f,
+		DirectX::SpriteEffects_None,
+		0.7f
+	);
+	wchar_t font2[256];
+	swprintf_s(font2, L"スコア::%8.3f", m_exp * 10.f);
+	m_font.DrawScreenPos(font2, { 310.f,260.f }, CVector4::White(), { 1.5f,1.5f },
+		CVector2::Zero(),
+		0.0f,
+		DirectX::SpriteEffects_None,
+		0.7f
+	);
+}
+
 //マウスをクリックしたときの判定。
 int PlayerDeath::Click()
 {

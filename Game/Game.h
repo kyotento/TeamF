@@ -73,7 +73,7 @@ private:
 	int m_chunkRange = 1;				//描画距離。
 
 	bool m_isEscMenu = false;			//EscMenuが出ているかどうか。
-	bool m_isConfig = true;
+	bool m_isConfig = true;				//コンフィグを開いているか。
 	bool m_isBgmFlag = false;			//曲を流してよいか。
 	std::unique_ptr	<World> m_world;					//ワールド。
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。

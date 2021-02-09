@@ -877,9 +877,10 @@ void Player::Death()
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 			mat->SetAlbedoScale({ CVector4::Red() });
 		});
-		//死亡時の画像。
+		//死亡時のUI。
 		if (m_playerDeath == nullptr) {
 			m_playerDeath = NewGO<PlayerDeath>();
+			m_playerDeath->SetExp(m_exp);
 
 			//死亡中一度だけ実行
 			{
