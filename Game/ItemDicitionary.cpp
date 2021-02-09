@@ -168,6 +168,7 @@ void ItemDictionary::SetToolMap()
 	m_toolMap[enTool_Plate] = "Plate";
 	m_toolMap[enTool_Leggings] = "Leggins";
 	m_toolMap[enTool_Boots] = "Boots";
+	m_toolMap[enTool_Foods] = "Foods";
 }
 
 EnTool ItemDictionary::DetermineToolId(std::string itemid)

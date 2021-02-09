@@ -959,13 +959,13 @@ void Player::Stamina()
 		m_stamina = 21;
 	}
 	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
-	const float maxTimer = 3.0f;
+	const float maxTimer = 1.5f;
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (item == nullptr)
+		if (item == nullptr || item->GetToolID() != enTool_Foods)
 		{
-
+			return;
 		}
 		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
