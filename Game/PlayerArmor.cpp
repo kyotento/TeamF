@@ -127,34 +127,63 @@ void PlayerArmor::MaterialChange()
 	if (m_helmetId != helmetId && helmetId != enCube_None)
 	{
 		//防具変更。
-		m_helmetId = helmetId;
-		MaterialChangeHelmet(m_helmetId);
-
+	
+		MaterialChangeHelmet(helmetId);
 	}
 
 	if (m_chestPlateId != chestPlateId && chestPlateId != enCube_None)
 	{
 		//防具変更。
-		m_chestPlateId = chestPlateId;
-		MaterialChangeChestPlate(m_chestPlateId);
+	
+		MaterialChangeChestPlate(chestPlateId);
 
 	}
 
 	if (m_leggingsId != leggingsId && leggingsId != enCube_None)
 	{
 		//防具変更。
-		m_leggingsId = leggingsId;
-		MaterialChangeLeggings(m_leggingsId);
+	
+		MaterialChangeLeggings(leggingsId);
 
 	}
 
 	if (m_bootsId != bootsId && bootsId != enCube_None)
 	{
 		//防具変更。
-		m_bootsId = bootsId;
-		MaterialChangeBoots(m_bootsId);
+	
+		MaterialChangeBoots(bootsId);
 
 	}
+
+	m_helmetId = helmetId;
+	m_chestPlateId = chestPlateId;
+	m_leggingsId = leggingsId;
+	m_bootsId = bootsId;
+
+	if (m_helmetId == enCube_None)
+	{
+		m_skinModelArmor[0]->SetIsDraw(false);
+	}
+	if (m_chestPlateId == enCube_None)
+	{
+		m_skinModelArmor[1]->SetIsDraw(false);
+		m_skinModelArmor[2]->SetIsDraw(false);
+		m_skinModelArmor[3]->SetIsDraw(false);
+	}
+	if (m_leggingsId == enCube_None)
+	{
+		m_skinModelArmor[4]->SetIsDraw(false);
+		m_skinModelArmor[5]->SetIsDraw(false);
+	}
+	if (m_bootsId == enCube_None)
+	{
+		m_skinModelArmor[6]->SetIsDraw(false);
+		m_skinModelArmor[7]->SetIsDraw(false);
+
+	}
+	
+
+
 
 	//todo プレイヤーから防具情報を取得する。
 	/*ArmorMaterial helmet = enArmorMaterial_Leather;
