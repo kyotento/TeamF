@@ -733,8 +733,19 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	}
 	//破壊。ここもInputに変えた。
 	if (GetKeyInput(VK_LBUTTON) && !m_attackFlag) {
-		const Block* block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH) ;//破壊。
-		//ブロック破壊モデル表示
+		auto& item = m_inventory.GetItem(m_selItemNum - 1);
+		const Block* block = nullptr;
+		
+		//破壊。
+		//アイテムを持っているかで分岐
+		if (item) {
+			block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH, (EnTool)item->GetToolID(), item->GetToolLevel());
+		}
+		else {
+			block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH);
+		}
+
+		//ひび割れモデル表示
 		if (block) {
 			m_blockCrackModel.SetIsDraw(true);
 			m_blockCrackModel.SetPos(block->GetModelPos());
