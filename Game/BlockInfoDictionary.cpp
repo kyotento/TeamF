@@ -165,6 +165,18 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 				bInfo.dropItem = (EnItem)blockId;
 			}
 
+			//スプライトパスの取得
+			if (jObj.find("sprite") != jObj.end()) {
+				bInfo.spritePath = jObj["sprite"].get<std::string>();
+				bInfo.spritePath = AddResorcePath(bInfo.spritePath.string());
+			}
+
+			//ドロップモデルパスの取得
+			if (jObj.find("dropModel") != jObj.end()) {
+				bInfo.dropModelPath = jObj["dropModel"].get<std::string>();
+				bInfo.dropModelPath = AddResorcePath(bInfo.dropModelPath.string());
+			}
+
 		} catch( nl::detail::exception& ex ){
 			messageAbort( file, ex.what() );
 
