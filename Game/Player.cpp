@@ -32,6 +32,7 @@ namespace {
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
+	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
 
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
@@ -178,6 +179,8 @@ void Player::Update()
 			FlyTheRay();
 			//スタミナ処理。
 			Stamina();
+			//空腹ダメージ。
+			HungryDamage();
 			//ノックバック。
 			KnockBack();
 
@@ -804,14 +807,20 @@ void Player::FlyTheRay()
 }
 
 //被ダメ－ジ。
-void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAttacked)
+void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAttacked, bool ignoreDefence)
 {
 	if (m_hp > 0 && AttackPow > 0) {			//被弾する。
-		//防御力の計算。
-		float damage = AttackPow * (1 - m_defensePower * 0.04);
+
+		float damage = AttackPow;		//被ダメ。
+
+		if (!ignoreDefence) {
+			//防御力の計算。
+			damage = AttackPow * (1 - m_defensePower * 0.04);
+		}
 		m_hp -= damage;
+
 		//HPを0未満にしない。
-		if (m_hp <= 0) {			
+		if (m_hp < 1) {			
 			m_hp = 0;
 		}
 
@@ -996,6 +1005,22 @@ void Player::Stamina()
 		}
 	}
 }
+
+//空腹時のダメージ。
+void Player::HungryDamage()
+{
+	if (m_stamina <= 0 && m_hp > 0) {		//スタミナが０のとき。
+		hungryDamageTimer++;
+		if (hungryDamageTimer >= 60) {
+			TakenDamage(1, CVector3::Zero(), false, true);
+			hungryDamageTimer = 0;
+		}
+	}
+	else{
+		hungryDamageTimer = 0;
+	}
+}
+
 //肩
 void Player::Shoulder()
 {
@@ -1011,6 +1036,7 @@ void Player::Shoulder()
 		upDownY = 0;
 	}
 }
+
 //todo Debug専用。
 void Player::Test()
 {
