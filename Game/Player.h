@@ -490,7 +490,11 @@ private:
 	float m_knoceBackY = 1.f;	//ノックバックY座標。
 
 	const wchar_t* m_damageName;		//ダメージ。
-	const wchar_t* m_attackName;		//攻撃
+	const wchar_t* m_attackName;		//攻撃。
 	const wchar_t* m_putName;			//物を置く。
+	const wchar_t* m_walkName;			//歩く。
+	const wchar_t* m_strikeName;		//叩く。
+
+	SuicideObj::CSE* m_walk;
 };
 
