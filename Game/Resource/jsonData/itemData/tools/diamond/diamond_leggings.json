@@ -1,0 +1,8 @@
+{
+	"id": "enItem_Diamond_Leggings",
+	"name": "ダイヤのズボン",
+	"sprite": "spriteData/tools/Diamond_Sword.dds",
+	"model": "modelData/armor/Diamond_leggings.tkm",
+	"stack_limit": 1,
+	"tool_level": 5
+}

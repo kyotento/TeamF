@@ -166,7 +166,7 @@ void ItemDictionary::SetToolMap()
 	m_toolMap[enTool_Hoe] = "Hoe";
 	m_toolMap[enTool_Helmet] = "Helmet";
 	m_toolMap[enTool_Plate] = "Plate";
-	m_toolMap[enTool_Leggings] = "Leggins";
+	m_toolMap[enTool_Leggings] = "Leggings";
 	m_toolMap[enTool_Boots] = "Boots";
 	m_toolMap[enTool_Foods] = "Foods";
 }
@@ -177,7 +177,7 @@ EnTool ItemDictionary::DetermineToolId(std::string itemid)
 	{
 		int strPos = itemid.find(m_toolMap[i]);
 		//•¶š—ñŒŸõ‚ªƒqƒbƒg‚µ‚½‚çB
-		if (strPos != std::string::npos)
+		if (strPos != std::string::npos )
 		{
 			return EnTool(i);
 		}

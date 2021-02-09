@@ -1,5 +1,7 @@
 #pragma once
+#include "ItemType.h"
 
+class Player;
 class PlayerArmor : public IGameObject
 {
 public:
@@ -29,6 +31,13 @@ public:
 	/// </summary>
 	void MaterialChange();
 
+	//それぞれ防具変更。
+	void MaterialChangeHelmet(unsigned itemId);
+	void MaterialChangeChestPlate(unsigned itemId);
+	void MaterialChangeLeggings(unsigned itemId);
+	void MaterialChangeBoots(unsigned itemId);
+
+
 	/// <summary>
 	/// モデルを描画するかどうか。
 	/// </summary>
@@ -43,6 +52,10 @@ public:
 		m_playerSkinModel = skin;
 	}
 
+	void SetPlayer(Player* player)
+	{
+		m_player = player;
+	}
 	/// <summary>
 	/// 防具の材質。
 	/// </summary>
@@ -89,6 +102,11 @@ private:
 
 	Bone* m_bone[m_armorNum] = { nullptr };				//骨。
 
+	unsigned m_helmetId = enItem_Iron_Helmet;		//兜のアイテム。
+	unsigned m_chestPlateId = enItem_Iron_ChestPlate;	//鎧のアイテム。
+	unsigned m_leggingsId = enItem_Iron_Leggings;	//ズボンのアイテム。
+	unsigned m_bootsId = enItem_Iron_Boots;		//靴のアイテム。
+	Player* m_player = nullptr;
 	/// <summary>
 	/// アーマー番号詳細。
 	/// </summary>
