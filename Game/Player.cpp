@@ -18,6 +18,7 @@
 #include"Animals.h"
 #include "PlayerArmor.h"
 #include "PlayerInventoryFiler.h"
+#include "RespawnPointFiler.h"
 #include "NullableItemStack.h"
 
 namespace {
@@ -61,11 +62,20 @@ Player::~Player()
 	//インベントリを保存する。
 	PlayerInventoryFiler pIFiler;
 	pIFiler.SavePlayerInventory(m_inventory);
+
+	//リスポーン地点を保存
+	RespawnPointFiler rpFiler;
+	rpFiler.Save(GetRespawnPos());
 }
 
 #include "ItemStack.h"
 bool Player::Start()
 {
+	//リスポーン地点の設定
+	RespawnPointFiler rpFiler;
+	rpFiler.Load(m_respawnPos);
+	m_position = m_respawnPos;
+
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelRender->Init(L"Resource/modelData/player.tkm", m_animationClip, enAnimationClip_Num);

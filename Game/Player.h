@@ -138,6 +138,12 @@ public:
 	void SetRespawnPos(const CVector3& pos) {
 		m_respawnPos = pos;
 	}
+	/// <summary>
+	/// リスポーン地点の取得
+	/// </summary>
+	const CVector3& GetRespawnPos() {
+		return m_respawnPos;
+	}
 
 	/// <summary>
 	/// HPを取得する。

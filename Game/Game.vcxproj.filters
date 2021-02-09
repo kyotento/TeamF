@@ -220,6 +220,7 @@
       <Filter>GUI\View</Filter>
     </ClCompile>
     <ClCompile Include="PlayerInventoryFiler.cpp" />
+    <ClCompile Include="RespawnPointFiler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -459,6 +460,7 @@
       <Filter>GUI\View</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInventoryFiler.h" />
+    <ClInclude Include="RespawnPointFiler.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -646,13 +648,11 @@
     <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
+    <ImageContentTask Include="Resource\sprite\Chest.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\Chest.png">
-      <Filter>sprite\inventory</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
