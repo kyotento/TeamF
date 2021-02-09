@@ -24,7 +24,7 @@ void DropItem::SetItemStack( std::unique_ptr<ItemStack>&& item ){
 bool DropItem::Start()
 {
 	SuicideObj::CSE* se;
-	se = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/block/blockdestroy.wav");
+	se = NewGO<SuicideObj::CSE>(L"Resource/soundData/block/blockdestroy.wav");
 	se->SetVolume(1.0f);
 	se->Play();
 	//スケールはブロックの4分の1。
