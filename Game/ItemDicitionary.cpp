@@ -127,7 +127,13 @@ void ItemDictionary::LoadBlocks( const std::unordered_map<EnCube, BlockInfo>& bl
 		EnCube itemId = entry.first;
 
 		//ブロックアイテムの登録。
-		m_array[itemId] = Item( itemId, utf8toWide(bInfo.name).c_str(), 64, bInfo.modelPath );
+		if (bInfo.spritePath.empty()) {
+			m_array[itemId] = Item(itemId, utf8toWide(bInfo.name).c_str(), 64, bInfo.dropModelPath.empty() ? bInfo.modelPath : bInfo.dropModelPath);
+		}
+		else {
+			//アイコンスプライトがある場合
+			m_array[itemId] = Item((EnItem)itemId, utf8toWide(bInfo.name).c_str(), 64, bInfo.spritePath, bInfo.dropModelPath.empty() ? bInfo.modelPath : bInfo.dropModelPath);
+		}
 		//enum名->アイテム、のMapへ登録。
 		m_nameMap.emplace( NAMEOF_ENUM(itemId).data(), &m_array[itemId] );
 	}

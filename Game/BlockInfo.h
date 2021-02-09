@@ -26,6 +26,10 @@ public:
 	bool isTransTexture = false;
 	//破壊時に落とすアイテム
 	EnItem dropItem = EnItem::enAllItem_Num;
+	//アイコン用スプライトパス
+	std::filesystem::path spritePath;
+	//ドロップモデルパス　手に持つときのモデルでもある
+	std::filesystem::path dropModelPath;
 
 	//enCube_None用のInfo
 	static const BlockInfo NONE_BLOCK;
