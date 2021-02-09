@@ -1,0 +1,8 @@
+{
+	"id": "enItem_Diamond_ChestPlate",
+	"name": "ダイヤの鎧",
+	"sprite": "spriteData/tools/Diamond_Sword.dds",
+	"model": "modelData/armor/Diamond_ChestPlate.tkm",
+	"stack_limit": 1,
+	"tool_level": 5
+}
