@@ -8,7 +8,7 @@ namespace {
 	std::mt19937 random((std::random_device())());	//ÇÁÇÒÇøÇ„Ç§ÅB
 }
 
-Mob::Mob(EnEntity enEntity) : Entity(enEntity_Cow)
+Mob::Mob(EnEntity enEntity) : Entity(enEntity)
 {
 }
 
