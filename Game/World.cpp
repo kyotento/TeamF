@@ -378,7 +378,7 @@ const Block* World::DamegeBlock( const CVector3& pos ){
 	//ブロックをポップ。
 	{
 		//ドロップアイテムを作成。
-		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetBlockType() );
+		DropItem* dropItem = DropItem::CreateDropItem( this, GetBlock( x, y, z )->GetDropItem() );
 		CVector3 addPos = CVector3::Zero();
 		if (random() % 2 > 0) {
 			addPos.x += rand() % randomDrop;

@@ -100,6 +100,11 @@ public:
 		return m_bInfo->isTransTexture;
 	}
 
+	//! @brief 破壊時に落とすアイテムを取得
+	EnItem GetDropItem()const {
+		return m_bInfo->dropItem;
+	}
+
 	//! @brief 有用なツールのEnumを取得。
 	EnTool GetUsefulTool() const{
 		return m_bInfo->usefulTool;

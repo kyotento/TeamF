@@ -24,6 +24,8 @@ public:
 	bool isOpacity = true;
 	//テクスチャに透明要素あるか?
 	bool isTransTexture = false;
+	//破壊時に落とすアイテム
+	EnItem dropItem = EnItem::enAllItem_Num;
 
 	//enCube_None用のInfo
 	static const BlockInfo NONE_BLOCK;

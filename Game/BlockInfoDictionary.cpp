@@ -38,6 +38,7 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 	//enumの名前->値のマップを作成。
 	std::unordered_map<std::string_view, EnCube> blockEnumMap;
 	std::unordered_map<std::string_view, EnTool> toolEnumMap;
+	std::unordered_map<std::string_view, int> enumMap;
 
 	for( int i = enCube_None + 1; i < enCube_Num; i++ ){
 		EnCube e = EnCube( i );
@@ -47,6 +48,14 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 		EnTool e = EnTool( i );
 		toolEnumMap.emplace( NAMEOF_ENUM( e ), e );
 	}
+	for (int i = enCube_None + 1; i < enCube_Num; i++) {
+		EnCube e = EnCube(i);
+		enumMap.emplace(NAMEOF_ENUM(e), e);
+	}
+	for (int i = enCube_Num; i < enAllItem_Num; i++) {
+		EnItem e = EnItem(i);
+		enumMap.emplace(NAMEOF_ENUM(e), e);
+	}	
 
 	using namespace std::filesystem;
 	namespace nl = nlohmann;
@@ -143,7 +152,18 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 			//テクスチャに透明要素あるか取得(デフォルトではfalse)
 			if (jObj.find("transTex") != jObj.end()) {
 				bInfo.isTransTexture = jObj["transTex"].get<bool>();
-			}			
+			}	
+
+			//破壊時に落とすアイテムを取得
+			if (jObj.find("dropItem") != jObj.end()) {
+				//アイテムID
+				const std::string strItemId = jObj["dropItem"].get<std::string>();
+				const int itemId = enumMap.at(strItemId);
+				bInfo.dropItem = (EnItem)itemId;
+			}
+			else {
+				bInfo.dropItem = (EnItem)blockId;
+			}
 
 		} catch( nl::detail::exception& ex ){
 			messageAbort( file, ex.what() );
