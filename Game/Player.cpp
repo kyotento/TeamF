@@ -249,6 +249,11 @@ void Player::Update()
 	Defence();
 	//UŒ‚—Í‚à
 	CalcAttackPow();
+
+	//“Ş—€
+	if (m_position.y <= 0.f) {
+		TakenDamage(1, 0.0f, false, true);
+	}
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){

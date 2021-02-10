@@ -50,6 +50,13 @@ void PlayerParameter::Update()
 	}
 	//こいつ更新させてあげてください。
 	m_rightHandDisplay->SetPos(m_player->GetPos());
+
+	//テキストメッセージ
+	m_textDrawTimer = max(0.0f,m_textDrawTimer - GetDeltaTimeSec());
+	//睡眠
+	if (m_player->GetIsSleep()) {
+		m_textDrawTimer = 2.0f;
+	}
 }
 
 // パラメータ画像の基盤を生成。
@@ -269,8 +276,8 @@ void PlayerParameter::PostRender()
 	}
 
 	//睡眠状態
-	if (m_player->GetIsSleep()) {
-		m_font.Draw(L"睡眠中。リスポーン地点が変更されました。", { 0.0f , 0.7f }, CVector4::White(), 0.5f, { 0.0f, 0.0f });
+	if (m_textDrawTimer > 0.0f) {
+		m_font.Draw(L"リスポーン地点が変更されました。", { 0.0f , 0.7f }, CVector4::White(), 0.5f, { 0.0f, 0.0f });
 	}
 }
 
