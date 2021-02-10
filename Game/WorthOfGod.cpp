@@ -14,5 +14,8 @@ bool WorthOfGod::OnClick(Player* player) {
 		}
 	}
 
+	//Á–Õ•i
+	player->GetWorld()->DestroyBlockNoDrop(CalcBlockUnitPos());
+
 	return true;
 }

@@ -35,8 +35,9 @@ namespace {
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
 
-	bool m_isWalkFlag = false;
-	bool m_isStrikeFlag = true;
+	bool isWalkFlag = false;
+	bool isStrikeFlag = true;
+	bool isBlockDestroy = false;
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
@@ -223,6 +224,14 @@ void Player::Update()
 			CloseGUI();
 		}
 	}
+	if (m_isExpUpFlag)
+	{
+		SuicideObj::CSE* upse;
+		upse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/expget.wav");
+		upse->SetVolume(1.0f);
+		upse->Play();
+		m_isExpUpFlag = false;
+	}
 	//プレイヤーの状態管理。
 	StateManagement();
 
@@ -233,6 +242,9 @@ void Player::Update()
 	IsDraw();
 
 	Test();
+
+	//防御力きめるー。
+	Defence();
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
@@ -405,20 +417,22 @@ void Player::Move()
 	if (m_playerState != enPlayerState_run && m_playerState != enPlayerState_KnockBack) {
 		if (stickL.Length() > 0.001f) {
 			m_playerState = enPlayerState_move;
-			if (!m_isWalkFlag && m_characon.IsOnGround()) {
+			if (!isWalkFlag && m_characon.IsOnGround()) {
 				//BGM
 				m_walk = NewGO<SuicideObj::CSE>(m_walkName);
 				m_walk->SetVolume(0.25f);
 				m_walk->Play();
-				m_isWalkFlag = true;
+				isWalkFlag = true;
 			}
-			else if (!m_characon.IsOnGround())
+			else if (m_walk == nullptr)
 			{
-
+				isWalkFlag = false;
+				DeleteGO(m_walk);
 			}
 			else if (!m_walk->GetIsPlaying())
 			{
-				m_isWalkFlag = false;
+				isWalkFlag = false;
+				DeleteGO(m_walk);;
 			}
 		}
 		else {
@@ -787,6 +801,19 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			m_blockCrackModel.GetSkinModel().FindMaterialSetting(
 				[&](MaterialSetting* mat) {
 				mat->SetUVOffset({-0.1f*((int)(block->GetHP_Ratio()*10.0f)),0.0f});//UVアニメーション
+				SuicideObj::CSE* se;
+				se = NewGO<SuicideObj::CSE>(m_strikeName);
+				se->SetVolume(0.25f);
+				if (isStrikeFlag)
+				{
+					se->Play();
+					isStrikeFlag = false;
+				}
+				else if (!se->GetIsPlaying())
+				{
+					isStrikeFlag = true;
+				}
+				m_isBlockDestruction = false;
 				}
 			);
 		}
@@ -803,18 +830,6 @@ void Player::DecideCanDestroyBlock()
 	//マウス左長押しなら。
 	if (GetKeyInput(VK_LBUTTON))
 	{
-		SuicideObj::CSE* se;
-		se = NewGO<SuicideObj::CSE>(m_strikeName);
-		se->SetVolume(0.25f);
-		if (m_isStrikeFlag)
-		{
-			se->Play();
-			m_isStrikeFlag = false;
-		}
-		else if (!se->GetIsPlaying())
-		{
-			m_isStrikeFlag = true;
-		}
 		//タイマーを+する。
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
@@ -897,7 +912,7 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 			SuicideObj::CSE* voice;
 			//２種類からランダムで音が鳴る。
 			if (CMath::RandomZeroToOne() > 0.5f) {
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav"); 
 				voice->SetVolume(0.25f);
 			}
 			else {
@@ -1128,5 +1143,26 @@ void Player::Test()
 	}
 	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
 		m_exp += 0.3f;
+	}
+}
+
+void Player::Defence()
+{
+	m_defensePower = 0;
+	if (m_inventory.GetNullableItem(36).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(36).get()->GetToolLevel();
+	}
+	if (m_inventory.GetNullableItem(37).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(37).get()->GetToolLevel();
+	}
+	if (m_inventory.GetNullableItem(38).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(38).get()->GetToolLevel();
+	}
+	if (m_inventory.GetNullableItem(39).GetID() != enCube_None)
+	{
+		m_defensePower += m_inventory.GetItem(39).get()->GetToolLevel();
 	}
 }

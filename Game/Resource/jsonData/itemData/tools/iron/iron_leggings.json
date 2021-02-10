@@ -4,5 +4,5 @@
 	"sprite": "spriteData/armor/Iron_leggings.dds",
 	"model": "modelData/armor/Iron_leggings.tkm",
 	"stack_limit": 1,
-	"tool_level": 5
+	"tool_level": 3
 }

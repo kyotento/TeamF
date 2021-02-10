@@ -47,8 +47,12 @@ bool Zombie::Start()
 	m_damageVoice = L"Resource/soundData/enemy/zombiedamage.wav";
 	m_deathVoice = L"Resource/soundData/enemy/zombiedeath.wav";
 
+	//アイテムドロップ
 	SetDropItemId(enCube_CoalOre);
 	SetChanceDropping(100);
+	//レアドロップ
+	SetDropItemId(enCube_WoGBlock, true);
+	SetChanceDropping(5, true);
 
 	return true;
 }

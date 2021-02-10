@@ -186,6 +186,7 @@ public:
 	/// <param name="exp">加算する経験値量</param>
 	void AddExp(const float exp)
 	{
+		m_isExpUpFlag = true;
 		m_exp += exp;
 	}
 
@@ -433,6 +434,8 @@ private:
 	/// <returns>doubleClickFlag</returns>
 	bool SpaceDoubleClick();
 
+	void Defence();
+
 	bool m_isJump = false;					//飛んでいるか。
 	bool m_doubleCilckFlag = false;			//ダブルクリックフラグ。
 	bool m_runFlag = false;					//走っているか。
@@ -442,6 +445,7 @@ private:
 	bool m_attackFlag = false;				//エネミーに攻撃したか。
 	bool m_deathFlag = false;				//死んだかどうか。
 	bool m_eatingFlag = false;				//食べてるかどうか。
+	bool m_isExpUpFlag = false;				//経験値アップした？
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。

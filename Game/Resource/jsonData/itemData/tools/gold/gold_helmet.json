@@ -4,5 +4,5 @@
 	"sprite": "spriteData/armor/Golden_Helmet.dds",
 	"model": "modelData/armor/Golden_Helmet.tkm",
 	"stack_limit": 1,
-	"tool_level": 5
+	"tool_level": 4
 }

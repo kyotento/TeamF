@@ -1,0 +1,10 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "#"
+    ],
+    "key": {
+      "#": "enCube_GoldOre"
+    },
+    "result": "enItem_Gold_Ingot"
+  }

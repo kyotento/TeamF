@@ -41,7 +41,6 @@ World::~World(){
 		e->SetWorld( nullptr );
 		DeleteGO( e );
 	}
-
 	//チャンクデータを保存する。
 	SaveChunk();
 
@@ -412,12 +411,12 @@ const Block* World::DamegeBlock( const CVector3& pos, EnTool toolType, int toolL
 	}
 	//ブロックが破壊された。
 	else {
-		//ブロックがチェストだったら。
-		if (m_block->GetBlockType() == enCube_Chest)
-		{
-			//ドロップアイテムを生成する。
-			m_block->DestroyedPlayer();
-		}
+		//ドロップアイテムを生成する。
+		m_block->DestroyedPlayer();
+		//音出してます。
+		SuicideObj::CSE* destroy;
+		destroy = NewGO<SuicideObj::CSE>(L"Resource/soundData/block/blockdestroy.wav");
+		destroy->Play();
 	}
 	//ブロックをポップ。
 	{
