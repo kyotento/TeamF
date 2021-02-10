@@ -86,6 +86,7 @@
     <ClInclude Include="BlockInfo.h" />
     <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
+    <ClInclude Include="CalcMuki.h" />
     <ClInclude Include="CameraCollisionSolver.h" />
     <ClInclude Include="BlockInfoDictionary.h" />
     <ClInclude Include="Chest.h" />

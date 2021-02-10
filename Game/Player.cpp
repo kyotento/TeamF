@@ -20,6 +20,7 @@
 #include "PlayerInventoryFiler.h"
 #include "RespawnPointFiler.h"
 #include "NullableItemStack.h"
+#include "CalcMuki.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -772,7 +773,10 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 				if (item->GetIsBlock()) {		//ブロック。
 					se->Play();
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
-					if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())))) {
+
+					Block::enMuki muki = CalcMukiReverse( GetFront() );
+
+					if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID()), muki))) {
 						//設置に成功したらインベントリのブロック数減らす
 						auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
 					}

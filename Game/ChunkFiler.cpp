@@ -44,7 +44,6 @@ namespace{
 
 		return std::filesystem::path( filePath.get() );
 	}
-
 }
 
 bool ChunkFiler::Read( Chunk & chunk ){
@@ -71,17 +70,23 @@ bool ChunkFiler::Read( Chunk & chunk ){
 	for( int x = 0; x < chunk.WIDTH; x++ ){
 		for( int y = 0; y < chunk.HEIGHT; y++ ){
 			for( int z = 0; z < chunk.WIDTH; z++ ){
-				int16_t bt;
 
 				//ブロックのID
+				int16_t bt;
 				ifs.read( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
 
 				if( bt == EnCube::enCube_None ){
 					continue;
 				}
 
-				auto block = BlockFactory::CreateBlock( static_cast<EnCube>( bt ) );
+				//ブロックの向き
+				uint8_t muki;
+				ifs.read( reinterpret_cast<char*>( &muki ), sizeof( muki ) );
 
+				//ブロック作成。
+				auto block = BlockFactory::CreateBlock( static_cast<EnCube>( bt ), static_cast<Block::enMuki>( muki ) );
+
+				//ブロックの追加情報。
 				block->ReadExData( ifs );
 
 				chunk.SetBlock( x, y, z, std::move(block) );
@@ -128,10 +133,13 @@ void ChunkFiler::Write( const Chunk & chunk ){
 					continue;
 				}
 
-				int16_t bt = static_cast<uint16_t>( block->GetBlockType() );
-
 				//ブロックのID
+				int16_t bt = static_cast<int16_t>( block->GetBlockType() );
 				fs.write( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
+
+				//ブロックの向き
+				uint8_t muki = static_cast<uint8_t>( block->GetMuki() );
+				fs.write( reinterpret_cast<char*>( &muki ), sizeof( muki ) );
 
 				//ブロックの追加情報
 				block->WriteExData( fs );
