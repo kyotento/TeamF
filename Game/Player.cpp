@@ -64,7 +64,7 @@ Player::~Player()
 
 	//インベントリを保存する。
 	PlayerInventoryFiler pIFiler;
-	pIFiler.SavePlayerInventory(m_inventory);
+	pIFiler.SavePlayerInventory(this);
 
 	//リスポーン地点を保存
 	RespawnPointFiler rpFiler;
@@ -147,6 +147,9 @@ bool Player::Start()
 				m_inventory.SetItem(i, std::move(itemStack));
 			}
 		}
+		m_position = pIFiler.GetPosition();
+		m_characon.SetPosition(m_position);
+		m_damageCollision->SetPosition(m_position);
 	}
 
 	//プレイヤーのパラメーター生成。
