@@ -436,6 +436,11 @@ private:
 
 	void Defence();
 
+	/// <summary>
+	/// 攻撃力算出
+	/// </summary>
+	void CalcAttackPow();
+
 	bool m_isJump = false;					//飛んでいるか。
 	bool m_doubleCilckFlag = false;			//ダブルクリックフラグ。
 	bool m_runFlag = false;					//走っているか。
@@ -516,6 +521,6 @@ private:
 	const wchar_t* m_walkName;			//歩く。
 	const wchar_t* m_strikeName;		//叩く。
 
-	SuicideObj::CSE* m_walk;
+	float m_walkingTimer = 0.0f;//足音を鳴らす感覚用タイマー
 };
 
