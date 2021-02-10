@@ -76,6 +76,7 @@ private:
 	/// </summary>
 	void StopMoveToChange();
 
+	void PlayerLevelUp();
 	static const int m_paramNum = 10;				//パラメーターの画像の数。
 	int m_oldHP = 0;								//プレイヤーの1フレーム前のHPを格納。
 	int m_oldStamina = 0;							//プレイヤーの1フレーム前のスタミナを格納。
