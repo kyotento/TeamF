@@ -164,3 +164,62 @@ void Inventory::RClickSlot( unsigned slotNo, std::unique_ptr<ItemStack>& cursor 
 	//カーソルとスロットが違うアイテムなら両者を交換する。
 	cursor.swap( slot );
 }
+
+//! @brief ファイル読みこみで、古いフォーマットを読まないために。
+const int16_t Inventory::VERSION = 0;
+
+void Inventory::ReadData( std::ifstream & ifs ){
+	int16_t fileVersion;
+	ifs.read( reinterpret_cast<char*>( &fileVersion ), sizeof( VERSION ) );
+
+	//バージョン違いはエラー
+	if( fileVersion != VERSION ){
+		MessageBoxA( NULL, "インベントリのバージョンが違います。\n"
+					 "チェストなどが読み込みに失敗したため、\nワールドデータを削除してください。",
+					 "インベントリデータ読み込み失敗", MB_OK );
+		abort();
+	}
+
+	size_t size;
+	ifs.read( reinterpret_cast<char*>( &size ), sizeof( size ) );
+
+	for( size_t i = 0; i < size; i++ ){
+		int16_t id;
+		uint8_t num;
+
+		//idと数を取得
+		ifs.read( reinterpret_cast<char*>( &id ), sizeof( id ) );
+		ifs.read( reinterpret_cast<char*>( &num ), sizeof( num ) );
+
+		if( id == enCube_None ){
+			continue;
+		}
+
+		//アイテムを作成して入れる。
+		m_slotArray[i] = std::make_unique<ItemStack>( Item::GetItem( id ), num );
+	}
+}
+
+void Inventory::WriteData( std::ofstream & ofs ){
+	//インベントリのバージョンを出力。
+	ofs.write( reinterpret_cast<const char*>( &VERSION ), sizeof( VERSION ) );
+
+	//インベントリのサイズ。
+	size_t size = m_slotArray.size();
+	ofs.write( reinterpret_cast<const char*>( &size ), sizeof( size ) );
+
+	for( std::unique_ptr<ItemStack>& item : m_slotArray ){
+
+		int16_t id = enCube_None;
+		uint8_t num = 0;
+		
+		if( item != nullptr ){
+			id = item->GetID();
+			num = item->GetNumber();
+		}
+
+		//idと数を出力
+		ofs.write( reinterpret_cast<const char*>( &id ), sizeof( id ) );
+		ofs.write( reinterpret_cast<const char*>( &num ), sizeof( num ) );
+	}
+}

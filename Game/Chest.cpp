@@ -51,3 +51,11 @@ void Chest::GenerateDropItem()
 		}
 	}
 }
+
+void Chest::ReadExData( std::ifstream & ifs ){
+	m_inventory.ReadData( ifs );
+}
+
+void Chest::WriteExData( std::ofstream & ofs ){
+	m_inventory.WriteData( ofs );
+}

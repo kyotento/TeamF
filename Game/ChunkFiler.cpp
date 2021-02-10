@@ -73,13 +73,18 @@ bool ChunkFiler::Read( Chunk & chunk ){
 			for( int z = 0; z < chunk.WIDTH; z++ ){
 				int16_t bt;
 
+				//ブロックのID
 				ifs.read( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
 
 				if( bt == EnCube::enCube_None ){
 					continue;
 				}
 
-				chunk.SetBlock( x, y, z, BlockFactory::CreateBlock( static_cast<EnCube>( bt ) ) );
+				auto block = BlockFactory::CreateBlock( static_cast<EnCube>( bt ) );
+
+				block->ReadExData( ifs );
+
+				chunk.SetBlock( x, y, z, std::move(block) );
 			}
 		}
 	}
@@ -125,7 +130,11 @@ void ChunkFiler::Write( const Chunk & chunk ){
 
 				int16_t bt = static_cast<uint16_t>( block->GetBlockType() );
 
+				//ブロックのID
 				fs.write( reinterpret_cast<char*>( &bt ), sizeof( bt ) );
+
+				//ブロックの追加情報
+				block->WriteExData( fs );
 
 			}
 		}
