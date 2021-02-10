@@ -165,10 +165,13 @@ public:
 	}
 
 	//プレイヤーに破壊された時の処理。
-	virtual void DestroyedPlayer()
-	{
+	virtual void DestroyedPlayer(){}
 
-	}
+	//! @brief ブロック特有の情報を、チャンクファイルから読み込む。
+	virtual void ReadExData(std::ifstream& ifs){}
+
+	//! @brief ブロック特有の情報を、チャンクファイルに書き込む。
+	virtual void WriteExData(std::ofstream& ofs){}
 
 	//デストロイモード
 	//デストラクタの挙動を変える

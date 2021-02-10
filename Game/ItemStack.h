@@ -47,12 +47,12 @@ public:
 	}
 
 	//! @brief アイテムidを取得。
-	unsigned GetID() const override{
+	int GetID() const override{
 		return m_item.GetID();
 	}
 
 	//! @brief アイテムの属性を取得。
-	unsigned GetToolID() const override {
+	int GetToolID() const override {
 		return m_item.GetToolID();
 	}
 
@@ -67,7 +67,7 @@ public:
 	}
 
 	//! @brief 食料か
-	bool IsFood() const{
+	bool IsFood() const override{
 		return m_item.IsFood();
 	}
 

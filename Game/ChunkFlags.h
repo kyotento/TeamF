@@ -3,26 +3,26 @@
 template<class Stream>
 class ChunkFlags{
 public:
-	ChunkFlags( Stream& stream , int32_t chunkNo ) : stream( stream ) , chunkNo(chunkNo){
+	ChunkFlags( Stream& stream ) : stream( stream ){
 		static_assert( std::is_same<Stream, std::ifstream>::value ||
+					   std::is_same<Stream, std::ofstream>::value||
 					   std::is_same<Stream, std::fstream>::value );
 	}
 
 	//! フラグを読み込み。
 	void ReadFlags(){
-		stream.seekg( chunkNo * Flag::Num / 8 );
+		stream.seekg( 0 );
 		stream.read( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
 	}
 
 	//! フラグを書き込み。Streamがfstreamのとき専用。
 	void WriteFlags(){
-		if constexpr( std::is_same<Stream, std::fstream>::value ){
-			stream.seekp( chunkNo * Flag::Num / 8 );
+		if constexpr( std::is_same<Stream, std::ifstream>::value == false ){
+			stream.seekp( 0 );
 			stream.write( reinterpret_cast<char*>( &flags ), sizeof( flags ) );
 		} else{
 			_ASSERTE( false && "std::ifstreamで初期化するとこの関数は使えません。" );
 		}
-		
 	}
 
 	//! チャンクが存在するフラグを立てる。
@@ -51,13 +51,8 @@ public:
 private:
 	//! 各フラグのチャンク番号に合わせたマスクを取得。
 	int8_t GetFlagMask( Flag f) const {
-		//1チャンクごとにNum個のフラグがある。
-		//自分のチャンクがさす場所に移動したのち、目的のフラグ " f " に移動する。
-		return  1 << ( chunkNo * Flag::Num % 8 + f );
+		return  1 << f;
 	}
-
-	//! チャンク番号
-	int32_t chunkNo = 0;
 
 	//! 読み書き用ファイルストリーム
 	Stream& stream;

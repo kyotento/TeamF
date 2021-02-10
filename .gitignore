@@ -85,7 +85,7 @@ obj/
 /ZekeGame/ZekeGame/bulletPhysics/src/BulletDynamics/x64/RelWithDebInfo/BulletDynamics.tlog
 
 #file of chunk
-*.regi
+*.chk
 
 #World info
 *.winfo

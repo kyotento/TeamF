@@ -56,11 +56,20 @@ public:
 	//! @param cursor[in, out] カーソルが持っているアイテム。
 	void RClickSlot( unsigned slotNo, std::unique_ptr<ItemStack>& cursor );
 
+	//! @brief インベントリ情報を、ファイルに読み込む。
+	void ReadData( std::ifstream& ifs );
+
+	//! @brief インベントリ情報を、ファイルに書き込む。
+	void WriteData( std::ofstream& ofs );
+
 private:
 	//! インベントリの長さ。
 	static const unsigned m_inventryWidth = 9;
 	std::vector<std::unique_ptr<ItemStack>>  m_slotArray;
 
 	CFont m_font;
+
+	//! @brief ファイル読みこみで、古いフォーマットを読まないために。
+	static const int16_t VERSION;
 };
 
