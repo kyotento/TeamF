@@ -80,7 +80,7 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 			}
 
 			//ƒ‚ƒfƒ‹ƒpƒX‚ÌŽæ“¾
-			path modelPath = "Resource/modelData/tools/Wood_Sword.tkm";
+			path modelPath = "Resource/modelData/2DFound.tkm";
 			if( jObj.find( "model" ) != jObj.end() ){
 				modelPath = jObj["model"].get<std::string>();
 				modelPath = AddResorcePath( modelPath.string() );

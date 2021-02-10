@@ -34,6 +34,15 @@ bool DropItem::Start()
 	m_model.Init( m_itemStack->GetItem().GetModelPath().c_str() );		//モデルの初期化。
 	m_model.SetScale( myScale );
 
+	if (m_itemStack->GetItem().GetModelPath() == "Resource/modelData/2DFound.tkm") {
+		m_model.GetSkinModel().InitMaterialSetting();
+		m_model.GetSkinModel().FindMaterialSetting([](MaterialSetting* mts) {
+			mts->SetAlbedoTexture(CreateTexture("Resource/spriteData/items/Diamond.dds"));
+		});
+	}
+
+	m_itemStack->GetItem().GetItemName();
+
 	//デバッグ用、後で消す。
 	/*m_model.GetSkinModel().InitMaterialSetting();
 	m_model.GetSkinModel().FindMaterialSetting( []( MaterialSetting* mts){
