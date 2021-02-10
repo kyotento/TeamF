@@ -9,7 +9,7 @@
 class Recipe{
 public:
 
-	Recipe(int width, int height, const std::vector<int>& itemArray, const ItemStack& result);
+	Recipe(int width, int height, const std::vector<int>& itemArray, Item& result, int resultCount);
 	~Recipe();
 
 	bool operator==( const Recipe& rhs );
@@ -32,7 +32,7 @@ public:
 
 	//! @brief ƒŒƒVƒs‚Ì¬‰Ê•¨‚ğ•Ô‚·B
 	std::unique_ptr<ItemStack> GetResult(){
-		return std::make_unique<ItemStack>( m_result );
+		return std::make_unique<ItemStack>( m_result);
 	}
 
 private:

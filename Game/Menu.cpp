@@ -93,7 +93,7 @@ void Menu::ClickProcess()
 			{
 				//インベントリを保存する。
 				PlayerInventoryFiler pIFiler;
-				pIFiler.SavePlayerInventory(player->GetInventory());
+				pIFiler.SavePlayerInventory(player);
 
 				//リスポーン地点を保存
 				RespawnPointFiler rpFiler;

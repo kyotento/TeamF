@@ -74,6 +74,8 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 			int width = 0, height = 0;
 			//成果物
 			int resultItem = 0;
+			//成果物個数
+			int resultCount = 1;
 
 
 			//タイプ読み込み
@@ -156,8 +158,13 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 				resultItem = Item::GetItem( result ).GetID();
 			}
 
+			//成果物個数
+			if( jObj.find( "resultCount" ) != jObj.end() ){
+				resultCount = jObj["resultCount"].get<int>();
+			}
+
 			//レシピ生成。
-			auto recipe = std::make_unique<Recipe>( width, height, itemArray, Item::GetItem( resultItem ) );
+			auto recipe = std::make_unique<Recipe>( width, height, itemArray, Item::GetItem( resultItem ), resultCount);
 			RecipeManager::Instance().AddRecipe( std::move( recipe ) );
 
 			rm.SetInited();
