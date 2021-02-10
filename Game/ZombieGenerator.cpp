@@ -32,8 +32,12 @@ void ZombieGenerator::NewGOMob(const CVector3& pos)
 	//日没より現時刻が進んでいる、あるいは日の出より時刻が前だったら。
 	//ゾンビを生成する。
 	if (second > sunsetSecond || second < sunriseSecond) {
-		//プレイヤーの生成。
-		Zombie* zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
-		zombie->SetPos(pos);
+		//生成地点の明るさが一定以下
+		char light = *MobGenerator::GetWorld()->GetLightData((int)std::floorf(pos.x / Block::WIDTH), (int)std::floorf(pos.y / Block::WIDTH), (int)std::floorf(pos.z / Block::WIDTH));
+		if (light <= 4) {
+			//プレイヤーの生成。
+			Zombie* zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
+			zombie->SetPos(pos);
+		}
 	}
 }
