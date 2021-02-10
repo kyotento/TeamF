@@ -40,3 +40,8 @@ Item::Item( EnItem enItem, const wchar_t* itemName, int limitNumber, const std::
 	: m_id( enItem ), m_itemName( itemName ), m_limitNumber( limitNumber ),
 	m_image( std::make_unique<ItemImage>( false, spritePath ) ),
 	m_modelPath(modelPath){}
+
+CSprite& Item::GetImage()
+{
+	return m_image->GetSprite();
+}

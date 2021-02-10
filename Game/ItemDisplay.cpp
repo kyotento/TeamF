@@ -199,6 +199,8 @@ void ItemDisplay::CameraModeChangeToDisplay()
 //再度。
 void ItemDisplay::BuildAgain()
 {
+	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum() - 1);
+
 	//一度だけ生成しなおす。
 	//何も持ってない時。
 	if (initItem_flag && type == enHand)
@@ -208,6 +210,14 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
 		initItem_flag = false;
 	}
+	
+	else if (initItem_flag && item->GetItem().GetModelPath() == "Resource/modelData/2DFound.tkm") {
+		m_skinModelRender->GetSkinModel().InitMaterialSetting();
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([&](MaterialSetting* mts) {
+			mts->SetAlbedoTexture(item->GetItem().GetImage().GetTextueData());
+		});
+	}
+
 	//ブロック系のアイテム。
 	else if (initItem_flag && type == enBlock)
 	{
@@ -232,6 +242,8 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender->Init(m_modelPath.wstring().c_str());
 		initItem_flag = false;
 	}
+
+
 }
 //手の回転。
 void ItemDisplay::HandRotation()
@@ -338,6 +350,7 @@ void ItemDisplay::SwitchItemType()
 		if (item->GetID() >=endBlockNum && item->GetID() <= startToolNum) {
 			type = enItem;
 			m_modelPath = item->GetModelPath();
+
 		}
 		else if (!item->GetIsBlock() && item->GetID() > startToolNum)
 		{

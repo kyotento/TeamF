@@ -74,6 +74,12 @@ public:
 	std::filesystem::path GetModelPath() const{
 		return m_modelPath;
 	}
+	
+	/// <summary>
+	/// ‰æ‘œæ“¾B
+	/// </summary>
+	/// <returns></returns>
+	CSprite& GetImage();
 
 private:
 	Item();

@@ -37,18 +37,11 @@ bool DropItem::Start()
 
 	if (m_itemStack->GetItem().GetModelPath() == "Resource/modelData/2DFound.tkm") {
 		m_model.GetSkinModel().InitMaterialSetting();
-		m_model.GetSkinModel().FindMaterialSetting([](MaterialSetting* mts) {
-			mts->SetAlbedoTexture(CreateTexture("Resource/spriteData/items/Diamond.dds"));
+		m_model.GetSkinModel().FindMaterialSetting([&](MaterialSetting* mts) {
+			mts->SetAlbedoTexture(m_itemStack->GetItem().GetImage().GetTextueData());
 		});
 	}
 
-	m_itemStack->GetItem().GetItemName();
-
-	//デバッグ用、後で消す。
-	/*m_model.GetSkinModel().InitMaterialSetting();
-	m_model.GetSkinModel().FindMaterialSetting( []( MaterialSetting* mts){
-		mts->SetAlbedoTexture( CreateTexture("Resource/spriteData/items/Coal.dds") );
-	} );*/
 
 	//レイトレモデル。
 	m_raytraceModel.Init( m_model );
