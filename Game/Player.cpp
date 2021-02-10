@@ -127,7 +127,7 @@ bool Player::Start()
 			enCube_Chest, enCube_BedHead,
 			enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
 			enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots
+			enItem_Raw_Meat,enItem_Steak
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -1050,17 +1050,17 @@ void Player::Stamina()
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (item == nullptr || item->GetToolID() != enTool_Foods)
+		if (item == nullptr || item->IsFood() == false)//食べ物かの判別。
 		{
 			return;
 		}
-		else if (item->GetIsBlock() == enTool_Foods) {			//食べ物かどうかを判別する。
+		else{
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)
 			{
 				m_eatingTimer = 0.0f;
-				m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
+				m_stamina += item->GetFoodLevel();//スタミナ回復
 				hiddenStamina = 4;			//隠れスタミナを上昇する。
 				auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
 			}
