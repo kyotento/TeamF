@@ -290,6 +290,53 @@ Chunk * World::CreateChunk( int x, int z ){
 
 	chunk->SetChunkPos( x, z );
 
+	//チャンクのライト情報初期化
+	{
+		IntVector3 pos = IntVector3::Zero();
+
+		for (int ix = 0; ix < 2; ix++) {
+			if (ix == 0) {
+				pos.x = x * Chunk::WIDTH - 1;
+			}
+			else {
+				pos.x = x * Chunk::WIDTH + Chunk::WIDTH;
+			}
+			for (int iy = 0; iy < Chunk::HEIGHT; iy++) {
+				pos.y = iy;
+				for (int iz = 0; iz < Chunk::WIDTH; iz++) {
+					pos.z = z * Chunk::WIDTH + iz;
+
+					char* light = GetLightData(pos);
+					if (light && *light > 1) {
+						LightUtil::SpreadLight(this, *light - 1, pos, IntVector3::Zero(), false);
+					}
+
+				}
+			}
+		}
+
+		for (int ix = 0; ix < 2; ix++) {
+			if (ix == 0) {
+				pos.z = z * Chunk::WIDTH - 1;
+			}
+			else {
+				pos.z = z * Chunk::WIDTH + Chunk::WIDTH;
+			}
+			for (int iy = 0; iy < Chunk::HEIGHT; iy++) {
+				pos.y = iy;
+				for (int iz = 0; iz < Chunk::WIDTH; iz++) {
+					pos.x = x * Chunk::WIDTH + iz;
+
+					char* light = GetLightData(pos);
+					if (light && *light > 1) {
+						LightUtil::SpreadLight(this, *light - 1, pos, IntVector3::Zero(), false);
+					}
+
+				}
+			}
+		}
+	}
+
 	//ファイルにチャンクがあれば、それを読む。
 	ChunkFiler filer;
 	filer.Read( *chunk );
