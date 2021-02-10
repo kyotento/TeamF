@@ -35,8 +35,9 @@ namespace {
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
 
-	bool m_isWalkFlag = false;
-	bool m_isStrikeFlag = true;
+	bool isWalkFlag = false;
+	bool isStrikeFlag = true;
+	bool isBlockDestroy = false;
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
@@ -226,6 +227,14 @@ void Player::Update()
 			CloseGUI();
 		}
 	}
+	if (m_isExpUpFlag)
+	{
+		SuicideObj::CSE* upse;
+		upse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/expget.wav");
+		upse->SetVolume(1.0f);
+		upse->Play();
+		m_isExpUpFlag = false;
+	}
 	//プレイヤーの状態管理。
 	StateManagement();
 
@@ -234,8 +243,6 @@ void Player::Update()
 
 	//モデルを描画するかどうか。
 	IsDraw();
-
-	Test();
 
 	//防御力きめるー。
 	Defence();
@@ -411,20 +418,22 @@ void Player::Move()
 	if (m_playerState != enPlayerState_run && m_playerState != enPlayerState_KnockBack) {
 		if (stickL.Length() > 0.001f) {
 			m_playerState = enPlayerState_move;
-			if (!m_isWalkFlag && m_characon.IsOnGround()) {
+			if (!isWalkFlag && m_characon.IsOnGround()) {
 				//BGM
 				m_walk = NewGO<SuicideObj::CSE>(m_walkName);
 				m_walk->SetVolume(0.25f);
 				m_walk->Play();
-				m_isWalkFlag = true;
+				isWalkFlag = true;
 			}
-			else if (!m_characon.IsOnGround())
+			else if (m_walk == nullptr)
 			{
-
+				isWalkFlag = false;
+				DeleteGO(m_walk);
 			}
 			else if (!m_walk->GetIsPlaying())
 			{
-				m_isWalkFlag = false;
+				isWalkFlag = false;
+				DeleteGO(m_walk);;
 			}
 		}
 		else {
@@ -557,7 +566,7 @@ void Player::Shift()
 
 	//しゃがみの処理(Boneの回転処理)。GUI表示中は行わない。
 	if (GetKeyInput(VK_SHIFT) && m_openedGUI == nullptr) {
-		//todo ブロックから落ちない処理を追加する。
+
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
 		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
 		leftLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir);
@@ -793,6 +802,19 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			m_blockCrackModel.GetSkinModel().FindMaterialSetting(
 				[&](MaterialSetting* mat) {
 				mat->SetUVOffset({-0.1f*((int)(block->GetHP_Ratio()*10.0f)),0.0f});//UVアニメーション
+				SuicideObj::CSE* se;
+				se = NewGO<SuicideObj::CSE>(m_strikeName);
+				se->SetVolume(0.25f);
+				if (isStrikeFlag)
+				{
+					se->Play();
+					isStrikeFlag = false;
+				}
+				else if (!se->GetIsPlaying())
+				{
+					isStrikeFlag = true;
+				}
+				m_isBlockDestruction = false;
 				}
 			);
 		}
@@ -809,18 +831,6 @@ void Player::DecideCanDestroyBlock()
 	//マウス左長押しなら。
 	if (GetKeyInput(VK_LBUTTON))
 	{
-		SuicideObj::CSE* se;
-		se = NewGO<SuicideObj::CSE>(m_strikeName);
-		se->SetVolume(0.25f);
-		if (m_isStrikeFlag)
-		{
-			se->Play();
-			m_isStrikeFlag = false;
-		}
-		else if (!se->GetIsPlaying())
-		{
-			m_isStrikeFlag = true;
-		}
 		//タイマーを+する。
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
@@ -903,7 +913,7 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 			SuicideObj::CSE* voice;
 			//２種類からランダムで音が鳴る。
 			if (CMath::RandomZeroToOne() > 0.5f) {
-				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
+				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav"); 
 				voice->SetVolume(0.25f);
 			}
 			else {
@@ -1038,7 +1048,7 @@ void Player::Stamina()
 	if (m_stamina >= 21) {
 		m_stamina = 21;
 	}
-	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
+
 	const float maxTimer = 1.5f;
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
@@ -1047,7 +1057,7 @@ void Player::Stamina()
 		{
 			return;
 		}
-		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+		else if (item->GetIsBlock() == enTool_Foods) {			//食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)
@@ -1105,35 +1115,6 @@ void Player::Shoulder()
 	else
 	{
 		upDownY = 0;
-	}
-}
-
-//todo Debug専用。
-void Player::Test()
-{
-	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
-		m_hp -= 1;
-		if (m_defensePower > 0) {
-			m_defensePower -= 1;				//防御力減少。
-		}
-	}
-	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
-		m_hp += 1;
-		if (m_defensePower < 20) {
-			m_defensePower += 1;				//防御力上昇。
-		}
-	}
-	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
-		m_stamina += 1;
-	}
-	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
-		m_stamina -= 1;
-	}
-	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
-		m_exp -= 0.3f;			
-	}
-	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
-		m_exp += 0.3f;
 	}
 }
 

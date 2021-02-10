@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "#",
+      "X"
+    ],
+    "key": {
+      "#": "enItem_Coal",
+      "X": "enItem_Rod"
+    },
+    "result": "enCube_Torch"
+  }

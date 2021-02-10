@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "#",
+      "X"
+    ],
+    "key": {
+      "#": "enCube_CobbleStone",
+      "X": "enItem_Coal"
+    },
+    "result": "enCube_Stone"
+  }

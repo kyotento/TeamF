@@ -15,6 +15,8 @@ namespace{
 	int OldID = 0;
 	//インベントリでクリックしたときにアイテム切り替えのフラグ。
 	bool isSwichByMouseClickFlag = false;
+
+	int oldexp = 0;
 }
 
 PlayerParameter::PlayerParameter()
@@ -44,6 +46,7 @@ void PlayerParameter::Update()
 		ChangeArmor();			//防御力を変更する。
 		ChangeExp();			//経験値ゲージを変更する。
 		SelectItem();			//アイテムを変更する。
+		PlayerLevelUp();
 	}
 	//こいつ更新させてあげてください。
 	m_rightHandDisplay->SetPos(m_player->GetPos());
@@ -298,4 +301,16 @@ void PlayerParameter::StopMoveToChange()
 		m_isStopMoveToChangeFlag = true;
 		isSwichByMouseClickFlag = true;
 	}
+}
+
+void PlayerParameter::PlayerLevelUp()
+{
+	if (oldexp - 1 >= 0)
+	{
+		SuicideObj::CSE* upse;
+		upse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/levelup.wav");
+		upse->SetVolume(1.0f);
+		upse->Play();
+	}
+	oldexp = m_player->GetExp();
 }

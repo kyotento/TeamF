@@ -88,7 +88,6 @@ void Zombie::Update()
 void Zombie::Attack()
 {
 	if (m_enemyState == enEnemy_attack) {	//攻撃状態のとき。
-		//todo アニメーションのフレーム数を取得したい or　アニメーションイベントの作成。
 		m_damageTimer += 1;		//ダメージ判定用タイマーを加算。
 		if (m_damageTimer == 7) {		//ダメージ判定用のフレームに到達した時。
 			SuicideObj::CCollisionObj* attackCol = NewGO<SuicideObj::CCollisionObj>();
