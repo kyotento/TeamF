@@ -108,6 +108,8 @@ private:
 	Player* m_player = nullptr;			//プレイヤー。
 	CFont m_font;						//フォント。
 
+	float m_textDrawTimer = 0.0f;		//テキストメッセージ描画秒数
+
 	ItemDisplay* m_rightHandDisplay = nullptr;					//右手表示。
 };
 
