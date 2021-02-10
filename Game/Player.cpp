@@ -1139,10 +1139,12 @@ void Player::Defence()
 void Player::CalcAttackPow() {
 	m_attackPower = HAND_ATTACK_POW;
 	auto& item = m_inventory.GetItem(m_selItemNum - 1);
-	if (item->GetToolID() == enTool_Sword) {
-		m_attackPower *= item->GetToolLevel();
-	}
-	if (item->GetToolID() == enTool_Axe) {
-		m_attackPower *= max(1,item->GetToolLevel() / 2);
+	if (item) {
+		if (item->GetToolID() == enTool_Sword) {
+			m_attackPower *= item->GetToolLevel();
+		}
+		if (item->GetToolID() == enTool_Axe) {
+			m_attackPower *= max(1, item->GetToolLevel() / 2);
+		}
 	}
 }

@@ -8,6 +8,7 @@ DropItem::DropItem() : Entity(enEntity_None, true) {}
 
 DropItem * DropItem::CreateDropItem( World * world, std::unique_ptr<ItemStack>&& item ){
 	DropItem* drop = world->CreateEntity<DropItem>();
+	drop->SetItemStack(std::move(item));
 	return drop;
 }
 
