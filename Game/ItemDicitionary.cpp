@@ -104,6 +104,11 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 				m_array[itemId].m_toolLevel = jObj["tool_level"].get<int>();
 			}
 
+			//食料レベル(回復量)を取得
+			if( jObj.find( "food_level" ) != jObj.end() ){
+				m_array[itemId].m_foodLevel = jObj["food_level"].get<int>();
+			}
+
 			//enum名->アイテム、のMapへ登録。
 			m_nameMap.emplace( strItemId, &m_array[itemId] );
 
@@ -174,7 +179,6 @@ void ItemDictionary::SetToolMap()
 	m_toolMap[enTool_Plate] = "Plate";
 	m_toolMap[enTool_Leggings] = "Leggings";
 	m_toolMap[enTool_Boots] = "Boots";
-	m_toolMap[enTool_Foods] = "Foods";
 }
 
 EnTool ItemDictionary::DetermineToolId(std::string itemid)

@@ -61,6 +61,16 @@ public:
 		return m_item.GetToolLevel();
 	}
 
+	//! @brief このアイテムのフードレベル(食料の回復量)を取得
+	int GetFoodLevel() const{
+		return m_item.GetFoodLevel();
+	}
+
+	//! @brief 食料か
+	bool IsFood() const{
+		return m_item.IsFood();
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_item.GetStackLimit();

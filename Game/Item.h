@@ -39,6 +39,16 @@ public:
 		return m_toolLevel;
 	}
 
+	//! @brief このアイテムのフードレベル(食料の回復量)を取得
+	int GetFoodLevel() const{
+		return m_foodLevel;
+	}
+
+	//! @brief 食料か
+	bool IsFood() const{
+		return m_foodLevel > 0;
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_limitNumber;
@@ -93,4 +103,7 @@ private:
 
 	//ツールレベル。木:1からダイヤ:5まで
 	int m_toolLevel = 1;
+
+	//フードレベル(食料の回復量)
+	int m_foodLevel = 0;
 };
