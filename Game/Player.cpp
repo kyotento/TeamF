@@ -65,7 +65,7 @@ Player::~Player()
 
 	//インベントリを保存する。
 	PlayerInventoryFiler pIFiler;
-	pIFiler.SavePlayerInventory(m_inventory);
+	pIFiler.SavePlayerInventory(this);
 
 	//リスポーン地点を保存
 	RespawnPointFiler rpFiler;
@@ -148,6 +148,9 @@ bool Player::Start()
 				m_inventory.SetItem(i, std::move(itemStack));
 			}
 		}
+		m_position = pIFiler.GetPosition();
+		m_characon.SetPosition(m_position);
+		m_damageCollision->SetPosition(m_position);
 	}
 
 	//プレイヤーのパラメーター生成。
@@ -240,8 +243,6 @@ void Player::Update()
 
 	//モデルを描画するかどうか。
 	IsDraw();
-
-	Test();
 
 	//防御力きめるー。
 	Defence();
@@ -565,7 +566,7 @@ void Player::Shift()
 
 	//しゃがみの処理(Boneの回転処理)。GUI表示中は行わない。
 	if (GetKeyInput(VK_SHIFT) && m_openedGUI == nullptr) {
-		//todo ブロックから落ちない処理を追加する。
+
 		bodyRot.SetRotationDeg(CVector3::AxisZ(), shiftDir);
 		rightLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir);
 		leftLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir);
@@ -1047,7 +1048,7 @@ void Player::Stamina()
 	if (m_stamina >= 21) {
 		m_stamina = 21;
 	}
-	//todo 飯を食べた時。隠れスタミナを4にして、体力を回復する。
+
 	const float maxTimer = 1.5f;
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
@@ -1056,7 +1057,7 @@ void Player::Stamina()
 		{
 			return;
 		}
-		else if (!item->GetIsBlock()) {					//todo 仮　実際は食べ物かどうかを判別する。
+		else if (item->GetIsBlock() == enTool_Foods) {			//食べ物かどうかを判別する。
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)
@@ -1114,35 +1115,6 @@ void Player::Shoulder()
 	else
 	{
 		upDownY = 0;
-	}
-}
-
-//todo Debug専用。
-void Player::Test()
-{
-	if (GetKeyUp(VK_LEFT) && m_hp > 0) {		//体力減少。
-		m_hp -= 1;
-		if (m_defensePower > 0) {
-			m_defensePower -= 1;				//防御力減少。
-		}
-	}
-	if (GetKeyUp(VK_RIGHT) && m_hp < 20) {		//体力上昇。
-		m_hp += 1;
-		if (m_defensePower < 20) {
-			m_defensePower += 1;				//防御力上昇。
-		}
-	}
-	if (GetKeyUp(VK_UP) && m_stamina < 20) {	//スタミナ上昇。
-		m_stamina += 1;
-	}
-	if (GetKeyUp(VK_DOWN) && m_stamina > 0) {	//スタミナ減少。
-		m_stamina -= 1;
-	}
-	if (GetKeyUp(VK_NUMPAD1) && m_exp > 0) {	//経験値減少。
-		m_exp -= 0.3f;			
-	}
-	if (GetKeyUp(VK_NUMPAD2)) {					//経験値増加。
-		m_exp += 0.3f;
 	}
 }
 

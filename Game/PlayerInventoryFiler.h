@@ -1,7 +1,7 @@
 #pragma once
 #include "Inventory.h"
 
-
+class Player;
 class PlayerInventoryFiler
 {
 public:
@@ -12,14 +12,20 @@ public:
 	bool LoadPlayerInventory();
 
 	//プレイヤーインベントリをセーブする。
-	void SavePlayerInventory(Inventory& inventory);
+	void SavePlayerInventory(Player* player);
 
 	//ロードしたインベントリを取得。
 	Inventory& GetInventory()
 	{
 		return m_inventory;
 	}
+	//ポジションを取得。
+	const CVector3& GetPosition() const
+	{
+		return m_position;
+	}
 private:
 	Inventory m_inventory;
+	CVector3 m_position;
 };
 

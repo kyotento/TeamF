@@ -25,8 +25,6 @@ public:
 	bool Start() override;
 	void Update() override;
 
-	void Test();//todo　リリースのときに消します。
-
 	CFont font;
 	void HUDRender( int HUDNum ) override{
 		//座標表示
