@@ -21,7 +21,7 @@ Game::Game()
 
 Game::~Game()
 {
-	DeleteGO(m_bgm);
+	if (m_bgm) { DeleteGO(m_bgm); }
 }
 
 bool Game::Start()
@@ -121,15 +121,10 @@ void Game::TransToTitle()
 
 void Game::GameBGM()
 {
-	if (!m_isBgmFlag) {
-		//BGM
-		m_bgm = NewGO<SuicideObj::CSE>(m_bgmName);
+	//BGM
+	if (!m_bgm) {
+		m_bgm = NewGO<SuicideObj::CBGM>(m_bgmName);
 		m_bgm->SetVolume(0.1f);
-		m_bgm->Play();
-		m_isBgmFlag = true;
-	}
-	if (!m_bgm->GetIsPlaying())
-	{
-		m_isBgmFlag = false;
+		m_bgm->Play(false, true);
 	}
 }

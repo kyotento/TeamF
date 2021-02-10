@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Recipe.h"
 
-Recipe::Recipe( int width, int height, const std::vector<int>& itemArray, const ItemStack& result ):
-	m_widthHeight(width, height), m_itemArray(itemArray), m_result(result){}
+Recipe::Recipe( int width, int height, const std::vector<int>& itemArray, Item& result, int resultCount):
+	m_widthHeight(width, height), m_itemArray(itemArray), m_result(result, resultCount){}
 
 Recipe::~Recipe(){}
 

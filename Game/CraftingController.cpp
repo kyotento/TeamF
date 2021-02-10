@@ -38,26 +38,22 @@ namespace GUI::Controller{
 
 			//アイテム移動の処理
 			const int grabNum = m_grabed->GetNumber();
+			const int resultNum = result->GetNumber();
 
-			const int moveNum = min( 1, m_grabed->GetStackLimit() - grabNum );
-
-			if( moveNum == 0 ){
+			//カーソルのアイテムがスタック上限を超えそうなら、取得はできない。
+			if( grabNum + resultNum > m_grabed->GetStackLimit() ){
 				return;
 			}
 
-			m_grabed->SetNumber( grabNum + moveNum );
-			result->SetNumber( result->GetNumber() - moveNum );
-
-			if( result->GetNumber() == 0 ){
-				m_inventory.SetItem( resultSlot, nullptr );
-			}
+			m_grabed->SetNumber( grabNum + resultNum );
+			m_inventory.SetItem( resultSlot, nullptr );
 
 			//完成品を取ったので、クラフトテーブルに置いてあるアイテムを消費する。
 			for( int i = 0; i <= 8; i++ ){
 				auto& item = m_inventory.GetItem( i );
 
 				if( item ){
-					item->SetNumber( item->GetNumber() - moveNum );
+					item->SetNumber( item->GetNumber() - 1 );
 
 					if( item->GetNumber() == 0 ){
 						m_inventory.SetItem( i, nullptr );

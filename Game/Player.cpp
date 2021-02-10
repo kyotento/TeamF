@@ -34,8 +34,9 @@ namespace {
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
+	constexpr int HAND_ATTACK_POW = 5;					//素手の攻撃力。
+	constexpr float WALK_SOUND_TIME = 0.5f;				//足音鳴らす間隔。
 
-	bool isWalkFlag = false;
 	bool isStrikeFlag = true;
 	bool isBlockDestroy = false;
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
@@ -65,7 +66,7 @@ Player::~Player()
 
 	//インベントリを保存する。
 	PlayerInventoryFiler pIFiler;
-	pIFiler.SavePlayerInventory(m_inventory);
+	pIFiler.SavePlayerInventory(this);
 
 	//リスポーン地点を保存
 	RespawnPointFiler rpFiler;
@@ -126,7 +127,7 @@ bool Player::Start()
 			enCube_Chest, enCube_BedHead,
 			enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
 			enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots
+			enItem_Raw_Meat,enItem_Steak
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -148,6 +149,9 @@ bool Player::Start()
 				m_inventory.SetItem(i, std::move(itemStack));
 			}
 		}
+		m_position = pIFiler.GetPosition();
+		m_characon.SetPosition(m_position);
+		m_damageCollision->SetPosition(m_position);
 	}
 
 	//プレイヤーのパラメーター生成。
@@ -243,6 +247,8 @@ void Player::Update()
 
 	//防御力きめるー。
 	Defence();
+	//攻撃力も
+	CalcAttackPow();
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
@@ -411,27 +417,19 @@ void Player::Move()
 	CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
 	m_damageCollision->SetPosition(colPos);
 
+	//足音
+	m_walkingTimer += GetDeltaTimeSec();
+	if (m_characon.IsOnGround() && m_walkingTimer > WALK_SOUND_TIME / m_runSpeedDouble && stickL.Length() > 0.001f) {
+		auto walk = NewGO<SuicideObj::CSE>(m_walkName);
+		walk->SetVolume(0.125f);
+		walk->Play();
+		m_walkingTimer = 0.0f;
+	}
+
 	//プレイヤーの状態の変更。
 	if (m_playerState != enPlayerState_run && m_playerState != enPlayerState_KnockBack) {
 		if (stickL.Length() > 0.001f) {
-			m_playerState = enPlayerState_move;
-			if (!isWalkFlag && m_characon.IsOnGround()) {
-				//BGM
-				m_walk = NewGO<SuicideObj::CSE>(m_walkName);
-				m_walk->SetVolume(0.25f);
-				m_walk->Play();
-				isWalkFlag = true;
-			}
-			else if (m_walk == nullptr)
-			{
-				isWalkFlag = false;
-				DeleteGO(m_walk);
-			}
-			else if (!m_walk->GetIsPlaying())
-			{
-				isWalkFlag = false;
-				DeleteGO(m_walk);;
-			}
+			m_playerState = enPlayerState_move;			
 		}
 		else {
 			m_playerState = enPlayerState_idle;
@@ -798,22 +796,24 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			m_blockCrackModel.RefreshWorldMatrix();//モーションブラーが出ないように更新
 			m_blockCrackModel.GetSkinModel().FindMaterialSetting(
 				[&](MaterialSetting* mat) {
-				mat->SetUVOffset({-0.1f*((int)(block->GetHP_Ratio()*10.0f)),0.0f});//UVアニメーション
-				SuicideObj::CSE* se;
-				se = NewGO<SuicideObj::CSE>(m_strikeName);
-				se->SetVolume(0.25f);
-				if (isStrikeFlag)
-				{
-					se->Play();
-					isStrikeFlag = false;
-				}
-				else if (!se->GetIsPlaying())
-				{
-					isStrikeFlag = true;
-				}
-				m_isBlockDestruction = false;
+					mat->SetUVOffset({-0.1f*((int)(block->GetHP_Ratio()*10.0f)),0.0f});//UVアニメーション				
 				}
 			);
+
+			//SE
+			SuicideObj::CSE* se;
+			se = NewGO<SuicideObj::CSE>(m_strikeName);
+			se->SetVolume(0.25f);
+			if (isStrikeFlag)
+			{
+				se->Play();
+				isStrikeFlag = false;
+			}
+			else if (!se->GetIsPlaying())
+			{
+				isStrikeFlag = true;
+			}
+			m_isBlockDestruction = false;
 		}
 		else {
 			m_blockCrackModel.SetIsDraw(false);
@@ -1050,17 +1050,17 @@ void Player::Stamina()
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (item == nullptr || item->GetToolID() != enTool_Foods)
+		if (item == nullptr || item->IsFood() == false)//食べ物かの判別。
 		{
 			return;
 		}
-		else if (item->GetIsBlock() == enTool_Foods) {			//食べ物かどうかを判別する。
+		else{
 			m_eatingTimer += GetDeltaTimeSec();		//タイマー回すよん。
 			m_eatingFlag = true;
 			if (m_eatingTimer >= maxTimer)
 			{
 				m_eatingTimer = 0.0f;
-				m_stamina += 4;				//todo 個々もアイテムに応じて回復量を設定する。
+				m_stamina += item->GetFoodLevel();//スタミナ回復
 				hiddenStamina = 4;			//隠れスタミナを上昇する。
 				auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
 			}
@@ -1133,5 +1133,18 @@ void Player::Defence()
 	if (m_inventory.GetNullableItem(39).GetID() != enCube_None)
 	{
 		m_defensePower += m_inventory.GetItem(39).get()->GetToolLevel();
+	}
+}
+
+void Player::CalcAttackPow() {
+	m_attackPower = HAND_ATTACK_POW;
+	auto& item = m_inventory.GetItem(m_selItemNum - 1);
+	if (item) {
+		if (item->GetToolID() == enTool_Sword) {
+			m_attackPower *= item->GetToolLevel();
+		}
+		if (item->GetToolID() == enTool_Axe) {
+			m_attackPower *= max(1, item->GetToolLevel() / 2);
+		}
 	}
 }

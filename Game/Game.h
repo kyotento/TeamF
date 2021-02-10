@@ -74,7 +74,6 @@ private:
 
 	bool m_isEscMenu = false;			//EscMenuが出ているかどうか。
 	bool m_isConfig = true;				//コンフィグを開いているか。
-	bool m_isBgmFlag = false;			//曲を流してよいか。
 	std::unique_ptr	<World> m_world;					//ワールド。
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。
 	std::unique_ptr <GameMode> m_gameMode;				//ゲームモード。
@@ -83,7 +82,7 @@ private:
 	std::unique_ptr <Menu> m_menu;						//メニュー。
 	std::unique_ptr <CowGenerator> m_cowGenerator;
 
-	SuicideObj::CSE* m_bgm = nullptr;
+	SuicideObj::CBGM* m_bgm = nullptr;
 	Config* m_config = nullptr;
 
 	const wchar_t* m_bgmName;

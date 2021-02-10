@@ -40,8 +40,6 @@ namespace {
 	//とりあえずの変数。
 	int a = 0;
 	bool flag = false;
-
-	bool isEatFlag = true;
 }
 
 ItemDisplay::ItemDisplay()
@@ -400,6 +398,12 @@ void ItemDisplay::UpDown()
 		{
 			flag = true; 
 			a = 0;
+
+			//SE
+			SuicideObj::CSE* eatse = nullptr;
+			eatse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/eat.wav");
+			eatse->SetVolume(0.25f);
+			eatse->Play();
 		}
 	}
 	else if (m_isUpDownFlag && flag)
@@ -410,26 +414,14 @@ void ItemDisplay::UpDown()
 		{
 			flag = false;
 			a = 0;
+
+			//SE
+			SuicideObj::CSE* eatse = nullptr;
+			eatse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/eat.wav");
+			eatse->SetVolume(0.25f);
+			eatse->Play();
 		}
-	}
-	SuicideObj::CSE* eatse;
-	if (isEatFlag) {
-		//BGM
-		eatse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/eat.wav");
-		eatse->SetVolume(0.25f);
-		eatse->Play();
-		isEatFlag = false;
-	}
-	else if (eatse == nullptr)
-	{
-		isEatFlag = true;
-		DeleteGO(eatse);
-	}
-	else if (!eatse->GetIsPlaying())
-	{
-		isEatFlag = true;
-		DeleteGO(eatse);
-	}
+	}	
 }
 //FPS以外の時のモデル処理。
 void ItemDisplay::NotFPSCameraOfRightHandDraw()

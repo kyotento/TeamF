@@ -10,6 +10,10 @@ enum EnItem{
 	enItem_Gold_Ingot,
 	enItem_Diamond,
 
+	//食料
+	enItem_Raw_Meat,
+	enItem_Steak,
+
 	//木のツール類
 	enItem_Wood_Sword,
 	enItem_Wood_Pickaxe,
@@ -92,7 +96,6 @@ enum EnTool
 	enTool_Plate,		//プレート。
 	enTool_Leggings,	//レギンス(ズボン)。
 	enTool_Boots,		//ブーツ。
-	enTool_Foods,		//食料。
 
 	enTool_Num,			//属性の数。
 };

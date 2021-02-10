@@ -3,6 +3,7 @@
 #include "NullableItemStack.h"
 #include "ItemStack.h" 
 #include "Item.h"
+#include "Player.h"
 
 namespace
 {
@@ -37,12 +38,14 @@ namespace
 			 m_inventory.SetItem(i, std::move(item));
 		 }
 	 }
+	 fscanf(fp, "%f %f %f" , &m_position.x, &m_position.y, &m_position.z);
 	 fclose(fp);
 	 return true;
  }
 
-void PlayerInventoryFiler::SavePlayerInventory(Inventory& inventory)
+void PlayerInventoryFiler::SavePlayerInventory(Player* player)
 {
+	auto& inventory = player->GetInventory();
 	std::string fileName = filePath;
 
 	std::ofstream file;
@@ -64,5 +67,10 @@ void PlayerInventoryFiler::SavePlayerInventory(Inventory& inventory)
 		file << item.GetNumber() << std::endl;
 		
 	}
+
+	auto pos = player->GetPos();
+	file << pos.x << " ";
+	file << pos.y << " ";
+	file << pos.z << std::endl;
 	file.close();
 }
