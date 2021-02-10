@@ -122,12 +122,18 @@ void World::PostUpdate(){
 
 	{
 		if (m_block != nullptr) {
-			m_timer += GetDeltaTimeSec();
-			if (m_timer >= timeBlockDurabilityValueRecover)
+			if (GetBlock(m_blockPosX, m_blockPosY, m_blockPosZ) == nullptr)
 			{
-				m_timer = 0.0f;
-				m_block->RestoresBlockDurabilityValue();
-				m_block = nullptr;
+				m_block == nullptr;
+			}
+			else {
+				m_timer += GetDeltaTimeSec();
+				if (m_timer >= timeBlockDurabilityValueRecover)
+				{
+					m_timer = 0.0f;
+					m_block->RestoresBlockDurabilityValue();
+					m_block = nullptr;
+				}
 			}
 
 		}
@@ -454,6 +460,9 @@ const Block* World::DamegeBlock( const CVector3& pos, EnTool toolType, int toolL
 	//ブロックのHPが0以上ならこれで終わり
 	if (m_block->GetHP() > 0)
 	{
+		m_blockPosX = x;
+		m_blockPosY = y;
+		m_blockPosZ = z;
 		return m_block;
 	}
 	//ブロックが破壊された。
