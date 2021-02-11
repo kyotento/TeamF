@@ -33,13 +33,13 @@ void FurnaceFire::SourceChange(){
 	}
 
 	//完成品スロットと違うIDでは燃やせない。
-	if( source.GetID() != result.GetID() ){
+	if(result.GetID() != enCube_None && source.GetID() != result.GetID() ){
 		m_fireGo.reset();
 		return;
 	}
 
 	//スタック上限。
-	if( result.GetStackLimit() == result.GetNumber() ){
+	if( result.GetID() != enCube_None && result.GetStackLimit() == result.GetNumber() ){
 		m_fireGo.reset();
 		return;
 	}
