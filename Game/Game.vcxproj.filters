@@ -221,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="RespawnPointFiler.cpp" />
+    <ClCompile Include="Creeper.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -463,6 +466,9 @@
     <ClInclude Include="RespawnPointFiler.h" />
     <ClInclude Include="CalcMuki.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Creeper.h">
+      <Filter>Entity\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

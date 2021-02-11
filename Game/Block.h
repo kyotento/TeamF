@@ -55,7 +55,7 @@ public:
 
 	//! @brief このブロックのAABBの数を取得
 	int GetAABBNum() const{
-		return m_bInfo->aabbArray.size();
+		return (int)m_bInfo->aabbArray.size();
 	}
 
 	//! @brief ブロックの種類を取得。

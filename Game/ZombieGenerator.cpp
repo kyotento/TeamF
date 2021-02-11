@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ZombieGenerator.h"
 #include "Zombie.h"
+#include "Creeper.h"
 #include "Sun.h"
 
 namespace {
@@ -36,7 +37,13 @@ void ZombieGenerator::NewGOMob(const CVector3& pos)
 		char light = *MobGenerator::GetWorld()->GetLightData((int)std::floorf(pos.x / Block::WIDTH), (int)std::floorf(pos.y / Block::WIDTH), (int)std::floorf(pos.z / Block::WIDTH));
 		if (light <= 4) {
 			//プレイヤーの生成。
-			Zombie* zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
+			Enemy* zombie = nullptr;
+			if (CMath::RandomZeroToOne() < 0.1f) {
+				zombie = MobGenerator::GetWorld()->CreateEntity<Creeper>();
+			}
+			else {
+				zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
+			}
 			zombie->SetPos(pos);
 		}
 	}
