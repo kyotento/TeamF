@@ -81,6 +81,7 @@
     <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="RespawnPointFiler.cpp" />
     <ClCompile Include="Sun.cpp" />
+    <ClCompile Include="TNT.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="Utf8ToSjis.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="PairBlock.h" />
     <ClInclude Include="PlayerInventoryFiler.h" />
     <ClInclude Include="RespawnPointFiler.h" />
+    <ClInclude Include="TNT.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="Utf8ToSjis.h" />

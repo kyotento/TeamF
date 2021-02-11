@@ -27,6 +27,9 @@ public:
 		return m_model.GetPos();
 	}
 
+	//! @brief ブロック単位の座標を計算する
+	IntVector3 CalcBlockUnitPos()const;
+
 	//向き
 	//※実際のブロックの向きと名前が一致してないかも
 	enum enMuki {
@@ -189,14 +192,8 @@ private:
 	//! @brief AABBを計算する
 	void CalcAABB();
 
-protected:
-	//! @brief ブロック単位の座標を計算する
-	IntVector3 CalcBlockUnitPos()const;
-
 private:
-	//モデル
-	GameObj::CInstancingModelRender m_model;
-	CRayTracingModelRender m_raytraceModel;//レイトレ用
+	CRayTracingModelRender m_raytraceModel;//レイトレ用モデル
 
 	//! @brief ブロックの種類ごとに共通の情報。
 	const BlockInfo* m_bInfo;
@@ -215,6 +212,8 @@ private:
 	int m_hp = 10;
 
 protected:
+	//モデル
+	GameObj::CInstancingModelRender m_model;
 	//ワールドポインタ
 	static World* m_sWorld;
 };

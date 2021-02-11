@@ -34,11 +34,11 @@ bool Creeper::Start()
 	m_deathVoice = L"Resource/soundData/enemy/zombiedeath.wav";
 
 	//アイテムドロップ
-	SetDropItemId(enCube_CoalOre);
+	SetDropItemId(enCube_TNT);
 	SetChanceDropping(100);
 	//レアドロップ
-	SetDropItemId(enCube_WoGBlock, true);
-	SetChanceDropping(5, true);
+	//SetDropItemId(enCube_WoGBlock, true);
+	//SetChanceDropping(5, true);
 
 	return true;
 }
