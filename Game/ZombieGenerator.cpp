@@ -38,7 +38,7 @@ void ZombieGenerator::NewGOMob(const CVector3& pos)
 		if (light <= 4) {
 			//プレイヤーの生成。
 			Enemy* zombie = nullptr;
-			if (CMath::RandomZeroToOne() < 0.1f) {
+			if (CMath::RandomZeroToOne() < 0.18f) {
 				zombie = MobGenerator::GetWorld()->CreateEntity<Creeper>();
 			}
 			else {

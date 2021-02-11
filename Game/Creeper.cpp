@@ -97,13 +97,15 @@ void Creeper::Attack() {
 	if (m_bombCount % 10 < 5) {
 		//モデルの色を元に戻す。
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
-			mat->SetAlbedoScale({ CVector4::White() });
+			//mat->SetAlbedoScale(CVector4::White());
+			mat->SetEmissive(1.0f);
 		});
 	}
 	else {
 		//モデルの色を白く。
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
-			mat->SetAlbedoScale({ CVector4::White()*10.0f });
+			//mat->SetAlbedoScale({ 10.0f, 10.0f, 10.0f, 1.0f });
+			mat->SetEmissive(10.0f);
 		});
 	}
 
@@ -141,13 +143,13 @@ void Creeper::Attack() {
 		if (param.EqualName(L"CPlayer")) {//名前検索。
 			CVector3 direction = m_player->GetPos() - GetPos();
 			float damegeScale = 1.0f - (direction.Length() / (Block::WIDTH * bombArea));//距離減衰
-			m_player->TakenDamage(m_attackPow * damegeScale, direction, true);//プレイヤーにダメージを与える。
+			m_player->TakenDamage((int)(m_attackPow * damegeScale), direction, true);//プレイヤーにダメージを与える。
 		}
 		if (param.EqualName(L"CEnemy")) {//名前検索。
 			auto enemy = param.GetClass<Enemy>();
 			CVector3 direction = enemy->GetPos() - GetPos();
 			float damegeScale = 1.0f - (direction.Length() / (Block::WIDTH * bombArea));//距離減衰
-			enemy->TakenDamage(m_attackPow * damegeScale);//ダメージを与える。
+			enemy->TakenDamage((int)(m_attackPow * damegeScale));//ダメージを与える。
 		}
 	});
 
