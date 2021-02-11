@@ -31,6 +31,9 @@ public:
 	//ドロップモデルパス　手に持つときのモデルでもある
 	std::filesystem::path dropModelPath;
 
+	//燃料レベル
+	float fuel_level = 0;
+
 	//enCube_None用のInfo
 	static const BlockInfo NONE_BLOCK;
 };

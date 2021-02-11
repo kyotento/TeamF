@@ -109,6 +109,11 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 				m_array[itemId].m_foodLevel = jObj["food_level"].get<int>();
 			}
 
+			//燃料レベル(焼ける数)を取得
+			if( jObj.find( "fuel_level" ) != jObj.end() ){
+				m_array[itemId].m_fuelLevel = jObj["fuel_level"].get<float>();
+			}
+
 			//enum名->アイテム、のMapへ登録。
 			m_nameMap.emplace( strItemId, &m_array[itemId] );
 
@@ -139,6 +144,10 @@ void ItemDictionary::LoadBlocks( const std::unordered_map<EnCube, BlockInfo>& bl
 			//アイコンスプライトがある場合
 			m_array[itemId] = Item((EnItem)itemId, utf8toWide(bInfo.name).c_str(), 64, bInfo.spritePath, bInfo.dropModelPath.empty() ? bInfo.modelPath : bInfo.dropModelPath);
 		}
+
+		//燃料レベル
+		m_array[itemId].m_fuelLevel = bInfo.fuel_level;
+
 		//enum名->アイテム、のMapへ登録。
 		m_nameMap.emplace( NAMEOF_ENUM(itemId).data(), &m_array[itemId] );
 	}

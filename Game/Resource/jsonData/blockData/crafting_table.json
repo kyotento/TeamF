@@ -3,5 +3,6 @@
 	"name": "作業台",
 	"model": "modelData/craftingTable.tkm",
 	"hp": 4,
-	"tool": "enTool_Axe"
+	"tool": "enTool_Axe",
+	"fuel_level": 1.5
 }

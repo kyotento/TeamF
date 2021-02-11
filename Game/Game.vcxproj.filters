@@ -221,6 +221,15 @@
     </ClCompile>
     <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="RespawnPointFiler.cpp" />
+    <ClCompile Include="FurnaceInventory.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Furnace.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="FurnaceController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
     <ClCompile Include="Creeper.cpp">
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
@@ -467,6 +476,15 @@
     <ClInclude Include="CalcMuki.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="FurnaceInventory.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Furnace.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="FurnaceController.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
     <ClInclude Include="Creeper.h">
       <Filter>Entity\Enemy</Filter>
     </ClInclude>
@@ -658,22 +676,6 @@
     <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
     <ImageContentTask Include="Resource\sprite\Chest.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_leggings.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_leggings.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_leggings.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_leggings.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">

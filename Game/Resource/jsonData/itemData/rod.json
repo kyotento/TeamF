@@ -1,5 +1,6 @@
 {
 	"id": "enItem_Rod",
 	"name": "棒",
-	"sprite": "spriteData/items/Rod.dds"
+	"sprite": "spriteData/items/Rod.dds",
+	"fuel_level": 0.5
 }

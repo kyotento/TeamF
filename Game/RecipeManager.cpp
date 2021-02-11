@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include "RecipeManager.h"
 
+std::unique_ptr<ItemStack> RecipeManager::GetFurnaceResult( int itemID ){
+	if( m_furnaceMap.count( itemID ) == 0 ){
+		return nullptr;
+	}
+	int id = m_furnaceMap[itemID];
+	return std::make_unique<ItemStack>( Item::GetItem( id ) );
+}
+
 std::unique_ptr<ItemStack> RecipeManager::GetResult( const int width, const int * const itemArray ){
 
 	int up = width, bottom = -1, left = width, right = -1;

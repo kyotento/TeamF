@@ -4,5 +4,6 @@
 	"model": "modelData/chest.tkm",
 	"hp": 15,
 	"tool": "enTool_Axe",
-	"opacity": false
+	"opacity": false,
+	"fuel_level": 1.5
 }

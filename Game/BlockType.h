@@ -30,6 +30,7 @@ enum EnCube
 	enCube_BedLeg,			//ベッド(足側)
 	enCube_Chest,			//チェスト。
 	enCube_Sand,			//砂。
+	enCube_Furnace,			//かまど。
 
 	enCube_Num
 };

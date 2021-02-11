@@ -31,6 +31,11 @@ public:
 		return m_number;
 	}
 
+	//! @brief 個数を増やす。(マイナス値で減らす。)
+	void AddNumber( int num){
+		m_number += num;
+	}
+
 	//! @brief アイテム情報を取得。
 	const Item& GetItem() const{
 		return m_item;
@@ -71,8 +76,18 @@ public:
 		return m_item.IsFood();
 	}
 
+	//! @brief このアイテムの燃料レベル(焼ける数)を取得
+	float GetFuelLevel() const{
+		return m_item.GetFuelLevel();
+	}
+
+	//! @brief 燃料か
+	bool IsFuel() const override{
+		return m_item.IsFuel();
+	}
+
 	//! @brief スタック上限を取得。
-	int GetStackLimit() const{
+	int GetStackLimit() const override{
 		return m_item.GetStackLimit();
 	}
 

@@ -1,8 +1,8 @@
 {
-	"id": "enItem_Iron_ChestPlate2",
-	"name": "鉄の鎧2",
-	"sprite": "spriteData/tools/Iron_Sword.dds",
-	"model": "modelData/armor/Iron_ChestPlate2.tkm",
+	"id": "enItem_Leather_ChestPlate2",
+	"name": "皮の鎧2",
+	"sprite": "spriteData/tools/Leather_Sword.dds",
+	"model": "modelData/armor/Leather_ChestPlate2.tkm",
 	"stack_limit": 1,
-	"tool_level": 5
+	"tool_level": 1
 }

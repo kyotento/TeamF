@@ -1,0 +1,5 @@
+{
+    "type": "smelting", 
+    "source": "enCube_OakLog",
+    "result": "enItem_Charcoal"
+}

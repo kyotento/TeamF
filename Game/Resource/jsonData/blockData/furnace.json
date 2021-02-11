@@ -1,0 +1,7 @@
+{
+	"id": "enCube_Furnace",
+	"name": "かまど",
+	"model": "modelData/Furnace.tkm",
+	"hp": 24,
+	"tool": "enTool_Pickaxe"
+}

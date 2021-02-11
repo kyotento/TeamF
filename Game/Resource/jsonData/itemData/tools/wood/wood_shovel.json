@@ -3,5 +3,6 @@
 	"name": "木のシャベル",
 	"sprite": "spriteData/tools/Wood_Shovel.dds",
 	"stack_limit": 1,
-	"tool_level": 1
+	"tool_level": 1,
+	"fuel_level": 1
 }

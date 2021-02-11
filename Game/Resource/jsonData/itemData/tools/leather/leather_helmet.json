@@ -1,8 +1,8 @@
 {
-	"id": "enItem_Iron_Helmet",
-	"name": "鉄の兜",
-	"sprite": "spriteData/armor/Iron_Helmet.dds",
-	"model": "modelData/armor/Iron_Helmet.tkm",
+	"id": "enItem_Leather_Helmet",
+	"name": "皮の兜",
+	"sprite": "spriteData/armor/Leather_Helmet.dds",
+	"model": "modelData/armor/Leather_Helmet.tkm",
 	"stack_limit": 1,
-	"tool_level": 2
+	"tool_level": 1
 }
