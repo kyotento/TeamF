@@ -670,22 +670,6 @@
     <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
     <ImageContentTask Include="Resource\sprite\Chest.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Diamond_leggings.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Golden_leggings.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Iron_leggings.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_Boots.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_ChestPlat.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_Helmet.png" />
-    <ImageContentTask Include="Resource\sprite\armor\Leather_leggings.png" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
