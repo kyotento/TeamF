@@ -1,0 +1,5 @@
+{
+    "type": "smelting", 
+    "source": "enCube_GoldOre",
+    "result": "enItem_Gold_Ingot"
+}

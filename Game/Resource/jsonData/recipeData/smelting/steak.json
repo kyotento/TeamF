@@ -1,0 +1,5 @@
+{
+    "type": "smelting", 
+    "source": "enItem_Raw_Meat",
+    "result": "enItem_Steak"
+}

@@ -1,5 +1,6 @@
 {
 	"id": "enItem_Coal",
 	"name": "石炭",
-	"sprite": "spriteData/items/Coal.dds"
+	"sprite": "spriteData/items/Coal.dds",
+	"fuel_level": 8
 }

@@ -18,6 +18,11 @@ public:
 		return 0;
 	}
 
+	//! @brief スタック上限を取得。
+	virtual int GetStackLimit() const{
+		return 0;
+	}
+
 	//! @brief アイテムidを取得。
 	virtual int GetID() const{
 		return enCube_None;
@@ -30,6 +35,11 @@ public:
 
 	//! @brief 食料か
 	virtual bool IsFood() const{
+		return false;
+	}
+
+	//! @brief 燃料か
+	virtual bool IsFuel() const{
 		return false;
 	}
 

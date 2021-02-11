@@ -21,10 +21,10 @@ public:
 	void GenerateDropItem();
 
 	//! @brief ブロック特有の情報を、チャンクファイルから読み込む。
-	virtual void ReadExData( std::ifstream& ifs );
+	virtual void ReadExData( std::ifstream& ifs ) override;
 
 	//! @brief ブロック特有の情報を、チャンクファイルに書き込む。
-	virtual void WriteExData( std::ofstream& ofs );
+	virtual void WriteExData( std::ofstream& ofs ) override;
 
 private:
 	//3×9の27個のスロット。

@@ -221,6 +221,15 @@
     </ClCompile>
     <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="RespawnPointFiler.cpp" />
+    <ClCompile Include="FurnaceInventory.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Furnace.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="FurnaceController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -463,6 +472,15 @@
     <ClInclude Include="RespawnPointFiler.h" />
     <ClInclude Include="CalcMuki.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="FurnaceInventory.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Furnace.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="FurnaceController.h">
+      <Filter>GUI\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

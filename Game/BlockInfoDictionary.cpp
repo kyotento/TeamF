@@ -177,6 +177,11 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 				bInfo.dropModelPath = AddResorcePath(bInfo.dropModelPath.string());
 			}
 
+			//”R—¿ƒŒƒxƒ‹(Ä‚¯‚é”)‚ğæ“¾
+			if( jObj.find( "fuel_level" ) != jObj.end() ){
+				bInfo.fuel_level = jObj["fuel_level"].get<float>();
+			}
+
 		} catch( nl::detail::exception& ex ){
 			messageAbort( file, ex.what() );
 

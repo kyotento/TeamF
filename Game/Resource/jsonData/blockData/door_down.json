@@ -11,5 +11,6 @@
   ],
   "dropItem": "enCube_DoorDown",
   "sprite": "sprite/items/Door.png",
-  "dropModel": "modelData/dropDoor.tkm"
+  "dropModel": "modelData/dropDoor.tkm",
+  "fuel_level": 1
 }

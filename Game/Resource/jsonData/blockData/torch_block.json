@@ -3,5 +3,6 @@
 	"name": "松明ブロック",
 	"model": "modelData/TorchBlock.tkm",
 	"hp": 1,
-	"light": 14
+	"light": 14,
+	"fuel_level": 16
 }

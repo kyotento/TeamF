@@ -21,7 +21,13 @@ enum class Job{
 	LOAD_TYPE,
 	LOAD_KEY,
 	LOAD_PATTERN,
+	LOAD_SOURCE,
 	LOAD_RESULT,
+};
+
+enum class Type{
+	SHAPED,
+	SMELTING,
 };
 
 void RecipeFiler::LoadRecipe( RecipeManager & rm ){
@@ -77,6 +83,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 			//成果物個数
 			int resultCount = 1;
 
+			Type recipeType;
 
 			//タイプ読み込み
 			{
@@ -85,7 +92,9 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 				std::string type = jObj["type"].get<std::string>();
 
 				if( type.compare( "crafting_shaped" ) == 0 ){
-					//TODO クラフトタイプを設定する。
+					recipeType = Type::SHAPED;
+				} else if( type.compare( "smelting" ) == 0 ){
+					recipeType = Type::SMELTING;
 				} else{
 					throw "不正なtype=>\"" + type + "\"";
 				}
@@ -93,7 +102,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 
 
 			//キーの読み込み
-			{
+			if(recipeType == Type::SHAPED){
 				nowJob = Job::LOAD_KEY;
 
 				nl::json key = jObj["key"];
@@ -114,7 +123,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 
 
 			//配置読み込み
-			{
+			if( recipeType == Type::SHAPED ){
 				nowJob = Job::LOAD_PATTERN;
 
 				nl::json pattern = jObj["pattern"];
@@ -163,11 +172,17 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 				resultCount = jObj["resultCount"].get<int>();
 			}
 
+			//燃やすものを取得。
+			if( recipeType == Type::SMELTING ){
+				std::string sourceStr = jObj["source"].get<std::string>();
+				int source = Item::GetItem( sourceStr ).GetID();
+				RecipeManager::Instance().AddFurnaceRecipe( source, resultItem );
+				continue;
+			}
+
 			//レシピ生成。
 			auto recipe = std::make_unique<Recipe>( width, height, itemArray, Item::GetItem( resultItem ), resultCount);
 			RecipeManager::Instance().AddRecipe( std::move( recipe ) );
-
-			rm.SetInited();
 
 		} catch( nl::detail::exception& ex ){
 
@@ -197,5 +212,7 @@ void RecipeFiler::LoadRecipe( RecipeManager & rm ){
 		}
 
 	}
+
+	rm.SetInited();
 
 }

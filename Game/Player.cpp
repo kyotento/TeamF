@@ -124,11 +124,10 @@ bool Player::Start()
 		int itemArray[] = {
 			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
 			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
+			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakLog,
 			enCube_Chest, enCube_BedHead,
-			enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
 			enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			enItem_Raw_Meat,enItem_Steak
+			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
