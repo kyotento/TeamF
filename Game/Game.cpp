@@ -73,6 +73,11 @@ void Game::Update()
 	m_world->SetChunkCoadRange(m_chunkRange);		//読み込みチャンクの更新。
 	EscMenu();
 	GameBGM();
+
+	if (GetKeyDown(VK_F3)) {
+		//デバッグ表示切り替え
+		SetIsDebugDraw(!GetIsDebugDraw());
+	}
 }
 
 void Game::EscMenu()
