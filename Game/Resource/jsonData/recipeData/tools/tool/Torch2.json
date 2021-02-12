@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "X"
+    ],
+    "key": {
+      "X": "enCube_TorchBlock"
+    },
+    "result": "enCube_Torch",
+    "resultCount": 9
+  }

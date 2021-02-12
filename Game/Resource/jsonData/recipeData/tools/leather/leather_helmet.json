@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "XXX",
+      "X X"
+    ],
+    "key": {
+      "X": "enItem_Leather"
+    },
+    "result": "enItem_Leather_Helmet"
+  }
