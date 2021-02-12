@@ -127,7 +127,7 @@ bool Player::Start()
 			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
 			enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
 			enItem_Diamond, enCube_OakLog,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre
+			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre, enItem_Leather
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());

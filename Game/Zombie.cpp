@@ -37,7 +37,7 @@ bool Zombie::Start()
 	m_deathVoice = L"Resource/soundData/enemy/zombiedeath.wav";
 
 	//アイテムドロップ
-	SetDropItemId(enCube_CoalOre);
+	SetDropItemId(enItem_Coal);
 	SetChanceDropping(100);
 	//レアドロップ
 	SetDropItemId(enCube_WoGBlock, true);

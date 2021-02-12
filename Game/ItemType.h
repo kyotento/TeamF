@@ -9,6 +9,7 @@ enum EnItem{
 	enItem_Iron_Ingot,
 	enItem_Gold_Ingot,
 	enItem_Diamond,
+	enItem_Leather,//”ç
 
 	//H—¿
 	enItem_Raw_Meat,
