@@ -1,11 +1,11 @@
 {
     "type": "crafting_shaped", 
     "pattern": [
-      "XXX",
+      "X X",
       "X X"
     ],
     "key": {
       "X": "enItem_Iron_Ingot"
     },
-    "result": "enItem_Iron_Helmet"
+    "result": "enItem_Iron_Boots"
   }

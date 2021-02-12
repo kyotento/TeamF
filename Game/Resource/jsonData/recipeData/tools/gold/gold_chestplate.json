@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "X X",
+      "XXX",
+      "XXX"
+    ],
+    "key": {
+      "X": "enItem_Gold_Ingot"
+    },
+    "result": "enItem_Gold_ChestPlate"
+  }

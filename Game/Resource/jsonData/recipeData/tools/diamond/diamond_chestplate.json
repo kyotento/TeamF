@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "X X",
+      "XXX",
+      "XXX"
+    ],
+    "key": {
+      "X": "enItem_Diamond"
+    },
+    "result": "enItem_Diamond_ChestPlate"
+  }

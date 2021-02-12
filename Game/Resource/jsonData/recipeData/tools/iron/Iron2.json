@@ -6,5 +6,6 @@
     "key": {
       "#": "enCube_IronOre"
     },
-    "result": "enItem_Iron_Ingot"
+    "result": "enItem_Iron_Ingot",
+    "resultCount": 4
   }
