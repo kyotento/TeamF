@@ -209,9 +209,11 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
 		m_skinModelRender->Init(L"Resource/modelData/playerhand.tkm");
 		initItem_flag = false;
-	}
-	
+	}	
 	else if (initItem_flag && item->GetItem().GetModelPath() == "Resource/modelData/2DFound.tkm") {
+		DeleteGO(m_skinModelRender);
+		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+		m_skinModelRender->Init(item->GetItem().GetModelPath().c_str());//ƒ‚ƒfƒ‹‚Ì‰Šú‰»B
 		m_skinModelRender->GetSkinModel().InitMaterialSetting();
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([&](MaterialSetting* mts) {
 			mts->SetAlbedoTexture(item->GetItem().GetImage().GetTextueData());
