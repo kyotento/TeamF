@@ -34,6 +34,11 @@ public:
 	virtual void Jump();
 
 	/// <summary>
+	/// 太陽からのダメージ
+	/// </summary>
+	virtual void AttackSun();
+
+	/// <summary>
 	/// 被ダメージ処理。
 	/// </summary>
 	/// <param name="attackDamage">攻撃力</param>
@@ -150,5 +155,7 @@ protected:
 	GameMode* m_gameMode = nullptr;								//ゲームモード。
 	Game* m_game = nullptr;										//Game。
 
+	float m_sunDamageTimer = 0.0f;
+	Sun* m_sun = nullptr;
 };
 

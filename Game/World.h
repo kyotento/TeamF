@@ -89,6 +89,10 @@ public:
 	//ブロックにダメージを与える、プレイヤー用。
 	const Block* DamegeBlock(const CVector3& pos, EnTool toolType = EnTool::enTool_None, int toolLevel = 1);
 
+	//無条件にブロックを破壊。
+	//座標はワールド座標をBlock::WIDTHで割ったもの
+	void DestroyBlock(const IntVector3& pos);
+
 	//無条件にブロックを破壊。アイテムドロップなし
 	//座標はワールド座標をBlock::WIDTHで割ったもの
 	void DestroyBlockNoDrop(const IntVector3& pos);

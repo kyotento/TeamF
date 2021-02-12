@@ -26,13 +26,7 @@ public:
 	void Update() override;
 
 	CFont font;
-	void HUDRender( int HUDNum ) override{
-		//座標表示
-		std::wstringstream str;
-		CVector3 pos = GetPos() / Block::WIDTH;
-		str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
-		font.Draw( str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, {0.5f, 0.5f} );		
-	}
+	void HUDRender(int HUDNum) override;
 
 	/// <summary>
 	/// アニメーション。

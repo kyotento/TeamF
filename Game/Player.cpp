@@ -1156,3 +1156,18 @@ void Player::CalcAttackPow() {
 		}
 	}
 }
+
+void Player::HUDRender(int HUDNum)  {
+	CVector3 pos = GetPos() / Block::WIDTH;
+	char* light = m_world->GetLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+	char* skylight = m_world->GetSkyLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+
+	//座標表示
+	std::wstringstream str;
+	str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
+	//ライト表示
+	if (light && skylight) {
+		str << "blockLight:" << (int)*light << " skyLight:" << (int)*skylight << "\n";
+	}
+	font.Draw(str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, { 0.5f, 0.5f });
+}

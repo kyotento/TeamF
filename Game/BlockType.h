@@ -31,6 +31,7 @@ enum EnCube
 	enCube_Chest,			//チェスト。
 	enCube_Sand,			//砂。
 	enCube_Furnace,			//かまど。
+	enCube_TNT,				//TNT。
 
 	enCube_Num
 };

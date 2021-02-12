@@ -63,6 +63,7 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CowGenerator.cpp" />
     <ClCompile Include="BlockRenderingLightParameter.cpp" />
+    <ClCompile Include="Creeper.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="CraftingController2.cpp" />
     <ClCompile Include="EquipmentController.cpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="RespawnPointFiler.cpp" />
     <ClCompile Include="Sun.cpp" />
+    <ClCompile Include="TNT.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="Utf8ToSjis.cpp" />
@@ -151,6 +153,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Cow.h" />
     <ClInclude Include="CowGenerator.h" />
+    <ClInclude Include="Creeper.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="CraftingController2.h" />
     <ClInclude Include="EquipmentController.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="PairBlock.h" />
     <ClInclude Include="PlayerInventoryFiler.h" />
     <ClInclude Include="RespawnPointFiler.h" />
+    <ClInclude Include="TNT.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="Utf8ToSjis.h" />
@@ -354,10 +358,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.props" />
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\MeshContentTask.props" />
-  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -722,8 +723,5 @@
     </MeshContentTask>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
-    <Import Project="$(VCTargetsPath)\BuildCustomizations\MeshContentTask.targets" />
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

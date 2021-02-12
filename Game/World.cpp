@@ -505,7 +505,65 @@ const Block* World::DamegeBlock( const CVector3& pos, EnTool toolType, int toolL
 	return m_block;
 }
 
+void World::DestroyBlock(const IntVector3& pos) {
+	if (pos.y <= 0 || pos.y >= Chunk::HEIGHT) {
+		return;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos(pos.x, pos.z);
+	if (!chunk) {
+		return;
+	}
+
+	auto block = GetBlock(pos);
+	if (block == nullptr)
+	{
+		return;
+	}
+
+	//ブロックが破壊された。
+	{
+		//ドロップアイテムを生成する。
+		block->DestroyedPlayer();
+		//音出してます。
+		/*SuicideObj::CSE* destroy;
+		destroy = NewGO<SuicideObj::CSE>(L"Resource/soundData/block/blockdestroy.wav");
+		destroy->Play();*/
+	}
+	//ブロックをポップ。
+	{
+		//ドロップアイテムを作成。
+		DropItem* dropItem = DropItem::CreateDropItem(this, block->GetDropItem());
+		CVector3 addPos = CVector3::Zero();
+		if (random() % 2 > 0) {
+			addPos.x += rand() % randomDrop;
+		}
+		else {
+			addPos.x -= rand() % randomDrop;
+		}
+
+		if (random() % 2 > 0) {
+			addPos.z += rand() % randomDrop;
+		}
+		else {
+			addPos.z += rand() % randomDrop;
+		}
+		dropItem->SetPos(CVector3(pos.x + 0.5f, pos.y + 0.5f, pos.z + 0.5f) * Block::WIDTH + addPos);
+	}
+
+	int x = Chunk::CalcInChunkCoord(pos.x);
+	int z = Chunk::CalcInChunkCoord(pos.z);
+
+	//破壊
+	chunk->DeleteBlock(x, pos.y, z);
+	AroundBlock({ (float)pos.x,(float)pos.y,(float)pos.z });
+}
+
 void World::DestroyBlockNoDrop(const IntVector3& pos) {
+	if (pos.y <= 0 || pos.y >= Chunk::HEIGHT) {
+		return;
+	}
+
 	Chunk* chunk = GetChunkFromWorldPos(pos.x, pos.z);
 	if (!chunk) {
 		return;
