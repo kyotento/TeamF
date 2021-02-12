@@ -1,6 +1,7 @@
 {
 	"id": "enCube_TNT",
 	"name": "TNT",
-	"model": "modelData/Furnace.tkm",
-	"hp": 4
+	"model": "modelData/mushroom.tkm",
+	"hp": 4,
+	"opacity": false
 }

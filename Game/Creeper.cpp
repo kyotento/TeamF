@@ -16,7 +16,7 @@ bool Creeper::Start()
 	m_animationClips[enAniamtionClip_fan].Load(L"Resource/animData/zombie_fan.tka", true);
 
 	//スキンモデル　の初期化。
-	m_skinModelRender->Init(L"Resource/modelData/zombie.tkm", m_animationClips, enAnimationClip_num);
+	m_skinModelRender->Init(L"Resource/modelData/mushroom.tkm");
 	m_skinModelRender->SetPos(m_position);
 	m_skinModelRender->SetScale(m_scale);
 	m_skinModelRender->SetRot(m_rot);
@@ -28,7 +28,7 @@ bool Creeper::Start()
 	m_hp = 1;					//体力の設定。
 	m_attackPow = 30;			//攻撃力の設定。
 	m_exp = 0.7f;				//取得経験値量。
-	m_knockBack = 0.5f;			//ノックバック倍率。
+	m_knockBack = 0.1f;			//ノックバック倍率。
 
 	m_damageVoice = L"Resource/soundData/enemy/zombiedamage.wav";
 	m_deathVoice = L"Resource/soundData/enemy/zombiedeath.wav";
