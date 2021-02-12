@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "X X",
+      "X X"
+    ],
+    "key": {
+      "X": "enItem_Leather"
+    },
+    "result": "enItem_Leather_Boots"
+  }
