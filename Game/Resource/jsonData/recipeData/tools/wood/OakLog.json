@@ -1,12 +1,10 @@
 {
     "type": "crafting_shaped", 
     "pattern": [
-      "XX",
-      "XX",
-      "XX"
+      "X"
     ],
     "key": {
-      "X": "enCube_OakWood"
+      "X": "enCube_OakLog"
     },
     "result": "enCube_OakWood"
   }
