@@ -1,7 +1,8 @@
 {
-	"id": "enItem_Gold_Shovel",
-	"name": "金のシャベル",
-	"sprite": "spriteData/tools/Gold_Shovel.dds",
-	"stack_limit": 1,
-	"tool_level": 4
+  "id": "enItem_Gold_Shovel",
+  "name": "金のシャベル",
+  "sprite": "spriteData/tools/Gold_Shovel.dds",
+  "model": "modelData/tools/Gold_Shovel.tkm",
+  "stack_limit": 1,
+  "tool_level": 4
 }

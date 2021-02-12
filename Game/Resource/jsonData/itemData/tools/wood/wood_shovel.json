@@ -1,8 +1,9 @@
 {
-	"id": "enItem_Wood_Shovel",
-	"name": "木のシャベル",
-	"sprite": "spriteData/tools/Wood_Shovel.dds",
-	"stack_limit": 1,
-	"tool_level": 1,
-	"fuel_level": 1
+  "id": "enItem_Wood_Shovel",
+  "name": "木のシャベル",
+  "sprite": "spriteData/tools/Wood_Shovel.dds",
+  "model": "modelData/tools/Wood_Shovel.tkm",
+  "stack_limit": 1,
+  "tool_level": 1,
+  "fuel_level": 1
 }
