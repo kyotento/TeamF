@@ -312,7 +312,7 @@ void PlayerParameter::StopMoveToChange()
 
 void PlayerParameter::PlayerLevelUp()
 {
-	if (oldexp - 1 >= 0)
+	if (oldexp != (int)m_player->GetExp())
 	{
 		SuicideObj::CSE* upse;
 		upse = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/levelup.wav");
