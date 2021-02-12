@@ -57,15 +57,17 @@ void TNTTimer::Update(){
 	voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/enemy/destruction1.wav");
 	voice->Play();
 
-	IntVector3 pos = m_tnt->CalcBlockUnitPos();
-
-	//消耗品
-	m_world->DestroyBlockNoDrop(pos);
+	IntVector3 pos = m_tnt->CalcBlockUnitPos();	
 
 	//ブロック破壊
 	for (int x = -bombArea; x < bombArea; x++) {
 		for (int y = -bombArea; y < bombArea; y++) {
 			for (int z = -bombArea; z < bombArea; z++) {
+
+				if (x == 0 && y == 0 && z == 0) {
+					continue;
+				}
+
 				if ((CMath::RandomZeroToOne() + 0.5f) * (float)bombArea * (float)bombArea > CVector3((float)abs(x), (float)abs(y), (float)abs(z)).LengthSq()) {
 					if (CMath::RandomZeroToOne() > 0.005f) {
 						m_world->DestroyBlockNoDrop(pos + IntVector3(x, y, z));
@@ -97,4 +99,6 @@ void TNTTimer::Update(){
 		}
 	});
 	
+	//消耗品
+	m_world->DestroyBlockNoDrop(pos);
 }
