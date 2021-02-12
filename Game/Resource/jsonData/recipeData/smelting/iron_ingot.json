@@ -1,0 +1,5 @@
+{
+    "type": "smelting", 
+    "source": "enCube_IronOre",
+    "result": "enItem_Iron_Ingot"
+}

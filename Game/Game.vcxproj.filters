@@ -221,6 +221,15 @@
     </ClCompile>
     <ClCompile Include="PlayerInventoryFiler.cpp" />
     <ClCompile Include="RespawnPointFiler.cpp" />
+    <ClCompile Include="FurnaceInventory.cpp">
+      <Filter>GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Furnace.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="FurnaceController.cpp">
+      <Filter>GUI\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -461,6 +470,18 @@
     </ClInclude>
     <ClInclude Include="PlayerInventoryFiler.h" />
     <ClInclude Include="RespawnPointFiler.h" />
+    <ClInclude Include="CalcMuki.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="FurnaceInventory.h">
+      <Filter>GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Furnace.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="FurnaceController.h">
+      <Filter>GUI\Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ForTest">
@@ -652,54 +673,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Diamond_Boots.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Diamond_ChestPlat.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Diamond_Helmet.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Diamond_leggings.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Golden_Boots.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Golden_ChestPlat.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Golden_Helmet.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Golden_leggings.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Iron_Boots.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Iron_ChestPlat.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Iron_Helmet.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Iron_leggings.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Leather_Boots.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Leather_ChestPlat.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Leather_Helmet.png">
-      <Filter>sprite</Filter>
-    </Image>
-    <Image Include="Resource\sprite\armor\Leather_leggings.png">
       <Filter>sprite</Filter>
     </Image>
   </ItemGroup>

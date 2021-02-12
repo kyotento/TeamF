@@ -191,5 +191,8 @@ private:
 
 	Block* m_block = nullptr;
 	float m_timer = 0.0f;
-};
+	int m_blockPosX;
+	int m_blockPosY;
+	int m_blockPosZ;
+}; 
 

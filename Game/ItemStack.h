@@ -31,6 +31,11 @@ public:
 		return m_number;
 	}
 
+	//! @brief 個数を増やす。(マイナス値で減らす。)
+	void AddNumber( int num){
+		m_number += num;
+	}
+
 	//! @brief アイテム情報を取得。
 	const Item& GetItem() const{
 		return m_item;
@@ -47,12 +52,12 @@ public:
 	}
 
 	//! @brief アイテムidを取得。
-	unsigned GetID() const override{
+	int GetID() const override{
 		return m_item.GetID();
 	}
 
 	//! @brief アイテムの属性を取得。
-	unsigned GetToolID() const override {
+	int GetToolID() const override {
 		return m_item.GetToolID();
 	}
 
@@ -67,12 +72,22 @@ public:
 	}
 
 	//! @brief 食料か
-	bool IsFood() const{
+	bool IsFood() const override{
 		return m_item.IsFood();
 	}
 
+	//! @brief このアイテムの燃料レベル(焼ける数)を取得
+	float GetFuelLevel() const{
+		return m_item.GetFuelLevel();
+	}
+
+	//! @brief 燃料か
+	bool IsFuel() const override{
+		return m_item.IsFuel();
+	}
+
 	//! @brief スタック上限を取得。
-	int GetStackLimit() const{
+	int GetStackLimit() const override{
 		return m_item.GetStackLimit();
 	}
 

@@ -49,6 +49,16 @@ public:
 		return m_foodLevel > 0;
 	}
 
+	//! @brief このアイテムの燃料レベル(焼ける数)を取得
+	float GetFuelLevel() const{
+		return m_fuelLevel;
+	}
+
+	//! @brief 燃料か
+	bool IsFuel() const{
+		return m_fuelLevel > 0;
+	}
+
 	//! @brief スタック上限を取得。
 	int GetStackLimit() const{
 		return m_limitNumber;
@@ -74,6 +84,12 @@ public:
 	std::filesystem::path GetModelPath() const{
 		return m_modelPath;
 	}
+	
+	/// <summary>
+	/// 画像取得。
+	/// </summary>
+	/// <returns></returns>
+	CSprite& GetImage();
 
 private:
 	Item();
@@ -106,4 +122,7 @@ private:
 
 	//フードレベル(食料の回復量)
 	int m_foodLevel = 0;
+
+	//燃料レベル(焼ける数)
+	float m_fuelLevel = 0;
 };

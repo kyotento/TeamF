@@ -35,11 +35,13 @@ bool DropItem::Start()
 	m_model.Init( m_itemStack->GetItem().GetModelPath().c_str() );		//モデルの初期化。
 	m_model.SetScale( myScale );
 
-	//デバッグ用、後で消す。
-	/*m_model.GetSkinModel().InitMaterialSetting();
-	m_model.GetSkinModel().FindMaterialSetting( []( MaterialSetting* mts){
-		mts->SetAlbedoTexture( CreateTexture("Resource/spriteData/items/Coal.dds") );
-	} );*/
+	if (m_itemStack->GetItem().GetModelPath() == "Resource/modelData/2DFound.tkm") {
+		m_model.GetSkinModel().InitMaterialSetting();
+		m_model.GetSkinModel().FindMaterialSetting([&](MaterialSetting* mts) {
+			mts->SetAlbedoTexture(m_itemStack->GetItem().GetImage().GetTextueData());
+		});
+	}
+
 
 	//レイトレモデル。
 	m_raytraceModel.Init( m_model );

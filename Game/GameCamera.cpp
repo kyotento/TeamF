@@ -91,10 +91,12 @@ void GameCamera::Update()
 		}
 	}
 
-	CVector3 result;
-	m_cameraCollisionSolver.Execute(result,m_camera->GetPos(),m_camera->GetTarget());
-	m_camera->SetPos(result);
-
+	if (m_mode != EnMode_FPS) {
+		//ˆêlÌŽ‹“_ˆÈŠO‚Å‚ÍÕ“Ë‚ð‰ðŒˆ
+		CVector3 result;
+		m_cameraCollisionSolver.Execute(result, m_camera->GetPos(), m_camera->GetTarget());
+		m_camera->SetPos(result);
+	}
 }
 
 void GameCamera::FPS()

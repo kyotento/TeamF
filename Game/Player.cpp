@@ -20,6 +20,7 @@
 #include "PlayerInventoryFiler.h"
 #include "RespawnPointFiler.h"
 #include "NullableItemStack.h"
+#include "CalcMuki.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -121,13 +122,12 @@ bool Player::Start()
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
 		int itemArray[] = {
-			enCube_Grass, enCube_GrassHalf, enCube_GrassStairs, enCube_CobbleStone, enCube_DoorDown,
-			enCube_CraftingTable, enCube_Torch, enCube_TorchBlock, enCube_WoGBlock,
-			enItem_Rod, enCube_GoldOre, enItem_Diamond, enItem_Gold_Ingot, enItem_Iron_Ingot, enCube_OakWood,
-			enCube_Chest, enCube_BedHead,
 			enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
 			enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			enItem_Raw_Meat,enItem_Steak
+			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
+			enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
+			enItem_Diamond, enCube_OakLog,
+			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -249,6 +249,11 @@ void Player::Update()
 	Defence();
 	//攻撃力も
 	CalcAttackPow();
+
+	//奈落死
+	if (m_position.y <= 0.f) {
+		TakenDamage(1, 0.0f, false, true);
+	}
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
@@ -767,7 +772,10 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 				if (item->GetIsBlock()) {		//ブロック。
 					se->Play();
 					installPos -= frontRotAdd * 2 / Block::WIDTH;
-					if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID())))) {
+
+					Block::enMuki muki = CalcMukiReverse( GetFront() );
+
+					if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID()), muki))) {
 						//設置に成功したらインベントリのブロック数減らす
 						auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
 					}

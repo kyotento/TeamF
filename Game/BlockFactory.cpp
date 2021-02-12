@@ -10,6 +10,7 @@
 #include "Bed.h"
 
 #include "Chest.h"
+#include "Furnace.h"
 
 #include "BlockRenderingLightParameter.h"
 
@@ -97,6 +98,9 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 	case enCube_BedHead:
 	case enCube_BedLeg:
 		block = std::make_unique<Bed>(blockType == enCube_BedHead ? true : false, Block::GetMukiDir(muki));
+		break;
+	case enCube_Furnace:
+		block = std::make_unique<Furnace>();
 		break;
 	default:
 		block = std::make_unique<Block>();

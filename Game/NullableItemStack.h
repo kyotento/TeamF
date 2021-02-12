@@ -1,7 +1,7 @@
 //! @file
 #pragma once
 
-#include "BlockType.h"
+#include "ItemType.h"
 
 //! @brief ItemStackの基底クラス。継承されていないこのクラス単体で、nullオブジェクトを表す。
 //! @author Takayama
@@ -18,14 +18,29 @@ public:
 		return 0;
 	}
 
+	//! @brief スタック上限を取得。
+	virtual int GetStackLimit() const{
+		return 0;
+	}
+
 	//! @brief アイテムidを取得。
-	virtual unsigned GetID() const{
+	virtual int GetID() const{
 		return enCube_None;
 	}
 
 	//! @brief アイテムの属性を取得。
-	virtual unsigned GetToolID() const {
-		return enCube_None;
+	virtual int GetToolID() const {
+		return enTool_None;
+	}
+
+	//! @brief 食料か
+	virtual bool IsFood() const{
+		return false;
+	}
+
+	//! @brief 燃料か
+	virtual bool IsFuel() const{
+		return false;
 	}
 
 	/// <summary>

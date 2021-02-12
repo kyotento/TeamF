@@ -4,5 +4,6 @@
 	"sprite": "spriteData/tools/Wood_Pickaxe.dds",
 	"model": "modelData/tools/Wood_Pickaxe.tkm",
 	"stack_limit": 1,
-	"tool_level": 1
+	"tool_level": 1,
+	"fuel_level": 1
 }

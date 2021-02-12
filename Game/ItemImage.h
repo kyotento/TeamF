@@ -6,6 +6,12 @@ public:
 
 	void Draw(const CVector2& pos, const CVector2& parentScale );
 
+	//‰æ‘œ‚ğ‚µ‚ã‚Æ‚­‚·‚éB
+	CSprite& GetSprite()
+	{
+		return m_sprite;
+	}
+
 private:
 	static float constexpr st_initialScale = 0.24f;
 	const CVector2 m_pivot{0.5f, 0.5f};

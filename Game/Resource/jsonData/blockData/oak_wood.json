@@ -3,5 +3,6 @@
 	"name": "オークの原木",
 	"model": "modelData/oakWood.tkm",
 	"hp": 12,
-	"tool": "enTool_Axe"
+	"tool": "enTool_Axe",
+	"fuel_level": 1.5
 }
