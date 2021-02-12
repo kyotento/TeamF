@@ -29,5 +29,9 @@ public:
 	float GetSecond()const {
 		return m_seconds;
 	}
+
+	void SetSecond(float sec) {
+		m_seconds = sec;
+	}
 };
 	
