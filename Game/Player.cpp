@@ -121,18 +121,19 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
-		int itemArray[] = {
-			enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
-			enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
-			enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
-			enItem_Diamond, enCube_OakLog,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre, enItem_Leather, enCube_TNT
+		/*int itemArray[] = {
+			//enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
+			//enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
+			//enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
+			//enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
+			//enItem_Diamond, enCube_OakLog,
+			//enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre, enItem_Leather, enCube_TNT
+			enAllItem_Num
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
-		}
+		}*/
 	}
 	else {
 		//ロード出来たら、インベントリにアイテムを設定していく。

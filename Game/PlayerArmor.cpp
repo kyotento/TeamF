@@ -218,7 +218,15 @@ void PlayerArmor::MaterialChangeChestPlate(unsigned itemId)
 	m_skinModelArmor[1] = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelArmor[1]->SetScale(m_scale);
 	m_skinModelArmor[1]->Init(Item::GetItem(itemId).GetModelPath().c_str());
-	std::filesystem::path path = Item::GetItem(itemId+1).GetModelPath();
+	std::filesystem::path path;
+	if (itemId == enItem_Leather_ChestPlate || itemId == enItem_Iron_ChestPlate
+		|| itemId == enItem_Gold_ChestPlate || itemId == enItem_Diamond_ChestPlate)
+	{
+		path = Item::GetItem(itemId + 1).GetModelPath();
+	}
+	else {
+		path = Item::GetItem(itemId).GetModelPath();
+	}
 	m_skinModelArmor[2] = NewGO<GameObj::CSkinModelRender>();
 	m_skinModelArmor[2]->SetScale(m_scale);
 	m_skinModelArmor[2]->Init(path.c_str());
