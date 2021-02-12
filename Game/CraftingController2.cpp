@@ -17,7 +17,7 @@ namespace GUI::Controller {
 		int number = 0;
 		for (auto& item : m_inventory) 
 		{	//クラフトスロットのところだけアイテムを返却する。
-			if (number <= resultSlot) {
+			if (number < resultSlot) {
 				m_playerInventory.AddItem(item);
 			}
 			number++;
