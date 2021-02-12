@@ -1,5 +1,15 @@
 #include "stdafx.h"
 #include "Enemy.h"
+#include "Sun.h"
+
+namespace {
+	//日没。
+	float sunsetSecond = 64800.0f;
+	//日の出。
+	float sunriseSecond = 21600.0f;
+	//太陽が出てるときにダメージを受ける感覚。
+	float sunDamageTime = 5.0f;
+}
 
 Enemy::Enemy(EnEntity enEntity) : Mob(enEntity)
 {
@@ -28,6 +38,11 @@ Enemy::Enemy(EnEntity enEntity) : Mob(enEntity)
 	//Gameクラスのインスタンスを取得。
 	if (m_game == nullptr) {
 		m_game = FindGO<Game>();
+	}
+	//太陽スタンス取得
+	if (m_sun == nullptr)
+	{
+		m_sun = FindGO<Sun>();
 	}
 }
 
@@ -101,6 +116,28 @@ void Enemy::Jump()
 	}
 	else {
 		Fall();
+	}
+}
+
+//太陽ダメージ。
+void Enemy::AttackSun()
+{
+	//現時刻を取得。
+	float second = m_sun->GetSecond();
+
+	//時刻が日没より前、あるいは日の出より後の場合。
+	//ダメージを受ける。
+	if (second < sunsetSecond && second > sunriseSecond)
+	{
+		//タイマー加算。
+		m_sunDamageTimer += GetEngine().GetRealDeltaTimeSec();
+		if (m_sunDamageTimer >= sunDamageTime)
+		{
+			//とりあえずダメージ1。
+			TakenDamage(1);
+			//タイマー1。
+			m_sunDamageTimer = 0.0f;
+		}
 	}
 }
 

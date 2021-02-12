@@ -48,8 +48,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 		isStart = true;
 	}
 
-	//デバッグ表示・入力、常時有効化
-	SetIsDebugDraw(true);
+	//デバッグ表示・入力
+	//SetIsDebugDraw(true);
 	SetIsDebugInput(false);//Escで終了しなくなります。
 
 	//フォグの設定

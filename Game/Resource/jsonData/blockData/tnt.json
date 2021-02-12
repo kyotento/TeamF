@@ -1,0 +1,7 @@
+{
+	"id": "enCube_TNT",
+	"name": "TNT",
+	"model": "modelData/mushroom.tkm",
+	"hp": 4,
+	"opacity": false
+}

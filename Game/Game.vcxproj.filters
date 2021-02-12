@@ -230,6 +230,12 @@
     <ClCompile Include="FurnaceController.cpp">
       <Filter>GUI\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="Creeper.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="TNT.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -481,6 +487,12 @@
     </ClInclude>
     <ClInclude Include="FurnaceController.h">
       <Filter>GUI\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Creeper.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="TNT.h">
+      <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
