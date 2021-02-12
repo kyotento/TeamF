@@ -147,6 +147,11 @@ namespace GUI::Controller {
 
 	bool EquipmentController::DetermineItemPlaced(int slots,const int itemId)
 	{
+		//ã≠êßëïîı
+		if (GetKeyInput(VK_SHIFT)) {
+			return true;
+		}
+
 		slots = slots - craftSlot;
 		if (itemId == equipSlotList[slots-1])
 		{

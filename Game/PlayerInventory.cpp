@@ -7,7 +7,7 @@
 namespace GUI{
 
 	PlayerInventory::PlayerInventory( Inventory& inventory ) :
-		InventoryView(inventory, L"Resource/spriteData/KariInventory.dds" ), m_craftingSlots(9) {
+		InventoryView(inventory, L"Resource/spriteData/KariInventory.dds", CVector4::Red()), m_craftingSlots(9) {
 
 		//コントローラー
 		m_controller = std::make_unique<Controller::CraftingController2>(

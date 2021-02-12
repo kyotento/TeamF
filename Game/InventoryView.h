@@ -14,7 +14,7 @@ namespace GUI{
 	//! @author Takayama
 	class InventoryView : public RootNode{
 	public:
-		InventoryView( Inventory& playerInventory, const wchar_t* spritePath);
+		InventoryView( Inventory& playerInventory, const wchar_t* spritePath, const CVector4& m_shiftColor = CVector4::One());
 
 		virtual ~InventoryView();
 
@@ -34,6 +34,7 @@ namespace GUI{
 		CSprite m_sprite;
 		Inventory& m_inventory;
 		std::unique_ptr<Controller::InventoryController> m_controller;
+		CVector4 m_shiftColor = CVector4::One();
 	};
 
 }

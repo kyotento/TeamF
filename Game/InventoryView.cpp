@@ -8,8 +8,8 @@
 
 namespace GUI{
 
-	InventoryView::InventoryView( Inventory& inventory, const wchar_t* spritePath ) :
-		m_inventory( inventory ){
+	InventoryView::InventoryView( Inventory& inventory, const wchar_t* spritePath, const CVector4& shiftColor) :
+		m_inventory( inventory ), m_shiftColor(shiftColor){
 		//âÊëúÇÉçÅ[ÉhÅB
 		m_sprite.Init( spritePath );
 
@@ -41,7 +41,11 @@ namespace GUI{
 	}
 
 	void InventoryView::Draw( const CVector2& pos, const CVector2& parentScale ){
-		m_sprite.DrawScreenPos( pos, parentScale * GetScale(), GetPivot() );
+		CVector4 color = CVector4::One();
+		if (GetKeyInput(VK_SHIFT)) {
+			color = m_shiftColor;
+		}
+		m_sprite.DrawScreenPos( pos, parentScale * GetScale(), GetPivot(), 0.0f, color );
 	}
 
 	void InventoryView::DrawForeground(){
