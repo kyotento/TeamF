@@ -1,12 +1,13 @@
 {
     "type": "crafting_shaped", 
     "pattern": [
-      "#",
-      "X"
+      "XX",
+      "XX",
+      "XX"
     ],
     "key": {
-      "#": "enItem_Coal",
       "X": "enCube_OakWood"
     },
-    "result": "enCube_DoorDown"
+    "result": "enCube_DoorDown",
+    "resultCount": 3
   }

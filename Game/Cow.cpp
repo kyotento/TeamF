@@ -35,7 +35,9 @@ bool Cow::Start()
 
 	SetDropItemId(enItem_Raw_Meat);
 	SetChanceDropping(100);
-
+	SetDropItemId(enItem_Leather,true);
+	SetChanceDropping(35,true);
+	
 	return true;
 }
 

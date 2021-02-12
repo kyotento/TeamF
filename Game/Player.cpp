@@ -127,12 +127,7 @@ bool Player::Start()
 			enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
 			enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
 			enItem_Diamond, enCube_OakLog,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre,
-			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre
+			enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre, enItem_Leather, enCube_TNT
 		};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
@@ -1160,4 +1155,19 @@ void Player::CalcAttackPow() {
 			m_attackPower *= max(1, item->GetToolLevel() / 2);
 		}
 	}
+}
+
+void Player::HUDRender(int HUDNum)  {
+	CVector3 pos = GetPos() / Block::WIDTH;
+	char* light = m_world->GetLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+	char* skylight = m_world->GetSkyLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+
+	//座標表示
+	std::wstringstream str;
+	str << pos.x << " , " << pos.y << " , " << pos.z << "\n";
+	//ライト表示
+	if (light && skylight) {
+		str << "blockLight:" << (int)*light << " skyLight:" << (int)*skylight << "\n";
+	}
+	font.Draw(str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, { 0.5f, 0.5f });
 }

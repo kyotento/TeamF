@@ -8,5 +8,6 @@
       "#": "enItem_Coal",
       "X": "enItem_Rod"
     },
-    "result": "enCube_Torch"
+    "result": "enCube_Torch",
+    "resultCount": 4
   }

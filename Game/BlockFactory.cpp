@@ -8,6 +8,7 @@
 #include "WorthOfGod.h"
 #include "Door.h"
 #include "Bed.h"
+#include "TNT.h"
 
 #include "Chest.h"
 #include "Furnace.h"
@@ -101,6 +102,9 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 		break;
 	case enCube_Furnace:
 		block = std::make_unique<Furnace>();
+		break;
+	case enCube_TNT:
+		block = std::make_unique<TNT>();
 		break;
 	default:
 		block = std::make_unique<Block>();
