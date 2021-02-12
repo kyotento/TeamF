@@ -6,5 +6,6 @@
     "key": {
       "#": "enCube_GoldOre"
     },
-    "result": "enItem_Gold_Ingot"
+    "result": "enItem_Gold_Ingot",
+    "resultCount": 9
   }

@@ -56,7 +56,12 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	//スタック上限
 	const int stackLimit = item->GetStackLimit();
 
+	int number = 0;
 	for( auto& slot : m_slotArray ){
+		if (number > 35)
+		{
+			return;
+		}
 		//空いているスロットがあればそこに入れる。
 		if( !slot ){
 			slot.swap( item );
@@ -78,6 +83,7 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 				return;
 			}
 		}
+		number++;
 	}
 }
 

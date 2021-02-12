@@ -1,11 +1,11 @@
 {
-  "type": "crafting_shaped",
-  "pattern": [
-    "X"
-  ],
-  "key": {
-    "X": "enCube_OakLog"
-  },
-  "result": "enCube_OakWood",
-  "resultCount": 4
-}
+    "type": "crafting_shaped", 
+    "pattern": [
+      "X"
+    ],
+    "key": {
+      "X": "enCube_OakLog"
+    },
+    "result": "enCube_OakWood",
+    "resultCount": 4
+  }
