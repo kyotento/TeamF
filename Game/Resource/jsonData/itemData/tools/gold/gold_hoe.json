@@ -1,7 +1,8 @@
 {
-	"id": "enItem_Gold_Hoe",
-	"name": "金のクワ",
-	"sprite": "spriteData/tools/Gold_Hoe.dds",
-	"stack_limit": 1,
-	"tool_level": 4
+  "id": "enItem_Gold_Hoe",
+  "name": "金のクワ",
+  "sprite": "spriteData/tools/Gold_Hoe.dds",
+  "model": "modelData/tools/Gold_Hoe.tkm",
+  "stack_limit": 1,
+  "tool_level": 4
 }
