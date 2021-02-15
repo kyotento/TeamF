@@ -4,5 +4,5 @@
   "model": "modelData/GrassBlock.tkm",
   "hp": 4,
   "tool": "enTool_Shovel",
-  "dropItem": "enItem_Coal"
+  "dropItem": "enCube_Soil"
 }
