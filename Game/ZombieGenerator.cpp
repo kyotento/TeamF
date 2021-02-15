@@ -35,9 +35,9 @@ void ZombieGenerator::NewGOMob(const CVector3& pos)
 	//if (second > sunsetSecond || second < sunriseSecond) {
 		//生成地点の明るさが一定以下
 		IntVector3 sampPos = { (int)std::floorf(pos.x / Block::WIDTH), (int)std::floorf(pos.y / Block::WIDTH), (int)std::floorf(pos.z / Block::WIDTH) };
-		char light = *MobGenerator::GetWorld()->GetLightData(sampPos);
-		light = max(light, *MobGenerator::GetWorld()->GetSkyLightData(sampPos) * m_sun->GetSkyLightPower());
-		if (light <= 4) {
+		char* light = MobGenerator::GetWorld()->GetLightData(sampPos);
+		char* skylight = MobGenerator::GetWorld()->GetSkyLightData(sampPos);
+		if (light && skylight && max(*light, (*skylight) * m_sun->GetSkyLightPower()) <= 4) {
 			//プレイヤーの生成。
 			Enemy* zombie = nullptr;
 			if (CMath::RandomZeroToOne() < 0.18f) {
