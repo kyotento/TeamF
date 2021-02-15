@@ -581,9 +581,6 @@ void Player::Shift()
 	}
 	//Œ³‚É–ß‚éˆ—B
 	if (GetKeyUp(VK_SHIFT)) {
-		bodyRot.SetRotationDeg(CVector3::AxisZ(), -shiftDir* 0.5f);
-		rightLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir* 0.5f);
-		leftLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir* 0.5f);
 
 		bodyBone->SetRotationOffset(bodyRot);
 		rightLegBone->SetRotationOffset(rightLegRot);
