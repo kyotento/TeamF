@@ -57,6 +57,9 @@ void PlayerParameter::Update()
 	if (m_player->GetIsSleep()) {
 		m_textDrawTimer = 2.0f;
 	}
+
+	//色変更
+	m_spriteRenderOnHand.SetColor(GetKeyInput(VK_TAB) ? CVector4::Red() : CVector4::White());
 }
 
 // パラメータ画像の基盤を生成。
