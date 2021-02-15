@@ -1,7 +1,8 @@
 {
-	"id": "enCube_Grass",
-	"name": "草",
-	"model": "modelData/GrassBlock.tkm",
-	"hp": 4,
-	"tool": "enTool_Shovel"
+  "id": "enCube_Grass",
+  "name": "草",
+  "model": "modelData/GrassBlock.tkm",
+  "hp": 4,
+  "tool": "enTool_Shovel",
+  "dropItem": "enItem_Coal"
 }
