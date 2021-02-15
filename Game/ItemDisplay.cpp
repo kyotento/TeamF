@@ -391,6 +391,7 @@ void ItemDisplay::RightClickMouseToEat()
 		foodHasHandLRPos = -35.0f;
 		foodHasHandUDPos = -5.0f;
 		m_isUpDownFlag = true;
+		UpDown();	//実際に上下に動かしてるのはここ。
 	}
 	else
 	{
@@ -398,7 +399,6 @@ void ItemDisplay::RightClickMouseToEat()
 		foodHasHandUDPos = 0.0f;
 		m_isUpDownFlag = false;
 	}
-	UpDown();	//実際に上下に動かしてるのはここ。
 }
 //雑に食べてる表現。
 void ItemDisplay::UpDown()
