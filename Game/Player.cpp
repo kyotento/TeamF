@@ -125,7 +125,7 @@ bool Player::Start()
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
-		}
+		}*/
 	}
 	else {
 		//ロード出来たら、インベントリにアイテムを設定していく。
