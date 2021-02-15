@@ -43,7 +43,7 @@ namespace {
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
-	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
+	const int randomDrop = Block::WIDTH / 0.5f;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 					//装備スロットのため拡張。
@@ -456,7 +456,7 @@ void Player::Jump()
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
 			if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-				m_stamina -= 0.2;			//サバイバルモードの時のみスタミナを減らす。
+				m_stamina -= 0.2f;			//サバイバルモードの時のみスタミナを減らす。
 			}
 		}
 		//ジャンプ中の処理。
@@ -537,8 +537,8 @@ void Player::Turn()
 	}
 
 	//マウスの回転量をラジアンに変換。
-	m_radianY = M_PI / 180 * m_degreeY;
-	m_radianXZ = M_PI / 180 * m_degreeXZ;
+	m_radianY = M_PI / 180.f * m_degreeY;
+	m_radianXZ = M_PI / 180.f * m_degreeXZ;
 
 	//回転を計算。
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
@@ -665,7 +665,7 @@ void Player::KnockBack()
 			//高さの処理。
 			m_knoceBackY = m_knockBack;
 			moveSpeed.y += m_knoceBackY * Block::WIDTH / 2.0f;
-			m_knoceBackY -= m_knoceBackY + 0.5 * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
+			m_knoceBackY -= m_knoceBackY + 0.5f * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
 			moveSpeed *= 15.0f;
 
 			m_position = m_characon.Execute(moveSpeed);
@@ -721,7 +721,7 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
 		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-			m_stamina -= 0.0003;
+			m_stamina -= 0.0003f;
 		}
 
 		break;
@@ -732,7 +732,7 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
 		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-			m_stamina -= 0.003;
+			m_stamina -= 0.003f;
 		}
 
 		break;
@@ -901,7 +901,7 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 
 		if (!ignoreDefence) {
 			//防御力の計算。
-			damage = AttackPow * (1 - m_defensePower * 0.04);
+			damage = AttackPow * (1.f - m_defensePower * 0.04f);
 		}
 		m_hp -= damage;
 
@@ -1160,8 +1160,10 @@ void Player::CalcAttackPow() {
 
 void Player::HUDRender(int HUDNum)  {
 	CVector3 pos = GetPos() / Block::WIDTH;
-	char* light = m_world->GetLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
-	char* skylight = m_world->GetSkyLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+	IntVector3 sampPos = { (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) };
+	char* light = m_world->GetLightData(sampPos);
+	char* skylight = m_world->GetSkyLightData(sampPos);
+	Block* block = m_world->GetBlock(sampPos);
 
 	//座標表示
 	std::wstringstream str;
@@ -1169,6 +1171,10 @@ void Player::HUDRender(int HUDNum)  {
 	//ライト表示
 	if (light && skylight) {
 		str << "blockLight:" << (int)*light << " skyLight:" << (int)*skylight << "\n";
+	}
+	//ブロックID
+	if (block) {
+		str << "blockID:" << block->GetBlockType() << "\n";
 	}
 	font.Draw(str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, { 0.5f, 0.5f });
 }

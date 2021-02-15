@@ -75,6 +75,11 @@ public:
 	/// <param name="chunk">計算するチャンク</param>
 	void CalcSkyLight(Chunk* chunk);
 
+	/// <summary>
+	/// 指定の位置のスカイライト計算
+	/// </summary>
+	/// <param name="pos"></param>
+	/// <param name="isBlock"></param>
 	void CalcSkyLightThisPosition(IntVector3 pos, bool isBlock);
 
 private:
