@@ -391,36 +391,34 @@ private:
 	/// <param name="ray">当たったオブジェクトの判定</param>
 	/// <param name="frontRotAdd">プレイヤーの回転</param>
 	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray , CVector3 frontRotAdd);
+
 	/// <summary>
 	/// ブロックを破壊するかどうか判断する。
 	/// </summary>
 	void DecideCanDestroyBlock();
 
-	/// <summary>
-	/// プレイヤーの前方にレイを飛ばす。
-	/// </summary>
+	// プレイヤーの前方にレイを飛ばす。
 	void FlyTheRay();
-	/// <summary>
-	/// 死亡処理。
-	/// </summary>
+
+	// 死亡処理。
 	void Death();
 
-	/// <summary>
-	/// リスポーン。
-	/// </summary>
+	// リスポーン。
 	void Respawn();
 
-	/// <summary>
-	/// モデルの描画をするか。
-	/// </summary>
+	// モデルの描画をするか。
 	void IsDraw();
 
+	//スタミナ処理。
 	void Stamina();
 
 	/// <summary>
 	/// 空腹時のダメージ。
 	/// </summary>
 	void HungryDamage();
+
+	//アイテムを投げる処理。
+	void ThrowItem();
 
 	void Shoulder();
 	/// <summary>

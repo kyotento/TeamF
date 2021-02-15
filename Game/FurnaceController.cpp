@@ -47,6 +47,10 @@ namespace GUI::Controller{
 					result.reset();
 				}
 			}
+			if (source == nullptr)
+			{
+				return;
+			}
 			//レシピを参照して、燃やせるものだった場合、燃焼のためのGameObjectを生成する。
 			auto recipeResult = RecipeManager::Instance().GetFurnaceResult(source->GetID());
 
