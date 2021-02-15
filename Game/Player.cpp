@@ -198,8 +198,6 @@ void Player::Update()
 			FlyTheRay();
 			//スタミナ処理。
 			Stamina();
-			//空腹ダメージ。
-			HungryDamage();
 			//ノックバック。
 			KnockBack();
 			//アイテムを投げる処理。
@@ -228,6 +226,8 @@ void Player::Update()
 	Defence();
 	//攻撃力も。
 	CalcAttackPow();
+	//空腹ダメージ。
+	HungryDamage();
 
 	//奈落死。
 	if (m_position.y <= 0.f) {
