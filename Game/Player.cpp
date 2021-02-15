@@ -1033,7 +1033,7 @@ void Player::Stamina()
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (item == nullptr || item->IsFood() == false)//食べ物かの判別。
+		if ((item == nullptr || item->IsFood() == false) && !GetKeyInput(VK_TAB))//食べ物かの判別。または強制食事モード
 		{
 			return;
 		}
@@ -1043,9 +1043,15 @@ void Player::Stamina()
 			if (m_eatingTimer >= maxTimer)
 			{
 				m_eatingTimer = 0.0f;
-				m_stamina += item->GetFoodLevel();//スタミナ回復
 				hiddenStamina = 4;			//隠れスタミナを上昇する。
-				auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+				if (item) {//アイテム食べる
+					m_stamina += item->GetFoodLevel();//スタミナ回復
+					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+				}
+				else {//腕食べる
+					m_stamina += 3.0f;//スタミナ回復
+					TakenDamage(8,CVector3::Up(),false,true);
+				}
 			}
 		}
 	}
