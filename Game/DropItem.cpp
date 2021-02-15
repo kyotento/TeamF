@@ -79,10 +79,12 @@ void DropItem::Update()
 		return;
 	}
 
-	CVector3 diff = player->GetPos() - GetPos();
+	CVector3 playerPos = player->GetPos();
+	//playerPos.y += 40.0;
+	CVector3 diff = playerPos - GetPos();
 
 	//‚±‚Ì”ÍˆÍ“à‚É“ü‚Á‚½‚çæ“¾‚·‚é‚Æ‚¢‚¤‹——£B
-	const float catchLength = Block::WIDTH;
+	const float catchLength = Block::WIDTH * 1.3f;
 
 	if( diff.LengthSq() < catchLength * catchLength ){
 		SuicideObj::CSE* se;
