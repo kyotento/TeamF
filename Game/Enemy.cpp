@@ -127,17 +127,24 @@ void Enemy::AttackSun()
 
 	//時刻が日没より前、あるいは日の出より後の場合。
 	//ダメージを受ける。
-	if (second < sunsetSecond && second > sunriseSecond)
-	{
-		//タイマー加算。
-		m_sunDamageTimer += GetEngine().GetRealDeltaTimeSec();
-		if (m_sunDamageTimer >= sunDamageTime)
+	if (second < sunsetSecond && second > sunriseSecond) {
+
+		//直射日光を浴びるとダメージ
+		IntVector3 sampPos = { (int)std::floorf(m_position.x / Block::WIDTH), (int)std::floorf((m_position.y + m_characonRadius + m_characonHeight * 2.0f) / Block::WIDTH), (int)std::floorf(m_position.z / Block::WIDTH) };
+		char* light = m_world->GetSkyLightData(sampPos);
+		if (light && (*light) == LightUtil::LIGHT_POWER_MAX)
 		{
-			//とりあえずダメージ1。
-			TakenDamage(1);
-			//タイマー1。
-			m_sunDamageTimer = 0.0f;
+			//タイマー加算。
+			m_sunDamageTimer += GetEngine().GetRealDeltaTimeSec();
+			if (m_sunDamageTimer >= sunDamageTime)
+			{
+				//とりあえずダメージ1。
+				TakenDamage(1);
+				//タイマー1。
+				m_sunDamageTimer = 0.0f;
+			}
 		}
+
 	}
 }
 
