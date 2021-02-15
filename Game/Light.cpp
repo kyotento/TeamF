@@ -271,7 +271,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 		IntVector3 sampPos = { pos.x, pos.y + 1, pos.z };
 		auto light = m_world->GetSkyLightData(sampPos);
 		if (light && *light < LightUtil::LIGHT_POWER_MAX) {//一個上のライトが最大値なら遮蔽はない
-			return;
+			return;//遮蔽あればリターン
 		}
 	}
 
@@ -362,6 +362,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 
 	}
 	else {//指定位置からブロックが消えた	
+
 		//遮蔽されてないならブロックにぶつかるまで自分から下を照らす
 		for (int y = pos.y; y >= 0; y--) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
@@ -405,5 +406,6 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 				LightUtil::SpreadLight(m_world, LightUtil::LIGHT_POWER_MAX - 1, sampPos, { 0,0,0 }, true);
 			}
 		}
+
 	}
 }
