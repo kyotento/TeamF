@@ -148,7 +148,7 @@ namespace GUI::Controller {
 	bool EquipmentController::DetermineItemPlaced(int slots,const int itemId)
 	{
 		//‹­§‘•”õ
-		if (GetKeyInput(VK_SHIFT)) {
+		if (GetKeyInput(VK_TAB)) {
 			return true;
 		}
 

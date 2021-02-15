@@ -42,7 +42,7 @@ namespace GUI{
 
 	void InventoryView::Draw( const CVector2& pos, const CVector2& parentScale ){
 		CVector4 color = CVector4::One();
-		if (GetKeyInput(VK_SHIFT)) {
+		if (GetKeyInput(VK_TAB)) {
 			color = m_shiftColor;
 		}
 		m_sprite.DrawScreenPos( pos, parentScale * GetScale(), GetPivot(), 0.0f, color );
