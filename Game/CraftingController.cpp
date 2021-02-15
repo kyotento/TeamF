@@ -3,6 +3,7 @@
 #include "ClickEvent.h"
 #include "Inventory.h"
 #include "RecipeManager.h"
+#include "Player.h"
 
 namespace GUI::Controller{
 	CraftingController::CraftingController(
@@ -12,9 +13,22 @@ namespace GUI::Controller{
 	}
 
 	CraftingController::~CraftingController(){
+		int number = 0;
 		//GUIを閉じたときにクラフトテーブルのアイテムを返却する。
-		for( auto& item : m_inventory ){
-			m_playerInventory.AddItem( item );
+		for (auto& item : m_inventory) {
+
+			//アイテムをプレイヤーインベントリに返却できなかったら。
+			if (m_inventory.GetNullableItem(number).GetID() != enCube_None && !m_playerInventory.AddItem(item))
+			{
+				//ドロップアイテムを生成する。
+				auto player = FindGO<Player>();
+				if (player != nullptr)
+				{
+					player->CreateFrontDropItem(item);
+				}
+
+			}
+			number++;
 		}
 	}
 

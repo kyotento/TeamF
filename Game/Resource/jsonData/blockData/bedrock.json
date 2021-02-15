@@ -1,6 +1,6 @@
 {
 	"id": "enCube_Bedrock",
 	"name": "岩盤",
-	"model": "modelData/GrassBlock.tkm",
+	"model": "modelData/bedrock.tkm",
 	"hp": 40
 }

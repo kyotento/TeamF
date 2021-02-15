@@ -48,9 +48,9 @@ void Inventory::DeleteItem( unsigned slotNo, int num ){
 	}
 }
 
-void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
+bool Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	if( item == nullptr ){
-		return;
+		return false;
 	}
 
 	//スタック上限
@@ -60,12 +60,12 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	for( auto& slot : m_slotArray ){
 		if (number > 35)
 		{
-			return;
+			return false;
 		}
 		//空いているスロットがあればそこに入れる。
 		if( !slot ){
 			slot.swap( item );
-			return;
+			return true;
 		}
 
 		//同じ種類のアイテムが入ってたら
@@ -80,11 +80,12 @@ void Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 				//溢れなかったら
 				slot->SetNumber( tempNum );
 				item.reset();
-				return;
+				return true;
 			}
 		}
 		number++;
 	}
+	return false;
 }
 
 void Inventory::LClickSlot( unsigned slotNo, std::unique_ptr<ItemStack>& cursor ){

@@ -124,7 +124,7 @@ void World::PostUpdate(){
 		if (m_block != nullptr) {
 			if (GetBlock(m_blockPosX, m_blockPosY, m_blockPosZ) == nullptr)
 			{
-				m_block == nullptr;
+				m_block = nullptr;
 			}
 			else {
 				m_timer += GetDeltaTimeSec();
