@@ -1160,8 +1160,10 @@ void Player::CalcAttackPow() {
 
 void Player::HUDRender(int HUDNum)  {
 	CVector3 pos = GetPos() / Block::WIDTH;
-	char* light = m_world->GetLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
-	char* skylight = m_world->GetSkyLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+	IntVector3 sampPos = { (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) };
+	char* light = m_world->GetLightData(sampPos);
+	char* skylight = m_world->GetSkyLightData(sampPos);
+	Block* block = m_world->GetBlock(sampPos);
 
 	//座標表示
 	std::wstringstream str;
@@ -1169,6 +1171,10 @@ void Player::HUDRender(int HUDNum)  {
 	//ライト表示
 	if (light && skylight) {
 		str << "blockLight:" << (int)*light << " skyLight:" << (int)*skylight << "\n";
+	}
+	//ブロックID
+	if (block) {
+		str << "blockID:" << block->GetBlockType() << "\n";
 	}
 	font.Draw(str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, { 0.5f, 0.5f });
 }
