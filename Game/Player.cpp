@@ -198,8 +198,6 @@ void Player::Update()
 			FlyTheRay();
 			//スタミナ処理。
 			Stamina();
-			//空腹ダメージ。
-			HungryDamage();
 			//ノックバック。
 			KnockBack();
 			//アイテムを投げる処理。
@@ -208,6 +206,10 @@ void Player::Update()
 		else if (GetKeyDown('E')) {
 			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
 			CloseGUI();
+		}
+		if (m_openedGUI != nullptr) {
+			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
+			m_eatingFlag = false;
 		}
 	}
 	if (m_isExpUpFlag)
@@ -228,6 +230,8 @@ void Player::Update()
 	Defence();
 	//攻撃力も。
 	CalcAttackPow();
+	//空腹ダメージ。
+	HungryDamage();
 
 	//奈落死。
 	if (m_position.y <= 0.f) {
@@ -796,7 +800,6 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			{
 				isStrikeFlag = true;
 			}
-			m_isBlockDestruction = false;
 		}
 		else {
 			m_blockCrackModel.SetIsDraw(false);
@@ -809,14 +812,15 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 void Player::DecideCanDestroyBlock()
 {
 	//マウス左長押しなら。
-	if (GetKeyInput(VK_LBUTTON))
+	if (GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON))
 	{
 		//タイマーを+する。
+		m_isBlockDestruction = true;
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
 		if (m_timerBlockDestruction <= timeBlockDestruction)
 		{
-			m_isBlockDestruction = false;
+			m_isBlockDestruction = true;
 		}
 		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
 		else {

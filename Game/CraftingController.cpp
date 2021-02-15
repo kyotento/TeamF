@@ -16,7 +16,10 @@ namespace GUI::Controller{
 		int number = 0;
 		//GUIを閉じたときにクラフトテーブルのアイテムを返却する。
 		for (auto& item : m_inventory) {
-
+			if (number == 9)
+			{
+				return;
+			}
 			//アイテムをプレイヤーインベントリに返却できなかったら。
 			if (m_inventory.GetNullableItem(number).GetID() != enCube_None && !m_playerInventory.AddItem(item))
 			{

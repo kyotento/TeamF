@@ -3,5 +3,6 @@
 	"name": "ガラス",
 	"model": "modelData/GlassBlock.tkm",
 	"hp": 4,
-	"tool": "enTool_Shovel"
+	"tool": "enTool_Shovel",
+	"opacity": false
 }
