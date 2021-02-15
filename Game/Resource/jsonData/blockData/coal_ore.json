@@ -4,5 +4,5 @@
   "model": "modelData/coalOre.tkm",
   "hp": 20,
   "tool": "enTool_Pickaxe",
-  "dropItem": "enItem_Coal"
+  "dropItem": "enCube_Soil"
 }
