@@ -1076,7 +1076,7 @@ void Player::Stamina()
 //空腹時のダメージ。
 void Player::HungryDamage()
 {
-	if (m_gameMode->enGameModeCreative) {		//クリエイティブのとき処理をしない。
+	if (m_gameMode->GetGameMode() != GameMode::enGameModeSurvival) {		//クリエイティブのとき処理をしない。
 		return;
 	}
 	if (m_stamina <= 0 && m_hp > 0) {		//スタミナが０のとき。
