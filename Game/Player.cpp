@@ -121,15 +121,7 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
-		/*int itemArray[] = {
-			//enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
-			//enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			//enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
-			//enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
-			//enItem_Diamond, enCube_OakLog,
-			//enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre, enItem_Leather, enCube_TNT
-			enAllItem_Num
-		};
+		/*int itemArray[] = { enItem_Diamond_Helmet};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
@@ -194,7 +186,6 @@ void Player::Update()
 		m_deathFlag = false;
 		//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
 		if (m_openedGUI == nullptr) {
-
 			//回転処理。
 			Turn();
 			//攻撃。
@@ -211,18 +202,8 @@ void Player::Update()
 			HungryDamage();
 			//ノックバック。
 			KnockBack();
-
-			if( GetKeyDown( 'Q' ) ){
-				auto item = m_inventory.TakeItem( m_selItemNum - 1, 1 );
-				if( item ){
-					CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
-					pos.y += Block::WIDTH;
-					DropItem* drop = DropItem::CreateDropItem( m_world, std::move( item ) );
-					drop->SetPos( pos );
-					drop->SetVelocity( GetFront() * 300 );
-				}
-			}
-
+			//アイテムを投げる処理。
+			ThrowItem();
 		}
 		else if (GetKeyDown('E')) {
 			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
@@ -239,19 +220,16 @@ void Player::Update()
 	}
 	//プレイヤーの状態管理。
 	StateManagement();
-
 	//死亡処理。
 	Death();
-
 	//モデルを描画するかどうか。
 	IsDraw();
-
 	//防御力きめるー。
 	Defence();
-	//攻撃力も
+	//攻撃力も。
 	CalcAttackPow();
 
-	//奈落死
+	//奈落死。
 	if (m_position.y <= 0.f) {
 		TakenDamage(1, 0.0f, false, true);
 	}
@@ -346,7 +324,7 @@ void Player::ChangeMovemontC()
 	}
 }
 
-//走る処理。
+//走る処理(2種類あります)。
 void Player::Dash()
 {
 	//Wダブルクリック。
@@ -390,7 +368,6 @@ void Player::Dash()
 			m_playerState = enPlayerState_move;
 		}
 	}
-
 }
 
 //移動処理。
@@ -1093,6 +1070,9 @@ void Player::Stamina()
 //空腹時のダメージ。
 void Player::HungryDamage()
 {
+	if (m_gameMode->enGameModeCreative) {		//クリエイティブのとき処理をしない。
+		return;
+	}
 	if (m_stamina <= 0 && m_hp > 0) {		//スタミナが０のとき。
 		hungryDamageTimer++;
 		if (hungryDamageTimer >= 60) {
@@ -1102,6 +1082,21 @@ void Player::HungryDamage()
 	}
 	else{
 		hungryDamageTimer = 0;
+	}
+}
+
+//アイテムを投げる処理。
+void Player::ThrowItem()
+{
+	if (GetKeyDown('Q')) {
+		auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
+		if (item) {
+			CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+			pos.y += Block::WIDTH;
+			DropItem* drop = DropItem::CreateDropItem(m_world, std::move(item));
+			drop->SetPos(pos);
+			drop->SetVelocity(GetFront() * 300);
+		}
 	}
 }
 
