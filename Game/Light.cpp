@@ -224,6 +224,7 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 				auto light = chunk->GetSkyLightData(x, y, z);
 				auto block = chunk->GetBlock(x, y, z);
 				if (block && block->GetIsOpacity()) {
+					DW_WARNING_BOX(y == Chunk::HEIGHT - 1, "ほんとか")
 					//ブロックに衝突(遮蔽されている)
 					*light = 0;
 					break;
@@ -269,7 +270,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 	if (pos.y != Chunk::HEIGHT - 1) {//一番上じゃない
 		IntVector3 sampPos = { pos.x, pos.y + 1, pos.z };
 		auto light = m_world->GetSkyLightData(sampPos);
-		if (!light || *light < LightUtil::LIGHT_POWER_MAX) {//一個上のライトが最大値なら遮蔽はない
+		if (light && *light < LightUtil::LIGHT_POWER_MAX) {//一個上のライトが最大値なら遮蔽はない
 			return;
 		}
 	}
@@ -281,7 +282,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
 
 			auto block = m_world->GetBlock(sampPos);
-			if (block && block->GetIsOpacity()) {
+			if (block && block->GetIsOpacity()) {//すでに遮蔽されている
 				break;
 			}
 
@@ -291,7 +292,7 @@ void SkyLight::CalcSkyLightThisPosition(IntVector3 pos, bool isBlock) {
 			}
 		}
 
-		//負の伝播
+		//負の伝播(上で更新したところの)
 		for (int y = pos.y - 1; y >= 0; y--) {
 			IntVector3 sampPos = { pos.x, y, pos.z };
 
