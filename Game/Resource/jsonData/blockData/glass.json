@@ -1,0 +1,7 @@
+{
+	"id": "enCube_Glass",
+	"name": "ガラス",
+	"model": "modelData/GlassBlock.tkm",
+	"hp": 4,
+	"tool": "enTool_Shovel"
+}
