@@ -33,5 +33,13 @@ public:
 	void SetSecond(float sec) {
 		m_seconds = sec;
 	}
+
+	/// <summary>
+	/// スカイライトの強さを取得
+	/// </summary>
+	/// <returns></returns>
+	float GetSkyLightPower()const {
+		return max(0.0f, -m_light.GetDirection().y);
+	}
 };
 	
