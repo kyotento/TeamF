@@ -2,5 +2,5 @@
 	"id": "enItem_Raw_Meat",
 	"name": "生の牛肉",
 	"sprite": "spriteData/items/rawMeat.dds",
-	"food_level": 6
+	"food_level": 3
 }

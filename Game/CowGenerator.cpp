@@ -6,7 +6,7 @@ void CowGenerator::Init()
 {
 	//生成の様々なパラメータを設定する。
 	GeneratorParameters* params = new GeneratorParameters();
-	params->mobGenerateTimer = 8.0f;		//生成にかかる時間。
+	params->mobGenerateTimer = 4.0f;		//生成にかかる時間。
 	params->maxNumberMobRange = 4;			//一度に生成する数。
 	params->maxNumberMob = 40;				//牛の生成上限
 	SetParametors(params);
