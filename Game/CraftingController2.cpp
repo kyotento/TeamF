@@ -3,6 +3,9 @@
 #include "ClickEvent.h"
 #include "Inventory.h"
 #include "RecipeManager.h"
+#include "DropItem.h"
+#include "Block.h"
+#include "Player.h"
 
 namespace GUI::Controller {
 	CraftingController2::CraftingController2(
@@ -18,7 +21,17 @@ namespace GUI::Controller {
 		for (auto& item : m_inventory) 
 		{	//クラフトスロットのところだけアイテムを返却する。
 			if (number < resultSlot) {
-				m_playerInventory.AddItem(item);
+				//アイテムをプレイヤーインベントリに返却できなかったら。
+				if (m_inventory.GetNullableItem(number).GetID() != enCube_None && !m_playerInventory.AddItem(item))
+				{
+					//ドロップアイテムを生成する。
+					auto player = FindGO<Player>();
+					if (player != nullptr)
+					{
+						player->CreateFrontDropItem(item);
+					}
+
+				}
 			}
 			number++;
 		}

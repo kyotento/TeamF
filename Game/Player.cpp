@@ -1172,3 +1172,14 @@ void Player::HUDRender(int HUDNum)  {
 	}
 	font.Draw(str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, { 0.5f, 0.5f });
 }
+
+void Player::CreateFrontDropItem(std::unique_ptr<ItemStack>& item)
+{
+
+	CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+	pos.y += Block::WIDTH;
+	DropItem* drop = DropItem::CreateDropItem(m_world, item->GetID(),item->GetNumber());
+	drop->SetPos(pos);
+	drop->SetVelocity(GetFront() * 300);
+
+}

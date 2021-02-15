@@ -44,7 +44,8 @@ public:
 
 	//! @brief アイテムを追加する。アイテムを拾う操作に使用する。
 	//! @param cursor[in,out] 追加するアイテム。処理後はemptyになりますが、アイテムが溢れたら溢れた分が残ります。
-	void AddItem( std::unique_ptr<ItemStack>& item );
+	//アイテム全部拾えなかったら、false
+	bool AddItem( std::unique_ptr<ItemStack>& item );
 
 	//! @brief スロットに対して左クリックしたときの操作。
 	//! @param slotNo スロット番号

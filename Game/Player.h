@@ -13,6 +13,7 @@ class PlayerParameter;
 class PlayerDeath;
 class PlayerArmor;
 class Game;
+class ItemStack;
 namespace GUI{
 	class RootNode;
 }
@@ -321,7 +322,9 @@ public:
 			m_playerState = enPlayerState_sleep;
 		}
 	}
-
+	//プレイヤーの前方にドロップアイテムを生成する。
+	void CreateFrontDropItem(std::unique_ptr<ItemStack>& item);
+	
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
