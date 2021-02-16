@@ -1,0 +1,7 @@
+{
+	"id": "enCube_IronBlock",
+	"name": "鉄ブロック",
+	"model": "modelData/ironBlock.tkm",
+	"hp": 28,
+	"tool": "enTool_Pickaxe"
+}
