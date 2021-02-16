@@ -1,0 +1,8 @@
+{
+	"id": "enCube_DiamondOre",
+	"name": "ダイヤ鉱石",
+	"model": "modelData/diamondOre.tkm",
+	"hp": 36,
+	"tool": "enTool_Pickaxe",
+    "dropItem": "enItem_Diamond"
+}
