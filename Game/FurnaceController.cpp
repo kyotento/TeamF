@@ -47,6 +47,29 @@ namespace GUI::Controller{
 					result.reset();
 				}
 			}
+			if (source == nullptr)
+			{
+				return;
+			}
+			//レシピを参照して、燃やせるものだった場合、燃焼のためのGameObjectを生成する。
+			auto recipeResult = RecipeManager::Instance().GetFurnaceResult(source->GetID());
+
+			if (recipeResult == nullptr) {
+				return;
+			}
+
+			//完成品スロットに邪魔な物が入っていると燃やせない。
+			if (result) {
+				if (recipeResult->GetID() != result->GetID()) {
+					return;
+				}
+				if (result->GetNumber() == result->GetStackLimit()) {
+					return;
+				}
+			}
+
+			//火をつける。
+			m_fire.setFire();
 
 			return;
 		}

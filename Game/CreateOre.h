@@ -75,7 +75,7 @@ private:
 	RandomMapMaker* m_mapMaker = nullptr;		//マップメーカー
 	std::map<EnCube, OreData> m_oreDataList;
 	std::map<EnCube, PerlinData> m_perlinDataList;
-	int m_seedX, m_seedY, m_seedZ = 0.0f;
+	int m_seedX, m_seedY, m_seedZ = 0;
 	int m_width, m_depth, m_maxHeight, m_minHeight;			//マップの広さ。
 	int m_startX, m_startZ;    //マップのスタート値。
 };

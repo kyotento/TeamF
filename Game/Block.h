@@ -95,6 +95,7 @@ public:
 
 	//! @brief 不透明かどうか取得
 	bool GetIsOpacity()const{
+		DW_WARNING_BOX(!m_bInfo,"m_bInfoがnull")
 		return m_bInfo->isOpacity;
 	}
 
@@ -196,7 +197,7 @@ private:
 	CRayTracingModelRender m_raytraceModel;//レイトレ用モデル
 
 	//! @brief ブロックの種類ごとに共通の情報。
-	const BlockInfo* m_bInfo;
+	const BlockInfo* m_bInfo = nullptr;
 
 	//向き
 	enMuki m_muki = enMuki::enNum;

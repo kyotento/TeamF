@@ -5,7 +5,7 @@
 #include "Enemy.h"
 
 namespace {
-	constexpr int bombArea = 4;
+	constexpr int bombArea = 6;
 	constexpr int damege = 15;
 }
 

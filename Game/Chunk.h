@@ -8,7 +8,16 @@
 class Chunk{
 public:
 
-	Chunk(){}
+	Chunk(){
+		//スカイライト初期化
+		for (int x = 0; x < WIDTH; x++) {
+			for (int y = 0; y < HEIGHT; y++) {
+				for (int z = 0; z < WIDTH; z++) {
+					m_skyLightData[x][y][z] = LightUtil::LIGHT_POWER_MAX;
+				}
+			}
+		}
+	}
 
 	Chunk( const Chunk& c ) = delete;
 	const Chunk& operator=( const Chunk& c ) = delete;

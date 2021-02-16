@@ -43,7 +43,7 @@ namespace {
 	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
-	const int randomDrop = Block::WIDTH / 0.5;	//らんちゅうのはんい。
+	const int randomDrop = Block::WIDTH / 0.5f;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
 }
 					//装備スロットのため拡張。
@@ -121,15 +121,7 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
-		/*int itemArray[] = {
-			//enItem_Diamond_Helmet,enItem_Diamond_ChestPlate,enItem_Diamond_Leggings,enItem_Diamond_Boots,
-			//enItem_Gold_Helmet,enItem_Gold_ChestPlate,enItem_Gold_Leggings,enItem_Gold_Boots,
-			//enItem_Iron_Helmet,enItem_Iron_ChestPlate,enItem_Iron_Leggings,enItem_Iron_Boots,
-			//enItem_Leather_Helmet,enItem_Leather_ChestPlate,enItem_Leather_Leggings,enItem_Leather_Boots,
-			//enItem_Diamond, enCube_OakLog,
-			//enItem_Raw_Meat,enCube_Furnace,enCube_IronOre, enCube_GoldOre, enItem_Leather, enCube_TNT
-			enAllItem_Num
-		};
+		/*int itemArray[] = { enItem_Diamond_Helmet};
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
@@ -194,7 +186,6 @@ void Player::Update()
 		m_deathFlag = false;
 		//GUIが開かれている場合には、回転とインベントリを開くことは行わない。
 		if (m_openedGUI == nullptr) {
-
 			//回転処理。
 			Turn();
 			//攻撃。
@@ -207,26 +198,18 @@ void Player::Update()
 			FlyTheRay();
 			//スタミナ処理。
 			Stamina();
-			//空腹ダメージ。
-			HungryDamage();
 			//ノックバック。
 			KnockBack();
-
-			if( GetKeyDown( 'Q' ) ){
-				auto item = m_inventory.TakeItem( m_selItemNum - 1, 1 );
-				if( item ){
-					CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
-					pos.y += Block::WIDTH;
-					DropItem* drop = DropItem::CreateDropItem( m_world, std::move( item ) );
-					drop->SetPos( pos );
-					drop->SetVelocity( GetFront() * 300 );
-				}
-			}
-
+			//アイテムを投げる処理。
+			ThrowItem();
 		}
 		else if (GetKeyDown('E')) {
 			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
 			CloseGUI();
+		}
+		if (m_openedGUI != nullptr) {
+			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
+			m_eatingFlag = false;
 		}
 	}
 	if (m_isExpUpFlag)
@@ -239,19 +222,18 @@ void Player::Update()
 	}
 	//プレイヤーの状態管理。
 	StateManagement();
-
 	//死亡処理。
 	Death();
-
 	//モデルを描画するかどうか。
 	IsDraw();
-
 	//防御力きめるー。
 	Defence();
-	//攻撃力も
+	//攻撃力も。
 	CalcAttackPow();
+	//空腹ダメージ。
+	HungryDamage();
 
-	//奈落死
+	//奈落死。
 	if (m_position.y <= 0.f) {
 		TakenDamage(1, 0.0f, false, true);
 	}
@@ -346,7 +328,7 @@ void Player::ChangeMovemontC()
 	}
 }
 
-//走る処理。
+//走る処理(2種類あります)。
 void Player::Dash()
 {
 	//Wダブルクリック。
@@ -390,7 +372,6 @@ void Player::Dash()
 			m_playerState = enPlayerState_move;
 		}
 	}
-
 }
 
 //移動処理。
@@ -456,7 +437,7 @@ void Player::Jump()
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
 			if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-				m_stamina -= 0.2;			//サバイバルモードの時のみスタミナを減らす。
+				m_stamina -= 0.2f;			//サバイバルモードの時のみスタミナを減らす。
 			}
 		}
 		//ジャンプ中の処理。
@@ -537,8 +518,8 @@ void Player::Turn()
 	}
 
 	//マウスの回転量をラジアンに変換。
-	m_radianY = M_PI / 180 * m_degreeY;
-	m_radianXZ = M_PI / 180 * m_degreeXZ;
+	m_radianY = M_PI / 180.f * m_degreeY;
+	m_radianXZ = M_PI / 180.f * m_degreeXZ;
 
 	//回転を計算。
 	m_rotation.SetRotationDeg(CVector3::AxisY(), m_degreeY);
@@ -581,9 +562,6 @@ void Player::Shift()
 	}
 	//元に戻る処理。
 	if (GetKeyUp(VK_SHIFT)) {
-		bodyRot.SetRotationDeg(CVector3::AxisZ(), -shiftDir* 0.5f);
-		rightLegRot.SetRotationDeg(CVector3::AxisX(), -shiftDir* 0.5f);
-		leftLegRot.SetRotationDeg(CVector3::AxisX(), shiftDir* 0.5f);
 
 		bodyBone->SetRotationOffset(bodyRot);
 		rightLegBone->SetRotationOffset(rightLegRot);
@@ -665,7 +643,7 @@ void Player::KnockBack()
 			//高さの処理。
 			m_knoceBackY = m_knockBack;
 			moveSpeed.y += m_knoceBackY * Block::WIDTH / 2.0f;
-			m_knoceBackY -= m_knoceBackY + 0.5 * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
+			m_knoceBackY -= m_knoceBackY + 0.5f * (1 * m_knockBack) / (knockBackFrame * 2) * (knockBackFrame * 2);	//V0 + 1/2gtt;
 			moveSpeed *= 15.0f;
 
 			m_position = m_characon.Execute(moveSpeed);
@@ -721,7 +699,7 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
 		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-			m_stamina -= 0.0003;
+			m_stamina -= 0.0003f;
 		}
 
 		break;
@@ -732,7 +710,7 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
 		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-			m_stamina -= 0.003;
+			m_stamina -= 0.003f;
 		}
 
 		break;
@@ -822,7 +800,6 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			{
 				isStrikeFlag = true;
 			}
-			m_isBlockDestruction = false;
 		}
 		else {
 			m_blockCrackModel.SetIsDraw(false);
@@ -835,14 +812,15 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 void Player::DecideCanDestroyBlock()
 {
 	//マウス左長押しなら。
-	if (GetKeyInput(VK_LBUTTON))
+	if (GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON))
 	{
 		//タイマーを+する。
+		m_isBlockDestruction = true;
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
 		if (m_timerBlockDestruction <= timeBlockDestruction)
 		{
-			m_isBlockDestruction = false;
+			m_isBlockDestruction = true;
 		}
 		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
 		else {
@@ -901,7 +879,7 @@ void Player::TakenDamage(int AttackPow, CVector3 knockBackDirection, bool isAtta
 
 		if (!ignoreDefence) {
 			//防御力の計算。
-			damage = AttackPow * (1 - m_defensePower * 0.04);
+			damage = AttackPow * (1.f - m_defensePower * 0.04f);
 		}
 		m_hp -= damage;
 
@@ -1059,7 +1037,7 @@ void Player::Stamina()
 	//飯を食べる処理。
 	if (GetKeyInput(VK_RBUTTON)) {
 		auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
-		if (item == nullptr || item->IsFood() == false)//食べ物かの判別。
+		if ((item == nullptr || item->IsFood() == false) && !GetKeyInput(VK_TAB))//食べ物かの判別。または強制食事モード
 		{
 			return;
 		}
@@ -1069,9 +1047,15 @@ void Player::Stamina()
 			if (m_eatingTimer >= maxTimer)
 			{
 				m_eatingTimer = 0.0f;
-				m_stamina += item->GetFoodLevel();//スタミナ回復
 				hiddenStamina = 4;			//隠れスタミナを上昇する。
-				auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+				if (item) {//アイテム食べる
+					m_stamina += item->GetFoodLevel();//スタミナ回復
+					auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);	//アイテムの数を減らす。
+				}
+				else {//腕食べる
+					m_stamina += 3.0f;//スタミナ回復
+					TakenDamage(8,CVector3::Up(),false,true);
+				}
 			}
 		}
 	}
@@ -1096,6 +1080,9 @@ void Player::Stamina()
 //空腹時のダメージ。
 void Player::HungryDamage()
 {
+	if (m_gameMode->GetGameMode() != GameMode::enGameModeSurvival) {		//クリエイティブのとき処理をしない。
+		return;
+	}
 	if (m_stamina <= 0 && m_hp > 0) {		//スタミナが０のとき。
 		hungryDamageTimer++;
 		if (hungryDamageTimer >= 60) {
@@ -1105,6 +1092,21 @@ void Player::HungryDamage()
 	}
 	else{
 		hungryDamageTimer = 0;
+	}
+}
+
+//アイテムを投げる処理。
+void Player::ThrowItem()
+{
+	if (GetKeyDown('Q')) {
+		auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
+		if (item) {
+			CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+			pos.y += Block::WIDTH;
+			DropItem* drop = DropItem::CreateDropItem(m_world, std::move(item));
+			drop->SetPos(pos);
+			drop->SetVelocity(GetFront() * 300);
+		}
 	}
 }
 
@@ -1160,8 +1162,10 @@ void Player::CalcAttackPow() {
 
 void Player::HUDRender(int HUDNum)  {
 	CVector3 pos = GetPos() / Block::WIDTH;
-	char* light = m_world->GetLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
-	char* skylight = m_world->GetSkyLightData({ (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) });
+	IntVector3 sampPos = { (int)std::floor(pos.x),(int)std::floor(pos.y + 0.5f),(int)std::floor(pos.z) };
+	char* light = m_world->GetLightData(sampPos);
+	char* skylight = m_world->GetSkyLightData(sampPos);
+	Block* block = m_world->GetBlock(sampPos);
 
 	//座標表示
 	std::wstringstream str;
@@ -1170,5 +1174,20 @@ void Player::HUDRender(int HUDNum)  {
 	if (light && skylight) {
 		str << "blockLight:" << (int)*light << " skyLight:" << (int)*skylight << "\n";
 	}
+	//ブロックID
+	if (block) {
+		str << "blockID:" << block->GetBlockType() << "\n";
+	}
 	font.Draw(str.str().c_str(), { 0.9f , 0.1f }, CVector4::White(), 0.5f, { 0.5f, 0.5f });
+}
+
+void Player::CreateFrontDropItem(std::unique_ptr<ItemStack>& item)
+{
+
+	CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
+	pos.y += Block::WIDTH;
+	DropItem* drop = DropItem::CreateDropItem(m_world, item->GetID(),item->GetNumber());
+	drop->SetPos(pos);
+	drop->SetVelocity(GetFront() * 300);
+
 }
