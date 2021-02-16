@@ -1,0 +1,15 @@
+{
+	"id": "enCube_CobbleStoneStairs",
+	"name": "丸石の階段",
+	"model": "modelData/cobbleStoneStairs.tkm",
+	"hp": 4,
+    "tool": "enTool_Pickaxe",
+    "opacity": false,
+	"aabb": [
+		[-0.5, 0, -0.5],
+		[0.5, 0.5, 0.5],
+		
+		[0, 0.5, -0.5],
+		[0.5, 1, 0.5]
+	]
+}

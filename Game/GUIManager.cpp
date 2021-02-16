@@ -13,10 +13,16 @@ namespace GUI{
 	void GUIManager::Update(){
 		using namespace GUI::Event;
 
+		//ルートノードが追加されたフレームではクリックイベント出さない
+		if (m_isAddRootFrame) {
+			m_isAddRootFrame = false;
+			return;
+		}
+
 		//クリックイベントを発行。
 		for( auto& r : m_roots ){
 			for( int button : MOUSE_BUTTONS ){
-				if( GetKeyUp( button ) ){
+				if( GetKeyDown( button ) ){
 					ClickEvent::ClickType type;
 
 					switch( button ){

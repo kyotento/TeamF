@@ -41,8 +41,8 @@ enum EnCube
 	enCube_OakWoodStairs,
 	enCube_StoneHalf,
 	enCube_StoneStairs,
-
-
+	enCube_CobbleStoneHalf,
+	enCube_CobbleStoneStairs,
 
 	enCube_Num
 };
