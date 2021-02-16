@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "#"
+    ],
+    "key": {
+      "#": "enCube_CoalBlock"
+    },
+    "result": "enItem_Coal",
+    "resultCount": 9
+  }

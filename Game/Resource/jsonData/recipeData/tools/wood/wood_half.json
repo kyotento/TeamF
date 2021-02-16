@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "XXX"
+    ],
+    "key": {
+      "X": "enCube_OakWood"
+    },
+    "result": "enCube_OakWoodHalf",
+    "resultCount": 6
+  }
