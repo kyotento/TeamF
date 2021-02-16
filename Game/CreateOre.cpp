@@ -32,32 +32,32 @@ void CreateOre::Awake(Chunk& chunk)
 	//çzêŒÇÃÉfÅ[É^Çèâä˙âª
 	m_oreDataList[enCube_IronOre] = OreData();
 	m_oreDataList[enCube_IronOre].s_oreMaxHeight = 8;
-	m_oreDataList[enCube_IronOre].s_oreMinHeight = 3;
+	m_oreDataList[enCube_IronOre].s_oreMinHeight = 5;
 	m_oreDataList[enCube_IronOre].s_oreDiffHeight = m_oreDataList[enCube_IronOre].s_oreMaxHeight - m_oreDataList[enCube_IronOre].s_oreMinHeight;
-	m_oreDataList[enCube_IronOre].s_oreMaxNumber = 2;
+	m_oreDataList[enCube_IronOre].s_oreMaxNumber = 4;
 	m_oreDataList[enCube_IronOre].s_oreWidth = 2;
 	m_oreDataList[enCube_IronOre].s_oreDepth = 2;
 	m_oreDataList[enCube_IronOre].s_oreHeight = 2;
-	m_oreDataList[enCube_IronOre].s_prob = 50;
+	m_oreDataList[enCube_IronOre].s_prob = 80;
 	m_oreDataList[enCube_IronOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_IronOre].s_oreDiffHeight;
 
 	m_oreDataList[enCube_GoldOre] = OreData();
-	m_oreDataList[enCube_GoldOre].s_oreMaxHeight = 5;
+	m_oreDataList[enCube_GoldOre].s_oreMaxHeight = 6;
 	m_oreDataList[enCube_GoldOre].s_oreMinHeight = 0;
 	m_oreDataList[enCube_GoldOre].s_oreDiffHeight = m_oreDataList[enCube_GoldOre].s_oreMaxHeight - m_oreDataList[enCube_GoldOre].s_oreMinHeight;
-	m_oreDataList[enCube_GoldOre].s_oreMaxNumber = 1;
+	m_oreDataList[enCube_GoldOre].s_oreMaxNumber = 3;
 	m_oreDataList[enCube_GoldOre].s_oreWidth = 2;
 	m_oreDataList[enCube_GoldOre].s_oreDepth = 2;
 	m_oreDataList[enCube_GoldOre].s_oreHeight = 2;
-	m_oreDataList[enCube_GoldOre].s_prob = 30;
+	m_oreDataList[enCube_GoldOre].s_prob = 50;
 	m_oreDataList[enCube_GoldOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_GoldOre].s_oreDiffHeight;
 
 	m_oreDataList[enCube_CoalOre] = OreData();
 	m_oreDataList[enCube_CoalOre].s_oreMaxHeight = 8;
 	m_oreDataList[enCube_CoalOre].s_oreMinHeight = 0;
 	m_oreDataList[enCube_CoalOre].s_oreDiffHeight = m_oreDataList[enCube_CoalOre].s_oreMaxHeight - m_oreDataList[enCube_CoalOre].s_oreMinHeight;
-	m_oreDataList[enCube_CoalOre].s_oreMaxNumber = 3;
-	m_oreDataList[enCube_CoalOre].s_prob = 53;
+	m_oreDataList[enCube_CoalOre].s_oreMaxNumber = 10;
+	m_oreDataList[enCube_CoalOre].s_prob = 60;
 	m_oreDataList[enCube_CoalOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_CoalOre].s_oreDiffHeight;
 	m_oreDataList[enCube_CoalOre].s_atten = 16;
 	m_oreDataList[enCube_CoalOre].s_isDig = false;
