@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "#"
+    ],
+    "key": {
+      "#": "enCube_DiamondBlock"
+    },
+    "result": "enItem_Diamond",
+    "resultCount": 9
+  }

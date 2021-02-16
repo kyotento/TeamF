@@ -34,6 +34,8 @@ enum EnCube
 	enCube_TNT,				//TNTÅB
 	enCube_IronBlock,
 	enCube_GoldBlock,
+	enCube_DiamondOre,
+	enCube_DiamondBlock,
 
 	enCube_Num
 };
