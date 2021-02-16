@@ -17,7 +17,7 @@ namespace GUI::Controller {
 		InventoryController(craftingSlots, grabed), m_playerInventory(inventory) {
 
 		//インベントリにアイテムを充填する。
-		for (int i = 1; i <= equipSlot; i++)
+		for (int i = 1; i < equipSlot; i++)
 		{
 			auto& pSlot = m_playerInventory.GetItem(i + playerSlot);
 			if (m_playerInventory.GetNullableItem(i + playerSlot).GetID() == enCube_None
