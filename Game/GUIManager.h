@@ -19,6 +19,7 @@ namespace GUI{
 		//! @brief ルートノードを追加。
 		void AddRoot(Node* root){
 			m_roots.insert( root );
+			m_isAddRootFrame = true;
 		}
 
 		//! @brief ルートノードを削除。
@@ -38,6 +39,8 @@ namespace GUI{
 
 		//! 画面に表示するGUIのルートノードのリスト。
 		std::unordered_set<Node*> m_roots;
+
+		bool m_isAddRootFrame = false;//今フレームがルートノードを追加されたタイミングか
 	};
 
 }

@@ -57,5 +57,6 @@ private:
 	CVector3 m_velocity = CVector3::Zero(); //速度
 
 	SimpleMoveObj m_collision;//当たり判定。位置もここから取得する。
+	float m_timer = 0.0f;
 };
 

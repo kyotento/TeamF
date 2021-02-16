@@ -60,6 +60,7 @@ void DropItem::Update()
 	//落ちる処理。
 	m_collision.Execute( m_velocity );
 	m_velocity.y -= 15;
+	m_timer += GetDeltaTimeSec();
 
 	//回る処理。
 	const float rotSpeed = 45;//回るスピード。度/秒。
@@ -74,17 +75,18 @@ void DropItem::Update()
 	//アイテム取得処理。
 	Player* player = m_world->GetPlayer();
 	//プレイヤー死んでたらアイテムを取得させない。
-	if (player->GetIsDeath())
+	if (player->GetIsDeath() || m_timer <= 0.5f)
 	{
 		return;
 	}
 
 	CVector3 playerPos = player->GetPos();
+	playerPos.y += 30.0f;
 	//playerPos.y += 40.0;
 	CVector3 diff = playerPos - GetPos();
 
 	//この範囲内に入ったら取得するという距離。
-	const float catchLength = Block::WIDTH * 1.3f;
+	const float catchLength = Block::WIDTH * 1.5f;
 
 	if( diff.LengthSq() < catchLength * catchLength ){
 		
