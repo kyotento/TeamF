@@ -1098,8 +1098,8 @@ void Player::ThrowItem()
 			CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
 			pos.y += Block::WIDTH;
 			DropItem* drop = DropItem::CreateDropItem(m_world, std::move(item));
-			drop->SetPos(pos);
-			drop->SetVelocity(GetFront() * 300);
+			drop->SetPos(pos + GetFront() * 50);
+			drop->SetVelocity(GetFront() * 250);
 		}
 	}
 }
