@@ -52,6 +52,17 @@ void CreateOre::Awake(Chunk& chunk)
 	m_oreDataList[enCube_GoldOre].s_prob = 50;
 	m_oreDataList[enCube_GoldOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_GoldOre].s_oreDiffHeight;
 
+	m_oreDataList[enCube_DiamondOre] = OreData();
+	m_oreDataList[enCube_DiamondOre].s_oreMaxHeight = 6;
+	m_oreDataList[enCube_DiamondOre].s_oreMinHeight = 0;
+	m_oreDataList[enCube_DiamondOre].s_oreDiffHeight = m_oreDataList[enCube_DiamondOre].s_oreMaxHeight - m_oreDataList[enCube_DiamondOre].s_oreMinHeight;
+	m_oreDataList[enCube_DiamondOre].s_oreMaxNumber = 2;
+	m_oreDataList[enCube_DiamondOre].s_oreWidth = 2;
+	m_oreDataList[enCube_DiamondOre].s_oreDepth = 2;
+	m_oreDataList[enCube_DiamondOre].s_oreHeight = 2;
+	m_oreDataList[enCube_DiamondOre].s_prob = 50;
+	m_oreDataList[enCube_DiamondOre].s_oreDivideRand = (m_width - m_startX) * (m_depth - m_startZ) * m_oreDataList[enCube_DiamondOre].s_oreDiffHeight;
+
 	m_oreDataList[enCube_CoalOre] = OreData();
 	m_oreDataList[enCube_CoalOre].s_oreMaxHeight = 9;
 	m_oreDataList[enCube_CoalOre].s_oreMinHeight = 0;
