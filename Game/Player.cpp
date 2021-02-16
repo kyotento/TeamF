@@ -788,16 +788,13 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			SuicideObj::CSE* se;
 			se = NewGO<SuicideObj::CSE>(m_strikeName);
 			se->SetVolume(0.25f);
-			if (isStrikeFlag)
-			{
+			if (isStrikeFlag){
 				se->Play();
 				isStrikeFlag = false;
 			}
-			else if (!se->GetIsPlaying())
-			{
+			else if (!se->GetIsPlaying()){
 				isStrikeFlag = true;
 			}
-			//m_isBlockDestruction = false;
 		}
 		else {
 			m_blockCrackModel.SetIsDraw(false);
@@ -810,18 +807,15 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 void Player::DecideCanDestroyBlock()
 {
 	//マウス左長押しなら。
-	if (GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON))
-	{
+	if (GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)){
 		//タイマーを+する。
 		m_isBlockDestruction = true;
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
-		if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative)
-		{
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative){
 			m_isBlockDestruction = true;
 		}
-		else if (m_timerBlockDestruction <= timeBlockDestruction)
-		{
+		else if (m_timerBlockDestruction <= timeBlockDestruction){
 			m_isBlockDestruction = false;
 		}
 		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
@@ -845,8 +839,7 @@ void Player::FlyTheRay()
 {								  //マウス左長押しなら。				
 	if (GetKeyDown(VK_RBUTTON) || GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)) {
 		//マウス左長押しかつ破壊フラグがたっていなかったら、処理しない。
-		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction)
-		{
+		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction){
 			return;
 		}
 		const int up = 75;
@@ -976,10 +969,8 @@ void Player::Death()
 							addPos.z += rand() % randomDrop;
 						}
 						drop->SetPos(pos+addPos);
-						//drop->SetVelocity(GetFront() * 300);
 					}
-				}
-				
+				}			
 			}
 		}
 		//リスポーン。
@@ -1114,12 +1105,10 @@ void Player::Shoulder()
 	const int Down = 5;
 	m_shoulderBoneRot.SetRotationDeg(CVector3::AxisX(), upDownY);
 	m_shoulderBone->SetRotationOffset(m_shoulderBoneRot);
-	if (upDownY > 0)
-	{
+	if (upDownY > 0){
 		upDownY -= Down;
 	}
-	else
-	{
+	else{
 		upDownY = 0;
 	}
 }
