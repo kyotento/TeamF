@@ -1,0 +1,8 @@
+{
+	"id": "enCube_CoalBlock",
+	"name": "石炭ブロック",
+	"model": "modelData/coalBlock.tkm",
+	"hp": 28,
+	"tool": "enTool_Pickaxe",
+	"fuel_level": 10
+}
