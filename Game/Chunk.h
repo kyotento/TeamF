@@ -7,17 +7,7 @@
 	@author Takayama */
 class Chunk{
 public:
-
-	Chunk(){
-		//スカイライト初期化
-		for (int x = 0; x < WIDTH; x++) {
-			for (int y = 0; y < HEIGHT; y++) {
-				for (int z = 0; z < WIDTH; z++) {
-					m_skyLightData[x][y][z] = LightUtil::LIGHT_POWER_MAX;
-				}
-			}
-		}
-	}
+	Chunk() {}
 
 	Chunk( const Chunk& c ) = delete;
 	const Chunk& operator=( const Chunk& c ) = delete;
@@ -161,6 +151,15 @@ public:
 		return m_isGenerated;
 	}
 
+	//! @brief スカイライト計算完了フラグを立てる。
+	void CalcedSkyLight() {
+		m_isCalcedSkyLight = true;
+	}
+	//! @brief  スカイライト計算が完了しているかを返す。
+	bool IsCalcedSkyLight() const {
+		return m_isCalcedSkyLight;
+	}
+
 	//! @brief チャンクのx,z方向の長さ。
 	static constexpr int WIDTH = 16;
 	//! @brief チャンクのy方向の長さ。
@@ -177,5 +176,6 @@ private:
 	std::unique_ptr<Block> m_blockArray[WIDTH][HEIGHT][WIDTH];
 
 	bool m_isGenerated = false;
+	bool m_isCalcedSkyLight = false;
 };
 
