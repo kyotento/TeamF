@@ -236,6 +236,9 @@
     <ClCompile Include="TNT.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="Wood.cpp">
+      <Filter>Block</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -492,6 +495,9 @@
       <Filter>Entity\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="TNT.h">
+      <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="Wood.h">
       <Filter>Block</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,7 +11,7 @@ enum EnCube
 	enCube_Stone,			//石。
 	enCube_CobbleStone,		//丸石。
 	enCube_OakLog,			//オークの原木。
-	enCube_OakWood,			//オークの原木。
+	enCube_OakWood,			//オークの木材。
 	enCube_OakLeaf,			//オークの葉っぱ。
 	enCube_CoalOre,			//石炭鉱石。
 	enCube_IronOre,			//鉄鉱石。
