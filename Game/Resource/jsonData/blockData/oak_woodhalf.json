@@ -1,7 +1,7 @@
 {
 	"id": "enCube_OakWoodHalf",
 	"name": "木のハーフブロック",
-	"model": "modelData/okaWoodHalf.tkm",
+	"model": "modelData/oakWoodHalf.tkm",
 	"hp": 4,
 	"tool": "enTool_Axe",
 	"opacity": false,
