@@ -20,7 +20,8 @@ namespace GUI::Controller {
 		for (int i = 1; i <= equipSlot; i++)
 		{
 			auto& pSlot = m_playerInventory.GetItem(i + playerSlot);
-			if (pSlot) {
+			if (m_playerInventory.GetNullableItem(i + playerSlot).GetID() == enCube_None
+				&& pSlot) {
 				auto item = std::make_unique<ItemStack>(Item::GetItem(pSlot.get()->GetID()), 1);
 				m_inventory.SetItem(i+craftSlot,std::move(item));
 			}
