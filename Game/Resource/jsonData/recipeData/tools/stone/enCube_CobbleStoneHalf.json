@@ -1,0 +1,11 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "XXX"
+    ],
+    "key": {
+      "X": "enCube_CobbleStone"
+    },
+    "result": "enCube_CobbleStoneHalf",
+    "resultCount": 6
+  }

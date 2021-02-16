@@ -2,7 +2,7 @@
 #include "Cow.h"
 
 namespace {
-	CVector3 setScale = { 0.85f,0.85f,0.85f };
+	CVector3 setScale = { 0.75f,0.75f,0.75f };
 	const int KomuraNum = 10;
 }
 
