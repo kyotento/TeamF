@@ -862,10 +862,6 @@ void Player::FlyTheRay()
 
 		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
-		//todo Debug Ray描画用。
-		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
-		CVector3 kariY = kariX + frontAddRot * reyLength;
-		DrawLine3D(kariX, kariY, CVector4::Green());
 
 		ClosestRayResultCallbackForCCollisionObj rayRC(startPoint, endPoint, L"Block");		//レイ情報(ブロックとのみ判定)。
 		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
