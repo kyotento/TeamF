@@ -121,7 +121,9 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
-		int itemArray[] = { enCube_DiamondOre,enCube_DiamondBlock,enCube_CoalBlock };
+		int itemArray[] = { enCube_OakWoodHalf,	enCube_OakWoodStairs,
+	enCube_StoneHalf,
+	enCube_StoneStairs };
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
