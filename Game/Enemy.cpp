@@ -8,7 +8,7 @@ namespace {
 	//日の出。
 	float sunriseSecond = 21600.0f;
 	//太陽が出てるときにダメージを受ける感覚。
-	float sunDamageTime = 5.0f;
+	float sunDamageTime = 1.0f;
 }
 
 Enemy::Enemy(EnEntity enEntity) : Mob(enEntity)
@@ -139,7 +139,7 @@ void Enemy::AttackSun()
 			if (m_sunDamageTimer >= sunDamageTime)
 			{
 				//とりあえずダメージ1。
-				TakenDamage(1);
+				TakenDamage(2);
 				//タイマー1。
 				m_sunDamageTimer = 0.0f;
 			}

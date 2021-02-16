@@ -15,7 +15,7 @@
 #include "PlayerDeath.h"
 #include "Menu.h"
 #include "DropItem.h"
-#include"Animals.h"
+#include "Animals.h"
 #include "PlayerArmor.h"
 #include "PlayerInventoryFiler.h"
 #include "RespawnPointFiler.h"
@@ -27,7 +27,7 @@ namespace {
 	const float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
 	const float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;						//プレイヤーの移動速度。
-	const float move = 2.f;							//移動速度(基本的には触らない)。
+	const float move = 2.f;								//移動速度(基本的には触らない)。
 	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
 	const float doubleClickRug = 0.15f;					//ダブルクリック判定になる間合い。
 	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
@@ -40,11 +40,11 @@ namespace {
 
 	bool isStrikeFlag = true;
 	bool isBlockDestroy = false;
-	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
-	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
-	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
-	const int randomDrop = Block::WIDTH / 0.5f;	//らんちゅうのはんい。
-	std::mt19937 random((std::random_device())());	//らんちゅう。
+	CVector3 stickL = CVector3::Zero();					//WSADキーによる移動量
+	CVector3 moveSpeed = CVector3::Zero();				//プレイヤーの移動速度(方向もち)。
+	CVector3 itemDisplayPos = CVector3::Zero();			//アイテム（右手部分）の位置。
+	const int randomDrop = Block::WIDTH / 0.5f;			//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());		//らんちゅう。
 }
 					//装備スロットのため拡張。
 Player::Player() : m_inventory(40), Entity(enEntity_None, true)
@@ -590,9 +590,6 @@ void Player::Attack()
 		rot.SetRotationDeg(m_right, m_degreeXZ);
 		rot.Multiply(frontAddRot);
 
-		//CVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
-		//CVector3 endPoint(startPoint + frontAddRot * Block::WIDTH * 2);		//レイの終点。
-
 		CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
 
 		//攻撃判定用の当たり判定を作成。
@@ -862,10 +859,6 @@ void Player::FlyTheRay()
 
 		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
-		//todo Debug Ray描画用。
-		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
-		CVector3 kariY = kariX + frontAddRot * reyLength;
-		DrawLine3D(kariX, kariY, CVector4::Green());
 
 		ClosestRayResultCallbackForCCollisionObj rayRC(startPoint, endPoint, L"Block");		//レイ情報(ブロックとのみ判定)。
 		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
