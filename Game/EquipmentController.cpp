@@ -7,7 +7,7 @@
 namespace {
 	const unsigned craftSlot = 4;
 	const unsigned playerSlot = 35;
-	const unsigned equipSlot = 4;
+	const unsigned equipSlot = 5;
 	int equipSlotList[4] = { enTool_Helmet,enTool_Plate,enTool_Leggings,enTool_Boots };
 }
 

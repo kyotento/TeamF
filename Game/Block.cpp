@@ -115,50 +115,49 @@ void Block::CalcAddLight(bool isDestroy) {
 
 	//ワールド
 	World* world = m_sWorld;
-
 	//このブロックの座標求める
 	IntVector3 blockpos = CalcBlockUnitPos();
-
-	//このブロック自体の明るさを設定
-	auto light = world->GetLightData(blockpos);
-	if (!light) {
+	//ライト取得
+	auto light = world->GetLightData(blockpos);	
+	auto skyLight = world->GetSkyLightData(blockpos);
+	if (!light || !skyLight) {
 		return;
 	}
-	auto skyLight = world->GetSkyLightData(blockpos);
 
 	//透明ブロック
 	if (m_bInfo->isOpacity == false) {
-		skyLightPower = *skyLight;
-		if (!isDestroy && lightPower < *light) {
-			lightPower = *light;
+		if (!isDestroy) {
+			skyLightPower = *skyLight;
+			lightPower = max(*light, lightPower);
 		}
 	}
 
-	bool isLight = *light < lightPower;//もとより明るい光源か?
-	char oldLightPower = *light;//更新前のライト力
-	char oldSkyLightPower = *skyLight;//更新前のスカイライト力
+	//更新前のライト力、記録
+	char oldLightPower = *light;
+	char oldSkyLightPower = *skyLight;
 
 	//更新
 	*light = lightPower;
 	*skyLight = skyLightPower;
 
+	//スカイライト計算
+	if (m_bInfo->isOpacity || isDestroy) {//不透明または破壊時
+		SkyLight sky(world);
+		sky.CalcSkyLightThisPosition(blockpos, !isDestroy);
+	}
+
 	//負の伝播
-	if (!isLight) {//暗くなった
+	if (*light < oldLightPower) {//暗くなった
 		int count =	LightUtil::SpreadDark(world, oldLightPower, blockpos, { 0,0,0 }, false);
 		DW_WARNING_MESSAGE(count >= 2, "SpreadDark_Loop:%d \n", count)
 	}
-	if (*skyLight != oldSkyLightPower) {
+	if (*skyLight < oldSkyLightPower) {
 		int count = LightUtil::SpreadDark(world, oldSkyLightPower, blockpos, { 0,0,0 }, true);
 		DW_WARNING_MESSAGE(count >= 2, "SpreadDark_Loop(sky):%d \n", count)
 	}
 
-	//スカイライト計算
-	SkyLight sky(world);
-	sky.CalcSkyLightThisPosition(blockpos, !isDestroy);
-
-	//破壊時
+	//破壊時、周りから光伝播
 	if (isDestroy) {
-
 		//TODO いっかいでいい?
 		for (int sb = 0; sb < 6; sb++) {
 			//周りから光を伝搬させる
@@ -185,6 +184,7 @@ void Block::CalcAddLight(bool isDestroy) {
 	//自分と周囲のライティング描画更新
 	RefleshDrawLighting(world, blockpos, lightPower, skyLightPower);
 
+	//周りへ光を伝播
 	if (reflesh) {
 		//弱すぎる光は伝搬しない
 		if (lightPower <= 1) {

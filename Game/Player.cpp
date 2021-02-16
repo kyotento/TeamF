@@ -207,6 +207,10 @@ void Player::Update()
 			//GUIが開かれているときに、Eが押されたらGUIを閉じる。
 			CloseGUI();
 		}
+		if (m_openedGUI != nullptr) {
+			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
+			m_eatingFlag = false;
+		}
 	}
 	if (m_isExpUpFlag)
 	{
