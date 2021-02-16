@@ -860,6 +860,9 @@ void Player::FlyTheRay()
 		if (rayRC.hasHit()) {		//�ՓˁB
 			InstallAndDestruct(rayRC , frontAddRot);
 		}
+		else {
+			m_blockCrackModel.SetIsDraw(false);
+		}
 	}
 }
 
@@ -950,7 +953,7 @@ void Player::Death()
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
 				voice->Play();
 
-				for (int i = 0; i < 36; i++) {
+				for (int i = 0; i < 40; i++) {
 					auto item = m_inventory.TakeAllItem(i);
 					if (item) {
 						CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
