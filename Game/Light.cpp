@@ -213,26 +213,36 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 		return;
 	}
 
+	//スカイライト計算済みフラグ
+	chunk->CalcedSkyLight();
+
 	//上から照らす
 	int lightHeight[Chunk::WIDTH][Chunk::WIDTH] = {};
 	for (int x = 0; x < Chunk::WIDTH; x++) {
 		for (int z = 0; z < Chunk::WIDTH; z++) {
 			//初期化
 			lightHeight[x][z] = Chunk::HEIGHT;
-
+			bool isShadow = false;
 			for (int y = Chunk::HEIGHT-1; y >= 0; y--) {
 				auto light = chunk->GetSkyLightData(x, y, z);
-				auto block = chunk->GetBlock(x, y, z);
-				if (block && block->GetIsOpacity()) {
-					DW_WARNING_BOX(y == Chunk::HEIGHT - 1, "ほんとか")
-					//ブロックに衝突(遮蔽されている)
-					*light = 0;
-					break;
+				DW_ERRORBOX(!light, "スカイライトがない")
+				if (isShadow == false) {
+					auto block = chunk->GetBlock(x, y, z);
+					if (block && block->GetIsOpacity()) {
+						DW_ERRORBOX(y == Chunk::HEIGHT - 1, "しとはといは")
+						//ブロックに衝突(遮蔽されている)
+						*light = 0;
+						isShadow = true;
+					}
+					else {
+						//遮蔽されていない
+						*light = LightUtil::LIGHT_POWER_MAX;
+						lightHeight[x][z] = y;
+					}
 				}
 				else {
-					//遮蔽されていない
-					*light = LightUtil::LIGHT_POWER_MAX;
-					lightHeight[x][z] = y;
+					//遮蔽
+					*light = 0;
 				}
 			}
 		}
@@ -260,6 +270,53 @@ void SkyLight::CalcSkyLight(Chunk* chunk) {
 
 				//光の伝播
 				LightUtil::SpreadLight(m_world, LightUtil::LIGHT_POWER_MAX - 1, worldBlockPos, { 0,0,0 }, true);
+			}
+		}
+	}
+
+	//周りのチャンクからの伝播
+	{
+		IntVector3 pos = IntVector3::Zero();
+		int x = chunk->GetX();
+		int z = chunk->GetZ();
+
+		for (int ix = 0; ix < 2; ix++) {
+			if (ix == 0) {
+				pos.x = x * Chunk::WIDTH - 1;
+			}
+			else {
+				pos.x = x * Chunk::WIDTH + Chunk::WIDTH;
+			}
+			for (int iy = 0; iy < Chunk::HEIGHT; iy++) {
+				pos.y = iy;
+				for (int iz = 0; iz < Chunk::WIDTH; iz++) {
+					pos.z = z * Chunk::WIDTH + iz;
+					
+					char* skylight = m_world->GetSkyLightData(pos);
+					if (skylight && *skylight > 1) {
+						LightUtil::SpreadLight(m_world, *skylight - 1, pos, IntVector3::Zero(), true);
+					}
+				}
+			}
+		}
+
+		for (int ix = 0; ix < 2; ix++) {
+			if (ix == 0) {
+				pos.z = z * Chunk::WIDTH - 1;
+			}
+			else {
+				pos.z = z * Chunk::WIDTH + Chunk::WIDTH;
+			}
+			for (int iy = 0; iy < Chunk::HEIGHT; iy++) {
+				pos.y = iy;
+				for (int iz = 0; iz < Chunk::WIDTH; iz++) {
+					pos.x = x * Chunk::WIDTH + iz;
+					
+					char* skylight = m_world->GetSkyLightData(pos);
+					if (skylight && *skylight > 1) {
+						LightUtil::SpreadLight(m_world, *skylight - 1, pos, IntVector3::Zero(), true);
+					}
+				}
 			}
 		}
 	}

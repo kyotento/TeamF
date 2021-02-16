@@ -316,7 +316,6 @@ Chunk * World::CreateChunk( int x, int z ){
 					if (light && *light > 1) {
 						LightUtil::SpreadLight(this, *light - 1, pos, IntVector3::Zero(), false);
 					}
-
 				}
 			}
 		}
@@ -337,7 +336,6 @@ Chunk * World::CreateChunk( int x, int z ){
 					if (light && *light > 1) {
 						LightUtil::SpreadLight(this, *light - 1, pos, IntVector3::Zero(), false);
 					}
-
 				}
 			}
 		}
@@ -362,9 +360,11 @@ bool World::LoadChunk( int x, int z ){
 		//埋まったブロックを非表示にする。
 		ChunkCulling( *chunk );
 
-		//スカイライトの計算を行う
-		SkyLight skylight(this);
-		skylight.CalcSkyLight(chunk);
+		if (!chunk->IsCalcedSkyLight()) {
+			//スカイライトの計算を行う
+			SkyLight skylight(this);
+			skylight.CalcSkyLight(chunk);
+		}
 
 		return true;
 	} 
@@ -377,7 +377,9 @@ bool World::LoadChunk( int x, int z ){
 
 			//埋まったブロックを非表示にする。
 			ChunkCulling( *chunk );
+		}
 
+		if (!chunk->IsCalcedSkyLight()) {
 			//スカイライトの計算を行う
 			SkyLight skylight(this);
 			skylight.CalcSkyLight(chunk);
