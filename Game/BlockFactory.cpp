@@ -9,6 +9,7 @@
 #include "Door.h"
 #include "Bed.h"
 #include "TNT.h"
+#include "Wood.h"
 
 #include "Chest.h"
 #include "Furnace.h"
@@ -105,6 +106,9 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 		break;
 	case enCube_TNT:
 		block = std::make_unique<TNT>();
+		break;
+	case enCube_OakLeaf:
+		block = std::make_unique<Leaf>(enCube_OakLog, enCube_OakLeaf);
 		break;
 	default:
 		block = std::make_unique<Block>();

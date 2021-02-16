@@ -51,6 +51,10 @@ struct IntVector3{
 		return vec;
 	}
 
+	float LengthSq()const {
+		return x * x + y * y + z * z;
+	}
+
 	[[nodiscard]] 
 	static constexpr IntVector3 Zero() noexcept
 	{
