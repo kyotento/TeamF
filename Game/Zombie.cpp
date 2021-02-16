@@ -48,11 +48,6 @@ bool Zombie::Start()
 
 void Zombie::Update()
 {
-	//todo 仮。
-	if (m_position.y <= 3.f) {
-		return;
-	}
-
 	//EscMenuが開いているとき更新を止める。
 	if (m_game->GetIsEscMenu()) {
 		return;
