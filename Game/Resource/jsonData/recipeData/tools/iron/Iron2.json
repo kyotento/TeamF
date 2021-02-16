@@ -4,8 +4,8 @@
       "#"
     ],
     "key": {
-      "#": "enCube_IronOre"
+      "#": "enCube_IronBlock"
     },
     "result": "enItem_Iron_Ingot",
-    "resultCount": 4
+    "resultCount": 9
   }

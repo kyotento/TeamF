@@ -32,6 +32,8 @@ enum EnCube
 	enCube_Sand,			//çªÅB
 	enCube_Furnace,			//Ç©Ç‹Ç«ÅB
 	enCube_TNT,				//TNTÅB
+	enCube_IronBlock,
+	enCube_GoldBlock,
 
 	enCube_Num
 };

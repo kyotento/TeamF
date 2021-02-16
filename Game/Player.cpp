@@ -121,11 +121,11 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
-		/*int itemArray[] = { enItem_Diamond_Helmet};
+		int itemArray[] = { enItem_Diamond_Helmet,enItem_Iron_Ingot };
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
-		}*/
+		}
 	}
 	else {
 		//ロード出来たら、インベントリにアイテムを設定していく。
@@ -796,6 +796,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			{
 				isStrikeFlag = true;
 			}
+			//m_isBlockDestruction = false;
 		}
 		else {
 			m_blockCrackModel.SetIsDraw(false);
@@ -814,9 +815,13 @@ void Player::DecideCanDestroyBlock()
 		m_isBlockDestruction = true;
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
-		if (m_timerBlockDestruction <= timeBlockDestruction)
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative)
 		{
 			m_isBlockDestruction = true;
+		}
+		else if (m_timerBlockDestruction <= timeBlockDestruction)
+		{
+			m_isBlockDestruction = false;
 		}
 		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
 		else {
