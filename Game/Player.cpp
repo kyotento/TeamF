@@ -15,7 +15,7 @@
 #include "PlayerDeath.h"
 #include "Menu.h"
 #include "DropItem.h"
-#include"Animals.h"
+#include "Animals.h"
 #include "PlayerArmor.h"
 #include "PlayerInventoryFiler.h"
 #include "RespawnPointFiler.h"
@@ -27,24 +27,24 @@ namespace {
 	const float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
 	const float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
 	const float moveMult = 8.0f;						//プレイヤーの移動速度。
-	const float move = 2.f;							//移動速度(基本的には触らない)。
-	const float gravitationalAcceleration = 0.3f;		//todo これ多分いらんわ 重力加速度。
+	const float move = 2.f;								//移動速度(基本的には触らない)。
+	const float gravitationalAcceleration = 0.3f;		//重力加速度。
 	const float doubleClickRug = 0.15f;					//ダブルクリック判定になる間合い。
 	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
 	float hungryDamageTimer = 0.f;						//空腹ダメージのタイマー。
-	constexpr int HAND_ATTACK_POW = 5;					//素手の攻撃力。
+	constexpr int HAND_ATTACK_POW = 2;					//素手の攻撃力。
 	constexpr float WALK_SOUND_TIME = 0.5f;				//足音鳴らす間隔。
 
 	bool isStrikeFlag = true;
 	bool isBlockDestroy = false;
-	CVector3 stickL = CVector3::Zero();		//WSADキーによる移動量
-	CVector3 moveSpeed = CVector3::Zero();		//プレイヤーの移動速度(方向もち)。
-	CVector3 itemDisplayPos = CVector3::Zero();	//アイテム（右手部分）の位置。
-	const int randomDrop = Block::WIDTH / 0.5f;	//らんちゅうのはんい。
-	std::mt19937 random((std::random_device())());	//らんちゅう。
+	CVector3 stickL = CVector3::Zero();					//WSADキーによる移動量
+	CVector3 moveSpeed = CVector3::Zero();				//プレイヤーの移動速度(方向もち)。
+	CVector3 itemDisplayPos = CVector3::Zero();			//アイテム（右手部分）の位置。
+	const int randomDrop = Block::WIDTH / 0.5f;			//らんちゅうのはんい。
+	std::mt19937 random((std::random_device())());		//らんちゅう。
 }
 					//装備スロットのため拡張。
 Player::Player() : m_inventory(40), Entity(enEntity_None, true)
@@ -121,7 +121,9 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	if (!isLoad) {
 		//プレイヤーにテスト用アイテムを持たせる。
-		int itemArray[] = { enCube_DiamondOre,enCube_DiamondBlock };
+		int itemArray[] = { enCube_OakWoodHalf,	enCube_OakWoodStairs,
+	enCube_StoneHalf,
+	enCube_StoneStairs };
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
@@ -590,9 +592,6 @@ void Player::Attack()
 		rot.SetRotationDeg(m_right, m_degreeXZ);
 		rot.Multiply(frontAddRot);
 
-		//CVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
-		//CVector3 endPoint(startPoint + frontAddRot * Block::WIDTH * 2);		//レイの終点。
-
 		CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
 
 		//攻撃判定用の当たり判定を作成。
@@ -791,16 +790,13 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 			SuicideObj::CSE* se;
 			se = NewGO<SuicideObj::CSE>(m_strikeName);
 			se->SetVolume(0.25f);
-			if (isStrikeFlag)
-			{
+			if (isStrikeFlag){
 				se->Play();
 				isStrikeFlag = false;
 			}
-			else if (!se->GetIsPlaying())
-			{
+			else if (!se->GetIsPlaying()){
 				isStrikeFlag = true;
 			}
-			//m_isBlockDestruction = false;
 		}
 		else {
 			m_blockCrackModel.SetIsDraw(false);
@@ -813,18 +809,15 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 void Player::DecideCanDestroyBlock()
 {
 	//マウス左長押しなら。
-	if (GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON))
-	{
+	if (GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)){
 		//タイマーを+する。
 		m_isBlockDestruction = true;
 		m_timerBlockDestruction += GetDeltaTimeSec();
 		//タイマーが一定時間以下なら破壊を実行しない。
-		if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative)
-		{
+		if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative){
 			m_isBlockDestruction = true;
 		}
-		else if (m_timerBlockDestruction <= timeBlockDestruction)
-		{
+		else if (m_timerBlockDestruction <= timeBlockDestruction){
 			m_isBlockDestruction = false;
 		}
 		//タイマーが一定時間以上ならタイマーをリセットし、レイを飛ばす。
@@ -848,8 +841,7 @@ void Player::FlyTheRay()
 {								  //マウス左長押しなら。				
 	if (GetKeyDown(VK_RBUTTON) || GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)) {
 		//マウス左長押しかつ破壊フラグがたっていなかったら、処理しない。
-		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction)
-		{
+		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction){
 			return;
 		}
 		const int up = 75;
@@ -862,15 +854,14 @@ void Player::FlyTheRay()
 
 		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
-		//todo Debug Ray描画用。
-		CVector3 kariX = m_gameCamera->GetPos() + GetMainCamera()->GetFront() * 100;
-		CVector3 kariY = kariX + frontAddRot * reyLength;
-		DrawLine3D(kariX, kariY, CVector4::Green());
 
 		ClosestRayResultCallbackForCCollisionObj rayRC(startPoint, endPoint, L"Block");		//レイ情報(ブロックとのみ判定)。
 		GetEngine().GetPhysicsWorld().GetDynamicWorld()->rayTest(startPoint, endPoint, rayRC);		//レイを飛ばす。
 		if (rayRC.hasHit()) {		//衝突。
 			InstallAndDestruct(rayRC , frontAddRot);
+		}
+		else {
+			m_blockCrackModel.SetIsDraw(false);
 		}
 	}
 }
@@ -962,7 +953,7 @@ void Player::Death()
 				voice = NewGO<SuicideObj::CSE>(L"Resource/soundData/player/damage.wav");
 				voice->Play();
 
-				for (int i = 0; i < 36; i++) {
+				for (int i = 0; i < 40; i++) {
 					auto item = m_inventory.TakeAllItem(i);
 					if (item) {
 						CVector3 pos = GetPos() + GetFront() * Block::WIDTH;
@@ -983,10 +974,8 @@ void Player::Death()
 							addPos.z += rand() % randomDrop;
 						}
 						drop->SetPos(pos+addPos);
-						//drop->SetVelocity(GetFront() * 300);
 					}
-				}
-				
+				}			
 			}
 		}
 		//リスポーン。
@@ -1121,12 +1110,10 @@ void Player::Shoulder()
 	const int Down = 5;
 	m_shoulderBoneRot.SetRotationDeg(CVector3::AxisX(), upDownY);
 	m_shoulderBone->SetRotationOffset(m_shoulderBoneRot);
-	if (upDownY > 0)
-	{
+	if (upDownY > 0){
 		upDownY -= Down;
 	}
-	else
-	{
+	else{
 		upDownY = 0;
 	}
 }

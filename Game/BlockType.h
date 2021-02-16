@@ -32,10 +32,17 @@ enum EnCube
 	enCube_Sand,			//砂。
 	enCube_Furnace,			//かまど。
 	enCube_TNT,				//TNT。
-	enCube_IronBlock,
-	enCube_GoldBlock,
-	enCube_DiamondOre,
-	enCube_DiamondBlock,
+	enCube_IronBlock,		//鉄ブロック。
+	enCube_GoldBlock,		//石炭ブロック。
+	enCube_DiamondOre,		//ダイアモンド鉱石。
+	enCube_DiamondBlock,	//ダイアモンドブロック
+	enCube_CoalBlock,		//石炭ブロック。
+	enCube_OakWoodHalf,
+	enCube_OakWoodStairs,
+	enCube_StoneHalf,
+	enCube_StoneStairs,
+
+
 
 	enCube_Num
 };

@@ -1,0 +1,13 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "  X",
+      " XX",
+      "XXX"
+    ],
+    "key": {
+      "X": "enCube_Stone"
+    },
+    "result": "enCube_StoneStairs",
+    "resultCount": 3
+  }
