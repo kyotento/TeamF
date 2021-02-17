@@ -78,8 +78,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="PlayerArmor.cpp" />
     <ClCompile Include="PairBlock.cpp" />
-    <ClCompile Include="PlayerInventoryFiler.cpp" />
-    <ClCompile Include="RespawnPointFiler.cpp" />
+    <ClCompile Include="PlayerDataFiler.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TNT.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
@@ -168,8 +167,7 @@
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="PlayerArmor.h" />
     <ClInclude Include="PairBlock.h" />
-    <ClInclude Include="PlayerInventoryFiler.h" />
-    <ClInclude Include="RespawnPointFiler.h" />
+    <ClInclude Include="PlayerDataFiler.h" />
     <ClInclude Include="TNT.h" />
     <ClInclude Include="TreeGenerator.h" />
     <ClInclude Include="Wood.h" />

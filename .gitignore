@@ -90,8 +90,5 @@ obj/
 #World info
 *.winfo
 
-#file of playerinventory
-*.cag
-
-#file of respawn point
-*.rspwn
+#file of playerData
+*.player

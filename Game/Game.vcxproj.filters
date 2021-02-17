@@ -219,8 +219,6 @@
     <ClCompile Include="ChestInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerInventoryFiler.cpp" />
-    <ClCompile Include="RespawnPointFiler.cpp" />
     <ClCompile Include="FurnaceInventory.cpp">
       <Filter>GUI\View</Filter>
     </ClCompile>
@@ -238,6 +236,9 @@
     </ClCompile>
     <ClCompile Include="Wood.cpp">
       <Filter>Block</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDataFiler.cpp">
+      <Filter>Entity\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -477,8 +478,6 @@
     <ClInclude Include="ChestInventory.h">
       <Filter>GUI\View</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInventoryFiler.h" />
-    <ClInclude Include="RespawnPointFiler.h" />
     <ClInclude Include="CalcMuki.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -499,6 +498,9 @@
     </ClInclude>
     <ClInclude Include="Wood.h">
       <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDataFiler.h">
+      <Filter>Entity\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

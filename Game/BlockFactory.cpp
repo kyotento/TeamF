@@ -39,8 +39,8 @@ void BlockFactory::Init( std::filesystem::path jsonFolder){
 	m_s_ps.Load( "Preset/shader/_u_blockShader.fx", "PSMain_McBlockRenderGBuffer", Shader::EnType::PS, "INSTANCING", macros );
 
 	//インスタンシングモデルのロード
-	int loadEdge = 1 * 2 * Chunk::WIDTH;
-	m_instanceMax = loadEdge * loadEdge * ( int( RandomMapMaker::m_maxHeight ) + 1 );
+	int loadEdge = 4 * Chunk::WIDTH;
+	m_instanceMax = loadEdge * loadEdge /*( int( RandomMapMaker::m_maxHeight ) + 1 )*/;
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 

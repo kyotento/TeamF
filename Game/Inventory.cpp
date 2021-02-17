@@ -215,7 +215,7 @@ void Inventory::ReadData( std::ifstream & ifs ){
 	}
 }
 
-void Inventory::WriteData( std::ofstream & ofs ){
+void Inventory::WriteData( std::ofstream & ofs ) const{
 	//インベントリのバージョンを出力。
 	ofs.write( reinterpret_cast<const char*>( &VERSION ), sizeof( VERSION ) );
 
@@ -223,7 +223,7 @@ void Inventory::WriteData( std::ofstream & ofs ){
 	size_t size = m_slotArray.size();
 	ofs.write( reinterpret_cast<const char*>( &size ), sizeof( size ) );
 
-	for( std::unique_ptr<ItemStack>& item : m_slotArray ){
+	for( const std::unique_ptr<ItemStack>& item : m_slotArray ){
 
 		int16_t id = enCube_None;
 		uint8_t num = 0;
