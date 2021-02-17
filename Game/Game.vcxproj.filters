@@ -17,9 +17,6 @@
     <ClCompile Include="IntRect.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="DropItem.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Item</Filter>
     </ClCompile>
@@ -239,6 +236,9 @@
     <ClCompile Include="Wood.cpp">
       <Filter>Block</Filter>
     </ClCompile>
+    <ClCompile Include="DropItem.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -272,9 +272,6 @@
     </ClInclude>
     <ClInclude Include="CreateOre.h">
       <Filter>World</Filter>
-    </ClInclude>
-    <ClInclude Include="DropItem.h">
-      <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Entity\Enemy</Filter>
@@ -499,6 +496,9 @@
     </ClInclude>
     <ClInclude Include="Wood.h">
       <Filter>Block</Filter>
+    </ClInclude>
+    <ClInclude Include="DropItem.h">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
