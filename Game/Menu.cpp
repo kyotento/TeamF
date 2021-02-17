@@ -19,11 +19,12 @@ bool Menu::Start()
 	m_spriteRender[0].Init(L"Resource/spriteData/ReturnToTitleButton.dds");
 	m_spriteRender[1].Init(L"Resource/spriteData/GameEndButton.dds");
 	m_spriteRender[2].Init(L"Resource/spriteData/ConfigurationButton.dds");
+	m_spriteRender[3].Init(L"Resource/sprite/Button/BackToGame.png");
 
 	m_clickName = L"Resource/soundData/game/click.wav";
 
 	for (int i = 0; i < m_buttonNum; i++) {
-		m_position[i] = { 0.5f,0.4f };
+		m_position[i] = { 0.5f,0.3f };
 		float posY = 0.125f * i;		//Y座標の加算値。
 		m_position[i].y += posY;
 		m_spriteRender[i].SetPos(m_position[i]);
@@ -99,6 +100,12 @@ void Menu::ClickProcess()
 	case enMenu_Config:
 		//コンフィグを開く。
 		NewGO<Config>()->SetBackClass( Config::enMenu );
+		m_game->DeleteEscMenu();
+		break;
+
+	case enMenu_BackToGame:
+		//ゲームに戻る。
+		m_game->SetIsEscMenu( false );
 		m_game->DeleteEscMenu();
 		break;
 	}

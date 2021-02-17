@@ -32,12 +32,13 @@ private:
 		enMenu_ReturnToTitle,
 		enMenu_GameEnd,
 		enMenu_Config,
+		enMenu_BackToGame,
 		enMenu_Num,
 	};
 
 	enMenuButton m_menuButtion = enMenu_Num;
 
-	static const int m_buttonNum = 3;		//生成されるボタンの数。
+	static const int m_buttonNum = 4;		//生成されるボタンの数。
 
 	GameObj::CSpriteRender m_spriteRender[m_buttonNum];		//画像。
 
