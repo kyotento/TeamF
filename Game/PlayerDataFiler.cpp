@@ -3,7 +3,7 @@
 #include "Player.h"
 
 //! @brief ファイル読みこみで、古いフォーマットを読まないために。
-const int16_t PlayerDataFiler::VERSION = 0;
+const int16_t PlayerDataFiler::VERSION = 1;
 
 namespace{
 	const char* filePath = "Save/playerData.player";
@@ -69,6 +69,10 @@ void PlayerDataFiler::Load( Player* player ){
 	//インベントリ
 	player->GetInventory().ReadData( file );
 
+	//視線の向き。
+	player->SetRadianY( readAs<float>( file ) );
+	player->SetRadianXZ( readAs<float>( file ) );
+
 	m_loadSuccess = true;
 }
 void PlayerDataFiler::Save( const Player* player ){
@@ -94,4 +98,8 @@ void PlayerDataFiler::Save( const Player* player ){
 
 	//インベントリ
 	player->GetInventory().WriteData( file );
+
+	//視線の向き。
+	writeAs<float>( file, player->GetRadianY() );
+	writeAs<float>( file, player->GetRadianXZ() );
 }
