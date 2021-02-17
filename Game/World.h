@@ -18,6 +18,12 @@ public:
 	//! @brief 更新関数。チャンクをストレージに退避させる処理をする。
 	void PostUpdate() override;
 
+	//エラーメッセージを表示する。
+	void PostRender() override
+	{
+		DisplayErrorMessage();
+	}
+
 	//! @brief Player をセットする。
 	void SetPlayer( Player* player ){
 		m_player = player;
@@ -167,6 +173,7 @@ public:
 
 	//チャンクデータを保存する。
 	void SaveChunk();
+	void DisplayErrorMessage();
 private:
 	//! @brief チャンクをロード。ロード済みなら何もしない。
 	bool LoadChunk(int x, int z);
@@ -198,5 +205,8 @@ private:
 	int m_blockPosX;
 	int m_blockPosY;
 	int m_blockPosZ;
+	CFont m_font;
+	bool m_isError = false;
+	float m_errorTimer = -1.0f;
 }; 
 
