@@ -42,6 +42,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//判定表示
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
+	//スプライトの設定
+	CSprite::m_sIsOneSpriteBatchMode = true;
+
 	if (isStart == false)
 	{
 		NewGO<Title>();
