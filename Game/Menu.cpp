@@ -93,7 +93,6 @@ void Menu::ClickProcess()
 
 	case enMenu_GameEnd:
 		//ƒQ[ƒ€‚ğI—¹‚·‚éB
-		DeleteGO( m_game );
 		GetEngine().BreakGameLoop();
 		break;
 
