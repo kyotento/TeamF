@@ -42,7 +42,7 @@ World::~World(){
 	//エンティティたちの削除
 	for( Entity* e : m_entities ){
 		e->SetWorld( nullptr );
-		DeleteGO( e );
+		InstantDeleteGO( e );
 	}
 	//チャンクデータを保存する。
 	SaveChunk();
