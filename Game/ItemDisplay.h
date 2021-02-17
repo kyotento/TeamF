@@ -67,6 +67,7 @@ private:
 		enHand,				//何も持ってない。
 		enBlock,			//ブロック系のアイテム。
 		enTool,				//武器やつるはし系統のアイテム。
+		enArmor,
 		enItem				//インゴットや木の棒などのアイテム。
 	};
 
