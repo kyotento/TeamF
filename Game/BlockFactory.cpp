@@ -20,6 +20,8 @@ namespace{
 	//ブロック情報を格納するクラス。
 	BlockInfoDictionary st_blockInfo;
 
+	bool factoryInited = false;
+
 	constexpr float BLOCK_SIZE_HALF = Block::WIDTH * 0.5f;
 }
 
@@ -28,6 +30,10 @@ SkinModelEffectShader BlockFactory::m_s_ps;
 int BlockFactory::m_instanceMax = -1;
 
 void BlockFactory::Init( std::filesystem::path jsonFolder){
+	if( factoryInited ){
+		return;
+	}
+
 	//ブロック情報のロード。
 	st_blockInfo.Load( jsonFolder );
 
@@ -58,6 +64,8 @@ void BlockFactory::Init( std::filesystem::path jsonFolder){
 			}
 		);
 	}
+
+	factoryInited = true;
 }
 
 void BlockFactory::FindBlockModel( std::function<void( GameObj::InstancingModel* )> func ){

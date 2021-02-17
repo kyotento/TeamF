@@ -13,6 +13,10 @@ Item& ItemDictionary::GetItem( const std::string & id ){
 }
 
 void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
+	if( m_itemLoaded ){
+		return;
+	}
+
 	//enumの名前->値のマップを作成。
 	std::unordered_map<std::string_view, int> enumMap;
 	{
@@ -128,9 +132,14 @@ void ItemDictionary::LoadItems( std::filesystem::path folderPath ){
 		}
 
 	}
+
+	m_itemLoaded = true;
 }
 
 void ItemDictionary::LoadBlocks( const std::unordered_map<EnCube, BlockInfo>& blockMap ){
+	if( m_blockLoaded ){
+		return;
+	}
 
 	for( const auto& entry : blockMap ){
 		const BlockInfo& bInfo = entry.second;
@@ -151,6 +160,8 @@ void ItemDictionary::LoadBlocks( const std::unordered_map<EnCube, BlockInfo>& bl
 		//enum名->アイテム、のMapへ登録。
 		m_nameMap.emplace( NAMEOF_ENUM(itemId).data(), &m_array[itemId] );
 	}
+
+	m_itemLoaded = true;
 }
 
 //! @brief ブロックjson読み込み用のエラーメッセージを表示して落とす。
