@@ -212,6 +212,16 @@ void Player::Update()
 	}
 }
 
+void Player::SetRadianY( float rot ){
+	m_radianY = rot;
+	m_degreeY = rot / M_PI * 180.0f;
+}
+
+void Player::SetRadianXZ( float rot ){
+	m_radianXZ = rot;
+	m_degreeXZ = rot / M_PI * 180.0f;
+}
+
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
 	m_openedGUI = std::move( gui );
 	MouseCursor().SetLockMouseCursor( false );		//マウスカーソルの固定を外す。

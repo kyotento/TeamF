@@ -238,7 +238,7 @@ public:
 	/// プレイヤーのY軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのY軸の回転</returns>
-	float GetRadianY()
+	float GetRadianY() const
 	{
 		return m_radianY;
 	}
@@ -247,10 +247,22 @@ public:
 	/// プレイヤーのXZ軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのXZ軸の回転</returns>
-	float GetRadianXZ()
+	float GetRadianXZ() const
 	{
 		return m_radianXZ;
 	}
+
+	/// <summary>
+	/// プレイヤーのY軸の回転を設定。
+	/// </summary>
+	/// <returns>プレイヤーのY軸の回転</returns>
+	void SetRadianY( float rot );
+
+	/// <summary>
+	/// プレイヤーのXZ軸の回転を設定。
+	/// </summary>
+	/// <returns>プレイヤーのXZ軸の回転</returns>
+	void SetRadianXZ( float rot );
 
 	World* GetWorld(){
 		return m_world;
