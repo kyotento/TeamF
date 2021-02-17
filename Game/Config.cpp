@@ -102,7 +102,7 @@ void Config::ClickProcess()
 			if (m_backclass == enMenu) {
 				m_game->NewEscMenu();
 				SetFogDistance((m_chunk * 2 + 1) * 1000);					//フォグが完全にかかりきる距離。
-				SetFogStartDistance((m_chunk * 2 + 1) - 200);		//フォグが始まる距離。
+				SetFogStartDistance(((m_chunk * 2 + 1) * 1000) - 200);		//フォグが始まる距離。
 				m_game->SetChunkRange(m_chunk);
 				DeleteGO(this);
 			}
