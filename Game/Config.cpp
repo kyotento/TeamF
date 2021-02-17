@@ -121,11 +121,11 @@ void Config::PostRender() {
 
 	wchar_t font[256];
 	swprintf_s(font, L"%d", m_chunk);
-	m_font.DrawScreenPos(font, { 631.f,320.f }, CVector4::White(), { 2.f,2.f },
+	m_font.DrawScreenPos(font, { 701.f,265.f }, CVector4::White(), { 1.2f,1.2f },
 		CVector2::Zero(),
 		0.0f,
 		DirectX::SpriteEffects_None,
-		0.7f
+		0.4f
 	);
 }
 
