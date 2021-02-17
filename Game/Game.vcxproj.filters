@@ -683,15 +683,26 @@
     <ImageContentTask Include="Resource\sprite\GameEndButton.png">
       <Filter>sprite\button</Filter>
     </ImageContentTask>
-    <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
-    <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />
-    <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png" />
-    <ImageContentTask Include="Resource\sprite\Button\DoneButton.png" />
     <ImageContentTask Include="Resource\sprite\Chest.png" />
+    <ImageContentTask Include="Resource\sprite\Button\MinusButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Button\PlusButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Button\DoneButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
+    <ImageContentTask Include="Resource\sprite\Button\ChunkButton.png">
+      <Filter>sprite\button</Filter>
+    </ImageContentTask>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico">
       <Filter>sprite</Filter>
+    </Image>
+    <Image Include="Resource\sprite\Button\BackToGame.png">
+      <Filter>sprite\button</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
