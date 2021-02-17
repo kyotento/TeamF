@@ -13,6 +13,9 @@ namespace {
 	const float timeBlockDurabilityValueRecover = 0.4f;
 	const int randomDrop = Block::WIDTH / 2.5f;	//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());	//らんちゅう。
+	const int maxHeight = 63;	//ブロックの設置できる最大の高さ。
+	const wchar_t* errorMessage = L"これ以上の高さにブロックは置けません。";
+	const int errorTime = 1.0f;	//エラーメッセージを表示する時間。
 }
 
 World::World(){
@@ -197,6 +200,21 @@ void World::PostUpdate(){
 			} );
 		}
 	}
+	
+}
+
+void World::DisplayErrorMessage()
+{
+	if (m_errorTimer >= 0.0f)
+	{
+		m_font.DrawScreenPos(errorMessage, { 50.f,505.f }, CVector4::Red(), { 0.8f,0.8f },
+			CVector2::Zero(),
+			0.0f,
+			DirectX::SpriteEffects_None,
+			0.4f
+		);
+		m_errorTimer -= GetDeltaTimeSec();
+	}
 }
 
 Player * World::GetPlayer(){
@@ -240,7 +258,6 @@ void World::GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& r
 
 void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
-
 	if( !chunk ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
@@ -582,6 +599,11 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
+	if (y > maxHeight)
+	{
+		m_errorTimer = errorTime;
+		return false;
+	}
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
 
 	if( !chunk ){
