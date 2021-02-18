@@ -48,28 +48,79 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			//どのバイオームに属するか決定。
 			enBiome state = GetBiomeManager().DecideBiome(wx, 0, wz);
 
-
-
 			//地表の高さを決定。
 			CVector3 pos = CVector3( float(wx), 0, float(wz) );
 			pos.y = SetY( pos );
 			int wy = int( pos.y );
 
-			if (state == enBiome_Forest) {
-				//上で決定した高さをもとに最高高度のブロックを設置。
-				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Grass));
-				//木を生やす。
-				m_treeGenerator.GenerateTree(wx, wy, wz);
+			
+			//洞窟生成
+			bool isCave = false;
+			int caveMinY = m_minHeight+1, caveMaxY = wy;
+			{
+				//小穴
+				float caveNoise = GetPerlin().OctavePerlin(wx / 15.f + m_seedX2, 0.0f, wz / 15.f + m_seedZ2, 2);
+				//洞窟
+				float caveNoise2 = GetPerlin().OctavePerlin(wx / 90.f + m_seedY2, 0.0f, wz / 90.f + m_seedY, 3);
+
+				if (
+					caveNoise < 0.33f || caveNoise > 0.67f 
+					|| 
+					caveNoise2 < 0.3f || caveNoise2 > 0.7f
+				) {
+					float noise = GetPerlin().PerlinNoise(
+						(float(wx) + m_seedX2) / 12.5f,
+						0.0f,
+						(float(wz) + m_seedZ2) / 12.5f
+					);
+					float noise2 = GetPerlin().PerlinNoise(
+						(float(wx) + m_seedZ) / 37.3f,
+						0.0f,
+						(float(wz) + m_seedX) / 37.3f
+					);
+
+					isCave = true;
+					
+					caveMinY = (int)(max(1.0f,(float)wy * noise2));
+					caveMaxY = caveMinY + (int)(3.0f * noise) + 2;
+
+					//地盤沈下
+					if (caveMaxY < wy && wy - caveMaxY <= 1) {
+						caveMaxY = wy;
+					}					
+
+					if (!isCave || !(wy >= caveMinY && wy <= caveMaxY)) {
+						if (caveNoise2 < 0.3f || caveNoise2 > 0.7f) {
+							chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_CoalOre));
+						}
+						else {
+							chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_GoldOre));
+						}
+					}
+				}
+			}		
+
+			if (!isCave) {
+				if (state == enBiome_Forest) {
+					//上で決定した高さをもとに最高高度のブロックを設置。
+					chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Grass));
+					//木を生やす。
+					m_treeGenerator.GenerateTree(wx, wy, wz);
+				}
+				else if (state == enBiome_Desert) {
+					chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Sand));
+				}
 			}
-			else if (state == enBiome_Desert) {
-				chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Sand));
-			}
-		
-		
+
 			//決定した最高地点から最低高度までブロックをしきつめていく。
 			while( wy > m_minHeight ){
 
 				wy--;
+
+				//洞窟生成
+				if (isCave && wy >= caveMinY && wy <= caveMaxY) {
+					continue;
+				}
 
 				{
 					//土
