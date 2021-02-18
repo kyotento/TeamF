@@ -28,25 +28,27 @@ void ZombieGenerator::NewGOMob(const CVector3& pos)
 		m_sun = FindGO<Sun>();
 		return;
 	}
-	//Zombie* zombie = NewGO<Zombie>();
-	//float second = m_sun->GetSecond();
-	//日没より現時刻が進んでいる、あるいは日の出より時刻が前だったら。
-	//ゾンビを生成する。
-	//if (second > sunsetSecond || second < sunriseSecond) {
-		//生成地点の明るさが一定以下
-		IntVector3 sampPos = { (int)std::floorf(pos.x / Block::WIDTH), (int)std::floorf(pos.y / Block::WIDTH), (int)std::floorf(pos.z / Block::WIDTH) };
-		char* light = MobGenerator::GetWorld()->GetLightData(sampPos);
-		char* skylight = MobGenerator::GetWorld()->GetSkyLightData(sampPos);
-		if (light && skylight && max(*light, (*skylight) * m_sun->GetSkyLightPower()) <= 4) {
-			//プレイヤーの生成。
-			Enemy* zombie = nullptr;
-			if (CMath::RandomZeroToOne() < 0.18f) {
-				zombie = MobGenerator::GetWorld()->CreateEntity<Creeper>();
-			}
-			else {
-				zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
-			}
-			zombie->SetPos(pos);
+
+	float second = m_sun->GetSecond();
+	IntVector3 sampPos = { (int)std::floorf(pos.x / Block::WIDTH), (int)std::floorf(pos.y / Block::WIDTH), (int)std::floorf(pos.z / Block::WIDTH) };
+	char* light = MobGenerator::GetWorld()->GetLightData(sampPos);
+	char* skylight = MobGenerator::GetWorld()->GetSkyLightData(sampPos);
+
+	//生成地点の明るさが一定以下
+	if (light && skylight && *light <= 4) {
+		//直射日光を受けていない
+		if (second < sunsetSecond && second > sunriseSecond && *skylight > 7) {
+			return;
 		}
-	//}
+
+		//プレイヤーの生成。
+		Enemy* zombie = nullptr;
+		if (CMath::RandomZeroToOne() < 0.18f) {
+			zombie = MobGenerator::GetWorld()->CreateEntity<Creeper>();
+		}
+		else {
+			zombie = MobGenerator::GetWorld()->CreateEntity<Zombie>();
+		}
+		zombie->SetPos(pos);
+	}
 }

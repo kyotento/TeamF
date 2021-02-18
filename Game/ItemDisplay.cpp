@@ -176,6 +176,8 @@ void ItemDisplay::Rotation()
 	case ItemDisplay::enItem:
 		ItemRotation();
 		break;
+	case ItemDisplay::enArmor:
+		ItemRotation();
 	}
 }
 //カメラのモードに合わせた処理
@@ -219,6 +221,15 @@ void ItemDisplay::BuildAgain()
 			mts->SetAlbedoTexture(item->GetItem().GetImage().GetTextueData());
 		});
 	}
+	else if (initItem_flag && type == enArmor) {
+		DeleteGO(m_skinModelRender);
+		m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
+		m_skinModelRender->Init(L"Resource/modelData/2DFound.tkm");//モデルの初期化。
+		m_skinModelRender->GetSkinModel().InitMaterialSetting();
+		m_skinModelRender->GetSkinModel().FindMaterialSetting([&](MaterialSetting* mts) {
+			mts->SetAlbedoTexture(item->GetItem().GetImage().GetTextueData());
+		});
+	}
 
 	//ブロック系のアイテム。
 	else if (initItem_flag && type == enBlock)
@@ -228,6 +239,7 @@ void ItemDisplay::BuildAgain()
 		m_skinModelRender->Init(m_modelPath.wstring().c_str());
 		initItem_flag = false;
 	}
+
 	//ツール系のアイテム。
 	else if (initItem_flag && type == enTool)
 	{
@@ -344,25 +356,30 @@ void ItemDisplay::SwitchItemType()
 {
 	//簡易処理
 	//アイテムの参照。
-	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum()-1);
+	auto& item = m_player->GetInventory().GetItem(m_player->GetSelectItemNum() - 1);
 	if (item == nullptr) {
 		type = enHand;
+		return;
 	}
-	else if (item != nullptr) {
-		if (item->GetID() >=endBlockNum && item->GetID() <= startToolNum) {
-			type = enItem;
-			m_modelPath = item->GetModelPath();
+	if (item->GetID() >= endBlockNum && item->GetID() <= startToolNum) {
+		type = enItem;
+		m_modelPath = item->GetModelPath();
 
-		}
-		else if (!item->GetIsBlock() && item->GetID() > startToolNum)
-		{
-			type = enTool;
-			m_modelPath = item->GetModelPath();
-		}
-		else if (item->GetIsBlock()) {
-			type = enBlock;
-			m_modelPath = item->GetModelPath();
-		}
+	}
+	else if (item->GetToolID() == enTool_Helmet || item->GetToolID() == enTool_Plate
+		|| item->GetToolID() == enTool_Leggings || item->GetToolID() == enTool_Boots)
+	{
+		type = enArmor;
+		m_modelPath = item->GetModelPath();
+	}
+	else if (!item->GetIsBlock() && item->GetID() > startToolNum)
+	{
+		type = enTool;
+		m_modelPath = item->GetModelPath();
+	}
+	else if (item->GetIsBlock()) {
+		type = enBlock;
+		m_modelPath = item->GetModelPath();
 	}
 }
 //クリックに合わせて動かすよん。

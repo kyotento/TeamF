@@ -78,11 +78,11 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="PlayerArmor.cpp" />
     <ClCompile Include="PairBlock.cpp" />
-    <ClCompile Include="PlayerInventoryFiler.cpp" />
-    <ClCompile Include="RespawnPointFiler.cpp" />
+    <ClCompile Include="PlayerDataFiler.cpp" />
     <ClCompile Include="Sun.cpp" />
     <ClCompile Include="TNT.cpp" />
     <ClCompile Include="TreeGenerator.cpp" />
+    <ClCompile Include="Wood.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="Utf8ToSjis.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
@@ -167,10 +167,10 @@
     <ClInclude Include="MobGenerator.h" />
     <ClInclude Include="PlayerArmor.h" />
     <ClInclude Include="PairBlock.h" />
-    <ClInclude Include="PlayerInventoryFiler.h" />
-    <ClInclude Include="RespawnPointFiler.h" />
+    <ClInclude Include="PlayerDataFiler.h" />
     <ClInclude Include="TNT.h" />
     <ClInclude Include="TreeGenerator.h" />
+    <ClInclude Include="Wood.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="Utf8ToSjis.h" />
     <ClInclude Include="ZombieGenerator.h" />
@@ -237,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\mc2.ico" />
+    <Image Include="Resource\sprite\Button\BackToGame.png" />
     <ImageContentTask Include="Resource\sprite\Chest.png" />
     <ImageContentTask Include="Resource\sprite\Button\MinusButton.png" />
     <ImageContentTask Include="Resource\sprite\Button\PlusButton.png" />

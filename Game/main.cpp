@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "Title.h"
+#include "Game.h"
 #include "Config.h"
 
 namespace {
@@ -42,6 +43,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	//判定表示
 	//SetPhysicsDebugDrawMode(btIDebugDraw::DBG_DrawWireframe);
 
+	//スプライトの設定
+	CSprite::m_sIsOneSpriteBatchMode = true;
+
 	if (isStart == false)
 	{
 		NewGO<Title>();
@@ -60,5 +64,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//ゲームループ。
 	GetEngine().RunGameLoop();
+
+	//ゲーム終了時、Gameインスタンスがあれば削除する。
+	//これによってワールドやプレイヤーの情報をファイルに保存できる。
+	delete FindGO<Game>();
+
 	return 0;
 }

@@ -86,8 +86,9 @@ void Game::EscMenu()
 	se = NewGO<SuicideObj::CSE>(m_clickName);
 	se->SetVolume(0.1f);
 	if (GetKeyDown(VK_ESCAPE)) {
+		m_config = FindGO<Config>();
 		if (m_menu == nullptr && !m_isEscMenu) {
-			m_config = FindGO<Config>();
+			
 			if ( m_config == nullptr) {
 				NewEscMenu();
 				se->Play();
@@ -99,6 +100,10 @@ void Game::EscMenu()
 				DeleteEscMenu();
 				m_isEscMenu = false;
 			}
+		}
+		if (m_config != nullptr)
+		{
+			DeleteGO(m_config);
 		}
 	}
 }

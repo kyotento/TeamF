@@ -108,6 +108,7 @@ void MobGenerator::SearchNumberMobRange(CVector3& playerPos)
 			m_numberMob++;
 			CVector3 mobPos = entity->GetPos() / Block::WIDTH;
 			CVector3 diff = playerPos - mobPos;
+			diff.y = 0.0f;
 			//プレイヤーとの距離が一定範囲内だったら。
 			if (diff.LengthSq() <= m_params->maxDistanceMobGenerate * m_params->maxDistanceMobGenerate)
 			{

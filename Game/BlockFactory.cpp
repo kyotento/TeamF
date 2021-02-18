@@ -9,6 +9,7 @@
 #include "Door.h"
 #include "Bed.h"
 #include "TNT.h"
+#include "Wood.h"
 
 #include "Chest.h"
 #include "Furnace.h"
@@ -38,8 +39,8 @@ void BlockFactory::Init( std::filesystem::path jsonFolder){
 	m_s_ps.Load( "Preset/shader/_u_blockShader.fx", "PSMain_McBlockRenderGBuffer", Shader::EnType::PS, "INSTANCING", macros );
 
 	//インスタンシングモデルのロード
-	int loadEdge = 1 * 2 * Chunk::WIDTH;
-	m_instanceMax = loadEdge * loadEdge * ( int( RandomMapMaker::m_maxHeight ) + 1 );
+	int loadEdge = 4 * Chunk::WIDTH;
+	m_instanceMax = loadEdge * loadEdge /*( int( RandomMapMaker::m_maxHeight ) + 1 )*/;
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
@@ -105,6 +106,9 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 		break;
 	case enCube_TNT:
 		block = std::make_unique<TNT>();
+		break;
+	case enCube_OakLeaf:
+		block = std::make_unique<Leaf>(enCube_OakLog, enCube_OakLeaf);
 		break;
 	default:
 		block = std::make_unique<Block>();

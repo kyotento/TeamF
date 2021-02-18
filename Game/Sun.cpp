@@ -49,12 +49,24 @@ void Sun::PostRender() {
 }
 
 void Sun::DebugInput() {
-	if (GetKeyDown(VK_F8)) {
-		//‚æ‚é
-		m_seconds = 0;
+	if (GetKeyInput(VK_CONTROL)) {
+		if (GetKeyDown(VK_F8)) {
+			//30min‚·‚·‚ß‚é
+			m_seconds += 30 * 60;
+		}
+		if (GetKeyDown(VK_F9)) {
+			//30min–ß‚é
+			m_seconds -= 30 * 60;
+		}
 	}
-	if (GetKeyDown(VK_F9)) {
-		//‚Ð‚é
-		m_seconds = _1daySec / 2;
+	else {
+		if (GetKeyDown(VK_F8)) {
+			//‚æ‚é
+			m_seconds = 0;
+		}
+		if (GetKeyDown(VK_F9)) {
+			//‚Ð‚é
+			m_seconds = _1daySec / 2;
+		}
 	}
 }

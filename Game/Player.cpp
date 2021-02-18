@@ -17,10 +17,9 @@
 #include "DropItem.h"
 #include "Animals.h"
 #include "PlayerArmor.h"
-#include "PlayerInventoryFiler.h"
-#include "RespawnPointFiler.h"
 #include "NullableItemStack.h"
 #include "CalcMuki.h"
+#include "PlayerDataFiler.h"
 
 namespace {
 	const float turnMult = 20.0f;						//プレイヤーの回転速度。
@@ -65,22 +64,17 @@ Player::~Player()
 	DeleteGO(m_playerDeath);
 	DeleteGO(m_playerArmor);
 
-	//インベントリを保存する。
-	PlayerInventoryFiler pIFiler;
-	pIFiler.SavePlayerInventory(this);
-
-	//リスポーン地点を保存
-	RespawnPointFiler rpFiler;
-	rpFiler.Save(GetRespawnPos());
+	//プレイヤーデータの保存。
+	PlayerDataFiler playerFiler;
+	playerFiler.Save( this );
 }
 
 #include "ItemStack.h"
 bool Player::Start()
 {
-	//リスポーン地点の設定
-	RespawnPointFiler rpFiler;
-	rpFiler.Load(m_respawnPos);
-	m_position = m_respawnPos;
+	//プレイヤーデータ読み込み。
+	PlayerDataFiler playerFiler;
+	playerFiler.Load( this );
 
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
@@ -116,35 +110,14 @@ bool Player::Start()
 	//m_blockCrackModel.InitPostDraw(PostDrawModelRender::enBlendMode::enAlpha);
 
 	//TODO: デバッグ専用
-	PlayerInventoryFiler pIFiler;
-	bool isLoad = pIFiler.LoadPlayerInventory();
 	//プレイヤーのインベントリ情報がロードできなかったら。
-	if (!isLoad) {
+	if (playerFiler.IsLoadSuccess() == false) {
 		//プレイヤーにテスト用アイテムを持たせる。
 		int itemArray[] = { enCube_CobbleStone,enCube_OakWood };
 		for (int i : itemArray) {
 			auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 			m_inventory.AddItem(item);
 		}
-	}
-	else {
-		//ロード出来たら、インベントリにアイテムを設定していく。
-		auto& iV = pIFiler.GetInventory();
-		for (int i = 0; i < 40; i++)
-		{
-			auto& null = iV.GetNullableItem(i);
-			if (null.GetID() != enCube_None)
-			{
-				auto& item = iV.GetItem(i);
-				auto itemId = item.get()->GetID();
-
-				auto itemStack = std::make_unique<ItemStack>(Item::GetItem(itemId), item.get()->GetNumber());
-				m_inventory.SetItem(i, std::move(itemStack));
-			}
-		}
-		m_position = pIFiler.GetPosition();
-		m_characon.SetPosition(m_position);
-		m_damageCollision->SetPosition(m_position);
 	}
 
 	//プレイヤーのパラメーター生成。
@@ -237,6 +210,16 @@ void Player::Update()
 	if (m_position.y <= 0.f) {
 		TakenDamage(1, 0.0f, false, true);
 	}
+}
+
+void Player::SetRadianY( float rot ){
+	m_radianY = rot;
+	m_degreeY = rot / M_PI * 180.0f;
+}
+
+void Player::SetRadianXZ( float rot ){
+	m_radianXZ = rot;
+	m_degreeXZ = rot / M_PI * 180.0f;
 }
 
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){

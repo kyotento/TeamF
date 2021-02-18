@@ -61,7 +61,7 @@ public:
 	void ReadData( std::ifstream& ifs );
 
 	//! @brief インベントリ情報を、ファイルに書き込む。
-	void WriteData( std::ofstream& ofs );
+	void WriteData( std::ofstream& ofs ) const;
 
 private:
 	//! インベントリの長さ。

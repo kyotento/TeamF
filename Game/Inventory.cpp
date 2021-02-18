@@ -60,16 +60,10 @@ bool Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 	for( auto& slot : m_slotArray ){
 		if (number > 35)
 		{
-			return false;
+			continue;
 		}
-		//空いているスロットがあればそこに入れる。
-		if( !slot ){
-			slot.swap( item );
-			return true;
-		}
-
 		//同じ種類のアイテムが入ってたら
-		if( slot->GetID() == item->GetID() ){
+		if(slot && slot->GetID() == item->GetID() ){
 			int tempNum = slot->GetNumber() + item->GetNumber();
 
 			//アイテム溢れたら
@@ -85,6 +79,20 @@ bool Inventory::AddItem( std::unique_ptr<ItemStack>& item ){
 		}
 		number++;
 	}
+	number = 0;
+	for (auto& slot : m_slotArray) {
+		if (number > 35)
+		{
+			return false;
+		}
+		//空いているスロットがあればそこに入れる。
+		if (!slot) {
+			slot.swap(item);
+			return true;
+		}
+		number++;
+	}
+	
 	return false;
 }
 
@@ -207,7 +215,7 @@ void Inventory::ReadData( std::ifstream & ifs ){
 	}
 }
 
-void Inventory::WriteData( std::ofstream & ofs ){
+void Inventory::WriteData( std::ofstream & ofs ) const{
 	//インベントリのバージョンを出力。
 	ofs.write( reinterpret_cast<const char*>( &VERSION ), sizeof( VERSION ) );
 
@@ -215,7 +223,7 @@ void Inventory::WriteData( std::ofstream & ofs ){
 	size_t size = m_slotArray.size();
 	ofs.write( reinterpret_cast<const char*>( &size ), sizeof( size ) );
 
-	for( std::unique_ptr<ItemStack>& item : m_slotArray ){
+	for( const std::unique_ptr<ItemStack>& item : m_slotArray ){
 
 		int16_t id = enCube_None;
 		uint8_t num = 0;
