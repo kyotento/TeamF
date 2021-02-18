@@ -112,7 +112,7 @@ void DropItem::Update()
 	CVector3 diff = playerPos - GetPos();
 
 	//‚±‚Ì”ÍˆÍ“à‚É“ü‚Á‚½‚çæ“¾‚·‚é‚Æ‚¢‚¤‹——£B
-	constexpr float catchLength = Block::WIDTH * 1.5f;
+	constexpr float catchLength = Block::WIDTH * 2.0f;
 
 	if( diff.LengthSq() < catchLength * catchLength ){
 		

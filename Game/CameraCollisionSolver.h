@@ -1,5 +1,8 @@
 #pragma once
 #include "../physics/SphereCollider.h"
+
+class World;
+
 	/*!
 	 *@brief	カメラのコリジョンソルバー。
 	 *@details
@@ -62,7 +65,8 @@
 		 */
 		bool Execute(CVector3& result, const CVector3& position, const CVector3& target);
 	private:
-		SphereCollider		m_collider;			 //コライダー。
+		//SphereCollider		m_collider;			 //コライダー。
 		float				m_radius = 0.0f;	//半径。
 		bool				m_isInited = false;	//初期化済みのフラグ。trueになっていたら初期化済み。
+		World*				m_world = nullptr;
 	};

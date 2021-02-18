@@ -16,6 +16,7 @@ namespace {
 	const int maxHeight = 63;	//ブロックの設置できる最大の高さ。
 	const wchar_t* errorMessage = L"これ以上の高さにブロックは置けません。";
 	const int errorTime = 1.0f;	//エラーメッセージを表示する時間。
+	std::vector<Block*> rayColblocks;
 }
 
 World::World(){
@@ -138,10 +139,9 @@ void World::PostUpdate(){
 					m_block = nullptr;
 				}
 			}
-
 		}
 		//範囲内のブロックのコリジョンを有効化する。範囲外は無効化する。
-
+		/*
 		//無効化ループ
 		for( auto itr = m_activeCollisions.begin(); itr != m_activeCollisions.end(); ){
 
@@ -199,6 +199,7 @@ void World::PostUpdate(){
 
 			} );
 		}
+		*/
 	}
 	
 }
@@ -254,6 +255,64 @@ void World::GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& r
 			}
 		}
 	}
+}
+
+Block* World::RayTestBlock(const CVector3& start, const CVector3& end, CVector3* return_hitPos, CVector3* return_hitNormal) {
+	constexpr float oneLength =  Block::WIDTH;
+	float reyLength = (start - end).Length();
+	CVector3 sampPos = start;
+	CVector3 dir = end - start; dir.Normalize();
+	for (float length = 0.0f; length <= reyLength + FLT_EPSILON; length += oneLength) {		
+		sampPos += dir * oneLength;
+
+		rayColblocks.clear();
+		GetBlocks(sampPos, sampPos, rayColblocks);
+
+		float distance = -1.0f;
+		std::pair<CVector3, Block*> hitPair = std::make_pair(CVector3::Zero(), nullptr);
+		CVector3 hitAABBcenter;
+
+		for (auto block : rayColblocks) {
+			for (int i = 0; i < block->GetAABBNum(); i++) {
+				CVector3 hitPos;
+				if (CMath::ColRayAndAABB(start, dir, block->GetAABB(i).min, block->GetAABB(i).max, &hitPos)) {
+					float hitDistanceSq = (hitPos - start).LengthSq();
+					if (hitDistanceSq <= CMath::Square(reyLength) && !(dir.Dot((hitPos - start)) < 0.0f)) {
+						if (distance < 0.0f || distance >hitDistanceSq) {
+							distance = hitDistanceSq;
+							hitPair.first = hitPos;
+							hitPair.second = block;
+							hitAABBcenter = (block->GetAABB(i).min + block->GetAABB(i).max) / 2.0f;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if(hitPair.second != nullptr){
+			if (return_hitPos) {
+				*return_hitPos = hitPair.first;
+			}
+			if (return_hitNormal) {
+				CVector3 normal = hitPair.first - hitAABBcenter;
+				CVector3 normalAbs = normal; normalAbs.Abs();
+				if (normalAbs.x > normalAbs.y && normalAbs.x > normalAbs.z) {
+					normal = normal.x < 0.0f ? CVector3::AxisX()*-1.0f : CVector3::AxisX();
+				}
+				else if (normalAbs.y > normalAbs.x && normalAbs.y > normalAbs.z) {
+					normal = normal.y < 0.0f ? CVector3::AxisY() * -1.0f : CVector3::AxisY();
+				}
+				else if (normalAbs.z > normalAbs.y && normalAbs.z > normalAbs.x) {
+					normal = normal.z < 0.0f ? CVector3::AxisZ() * -1.0f : CVector3::AxisZ();
+				}
+				*return_hitNormal = normal;
+			}
+			return hitPair.second;
+		}
+	}
+
+	return nullptr;
 }
 
 void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){

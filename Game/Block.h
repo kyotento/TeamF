@@ -41,8 +41,8 @@ public:
 		m_muki = muki;
 		m_model.SetRot(CQuaternion(CVector3::AxisY(), CMath::PI_HALF * m_muki));
 		CalcAABB();
-		DisableCollision();
-		EnableCollision();
+		//DisableCollision();
+		//EnableCollision();
 	}
 	//! @brief 向きを取得
 	enMuki GetMuki()const {
@@ -74,9 +74,9 @@ public:
 	}
 
 	//! @brief 当たり判定が有効か取得。
-	bool IsCollisionEnabled() const{
-		return m_collision.operator bool();
-	}
+	//bool IsCollisionEnabled() const{
+	//	return m_collision.operator bool();
+	//}
 
 	//! @brief ブロックを右クリックしたときの動作。
 	//! @return true 何かを実行した。(ブロックの設置をしない)
@@ -86,12 +86,12 @@ public:
 	}
 
 	//! @brief 当たり判定の有効化。
-	void EnableCollision();
+	//void EnableCollision();
 
 	//! @brief 当たり判定の無効化。
-	void DisableCollision(){
-		m_collision.reset();
-	}
+	//void DisableCollision(){
+	//	m_collision.reset();
+	//}
 
 	//! @brief 不透明かどうか取得
 	bool GetIsOpacity()const{
@@ -208,7 +208,7 @@ private:
 	//AABB
 	std::vector<AABB> m_aabb;
 	//コリジョン
-	std::unique_ptr<SuicideObj::CCollisionObj[]> m_collision;
+	//std::unique_ptr<SuicideObj::CCollisionObj[]> m_collision;
 
 	int m_hp = 10;
 

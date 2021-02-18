@@ -51,6 +51,10 @@ struct IntVector3{
 		return vec;
 	}
 
+	CVector3 CastToCVector3()const {
+		return {(float)x,(float)y,(float)z};
+	}
+
 	float LengthSq()const {
 		return x * x + y * y + z * z;
 	}

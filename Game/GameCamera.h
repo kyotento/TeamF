@@ -17,6 +17,11 @@ public:
 	bool Start() override;
 	void Update() override;
 
+	//カメラの高さ
+	static constexpr float height = 1.50f * Block::WIDTH;
+	//カメラをプレイヤーの正面に
+	static constexpr float front = 0.05f * Block::WIDTH;
+
 	//カメラのモードを取得
 	EnCameraMode GetCameraMode()
 	{
