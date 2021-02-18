@@ -47,6 +47,8 @@ enum EnCube
 	enCube_StoneBrickStairs,
 	enCube_StoneBrickHalf,
 	enCube_PatternedStoneBrick,
-
+	enCube_SandStone,
+	enCube_SmoothSandStone,
+	enCube_PatternedSandBlock,
 	enCube_Num
 };

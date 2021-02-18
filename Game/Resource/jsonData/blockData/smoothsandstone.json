@@ -1,0 +1,7 @@
+{
+	"id": "enCube_SmoothSandStone",
+	"name": "なめらかな砂岩",
+	"model": "modelData/smoothSandStone.tkm",
+	"hp": 24,
+	"tool": "enTool_Pickaxe"
+}

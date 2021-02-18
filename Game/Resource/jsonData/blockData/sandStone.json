@@ -1,0 +1,7 @@
+{
+	"id": "enCube_SandStone",
+	"name": "砂岩",
+	"model": "modelData/sandStone.tkm",
+	"hp": 24,
+	"tool": "enTool_Pickaxe"
+}

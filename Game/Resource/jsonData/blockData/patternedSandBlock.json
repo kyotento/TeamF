@@ -1,0 +1,7 @@
+{
+	"id": "enCube_PatternedSandBlock",
+	"name": "石",
+	"model": "modelData/patternedSandBlock.tkm",
+	"hp": 24,
+	"tool": "enTool_Pickaxe"
+}
