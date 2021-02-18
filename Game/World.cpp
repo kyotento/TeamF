@@ -277,7 +277,7 @@ Block* World::RayTestBlock(const CVector3& start, const CVector3& end, CVector3*
 				CVector3 hitPos;
 				if (CMath::ColRayAndAABB(start, dir, block->GetAABB(i).min, block->GetAABB(i).max, &hitPos)) {
 					float hitDistanceSq = (hitPos - start).LengthSq();
-					if (hitDistanceSq <= CMath::Square(reyLength)) {
+					if (hitDistanceSq <= CMath::Square(reyLength) && !(dir.Dot((hitPos - start)) < 0.0f)) {
 						if (distance < 0.0f || distance >hitDistanceSq) {
 							distance = hitDistanceSq;
 							hitPair.first = hitPos;
