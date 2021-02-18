@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CameraCollisionSolver.h"
+#include "World.h"
 /*!
  *@brief	カメラのコリジョンソルバー。
  */
@@ -23,6 +24,7 @@
 			return btCollisionWorld::ClosestConvexResultCallback::addSingleResult(convexResult, normalInWorldSpace);
 		}
 	};
+
 	CCameraCollisionSolver::CCameraCollisionSolver()
 	{
 	}
@@ -32,7 +34,8 @@
 	void CCameraCollisionSolver::Init(float radius)
 	{
 		m_radius = radius;
-		m_collider.Create(radius);
+		//m_collider.Create(radius);
+		m_world = FindGO<World>(L"World");
 		m_isInited = true;	//初期化済みのフラグを立てる。
 	}
 	bool CCameraCollisionSolver::Execute(CVector3& result, const CVector3& position, const CVector3& target)
@@ -50,6 +53,7 @@
 			//視点と注視点がほぼ同じ座標にある。
 			return false;
 		}
+		/*
 		vWk.Normalize();
 		//レイを作成する。
 		btTransform btStart, btEnd;
@@ -59,7 +63,8 @@
 		btEnd.setOrigin(btVector3(position.x, position.y, position.z));
 		SConvexSweepCallback callback(vWk);
 		//	callback.m_collisionFilterGroup = 
-		GetEngine().GetPhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), btStart, btEnd, callback);
+		GetEngine().GetPhysicsWorld().ConvexSweepTest((const btConvexShape*)m_collider.GetBody(), btStart, btEnd, callback);		
+		
 		if (callback.hasHit()) {
 			CVector3 vHitPos;
 			vHitPos.Set(callback.m_hitPointWorld);
@@ -69,5 +74,14 @@
 			result.Add(vHitPos, vOffset);
 			return true;
 		}
+		*/
+
+		CVector3 hitPos, hitNormal;
+		Block* block = m_world->RayTestBlock(target, position, &hitPos, &hitNormal);
+		if (block) {
+			result.Add(hitPos, hitNormal * m_radius);
+			return true;
+		}
+
 		return false;
 	}

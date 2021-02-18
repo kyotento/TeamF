@@ -76,6 +76,15 @@ public:
 	/// <param name="return_blocks">このベクターに範囲内のブロックが追加される</param>
 	void GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& return_blocks);
 
+	/// <summary>
+	/// ブロックとレイ判定
+	/// </summary>
+	/// <param name="start"></param>
+	/// <param name="end"></param>
+	/// <param name="return_hitPos"></param>
+	/// <returns></returns>
+	Block* RayTestBlock(const CVector3& start, const CVector3& end, CVector3* return_hitPos = nullptr, CVector3* return_hitNormal = nullptr);
+
 	//! @brief 指定位置にブロックをセット。
 	//! @details 座標はブロック単位
 	void SetBlock( const CVector3& pos, std::unique_ptr<Block> block ){

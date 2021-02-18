@@ -840,15 +840,12 @@ void Player::FlyTheRay()
 		rot.Multiply(frontAddRot);
 
 		//ŽG”»’è
+		CVector3 returnHitPos;
 		CVector3 sampPos = GetModelPos() + CVector3::Up() * GameCamera::height;
-		constexpr float oneLength = 1;// Block::WIDTH * 0.25f;
-		for (float length = 0.0f; length <= reyLength+FLT_EPSILON; length += oneLength) {
-			sampPos += frontAddRot * oneLength;
-			Block* block = m_world->GetBlock(sampPos / Block::WIDTH);
-			if (block) {
-				InstallAndDestruct(sampPos, block, frontAddRot);
-				return;
-			}
+		Block* block = m_world->RayTestBlock(sampPos, sampPos + frontAddRot * reyLength, &returnHitPos);
+		if (block) {
+			InstallAndDestruct(returnHitPos, block, frontAddRot);
+			return;
 		}
 		m_blockCrackModel.SetIsDraw(false);
 

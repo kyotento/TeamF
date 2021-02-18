@@ -256,6 +256,27 @@ void World::GetBlocks(CVector3 aabbmin, CVector3 aabbmax, std::vector<Block*>& r
 	}
 }
 
+Block* World::RayTestBlock(const CVector3& start, const CVector3& end, CVector3* return_hitPos, CVector3* return_hitNormal) {
+	constexpr float oneLength = 1;// Block::WIDTH * 0.25f;
+	float reyLength = (start - end).Length();
+	CVector3 sampPos = start;
+	CVector3 dir = end - start; dir.Normalize();
+	for (float length = 0.0f; length <= reyLength + FLT_EPSILON; length += oneLength) {
+		sampPos += dir * oneLength;
+		Block* block = GetBlock(sampPos / Block::WIDTH);
+		if (block) {
+			if (return_hitPos) {
+				*return_hitPos = sampPos;
+			}
+			if (return_hitNormal) {
+				*return_hitNormal = dir * -1.0f;
+			}
+			return block;
+		}
+	}
+	return nullptr;
+}
+
 void World::SetBlock( int x, int y, int z, std::unique_ptr<Block> block ){
 	Chunk* chunk = GetChunkFromWorldPos( x, z );
 	if( !chunk ){
