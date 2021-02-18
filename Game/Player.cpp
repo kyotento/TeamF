@@ -575,6 +575,8 @@ void Player::Attack()
 		rot.Multiply(frontAddRot);
 
 		CVector3 colPos = GetModelPos() + CVector3::Up() * GameCamera::height;
+		colPos += frontAddRot * Block::WIDTH;
+		//CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
 
 		//攻撃判定用の当たり判定を作成。
 		SuicideObj::CCollisionObj* attackCol = NewGO<SuicideObj::CCollisionObj>();
@@ -707,7 +709,7 @@ void Player::StateManagement()
 }
 
 //オブジェクトの設置と破壊。
-void Player::InstallAndDestruct(const Block* hitBlock, CVector3 frontRotAdd)
+void Player::InstallAndDestruct(const CVector3& hitpos, const Block* hitBlock, CVector3 frontRotAdd)
 {
 	SuicideObj::CSE* se;
 	se = NewGO<SuicideObj::CSE>(m_putName);
@@ -731,7 +733,9 @@ void Player::InstallAndDestruct(const Block* hitBlock, CVector3 frontRotAdd)
 			if (item != nullptr) {
 				if (item->GetIsBlock()) {		//ブロック。
 					se->Play();
-					installPos -= frontRotAdd * 2 / Block::WIDTH;
+					installPos = hitpos;
+					installPos -= frontRotAdd * 2;
+					installPos /= Block::WIDTH;
 
 					Block::enMuki muki = CalcMukiReverse( GetFront() );
 
@@ -842,7 +846,7 @@ void Player::FlyTheRay()
 			sampPos += frontAddRot * oneLength;
 			Block* block = m_world->GetBlock(sampPos / Block::WIDTH);
 			if (block) {
-				InstallAndDestruct(block, frontAddRot);
+				InstallAndDestruct(sampPos, block, frontAddRot);
 				return;
 			}
 		}
