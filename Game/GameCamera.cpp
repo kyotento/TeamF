@@ -15,6 +15,7 @@ namespace {
 bool GameCamera::Start()
 {
 	m_position = CVector3(00.0f, 20.0f, 10.0f);
+	m_positionFPS = CVector3(00.0f, 20.0f, 10.0f);
 	m_camera = NewGO<GameObj::PerspectiveCamera>();
 	m_target = CVector3(0.0f, 10.0f, 0.0f);
 	m_camera->SetPos(m_position);
@@ -67,6 +68,11 @@ void GameCamera::Update()
 		m_camera->SetUp(up);
 	}
 
+	//FPS視点位置算出
+	m_positionFPS = m_player->GetModelPos();
+	m_positionFPS += m_player->GetFront() * front;
+	m_positionFPS.y += height;
+
 	//カメラのモードに応じて処理を分岐
 	switch (m_mode)
 	{
@@ -100,10 +106,8 @@ void GameCamera::Update()
 }
 
 void GameCamera::FPS()
-{
-	m_position = m_player->GetModelPos();
-	m_position += m_player->GetFront() * front;
-	m_position.y += height;
+{	
+	m_position = m_positionFPS;
 	//Y軸周りに回転させる。
 	CQuaternion qRot;
 	qRot.SetRotation(CVector3::AxisY(), m_radianY);
