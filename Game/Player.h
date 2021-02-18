@@ -142,24 +142,40 @@ public:
 	/// <summary>
 	/// リスポーン地点の取得
 	/// </summary>
-	const CVector3& GetRespawnPos() {
+	const CVector3& GetRespawnPos() const{
 		return m_respawnPos;
+	}
+
+	/// <summary>
+	/// HPを設定する。
+	/// </summary>
+	/// <param name="stamina">設定するHP</param>
+	void SetHP( float hp ){
+		m_hp = hp;
 	}
 
 	/// <summary>
 	/// HPを取得する。
 	/// </summary>
 	/// <returns>HP</returns>
-	const float& GetHP()
+	float GetHP() const
 	{
 		return m_hp;
 	}
 
 	/// <summary>
+	/// スタミナを設定する。
+	/// </summary>
+	/// <param name="stamina">設定するスタミナ</param>
+	void SetStamina(float stamina){
+		m_stamina = stamina;
+	}
+
+	/// <summary>
 	/// スタミナを取得する。
 	/// </summary>
-	/// <returns>スタミナ</returns>
-	const float& GetStamina()
+	/// <return>スタミナ</return>
+	float GetStamina() const
 	{
 		return m_stamina;
 	}
@@ -168,7 +184,7 @@ public:
 	/// 防御力を取得。
 	/// </summary>
 	/// <returns>防御力</returns>
-	const int& GetDefPow()
+	int GetDefPow()
 	{
 		return m_defensePower;
 	}
@@ -184,10 +200,18 @@ public:
 	}
 
 	/// <summary>
+	/// 経験値を設定する。
+	/// </summary>
+	/// <param name="exp">設定する経験値量</param>
+	void SetExp( float exp ){
+		m_exp = exp;
+	}
+
+	/// <summary>
 	/// 経験値を取得する。
 	/// </summary>
 	/// <returns>経験値</returns>
-	const float& GetExp()
+	float GetExp() const
 	{
 		return m_exp;
 	}
@@ -205,7 +229,7 @@ public:
 	/// 選択されているアイテム番号を取得。
 	/// </summary>
 	/// <returns>選択中のアイテム番号</returns>
-	const int& GetSelectItemNum()
+	int GetSelectItemNum()
 	{
 		return m_selItemNum;
 	}
@@ -214,7 +238,7 @@ public:
 	/// プレイヤーのY軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのY軸の回転</returns>
-	float GetRadianY()
+	float GetRadianY() const
 	{
 		return m_radianY;
 	}
@@ -223,10 +247,22 @@ public:
 	/// プレイヤーのXZ軸の回転を取得。
 	/// </summary>
 	/// <returns>プレイヤーのXZ軸の回転</returns>
-	float GetRadianXZ()
+	float GetRadianXZ() const
 	{
 		return m_radianXZ;
 	}
+
+	/// <summary>
+	/// プレイヤーのY軸の回転を設定。
+	/// </summary>
+	/// <returns>プレイヤーのY軸の回転</returns>
+	void SetRadianY( float rot );
+
+	/// <summary>
+	/// プレイヤーのXZ軸の回転を設定。
+	/// </summary>
+	/// <returns>プレイヤーのXZ軸の回転</returns>
+	void SetRadianXZ( float rot );
 
 	World* GetWorld(){
 		return m_world;
@@ -237,6 +273,9 @@ public:
 	static const int inventryHeight = 1;
 
 	Inventory& GetInventory(){
+		return m_inventory;
+	}
+	const Inventory& GetInventory() const{
 		return m_inventory;
 	}
 
