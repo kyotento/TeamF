@@ -1,0 +1,7 @@
+{
+	"id": "enCube_PatternedStoneBrick",
+	"name": "石",
+	"model": "modelData/patternedStoneBrick.tkm",
+	"hp": 24,
+	"tool": "enTool_Pickaxe"
+}
