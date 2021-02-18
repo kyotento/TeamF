@@ -427,9 +427,9 @@ private:
 	/// <summary>
 	/// プレイヤーの設置と破壊。
 	/// </summary>
-	/// <param name="ray">当たったオブジェクトの判定</param>
+	/// <param name="hitBlock">接触したブロック</param>
 	/// <param name="frontRotAdd">プレイヤーの回転</param>
-	void InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray , CVector3 frontRotAdd);
+	void InstallAndDestruct(const Block* hitBlock, CVector3 frontRotAdd);
 
 	/// <summary>
 	/// ブロックを破壊するかどうか判断する。

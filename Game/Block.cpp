@@ -280,42 +280,42 @@ void Block::SetPos( int x, int y, int z ){
 	m_model.SetPos( pos );
 
 	//当たり判定
-	if (m_collision) {
+	/*if (m_collision) {
 		for( int i = 0; i < m_aabb.size(); i++ ){
 			CVector3 colpos = pos;
 			colpos += m_aabb[i].min + ( m_aabb[i].max - m_aabb[i].min ) / 2.0f;
 			m_collision[i].SetPosition( colpos );
 		}
-	}
+	}*/
 
 	//光の計算 
 	//TODO ここじゃない
 	CalcAddLight();
 }
 
-void Block::EnableCollision(){
-	if( m_collision == nullptr ){
-		m_collision = std::make_unique<SuicideObj::CCollisionObj[]>( m_aabb.size() );
-		for ( int i = 0; i < m_aabb.size(); i++ ) {
-			AABB aabb = m_aabb[i];
-			aabb.min -= m_model.GetPos();
-			aabb.max -= m_model.GetPos();
-
-			SuicideObj::CCollisionObj& collision = m_collision[i];
-			
-			collision.SetIsStaticObject(true);
-			collision.CreateBox(CVector3::Zero(), CQuaternion::Identity(), aabb.max - aabb.min);
-			collision.SetTimer(enNoTimer);
-			collision.SetIsHurtCollision(true);	//自分から判定をとらない。
-			collision.SetName(L"Block");		//コリジョンに名前。
-			collision.SetPointer(this);			//ポインタを設定。
-			//m_collision[i.GetCollisionObject().setUserIndex(enBlock);
-			//m_collision[i.GetCollisionObject().setUserPointer(this);		
-
-			CVector3 pos = m_model.GetPos();
-			pos += aabb.min + (aabb.max - aabb.min) / 2.0f;
-
-			collision.SetPosition(pos);
-		}
-	}
-}
+//void Block::EnableCollision(){
+//	if( m_collision == nullptr ){
+//		m_collision = std::make_unique<SuicideObj::CCollisionObj[]>( m_aabb.size() );
+//		for ( int i = 0; i < m_aabb.size(); i++ ) {
+//			AABB aabb = m_aabb[i];
+//			aabb.min -= m_model.GetPos();
+//			aabb.max -= m_model.GetPos();
+//
+//			SuicideObj::CCollisionObj& collision = m_collision[i];
+//			
+//			collision.SetIsStaticObject(true);
+//			collision.CreateBox(CVector3::Zero(), CQuaternion::Identity(), aabb.max - aabb.min);
+//			collision.SetTimer(enNoTimer);
+//			collision.SetIsHurtCollision(true);	//自分から判定をとらない。
+//			collision.SetName(L"Block");		//コリジョンに名前。
+//			collision.SetPointer(this);			//ポインタを設定。
+//			//m_collision[i.GetCollisionObject().setUserIndex(enBlock);
+//			//m_collision[i.GetCollisionObject().setUserPointer(this);		
+//
+//			CVector3 pos = m_model.GetPos();
+//			pos += aabb.min + (aabb.max - aabb.min) / 2.0f;
+//
+//			collision.SetPosition(pos);
+//		}
+//	}
+//}

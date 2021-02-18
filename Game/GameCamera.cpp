@@ -101,11 +101,6 @@ void GameCamera::Update()
 
 void GameCamera::FPS()
 {
-	//カメラの高さ
-	const float height = 1.50f* Block::WIDTH;
-	//カメラをプレイヤーの正面に
-	const float front = 0.05f* Block::WIDTH;
-
 	m_position = m_player->GetModelPos();
 	m_position += m_player->GetFront() * front;
 	m_position.y += height;

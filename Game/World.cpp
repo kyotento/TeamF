@@ -138,10 +138,9 @@ void World::PostUpdate(){
 					m_block = nullptr;
 				}
 			}
-
 		}
 		//範囲内のブロックのコリジョンを有効化する。範囲外は無効化する。
-
+		/*
 		//無効化ループ
 		for( auto itr = m_activeCollisions.begin(); itr != m_activeCollisions.end(); ){
 
@@ -199,6 +198,7 @@ void World::PostUpdate(){
 
 			} );
 		}
+		*/
 	}
 	
 }

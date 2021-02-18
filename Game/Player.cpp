@@ -22,14 +22,17 @@
 #include "PlayerDataFiler.h"
 
 namespace {
-	const float turnMult = 20.0f;						//プレイヤーの回転速度。
-	const float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
-	const float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
-	const float moveMult = 8.0f;						//プレイヤーの移動速度。
-	const float move = 2.f;								//移動速度(基本的には触らない)。
-	const float gravitationalAcceleration = 0.3f;		//重力加速度。
-	const float doubleClickRug = 0.15f;					//ダブルクリック判定になる間合い。
-	const float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
+	constexpr float characonRadius = 50.f;					//キャラコンの半径。
+	constexpr float characonHeight = 160.f;					//キャラコンの高さ。
+	constexpr float BLOCK_BREAK_START_HEIGHT = ((characonHeight + characonRadius * 2.0f) * 0.5f);
+	constexpr float turnMult = 20.0f;						//プレイヤーの回転速度。
+	constexpr float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
+	constexpr float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
+	constexpr float moveMult = 8.0f;						//プレイヤーの移動速度。
+	constexpr float move = 2.f;								//移動速度(基本的には触らない)。
+	constexpr float gravitationalAcceleration = 0.3f;		//重力加速度。
+	constexpr float doubleClickRug = 0.15f;					//ダブルクリック判定になる間合い。
+	constexpr float timeBlockDestruction = 0.3f;			//ブロック破壊の時間制限
 	int fallTimer = 0;									//滞空時間。
 	int hiddenStamina = 0;								//体力回復用の隠れスタミナ。
 	float staminaTimer = 0.f;							//隠れスタミナ消費による体力回復。
@@ -42,11 +45,11 @@ namespace {
 	CVector3 stickL = CVector3::Zero();					//WSADキーによる移動量
 	CVector3 moveSpeed = CVector3::Zero();				//プレイヤーの移動速度(方向もち)。
 	CVector3 itemDisplayPos = CVector3::Zero();			//アイテム（右手部分）の位置。
-	const int randomDrop = Block::WIDTH / 0.5f;			//らんちゅうのはんい。
+	constexpr int randomDrop = Block::WIDTH / 0.5f;		//らんちゅうのはんい。
 	std::mt19937 random((std::random_device())());		//らんちゅう。
 }
 					//装備スロットのため拡張。
-Player::Player() : m_inventory(40), Entity(enEntity_None, true)
+Player::Player() : m_inventory(40)//, Entity(enEntity_None, true)
 {
 	//アニメーションの設定。
 	m_animationClip[enAnimationClip_Idle].Load(L"Resource/animData/player_idle.tka");
@@ -90,8 +93,6 @@ bool Player::Start()
 	m_walkName = L"Resource/soundData/player/walk.wav";
 	m_strikeName = L"Resource/soundData/player/strike.wav";
 	//キャラコンの初期化。
-	const float characonRadius = 50.f;					//キャラコンの半径。
-	const float characonHeight = 160.f;					//キャラコンの高さ。
 	m_characon.Init(characonRadius, characonHeight, m_position);
 	m_characon.SetIsDrawCollider(true);
 
@@ -573,7 +574,7 @@ void Player::Attack()
 		rot.SetRotationDeg(m_right, m_degreeXZ);
 		rot.Multiply(frontAddRot);
 
-		CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
+		CVector3 colPos = GetModelPos() + CVector3::Up() * GameCamera::height;
 
 		//攻撃判定用の当たり判定を作成。
 		SuicideObj::CCollisionObj* attackCol = NewGO<SuicideObj::CCollisionObj>();
@@ -706,7 +707,7 @@ void Player::StateManagement()
 }
 
 //オブジェクトの設置と破壊。
-void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, CVector3 frontRotAdd)
+void Player::InstallAndDestruct(const Block* hitBlock, CVector3 frontRotAdd)
 {
 	SuicideObj::CSE* se;
 	se = NewGO<SuicideObj::CSE>(m_putName);
@@ -715,7 +716,7 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;		//設置する場所。
-		installPos = (ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH;
+		installPos = hitBlock->CalcBlockUnitPos().CastToCVector3();
 
 		//当たり判定がブロックでないとき(ゾンビとか)。
 		if(m_world->GetBlock(installPos) == nullptr){
@@ -750,10 +751,10 @@ void Player::InstallAndDestruct(btCollisionWorld::ClosestRayResultCallback ray, 
 		//破壊。
 		//アイテムを持っているかで分岐
 		if (item) {
-			block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH, (EnTool)item->GetToolID(), item->GetToolLevel());
+			block = m_world->DamegeBlock(hitBlock->CalcBlockUnitPos().CastToCVector3(), (EnTool)item->GetToolID(), item->GetToolLevel());
 		}
 		else {
-			block = m_world->DamegeBlock((ray.m_hitPointWorld + frontRotAdd) / Block::WIDTH);
+			block = m_world->DamegeBlock(hitBlock->CalcBlockUnitPos().CastToCVector3());
 		}
 
 		//ひび割れモデル表示
@@ -819,7 +820,8 @@ void Player::DecideCanDestroyBlock()
 
 //レイを前方に飛ばす。
 void Player::FlyTheRay()
-{								  //マウス左長押しなら。				
+{	
+	//マウス左長押しなら。				
 	if (GetKeyDown(VK_RBUTTON) || GetKeyInput(VK_LBUTTON) || GetKeyDown(VK_LBUTTON)) {
 		//マウス左長押しかつ破壊フラグがたっていなかったら、処理しない。
 		if (GetKeyInput(VK_LBUTTON) && !m_isBlockDestruction){
@@ -833,6 +835,20 @@ void Player::FlyTheRay()
 		rot.SetRotationDeg(m_right, m_degreeXZ);
 		rot.Multiply(frontAddRot);
 
+		//雑判定
+		CVector3 sampPos = GetModelPos() + CVector3::Up() * GameCamera::height;
+		constexpr float oneLength = 1;// Block::WIDTH * 0.25f;
+		for (float length = 0.0f; length <= reyLength+FLT_EPSILON; length += oneLength) {
+			sampPos += frontAddRot * oneLength;
+			Block* block = m_world->GetBlock(sampPos / Block::WIDTH);
+			if (block) {
+				InstallAndDestruct(block, frontAddRot);
+				return;
+			}
+		}
+		m_blockCrackModel.SetIsDraw(false);
+
+		/*
 		btVector3 startPoint(m_gameCamera->GetPos());					//レイの視点。
 		btVector3 endPoint(startPoint + frontAddRot * reyLength);		//レイの終点。
 
@@ -844,6 +860,7 @@ void Player::FlyTheRay()
 		else {
 			m_blockCrackModel.SetIsDraw(false);
 		}
+		*/
 	}
 }
 

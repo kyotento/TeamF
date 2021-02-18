@@ -190,8 +190,8 @@ private:
 	int m_chunkLoadRange = 1;
 
 	//! プレイヤーを中心とした、コリジョンが有効化される範囲。ブロック単位。
-	int m_collisionEnableRange = 2;
-	std::unordered_set<IntVector3> m_activeCollisions;
+	//int m_collisionEnableRange = 2;
+	//std::unordered_set<IntVector3> m_activeCollisions;
 
 	//! エンティティ(ブロック以外の動く物)を入れておく配列。
 	std::unordered_set<Entity*> m_entities;
