@@ -51,7 +51,7 @@ void Cow::Update()
 		//まだ動かさない。
 		//実質動かないよ。
 		m_damageCollision->Update();
-		CVector3 colPos = { m_position.x, m_position.y + Block::WIDTH, m_position.z };	//当たり判定の座標。
+		CVector3 colPos = { m_position.x, m_position.y + m_characonHeight + m_characonRadius, m_position.z };	//当たり判定の座標。
 		m_damageCollision->SetPosition(colPos);
 		m_skinModelRender->SetPos(m_position);
 		m_characon.SetPosition(m_position);

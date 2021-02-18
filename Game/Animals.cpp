@@ -11,7 +11,7 @@ Animals::Animals(EnEntity enEntity) : Mob(enEntity)
 	m_characon.SetIsDrawCollider(true);
 	//被弾判定用コリジョン。
 	m_damageCollision = std::make_unique<SuicideObj::CCollisionObj>();
-	CVector3 colPos = (m_position.x, m_position.y + Block::WIDTH, m_position.z);		//コリジョン座標。
+	CVector3 colPos = (m_position.x, m_position.y + m_characonHeight + m_characonRadius, m_position.z);		//コリジョン座標。
 	m_damageCollision->CreateCapsule(colPos, m_rot, m_characonRadius, m_characonHeight);
 	m_damageCollision->SetTimer(enNoTimer);				//寿命無し。
 	m_damageCollision->SetName(L"CAnimals");
