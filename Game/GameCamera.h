@@ -29,9 +29,13 @@ public:
 	}
 
 	//座標を取得。
-	CVector3 GetPos() const
+	const CVector3& GetPos() const
 	{
 		return m_position;
+	}
+	//FPS視点位置
+	const CVector3& GetPosFPS()const {
+		return m_positionFPS;
 	}
 
 	/// <summary>
@@ -55,6 +59,7 @@ public:
 	Player* m_player = nullptr;							//プレイヤー
 	GameObj::PerspectiveCamera* m_camera;				//ゲームカメラ
 	CVector3 m_position = CVector3::One() * 10.0f;		//座標
+	CVector3 m_positionFPS = CVector3::One() * 10.0f;	//FPS視点座標
 	CVector3 m_target = CVector3::Zero();				//注視点
 	const float m_radius = 4.f* Block::WIDTH;			//注視点と座標の距離
 	float m_radianY = 0.0f;								//Y軸の回転(ラジアン)

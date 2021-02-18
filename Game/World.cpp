@@ -266,7 +266,7 @@ Block* World::RayTestBlock(const CVector3& start, const CVector3& end, CVector3*
 		sampPos += dir * oneLength;
 
 		rayColblocks.clear();
-		GetBlocks(sampPos, sampPos, rayColblocks);
+		GetBlocks(sampPos - CVector3(Block::WIDTH), sampPos + CVector3(Block::WIDTH), rayColblocks);
 
 		float distance = -1.0f;
 		std::pair<CVector3, Block*> hitPair = std::make_pair(CVector3::Zero(), nullptr);

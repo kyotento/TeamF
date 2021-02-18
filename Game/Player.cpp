@@ -574,9 +574,8 @@ void Player::Attack()
 		rot.SetRotationDeg(m_right, m_degreeXZ);
 		rot.Multiply(frontAddRot);
 
-		CVector3 colPos = GetModelPos() + CVector3::Up() * GameCamera::height;
+		CVector3 colPos = m_gameCamera->GetPosFPS();
 		colPos += frontAddRot * Block::WIDTH;
-		//CVector3 colPos = m_gameCamera->GetPos() + frontAddRot * Block::WIDTH;
 
 		//UŒ‚”»’è—p‚Ì“–‚½‚è”»’è‚ğì¬B
 		SuicideObj::CCollisionObj* attackCol = NewGO<SuicideObj::CCollisionObj>();
@@ -839,7 +838,7 @@ void Player::FlyTheRay()
 
 		//G”»’è
 		CVector3 returnHitNormal;
-		CVector3 sampPos = GetModelPos() + CVector3::Up() * GameCamera::height;
+		CVector3 sampPos = m_gameCamera->GetPosFPS();
 		Block* block = m_world->RayTestBlock(sampPos, sampPos + frontAddRot * reyLength, nullptr, &returnHitNormal);
 		if (block) {
 			InstallAndDestruct(block, returnHitNormal);
