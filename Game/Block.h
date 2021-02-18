@@ -142,10 +142,16 @@ public:
 		DW_WARNING_BOX((lightpower < 0 || lightpower > LightUtil::LIGHT_POWER_MAX), "???????x???????O???")
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
 		if (column < 2) {
-			m_lighting.m[row][column] = LightUtil::DRAWING_LIGHT[lightpower];//ブロックライト
+			float f = CMath::Square(LightUtil::DRAWING_LIGHT[lightpower]);
+			//f *= LightUtil::DRAWING_LIGHT[lightpower]; 
+			
+			m_lighting.m[row][column] = f;//ブロックライト
 		}
 		else {
-			m_lighting.m[row][column] = LightUtil::DRAWING_SKY_LIGHT[lightpower];//スカイライト
+			float f = CMath::Square(LightUtil::DRAWING_SKY_LIGHT[lightpower]);
+			//f *= LightUtil::DRAWING_SKY_LIGHT[lightpower]; 
+
+			m_lighting.m[row][column] = f;//スカイライト
 		}
 	}
 	//! @brief ライティングを行う。
@@ -154,10 +160,16 @@ public:
 		lightpower = min(max(lightpower, 0), LightUtil::LIGHT_POWER_MAX);
 		//より明るい方を使用
 		if (column < 2) {
-			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_LIGHT[lightpower]);//ブロックライト
+			float f = CMath::Square(LightUtil::DRAWING_LIGHT[lightpower]);
+			//f *= LightUtil::DRAWING_LIGHT[lightpower]; 
+			
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], f);//ブロックライト
 		}
 		else {
-			m_lighting.m[row][column] = max(m_lighting.m[row][column], LightUtil::DRAWING_SKY_LIGHT[lightpower]);//スカイライト
+			float f = CMath::Square(LightUtil::DRAWING_SKY_LIGHT[lightpower]);
+			//f *= LightUtil::DRAWING_SKY_LIGHT[lightpower]; 
+
+			m_lighting.m[row][column] = max(m_lighting.m[row][column], f);//スカイライト
 		}
 	}
 	//! @brief ライティング描画の更新
