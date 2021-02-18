@@ -427,10 +427,9 @@ private:
 	/// <summary>
 	/// プレイヤーの設置と破壊。
 	/// </summary>
-	/// <param name="hitpos">接触店</param>
 	/// <param name="hitBlock">接触したブロック</param>
-	/// <param name="frontRotAdd">プレイヤーの回転</param>
-	void InstallAndDestruct(const CVector3& hitpos, const Block* hitBlock, CVector3 frontRotAdd);
+	/// <param name="hitnormal">法線</param>
+	void InstallAndDestruct(const Block* hitBlock, const CVector3& hitnormal);
 
 	/// <summary>
 	/// ブロックを破壊するかどうか判断する。

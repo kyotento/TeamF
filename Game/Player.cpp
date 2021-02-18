@@ -709,12 +709,12 @@ void Player::StateManagement()
 }
 
 //オブジェクトの設置と破壊。
-void Player::InstallAndDestruct(const CVector3& hitpos, const Block* hitBlock, CVector3 frontRotAdd)
+void Player::InstallAndDestruct(const Block* hitBlock, const CVector3& hitnormal)
 {
 	SuicideObj::CSE* se;
 	se = NewGO<SuicideObj::CSE>(m_putName);
 	se->SetVolume(0.5f);
-	frontRotAdd.Normalize();
+
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;		//設置する場所。
@@ -733,9 +733,7 @@ void Player::InstallAndDestruct(const CVector3& hitpos, const Block* hitBlock, C
 			if (item != nullptr) {
 				if (item->GetIsBlock()) {		//ブロック。
 					se->Play();
-					installPos = hitpos;
-					installPos -= frontRotAdd * 2;
-					installPos /= Block::WIDTH;
+					installPos += hitnormal;
 
 					Block::enMuki muki = CalcMukiReverse( GetFront() );
 
@@ -840,11 +838,11 @@ void Player::FlyTheRay()
 		rot.Multiply(frontAddRot);
 
 		//雑判定
-		CVector3 returnHitPos;
+		CVector3 returnHitNormal;
 		CVector3 sampPos = GetModelPos() + CVector3::Up() * GameCamera::height;
-		Block* block = m_world->RayTestBlock(sampPos, sampPos + frontAddRot * reyLength, &returnHitPos);
+		Block* block = m_world->RayTestBlock(sampPos, sampPos + frontAddRot * reyLength, nullptr, &returnHitNormal);
 		if (block) {
-			InstallAndDestruct(returnHitPos, block, frontAddRot);
+			InstallAndDestruct(block, returnHitNormal);
 			return;
 		}
 		m_blockCrackModel.SetIsDraw(false);
