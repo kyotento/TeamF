@@ -6,7 +6,7 @@
 #include "RecipeManager.h"
 
 bool Furnace::OnClick( Player * player ){
-	player->OpenGUI( std::make_unique<GUI::FurnaceInventory>( player->GetInventory(), m_inventory, m_fire ) );
+	player->OpenGUI( std::make_unique<GUI::FurnaceInventory>( player, m_inventory, m_fire ) );
 	return true;
 }
 

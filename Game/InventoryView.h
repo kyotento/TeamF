@@ -3,6 +3,7 @@
 
 class Inventory;
 class ItemStack;
+class Player;
 
 namespace GUI{
 
@@ -14,7 +15,7 @@ namespace GUI{
 	//! @author Takayama
 	class InventoryView : public RootNode{
 	public:
-		InventoryView( Inventory& playerInventory, const wchar_t* spritePath, const CVector4& m_shiftColor = CVector4::One());
+		InventoryView( Player* player, const wchar_t* spritePath, const CVector4& m_shiftColor = CVector4::One());
 
 		virtual ~InventoryView();
 
@@ -27,10 +28,14 @@ namespace GUI{
 		//! @return GUIのサイズ。
 		CVector2 GetSize() const override;
 
+		//! @brief 外側で起こったクリックイベント。
+		void OnClickOnOut( const Event::ClickEvent& event ) override;
+
 	protected:
 		//掴んでいるアイテム
 		std::unique_ptr<ItemStack> m_grabed;
 	private:
+		Player* m_player = nullptr;
 		CSprite m_sprite;
 		Inventory& m_inventory;
 		std::unique_ptr<Controller::InventoryController> m_controller;

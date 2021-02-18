@@ -6,8 +6,8 @@
 
 namespace GUI{
 
-	FurnaceInventory::FurnaceInventory( Inventory & inventory, Inventory& furnaceInv, FurnaceFire& fire ) :
-		InventoryView( inventory, L"Resource/spriteData/FurnaceBox.dds" ){
+	FurnaceInventory::FurnaceInventory( Player* player, Inventory& furnaceInv, FurnaceFire& fire ) :
+		InventoryView( player, L"Resource/spriteData/FurnaceBox.dds" ){
 
 		//コントローラー
 		m_controller = std::make_unique<Controller::FurnaceController>(

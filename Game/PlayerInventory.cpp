@@ -3,19 +3,20 @@
 #include "CraftingController2.h"
 #include "InventorySlot.h"
 #include "EquipmentController.h"
+#include "Player.h"
 
 namespace GUI{
 
-	PlayerInventory::PlayerInventory( Inventory& inventory ) :
-		InventoryView(inventory, L"Resource/spriteData/KariInventory.dds", CVector4::Red()), m_craftingSlots(9) {
+	PlayerInventory::PlayerInventory( Player* player ) :
+		InventoryView(player, L"Resource/spriteData/KariInventory.dds", CVector4::Red()), m_craftingSlots(9) {
 
 		//コントローラー
 		m_controller = std::make_unique<Controller::CraftingController2>(
-			inventory, m_craftingSlots, m_grabed
+			player->GetInventory(), m_craftingSlots, m_grabed
 			);
 
 		m_equipmentController = std::make_unique<Controller::EquipmentController>(
-			inventory, m_craftingSlots, m_grabed
+			player->GetInventory(), m_craftingSlots, m_grabed
 			);
 		
 		//上部分のスロットを追加。

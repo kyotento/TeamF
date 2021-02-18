@@ -2,13 +2,14 @@
 #include "InventoryView.h"
 #include "Inventory.h"
 
+class Player;
 class FurnaceFire;
 
 namespace GUI{
 
 	class FurnaceInventory : public InventoryView{
 	public:
-		FurnaceInventory( Inventory& inventory, Inventory& furnaceInv, FurnaceFire& fire );
+		FurnaceInventory( Player* player, Inventory& furnaceInv, FurnaceFire& fire );
 
 		~FurnaceInventory();
 

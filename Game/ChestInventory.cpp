@@ -6,8 +6,8 @@
 
 namespace GUI {
 
-	ChestInventory::ChestInventory(Inventory& inventory, Inventory& chestInventory) :
-		InventoryView(inventory, L"Resource/spriteData/Chest.dds"), m_inventorySlots(chestInventory) {
+	ChestInventory::ChestInventory( Player* player, Inventory& chestInventory) :
+		InventoryView(player, L"Resource/spriteData/Chest.dds"), m_inventorySlots(chestInventory) {
 
 		//コントローラー
 		m_inventoryController = std::make_unique<Controller::InventoryController>(

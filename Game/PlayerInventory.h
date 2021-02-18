@@ -10,7 +10,7 @@ namespace GUI{
 	//! @author Takayama
 	class PlayerInventory : public InventoryView{
 	public:
-		PlayerInventory(Inventory& inventory);
+		PlayerInventory( Player* player);
 
 		~PlayerInventory();
 	private:

@@ -81,10 +81,13 @@ namespace GUI{
 		}
 
 		//! @brief マウスクリックイベントの受け取りと子ノードへの配給。
-		void ReciveClickEvent(const Event::ClickEvent& event );
+		void ReciveClickEvent(const Event::ClickEvent& event , bool isRoot = false);
 
 		//! @brief マウスクリックイベントを処理。
 		virtual void OnClick(Event::ClickEvent& event){}
+
+		//! @brief ノードの外側で起きたマウスクリックイベント。ルートノードでしか呼ばれない。
+		virtual void OnClickOnOut(const Event::ClickEvent& event ){}
 
 	private:
 		CVector2 m_pos;

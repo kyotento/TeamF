@@ -5,11 +5,15 @@
 #include "GUIManager.h"
 #include "InventoryController.h"
 #include "InventorySlot.h"
+#include "Player.h"
+#include "World.h"
+#include "DropItem.h"
+#include "ClickEvent.h"
 
 namespace GUI{
 
-	InventoryView::InventoryView( Inventory& inventory, const wchar_t* spritePath, const CVector4& shiftColor) :
-		m_inventory( inventory ), m_shiftColor(shiftColor){
+	InventoryView::InventoryView( Player* player, const wchar_t* spritePath, const CVector4& shiftColor) :
+		m_player(player), m_inventory( player->GetInventory() ), m_shiftColor(shiftColor){
 		//画像をロード。
 		m_sprite.Init( spritePath );
 
@@ -23,16 +27,16 @@ namespace GUI{
 		SetScale( { 1.5f, 1.5f } );
 
 		//コントローラーを作成。
-		m_controller = std::make_unique<Controller::InventoryController>( inventory, m_grabed );
+		m_controller = std::make_unique<Controller::InventoryController>( m_inventory, m_grabed );
 
 		//スロットを充填。
 		//ホットバー
 		const CVector2 hotBarStart{ 14, 282 };
-		AddChilde( std::make_unique<InventorySlots>( inventory, *m_controller.get(), 0,
+		AddChilde( std::make_unique<InventorySlots>( m_inventory, *m_controller.get(), 0,
 													 hotBarStart, 9, 1 ) );
 		//上段の9*3のアイテム入れるところ。
 		const CVector2 upperStart{ 14, 166 };
-		AddChilde( std::make_unique<InventorySlots>( inventory, *m_controller.get(), 9,
+		AddChilde( std::make_unique<InventorySlots>( m_inventory, *m_controller.get(), 9,
 													 upperStart, 9, 3 ) );
 	}
 
@@ -70,4 +74,19 @@ namespace GUI{
 		return size;
 	}
 
+	void InventoryView::OnClickOnOut( const Event::ClickEvent & event ){
+		if( m_grabed ){
+			int dropNum = 1;
+			if( event.GetClickType() == event.LEFT ){
+				dropNum = 64;
+			}
+
+			DropItem* drop = DropItem::CreateDropItem( m_player->GetWorld(), ItemStack::TakeItem(m_grabed, dropNum) );
+
+			CVector3 pos = m_player->GetPos() + m_player->GetFront() * Block::WIDTH;
+			pos.y += Block::WIDTH;
+			drop->SetPos( pos );
+			drop->SetVelocity( m_player->GetFront() * 300 );
+		}
+	}
 }

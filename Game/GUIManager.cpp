@@ -40,7 +40,7 @@ namespace GUI{
 					pos.x *= grEn.GetFrameBuffer_W();
 					pos.y *= grEn.GetFrameBuffer_H();
 
-					r->ReciveClickEvent( ClickEvent( type, pos ) );
+					r->ReciveClickEvent( ClickEvent( type, pos ), true );
 				}
 			}
 		}
