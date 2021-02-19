@@ -1,7 +1,7 @@
 {
-	"id": "enCube_StoneStairs",
-	"name": "石の階段",
-	"model": "modelData/stoneStairs.tkm",
+	"id": "enCube_SandStoneStairs",
+	"name": "砂岩の階段",
+	"model": "modelData/sandStoneStairs.tkm",
 	"hp": 8,
 	"tool": "enTool_Pickaxe",
 	"opacity": false,

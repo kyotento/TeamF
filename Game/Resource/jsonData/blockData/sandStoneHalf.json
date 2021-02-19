@@ -1,0 +1,12 @@
+{
+	"id": "enCube_SandStoneHalf",
+	"name": "砂岩のハーフブロック",
+	"model": "modelData/sandStoneHalf.tkm",
+	"hp": 8,
+	"tool": "enTool_Pickaxe",
+	"opacity": false,
+	"aabb": [
+		[-0.5, 0, -0.5],
+		[0.5, 0.5, 0.5]
+	]
+}
