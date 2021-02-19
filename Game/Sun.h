@@ -39,7 +39,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	float GetSkyLightPower()const {
-		return max(0.0f, -m_light.GetDirection().y);
+		return max(0.05f, -m_light.GetDirection().y);
 	}
 };
 	

@@ -29,7 +29,7 @@ void Sun::Update() {
 	//スカイライトの影響力を設定
 	BlockFactory::FindBlockModel(
 		[&](GameObj::InstancingModel* model) {
-			model->GetModelRender().GetSkinModel().Set_t(max(0.0f, -m_light.GetDirection().y));
+			model->GetModelRender().GetSkinModel().Set_t(GetSkyLightPower());
 		}
 	);
 
