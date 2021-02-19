@@ -219,9 +219,7 @@ void Enemy::KnockBack()
 	}
 	else if (!m_isTakenDamage) {
 		//ƒ‚ƒfƒ‹‚ÌF‚ðŒ³‚É–ß‚·B
-		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
-			mat->SetAlbedoScale({ CVector4::White() });
-		});
+		LightingSkinModel(m_skinModelRender->GetSkinModel());
 	}
 }
 

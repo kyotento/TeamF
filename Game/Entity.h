@@ -50,6 +50,18 @@ public:
 		return m_useBulletColision;
 	}
 
+	/// <summary>
+	/// 現在位置のライトの強さを取得
+	/// </summary>
+	/// <returns></returns>
+	float GetLightColorOnPosition()const;
+
+	/// <summary>
+	/// スキンモデルのライティングを行う
+	/// </summary>
+	/// <param name="model"></param>
+	void LightingSkinModel(SkinModel& model);
+
 protected:
 	World* m_world = nullptr;
 	EnEntity m_enEntity = enEntity_None;

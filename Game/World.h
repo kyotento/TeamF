@@ -3,6 +3,7 @@
 #include "Chunk.h"
 #include "RandomMapMaker.h"
 #include "WorldInfoFile.h"
+#include "Sun.h"
 
 class Entity;
 class Player;
@@ -22,6 +23,11 @@ public:
 	void PostRender() override
 	{
 		DisplayErrorMessage();
+	}
+
+	//太陽を取得
+	Sun* GetSun() {
+		return m_sun.get();
 	}
 
 	//! @brief Player をセットする。
@@ -192,6 +198,8 @@ private:
 
 	RandomMapMaker m_mapMaker;
 	std::map<std::pair<int, int>, Chunk> m_chunkMap;
+
+	std::unique_ptr<Sun> m_sun;//太陽
 
 	Player* m_player = nullptr;
 

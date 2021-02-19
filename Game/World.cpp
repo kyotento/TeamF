@@ -37,6 +37,9 @@ World::World(){
 
 	//ブロッククラスにポインタを設定
 	Block::SetWorldPtr(this);
+
+	//太陽
+	m_sun = std::make_unique<Sun>();
 }
 
 World::~World(){

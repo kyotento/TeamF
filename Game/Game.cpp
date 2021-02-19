@@ -55,8 +55,6 @@ bool Game::Start()
 
 	m_gameCamera = std::make_unique<GameCamera>();
 
-	m_sun.reset(NewGO<Sun>());
-
 	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
 	m_zombieGenerator->SetWorld(m_world.get());
 	
