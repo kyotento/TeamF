@@ -20,6 +20,7 @@
 #include "NullableItemStack.h"
 #include "CalcMuki.h"
 #include "PlayerDataFiler.h"
+#include "Boss.h"
 
 namespace {
 	constexpr float characonRadius = 50.f;					//キャラコンの半径。
@@ -659,6 +660,10 @@ void Player::OpenInventory()
 	//Eボタンを押したとき。
 	if (GetKeyDown('E')){
 		OpenGUI( std::make_unique<GUI::PlayerInventory>( this ) );
+
+		Enemy* zombie = nullptr;
+		zombie = m_world->CreateEntity<Boss>();
+		zombie->SetPos(m_position);
 	}
 }
 

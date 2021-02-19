@@ -240,6 +240,9 @@
     <ClCompile Include="PlayerDataFiler.cpp">
       <Filter>Entity\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -501,6 +504,9 @@
     </ClInclude>
     <ClInclude Include="PlayerDataFiler.h">
       <Filter>Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Entity\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

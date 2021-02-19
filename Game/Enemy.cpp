@@ -62,7 +62,7 @@ void Enemy::Tracking()
 
 	Jump();				//ジャンプ処理。
 
-	if (m_oldDirection.Length() >= 1.01f * Block::WIDTH && !m_isTakenDamage) {		//プレイヤーと一定距離離れていて、ノックバックしていないとき。
+	if (m_oldDirection.Length() >= m_attackRenge && !m_isTakenDamage) {		//プレイヤーと一定距離離れていて、ノックバックしていないとき。
 
 		//モデル、キャラコン、当たり判定用の座標を更新。
 		m_characonMove = m_direction * m_moveSpeed;

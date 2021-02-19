@@ -121,7 +121,8 @@ protected:
 	float m_knockBack = 1.f;	//ノックバック感度。
 	float m_knoceBackY = 1.f;	//ノックバックY座標。
 
-	const float m_moveSpeed = 100.0f;				//移動速度。
+	float m_moveSpeed = 100.0f;						//移動速度。
+	float m_attackRenge = 1.01f * Block::WIDTH;		//攻撃開始距離
 	const float m_characonRadius = 40.f;			//キャラコンの半径。
 	const float m_characonHeight = 160.f;			//キャラコンの高さ。
 	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
