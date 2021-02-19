@@ -50,5 +50,8 @@ enum EnCube
 	enCube_SandStone,
 	enCube_SmoothSandStone,
 	enCube_PatternedSandBlock,
+	enCube_SandStoneStairs,
+	enCube_SandStoneHalf,
+
 	enCube_Num
 };

@@ -2,7 +2,7 @@
 	"id": "enCube_StoneHalf",
 	"name": "石のハーフブロック",
 	"model": "modelData/stoneHalf.tkm",
-	"hp": 4,
+	"hp": 8,
 	"tool": "enTool_Pickaxe",
 	"opacity": false,
 	"aabb": [
