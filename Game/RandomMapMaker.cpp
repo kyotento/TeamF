@@ -59,15 +59,12 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 			int caveMinY = m_minHeight+1, caveMaxY = wy;
 			{
 				//小穴
-				float caveNoise = GetPerlin().OctavePerlin(wx / 15.f + m_seedX2, 0.0f, wz / 15.f + m_seedZ2, 2);
-				//洞窟
-				float caveNoise2 = GetPerlin().OctavePerlin(wx / 90.f + m_seedY2, 0.0f, wz / 90.f + m_seedY, 3);
-
+				float caveNoise = GetPerlin().OctavePerlin(wx / 15.7f + m_seedX2, 0.0f, wz / 15.7f + m_seedZ2, 2);
+				
 				if (
 					caveNoise < 0.33f || caveNoise > 0.67f 
-					|| 
-					caveNoise2 < 0.3f || caveNoise2 > 0.7f
 				) {
+					//ノイズ
 					float noise = GetPerlin().PerlinNoise(
 						(float(wx) + m_seedX2) / 12.5f,
 						0.0f,
@@ -81,26 +78,18 @@ void RandomMapMaker::GenerateChunk( Chunk & chunk ){
 
 					isCave = true;
 					
+					//洞窟空間生成
 					caveMinY = (int)(max(1.0f,(float)wy * noise2));
-					caveMaxY = caveMinY + (int)(3.0f * noise) + 2;
+					caveMaxY = caveMinY + (int)(4.0f * noise) + 2;
 
 					//地盤沈下
 					if (caveMaxY < wy && wy - caveMaxY <= 1) {
 						caveMaxY = wy;
-					}					
-
-					if (!isCave || !(wy >= caveMinY && wy <= caveMaxY)) {
-						if (caveNoise2 < 0.3f || caveNoise2 > 0.7f) {
-							chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_CoalOre));
-						}
-						else {
-							chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_GoldOre));
-						}
 					}
 				}
 			}		
 
-			if (!isCave) {
+			if (!isCave || !(wy >= caveMinY && wy <= caveMaxY)) {//洞窟範囲でなければ
 				if (state == enBiome_Forest) {
 					//上で決定した高さをもとに最高高度のブロックを設置。
 					chunk.SetBlock(cx, wy, cz, BlockFactory::CreateBlock(enCube_Grass));
