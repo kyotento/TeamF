@@ -2,15 +2,16 @@
 #include "CraftingInventory.h"
 #include "CraftingController.h"
 #include "InventorySlot.h"
+#include "Player.h"
 
 namespace GUI{
 
-	CraftingInventory::CraftingInventory( Inventory & inventory ) :
-		InventoryView( inventory, L"Resource/spriteData/CraftingBox.dds" ), m_craftingSlots( 10 ){
+	CraftingInventory::CraftingInventory( Player* player ) :
+		InventoryView( player, L"Resource/spriteData/CraftingBox.dds" ), m_craftingSlots( 10 ){
 
 		//コントローラー
 		m_controller = std::make_unique<Controller::CraftingController>(
-			inventory, m_craftingSlots, m_grabed
+			player->GetInventory(), m_craftingSlots, m_grabed
 			);
 
 		//上部分のスロットを追加。

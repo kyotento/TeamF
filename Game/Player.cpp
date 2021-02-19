@@ -658,7 +658,7 @@ void Player::OpenInventory()
 {
 	//Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«B
 	if (GetKeyDown('E')){
-		OpenGUI( std::make_unique<GUI::PlayerInventory>( m_inventory ) );
+		OpenGUI( std::make_unique<GUI::PlayerInventory>( this ) );
 	}
 }
 

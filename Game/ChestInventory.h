@@ -11,7 +11,7 @@ namespace GUI {
 	//! @author ‚í‚µ(“VË”ü­—˜B‹àpt)
 	class ChestInventory : public InventoryView {
 	public:
-		ChestInventory(Inventory& inventory,Inventory& chestInventory);
+		ChestInventory( Player* player, Inventory& chestInventory);
 
 		~ChestInventory();
 	private:

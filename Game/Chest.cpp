@@ -21,7 +21,7 @@ Chest::~Chest()
 }
 
 bool Chest::OnClick(Player * player) {
-	player->OpenGUI(std::make_unique<GUI::ChestInventory>(player->GetInventory(),m_inventory));
+	player->OpenGUI(std::make_unique<GUI::ChestInventory>(player,m_inventory));
 	return true;
 }
 

@@ -32,7 +32,7 @@ namespace GUI::Event{
 		}
 
 		//! @retval true シフトキーが押されている。
-		bool IsPressShift(){
+		bool IsPressShift() const{
 			return GetKeyInput( VK_SHIFT );
 		}
 

@@ -28,9 +28,12 @@ namespace GUI{
 		return m_pos - pivotSize;
 	}
 
-	void Node::ReciveClickEvent(const Event::ClickEvent& event ){
+	void Node::ReciveClickEvent(const Event::ClickEvent& event, bool isRoot){
 		//クリックが自分の上で起こった場合にだけ実行。
 		if( !event.IsOnNode( *this ) ){
+			if( isRoot ){
+				OnClickOnOut( event );
+			}
 			return;
 		}
 

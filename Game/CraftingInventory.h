@@ -6,7 +6,7 @@ namespace GUI{
 
 	class CraftingInventory : public InventoryView{
 	public:
-		CraftingInventory( Inventory& inventory );
+		CraftingInventory( Player* player );
 
 		~CraftingInventory();
 

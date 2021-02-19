@@ -4,6 +4,6 @@
 #include "Player.h"
 
 bool CraftingTable::OnClick( Player * player ){
-	player->OpenGUI( std::make_unique<GUI::CraftingInventory>( player->GetInventory() ) );
+	player->OpenGUI( std::make_unique<GUI::CraftingInventory>( player ) );
 	return true;
 }
