@@ -361,9 +361,32 @@ public:
 			m_playerState = enPlayerState_sleep;
 		}
 	}
+
 	//プレイヤーの前方にドロップアイテムを生成する。
 	void CreateFrontDropItem(std::unique_ptr<ItemStack>& item);
-	
+
+	/// <summary>
+	/// プレイヤー回転速度取得
+	/// </summary>
+	/// <returns></returns>
+	float GetTurnMult()const {
+		return m_turnMult;
+	}
+	void SetTurnMult(float f) {
+		m_turnMult = f;
+	}
+
+	/// <summary>
+	/// マウスXZ回転反転設定取得
+	/// </summary>
+	/// <returns></returns>
+	bool GetReverseTurnXZ()const {
+		return m_reverseTurnXZ;
+	}
+	void SetReverseTurnXZ(bool f) {
+		m_reverseTurnXZ = f;
+	}
+
 private:
 	/// <summary>
 	/// キーボードの入力情報管理。
@@ -483,6 +506,9 @@ private:
 	bool m_deathFlag = false;				//死んだかどうか。
 	bool m_eatingFlag = false;				//食べてるかどうか。
 	bool m_isExpUpFlag = false;				//経験値アップした？
+
+	bool  m_reverseTurnXZ = false;							//マウスによるXZ回転を反転するか。				
+	float m_turnMult = 20.0f;								//プレイヤーの回転速度。
 
 	float m_degreeY = 0.0f;									//Y軸の回転。
 	float m_degreeXZ = 0.0f;								//XZ軸の回転。

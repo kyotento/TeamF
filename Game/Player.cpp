@@ -26,7 +26,6 @@ namespace {
 	constexpr float characonRadius = 50.f;					//キャラコンの半径。
 	constexpr float characonHeight = 160.f;					//キャラコンの高さ。
 	constexpr float BLOCK_BREAK_START_HEIGHT = ((characonHeight + characonRadius * 2.0f) * 0.5f);
-	constexpr float turnMult = 20.0f;						//プレイヤーの回転速度。
 	constexpr float maxDegreeXZ = 88.0f;					//XZ軸の回転の最大値。
 	constexpr float minDegreeXZ = -88.0f;					//XZ軸の回転の最小値。
 	constexpr float moveMult = 8.0f;						//プレイヤーの移動速度。
@@ -71,6 +70,8 @@ Player::~Player()
 	//プレイヤーデータの保存。
 	PlayerDataFiler playerFiler;
 	playerFiler.Save( this );
+	PlayerConfigDataFiler configFiler;
+	configFiler.Save(this);
 }
 
 #include "ItemStack.h"
@@ -79,6 +80,8 @@ bool Player::Start()
 	//プレイヤーデータ読み込み。
 	PlayerDataFiler playerFiler;
 	playerFiler.Load( this );
+	PlayerConfigDataFiler configFiler;
+	configFiler.Load(this);
 
 	//プレイヤークラスの初期化。
 	m_skinModelRender = NewGO<GameObj::CSkinModelRender>();
@@ -489,7 +492,8 @@ int Player::FallDamage()
 void Player::Turn()
 {
 	//マウスの移動量を取得。
-	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * turnMult * GetDeltaTimeSec();
+	CVector2 mouseCursorMovePow = MouseCursor().GetMouseMove() * m_turnMult * GetDeltaTimeSec();
+	mouseCursorMovePow.y *= m_reverseTurnXZ ? -1.0f : 1.0f;//反転
 	//回転処理
 	m_degreeY += mouseCursorMovePow.x;
 	m_degreeXZ += mouseCursorMovePow.y;

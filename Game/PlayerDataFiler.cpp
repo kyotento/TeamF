@@ -7,6 +7,7 @@ const int16_t PlayerDataFiler::VERSION = 1;
 
 namespace{
 	const char* filePath = "Save/playerData.player";
+	const char* filePathConfig = "Save/playerConfig.player";
 
 	template<class T>
 	T readAs( std::ifstream& ifs ){
@@ -102,4 +103,34 @@ void PlayerDataFiler::Save( const Player* player ){
 	//視線の向き。
 	writeAs<float>( file, player->GetRadianY() );
 	writeAs<float>( file, player->GetRadianXZ() );
+}
+
+
+void PlayerConfigDataFiler::Load(Player* player) {
+	std::ifstream file(filePathConfig, std::ios::binary);
+	if (!file) {
+		return;
+	}
+	//バージョン違いはエラー
+	if (readAs<int16_t>(file) != VERSION) {
+		return;
+	}
+
+	//視点感度。
+	player->SetTurnMult(readAs<float>(file));
+	//視点操作反転。
+	player->SetReverseTurnXZ(readAs<bool>(file));
+
+	m_loadSuccess = true;
+}
+void PlayerConfigDataFiler::Save(const Player* player) {
+	std::ofstream file(filePathConfig, std::ios::binary);
+
+	//バージョンを書き込む。
+	writeAs<int16_t>(file, VERSION);
+
+	//視点感度。
+	writeAs<float>(file, player->GetTurnMult());
+	//視点操作反転。
+	writeAs<bool>(file, player->GetReverseTurnXZ());
 }

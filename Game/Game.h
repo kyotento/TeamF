@@ -67,6 +67,11 @@ public:
 		return m_chunkRange;
 	}
 
+	//ƒvƒŒƒCƒ„[Žæ“¾
+	Player* GetPlayer() {
+		return m_world->GetPlayer();
+	}
+
 	void GameBGM();
 private:
 

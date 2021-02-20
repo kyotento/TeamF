@@ -42,12 +42,15 @@ private:
 
 	enBackClass m_backclass = enNum;		//再生成されるクラス。
 
-	static const int m_buttonNum = 4;		//生成されるボタンの数。
+	static constexpr int m_buttonNum = 8;	//生成されるボタンの数。
 
 	int m_chunk = 1;						//Doneのときに反映されるチャンク。
+	float m_sensi = 20.0f;					//Doneのときに反映されるマウス感度。
+	bool m_mouseReverse = false;			//Doneのときに反映されるマウス上下反転設定。
 
 	GameObj::CSpriteRender m_spriteRender[m_buttonNum];		//画像。
 
+	CVector2 m_imageSize[m_buttonNum];
 	CVector2 m_position[m_buttonNum] = { CVector2::Zero() };		//ボタンの座標。
 	CVector2 m_scPos[m_buttonNum] = { CVector2::Zero() };			//スクリーン空間座標左上。
 	CVector2 m_scPos2[m_buttonNum] = { CVector2::Zero() };			//スクリーン空間座標右下。
