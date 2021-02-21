@@ -30,7 +30,7 @@ void MobGenerator::Update()
 	//モブ生成。
 	GenerateMob();
 	//タイマー加算。
-	m_timer += GetEngine().GetRealDeltaTimeSec();
+	m_timer += GetDeltaTimeSec();
 }
 
 void MobGenerator::GenerateMob()
