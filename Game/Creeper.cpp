@@ -98,7 +98,7 @@ void Creeper::Attack() {
 		//ƒ‚ƒfƒ‹‚ÌF‚ğŒ³‚É–ß‚·B
 		m_skinModelRender->GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
 			//mat->SetAlbedoScale(CVector4::White());
-			mat->SetEmissive(1.0f);
+			mat->SetEmissive(0.0f);
 		});
 	}
 	else {

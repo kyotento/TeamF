@@ -20,7 +20,7 @@ void TNT::ChangeModelColor(bool isLight) {
 	if (!isLight) {
 		//ƒ‚ƒfƒ‹‚ÌF‚ğŒ³‚É–ß‚·B
 		m_model.GetInstancingModel()->GetModelRender().GetSkinModel().FindMaterialSetting([](MaterialSetting* mat) {
-			mat->SetEmissive(1.0f);
+			mat->SetEmissive(0.0f);
 		});
 	}
 	else {
