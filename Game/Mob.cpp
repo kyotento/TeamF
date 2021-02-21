@@ -19,36 +19,41 @@ void Mob::DroppingItem(CVector3 pos)
 	{
 		int rand = random() % 100;
 		int dropItemId = enCube_None;
+		int dropCnt = 1;
 
 		if (m_rareItemId != enCube_None && rand < m_rareChanceDropping)
 		{
 			//レアドロップ
 			dropItemId = m_rareItemId;
+			dropCnt = m_rareDropCount;
 		}
 		else if (rand < m_chanceDropping)
 		{
 			dropItemId = m_itemId;
+			dropCnt = m_dropCount;
 		}
 
 		if (dropItemId != enCube_None) {
 			//ドロップアイテムを作成。
-			DropItem* dropItem = DropItem::CreateDropItem(m_world, dropItemId);
-			CVector3 addPos = CVector3::Zero();
-			if (random() % 2 > 0) {
-				addPos.x += random() % randomDrop;
-			}
-			else {
-				addPos.x -= random() % randomDrop;
-			}
+			for (int i = 0; i < dropCnt; i++) {
+				DropItem* dropItem = DropItem::CreateDropItem(m_world, dropItemId);
+				CVector3 addPos = CVector3::Zero();
+				if (random() % 2 > 0) {
+					addPos.x += random() % randomDrop;
+				}
+				else {
+					addPos.x -= random() % randomDrop;
+				}
 
-			if (random() % 2 > 0) {
-				addPos.z += random() % randomDrop;
+				if (random() % 2 > 0) {
+					addPos.z += random() % randomDrop;
+				}
+				else {
+					addPos.z += random() % randomDrop;
+				}
+				CVector3 position = pos;
+				dropItem->SetPos(CVector3(position.x, position.y - 40.0f, position.z) + addPos);
 			}
-			else {
-				addPos.z += random() % randomDrop;
-			}
-			CVector3 position = pos;
-			dropItem->SetPos(CVector3(position.x, position.y - 40.0f, position.z) + addPos);
 		}
 	}
 }

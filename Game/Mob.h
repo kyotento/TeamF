@@ -48,9 +48,20 @@ protected:
 			}
 		}
 	}
+	//ドロップする個数を設定する。
+	void SetDropCount(int num, bool isRare = false) {
+		if (isRare) {
+			m_rareDropCount = num;
+		}
+		else {
+			m_dropCount = num;
+		}
+	}
+
 	int m_itemId = enCube_None;		//ドロップするアイテムの種類、Noneだったらドロップしない。
 	int m_chanceDropping = 0;		//アイテムをドロップさせる確率、1～100％。
 	int m_rareItemId = enCube_None;
 	int m_rareChanceDropping = 0;
+	int m_dropCount = 1, m_rareDropCount = 1;
 };
 
