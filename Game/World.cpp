@@ -7,6 +7,7 @@
 #include "DropItem.h"
 #include "Light.h"
 #include "BlockFactory.h"
+#include "Boss.h"
 
 namespace {
 	constexpr int ENTITY_DELETE_CHUNK_AREA_OFFSET = 2;//表示チャンク+ENTITY_DELETE_CHUNK_AREA_OFFSETの範囲を超えた場所のエンティティは死ぬ
@@ -203,8 +204,13 @@ void World::PostUpdate(){
 			} );
 		}
 		*/
+	}	
+
+	if (GetKeyInput(VK_CONTROL) && GetKeyDown(VK_F2)) {
+		//ボス作成
+		Boss* boss = CreateEntity<Boss>();
+		boss->SetPos(m_player->GetPos() + CVector3::AxisZ() * Block::WIDTH*5.0f);
 	}
-	
 }
 
 void World::DisplayErrorMessage()
@@ -635,6 +641,10 @@ void World::DestroyBlock(const IntVector3& pos) {
 	int x = Chunk::CalcInChunkCoord(pos.x);
 	int z = Chunk::CalcInChunkCoord(pos.z);
 
+	if (chunk->GetBlock(x, pos.y, z)->GetBlockType() == enCube_Bedrock) {//岩盤は無理
+		return;
+	}
+
 	//破壊
 	chunk->DeleteBlock(x, pos.y, z);
 	AroundBlock({ (float)pos.x,(float)pos.y,(float)pos.z });
@@ -651,6 +661,10 @@ void World::DestroyBlockNoDrop(const IntVector3& pos) {
 	}
 	int x = Chunk::CalcInChunkCoord(pos.x);
 	int z = Chunk::CalcInChunkCoord(pos.z);
+
+	if (chunk->GetBlock(x, pos.y, z)->GetBlockType() == enCube_Bedrock) {//岩盤は無理
+		return;
+	}
 
 	//破壊
 	chunk->DeleteBlock(x, pos.y, z);

@@ -7,6 +7,7 @@
 
 class Entity;
 class Player;
+class Boss;
 class DropItem;
 
 //! @brief Block オブジェクトを保持するワールド
@@ -36,6 +37,17 @@ public:
 	}
 
 	Player* GetPlayer();
+
+	//! @brief Boss をセットする。
+	void SetBoss(Boss* boss) {
+		m_bosses.insert(boss);
+	}
+	void RemoveBoss(Boss* boss) {
+		m_bosses.erase(boss);
+	}
+	std::unordered_set<Boss*>& GetBosses() {
+		return m_bosses;
+	}
 
 	//! @brief Entity をワールドに生成する。引数は対象のコンストラクタ。
 	template<class T, class... TArgs>
@@ -202,6 +214,7 @@ private:
 	std::unique_ptr<Sun> m_sun;//太陽
 
 	Player* m_player = nullptr;
+	std::unordered_set<Boss*> m_bosses;
 
 	//! 読み込み範囲を指定。チャンク単位。
 	int m_chunkLoadRange = 1;

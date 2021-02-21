@@ -9,6 +9,7 @@ class Title;
 class Sun;
 class Menu;
 class ZombieGenerator;
+class BossGenerator;
 class Config;
 class CowGenerator;
 class Game :public IGameObject
@@ -73,6 +74,15 @@ public:
 	}
 
 	void GameBGM();
+
+	void StopBGM(bool isStop) {
+		m_stopCntBGM += isStop ? 1 : -1;
+		m_stopCntBGM = max(0, m_stopCntBGM);
+	}
+	bool GetIsStopBGM()const {
+		return m_stopCntBGM > 0;
+	}
+
 private:
 
 	int m_chunkRange = 1;				//描画距離。
@@ -83,9 +93,11 @@ private:
 	std::unique_ptr <GameCamera> m_gameCamera;			//ゲームカメラ。
 	std::unique_ptr <GameMode> m_gameMode;				//ゲームモード。
 	std::unique_ptr <ZombieGenerator> m_zombieGenerator;//ゾンビツクール。
+	std::unique_ptr <BossGenerator> m_bossGenerator;	//ボスツクール。
 	std::unique_ptr <Menu> m_menu;						//メニュー。
 	std::unique_ptr <CowGenerator> m_cowGenerator;
 
+	int m_stopCntBGM = 0;
 	SuicideObj::CBGM* m_bgm = nullptr;
 	Config* m_config = nullptr;
 

@@ -57,6 +57,7 @@
     <ClCompile Include="BiomeManager.cpp" />
     <ClCompile Include="BlockInfo.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossGenerator.cpp" />
     <ClCompile Include="CameraCollisionSolver.cpp" />
     <ClCompile Include="BlockInfoDictionary.cpp" />
     <ClCompile Include="Chest.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="BlockRenderingLightParameter.h" />
     <ClInclude Include="Animals.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossGenerator.h" />
     <ClInclude Include="CalcMuki.h" />
     <ClInclude Include="CameraCollisionSolver.h" />
     <ClInclude Include="BlockInfoDictionary.h" />

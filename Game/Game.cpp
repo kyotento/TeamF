@@ -10,6 +10,7 @@
 #include "Sun.h"
 #include "Title.h"
 #include "ZombieGenerator.h"
+#include "BossGenerator.h"
 #include "Menu.h"
 #include "Config.h"
 #include "CowGenerator.h"
@@ -57,6 +58,9 @@ bool Game::Start()
 
 	m_zombieGenerator.reset(NewGO<ZombieGenerator>());
 	m_zombieGenerator->SetWorld(m_world.get());
+	
+	m_bossGenerator.reset(NewGO<BossGenerator>());
+	m_bossGenerator->SetWorld(m_world.get());	
 	
 	m_cowGenerator.reset(NewGO<CowGenerator>());
 	m_cowGenerator->SetWorld(m_world.get());
@@ -129,10 +133,15 @@ void Game::TransToTitle()
 
 void Game::GameBGM()
 {
-	//BGM
-	if (!m_bgm) {
-		m_bgm = NewGO<SuicideObj::CBGM>(m_bgmName);
-		m_bgm->SetVolume(0.1f);
-		m_bgm->Play(false, true);
+	if (m_stopCntBGM == 0) {
+		//BGM
+		if (!m_bgm) {
+			m_bgm = NewGO<SuicideObj::CBGM>(m_bgmName);
+			m_bgm->SetVolume(0.1f);
+			m_bgm->Play(false, true);
+		}
+	}
+	else {
+		if (m_bgm) { DeleteGO(m_bgm); m_bgm = nullptr; }
 	}
 }

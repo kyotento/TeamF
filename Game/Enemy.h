@@ -76,7 +76,9 @@ public:
 	void SetEnableEntityInner(bool enable)override {
 		m_damageCollision->SetEnable(enable);
 		m_skinModelRender->SetEnable(enable);
+		SetEnableEntityInner2(enable);
 	}
+	virtual void SetEnableEntityInner2(bool enable) {}
 
 	//エネミーのアニメーション。
 	enum enAnimationClips {
@@ -105,6 +107,11 @@ public:
 		m_scale = scale;
 	}
 
+	//死んでるか取得
+	bool GetIsDeath()const {
+		return m_enemyState == enEnemy_death;
+	}
+
 protected:
 
 	const wchar_t* m_damageVoice;		//ダメージ音。
@@ -125,8 +132,8 @@ protected:
 	float m_attackRenge = 1.01f * Block::WIDTH;		//攻撃開始距離
 	const float m_characonRadius = 40.f;			//キャラコンの半径。
 	const float m_characonHeight = 160.f;			//キャラコンの高さ。
-	const float m_interpolateTimeSec = 0.3f;		//アニメーション切り替え時のアニメーション補間時間。
-	const float m_animSpeed = 1.0f;					//アニメーションの速度。
+	float m_interpolateTimeSec = 0.3f;				//アニメーション切り替え時のアニメーション補間時間。
+	float m_animSpeed = 1.0f;						//アニメーションの速度。
 	float m_fallSpeed = 0.8f;						//落下速度。
 	float m_jumpSpeed = 1.f;						//ジャンプ速度。
 	float m_jmpInitialVelocity = 13.f;				//ジャンプの初速度。

@@ -243,6 +243,9 @@
     <ClCompile Include="Boss.cpp">
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="BossGenerator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -507,6 +510,9 @@
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BossGenerator.h">
+      <Filter>generator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
