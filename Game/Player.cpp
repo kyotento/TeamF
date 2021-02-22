@@ -209,6 +209,8 @@ void Player::Update()
 	CalcAttackPow();
 	//空腹ダメージ。
 	HungryDamage();
+	//クリエイティブのときのパラメーター。
+	CreativeSt();
 
 	//奈落死。
 	if (m_position.y <= 0.f) {
@@ -1184,4 +1186,12 @@ void Player::CreateFrontDropItem(std::unique_ptr<ItemStack>& item)
 	drop->SetPos(pos);
 	drop->SetVelocity(GetFront() * 300);
 
+}
+
+void Player::CreativeSt()
+{
+	if (m_gameMode->GetGameMode() == GameMode::enGameModeCreative) {
+		m_hp = 20.f;
+		m_stamina = 20.f;
+	}
 }
