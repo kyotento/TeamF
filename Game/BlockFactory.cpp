@@ -27,8 +27,6 @@ namespace{
 
 SkinModelEffectShader BlockFactory::m_s_ps;
 
-int BlockFactory::m_instanceMax = -1;
-
 void BlockFactory::Init( std::filesystem::path jsonFolder){
 	if( factoryInited ){
 		return;
@@ -45,18 +43,19 @@ void BlockFactory::Init( std::filesystem::path jsonFolder){
 	m_s_ps.Load( "Preset/shader/_u_blockShader.fx", "PSMain_McBlockRenderGBuffer", Shader::EnType::PS, "INSTANCING", macros );
 
 	//インスタンシングモデルのロード
-	int loadEdge = 4 * Chunk::WIDTH;
-	m_instanceMax = loadEdge * loadEdge /*( int( RandomMapMaker::m_maxHeight ) + 1 )*/;
+	const int defaultMaxIns = 256;
 
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 
 	for( const auto& entry : GetBlockMap() ){
-		GameObj::InstancingModel* instanceModel = mngr.Load( m_instanceMax, entry.second.modelPath.c_str() );
+		//デフォルトの最大数でロード。
+		GameObj::InstancingModel* instanceModel = mngr.Load( defaultMaxIns, entry.second.modelPath.c_str() );
+
 		instanceModel->SetIsFrustumCulling( true );
 		instanceModel->SetIsFrustumCulling( true );
 
 		//ライティング用IInstanceDataを設定
-		instanceModel->AddIInstanceData( L"BlockRenderingLightParameter", std::make_unique<BlockRenderingLightParameter>( m_instanceMax ) );
+		instanceModel->AddIInstanceData( L"BlockRenderingLightParameter", std::make_unique<BlockRenderingLightParameter>( defaultMaxIns ) );
 		//シェーダー設定
 		instanceModel->GetModelRender().GetSkinModel().FindMaterialSetting(
 			[&]( MaterialSetting* mat ){
@@ -71,7 +70,7 @@ void BlockFactory::Init( std::filesystem::path jsonFolder){
 void BlockFactory::FindBlockModel( std::function<void( GameObj::InstancingModel* )> func ){
 	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
 	for( auto entry : GetBlockMap() ){
-		GameObj::InstancingModel* instanceModel = mngr.Load( m_instanceMax, entry.second.modelPath.c_str() );
+		GameObj::InstancingModel* instanceModel = mngr.Load( 0, entry.second.modelPath.c_str() );
 
 		//処理実行
 		func( instanceModel );
@@ -125,6 +124,21 @@ std::unique_ptr<Block> BlockFactory::CreateBlock(EnCube blockType, Block::enMuki
 
 	//共通情報を使って初期化。
 	const BlockInfo& bInfo = st_blockInfo.GetInfo( blockType );
+
+	//モデル最大数更新
+	auto& mngr = GameObj::CInstancingModelRender::GetInstancingModelManager();
+	GameObj::InstancingModel* instanceModel = mngr.Load( 0, bInfo.modelPath.c_str() );
+
+	//モデルが最大値を超えたら2倍確保する。
+	const int modelMax = instanceModel->GetInstanceMax();
+	if( Block::GetModelCount( bInfo ) >= modelMax ){
+		instanceModel->SetInstanceMax( modelMax * 2 );
+		instanceModel->AddIInstanceData(
+			L"BlockRenderingLightParameter",
+			std::make_unique<BlockRenderingLightParameter>( modelMax * 2 )
+		);
+	}
+
 	block->Init( &bInfo, muki );
 
 	return std::move( block );

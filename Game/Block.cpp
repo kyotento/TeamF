@@ -7,6 +7,8 @@
 
 bool Block::m_sDestroyMode = false;
 World* Block::m_sWorld = nullptr;
+//各モデルの存在数。
+std::unordered_map<std::string, int> Block::s_modelCount;
 
 namespace {
 	constexpr float half = Block::WIDTH * 0.5f;
@@ -32,13 +34,19 @@ Block::Block(){
 }
 
 Block::~Block(){
+	//モデル存在数を減らす。
+	std::string modelPath = m_bInfo->modelPath.string();
+	s_modelCount[modelPath]--;
+	if( s_modelCount[modelPath] <= 0 ){
+		s_modelCount.erase( modelPath );
+	}
+
 	if (m_sDestroyMode) {
 		return;
 	}
 	if (m_bInfo->id != enCube_None) {
 		m_bInfo = &BlockInfo::NONE_BLOCK;
 		CalcAddLight(true);
-
 	}
 }
 
@@ -75,6 +83,10 @@ void Block::Init( const BlockInfo * bInfo, enMuki muki ){
 			SetLightingData( _1, _2, 0 );
 		}
 	}
+
+	//モデル存在数を追加。
+	std::string modelPath = bInfo->modelPath.string();
+	s_modelCount[modelPath]++;
 }
 
 void Block::CalcAABB() {
