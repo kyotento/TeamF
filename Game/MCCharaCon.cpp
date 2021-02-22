@@ -13,6 +13,9 @@ void MCCharaCon::Init(float width, float height, const CVector3& position) {
 	m_colSize.x = m_colSize.z = width;
 	m_colSize.y = height + width*2.0f;
 	m_position = position;	
+
+	UpdateAABBRender();
+
 	m_isInited = true;
 }
 

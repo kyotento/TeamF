@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AABB.h"
+
 class World;
 class Block;
 
@@ -64,15 +66,19 @@ public:
 		return m_isContactWall;
 	}
 
+	const AABB& GetAABB()const {
+		return m_aabb;
+	}
+
 private:
 	//描画AABBの更新
 	void UpdateAABBRender() {
-		if (m_aabbReender) {
-			CVector3 min = m_position - m_colSize, max = m_position + m_colSize;
-			min.y = m_position.y;
-			max.y = m_position.y + m_colSize.y;
+		m_aabb.min = m_position - m_colSize, m_aabb.max = m_position + m_colSize;
+		m_aabb.min.y = m_position.y;
+		m_aabb.max.y = m_position.y + m_colSize.y;
 
-			m_aabbReender->Init(min, max, {1.0f,0.0f,1.0f,1.0f});
+		if (m_aabbReender) {
+			m_aabbReender->Init(m_aabb.min, m_aabb.max, {1.0f,0.0f,1.0f,1.0f});
 		}
 	}
 
@@ -95,6 +101,8 @@ private:
 
 	std::unique_ptr<GameObj::CAABBRender> m_aabbReender;//AABBを描画するやつ
 	//GameObj::CAABBRender m_aabbReender2[16];
+
+	AABB				m_aabb;
 
 	World* m_world = nullptr;							//ワールドのポインタ
 };
