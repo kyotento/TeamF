@@ -680,14 +680,20 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		m_errorTimer = errorTime;
 		return false;
 	}
-	Chunk* chunk = GetChunkFromWorldPos( x, z );
 
+	//プレイヤーのいるところには衝突するブロック設置できない
+	IntVector3 playerPos((m_player->GetPos() + CVector3::Up() * Block::WIDTH * 0.5f) / Block::WIDTH);
+	if (block->GetIsColision() && x == playerPos.x && z == playerPos.z && (y == playerPos.y || y == playerPos.y + 1)) {
+		return false;
+	}
+
+	Chunk* chunk = GetChunkFromWorldPos( x, z );
 	if( !chunk ){
 		chunk = CreateChunkFromWorldPos( x, z );
 	}
 
 	x = Chunk::CalcInChunkCoord( x );
-	z = Chunk::CalcInChunkCoord( z );
+	z = Chunk::CalcInChunkCoord( z );	
 
 	if (block->GetBlockType() == enCube_BedHead || block->GetBlockType() == enCube_BedLeg) {
 		//ベッド
