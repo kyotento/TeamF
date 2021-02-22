@@ -2,5 +2,5 @@
 	"id": "enItem_Steak",
 	"name": "ステーキ",
 	"sprite": "spriteData/items/steak.dds",
-	"food_level": 16
+	"food_level": 8
 }
