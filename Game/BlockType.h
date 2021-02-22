@@ -37,21 +37,21 @@ enum EnCube
 	enCube_DiamondOre,		//ダイアモンド鉱石。
 	enCube_DiamondBlock,	//ダイアモンドブロック
 	enCube_CoalBlock,		//石炭ブロック。
-	enCube_OakWoodHalf,
-	enCube_OakWoodStairs,
-	enCube_StoneHalf,
-	enCube_StoneStairs,
-	enCube_CobbleStoneHalf,
-	enCube_CobbleStoneStairs,
-	enCube_StoneBrick,
-	enCube_StoneBrickStairs,
-	enCube_StoneBrickHalf,
-	enCube_PatternedStoneBrick,
-	enCube_SandStone,
-	enCube_SmoothSandStone,
-	enCube_PatternedSandBlock,
-	enCube_SandStoneStairs,
-	enCube_SandStoneHalf,
+	enCube_OakWoodHalf,		//木のハーフブロック。
+	enCube_OakWoodStairs,	//木の階段。
+	enCube_StoneHalf,		//石のハーフブロック。
+	enCube_StoneStairs,		//石の階段。
+	enCube_CobbleStoneHalf,	//丸石のハーフブロック。
+	enCube_CobbleStoneStairs,//丸石の階段。
+	enCube_StoneBrick,		//石レンガ。
+	enCube_StoneBrickStairs,//石レンガの階段。
+	enCube_StoneBrickHalf,	//石レンガのハーフブロック。
+	enCube_PatternedStoneBrick,//模様付き石レンガ。
+	enCube_SandStone,			//砂岩。
+	enCube_SmoothSandStone,		//なめらかな砂岩。
+	enCube_PatternedSandBlock,	//模様付き砂岩。
+	enCube_SandStoneStairs,		//砂岩の階段。
+	enCube_SandStoneHalf,		//砂岩のハーフブロック。
 
 	enCube_Num
 };
