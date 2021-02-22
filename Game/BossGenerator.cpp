@@ -40,12 +40,37 @@ void BossGenerator::NewGOMob(const CVector3& pos)
 	}
 
 	//確率判定
-	m_runCnt++;
-	if (m_runCnt / 8.0f <= CMath::RandomZeroToOne()) {
+	if (m_runCnt / 20.0f <= CMath::RandomZeroToOne()) {
 		return;
 	}
 
 	//プレイヤーの生成。
 	Enemy* boss = MobGenerator::GetWorld()->CreateEntity<Boss>();
 	boss->SetPos(pos);
+}
+
+void BossGenerator::PreUpdate() {
+	m_bossTimerSec += GetDeltaTimeSec();
+	if (m_bossTimerSec >= 60.0f * 1.0f)//一分に一回
+	{
+		m_bossTimerSec = 0.0f;
+
+		/*
+		if (m_sun == nullptr) {
+			m_sun = FindGO<Sun>();
+			if (m_sun == nullptr) {
+				return;
+			}
+		}
+
+		//昼間のみ増加
+		float second = m_sun->GetSecond();
+		if (!(second > sunriseSecond && second < sunsetSecond)) {
+			return;
+		}
+		*/
+
+		//カウント増加
+		m_runCnt++;
+	}
 }
