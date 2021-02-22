@@ -124,6 +124,11 @@ public:
 		m_characon.SetPosition( pos );
 	}
 
+	//キャラクターのAABBを取得
+	const AABB& GetAABB()const {
+		return m_characon.GetAABB();
+	}
+
 	/// <summary>
 	/// エンティティの有効切替時の処理
 	/// </summary>
