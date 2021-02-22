@@ -64,6 +64,7 @@ public:
 	//! @brief ブロックの種類を取得。
 	EnCube GetBlockType() const
 	{
+		DW_WARNING_BOX(!m_bInfo, "m_bInfoがnull")
 		return m_bInfo->id;
 	}
 
