@@ -29,8 +29,5 @@ public:
 private:
 	//ブロック描画シェーダー
 	static SkinModelEffectShader m_s_ps;
-
-	//インスタンス数
-	static int m_instanceMax;
 };
 

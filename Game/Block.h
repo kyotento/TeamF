@@ -175,6 +175,10 @@ public:
 	//! @brief ライティング描画の更新
 	void RefleshDrawLighting(World* world, const IntVector3& blockPos, char lightPower, char skyLightPower);
 
+	static int GetModelCount( const BlockInfo& b ){
+		return s_modelCount[b.modelPath.string()];
+	}
+
 	//! @brief ワールドを設定
 	static void SetWorldPtr(World* world) {
 		m_sWorld = world;
@@ -229,5 +233,8 @@ protected:
 	GameObj::CInstancingModelRender m_model;
 	//ワールドポインタ
 	static World* m_sWorld;
+
+	//各モデルの存在数。
+	static std::unordered_map<std::string, int> s_modelCount;
 };
 
