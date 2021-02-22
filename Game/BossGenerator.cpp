@@ -21,7 +21,7 @@ void BossGenerator::Init()
 	SetParametors(params);
 
 	//生成するエンティティのタイプを設定する。
-	SetTypeEntity(enEntity_Zombie);
+	SetTypeEntity(enEntity_Boss);
 }
 
 void BossGenerator::NewGOMob(const CVector3& pos)

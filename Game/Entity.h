@@ -6,7 +6,8 @@ enum EnEntity
 {
 	enEntity_None,			//ノーン(今んとこゾンビしか判定に使ってないので他はこれで)。
 	enEntity_Zombie,		//ゾンビ。
-	enEntity_Cow			//牛。			
+	enEntity_Cow,			//牛。			
+	enEntity_Boss,			//ボス。
 };
 
 class World;

@@ -4,7 +4,7 @@
 #include "ItemDictionary.h"
 #include "ItemStack.h"
 
-Boss::Boss() : Enemy(enEntity_Zombie)
+Boss::Boss() : Enemy(enEntity_Boss)
 {
 }
 
