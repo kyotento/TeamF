@@ -92,3 +92,4 @@ obj/
 
 #file of playerData
 *.player
+/Game/Save/Time
