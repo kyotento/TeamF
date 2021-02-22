@@ -66,7 +66,7 @@ public:
 
 	//! @brief アイテム名を取得。
 	const wchar_t* GetItemName() const{
-		return m_itemName;
+		return m_itemName.c_str();
 	}
 
 	//! @brief GUI用のアイテムの描画。
@@ -104,7 +104,7 @@ private:
 	int m_limitNumber = 64;
 
 	//! アイテム名
-	const wchar_t* m_itemName = nullptr;
+	std::wstring m_itemName;
 
 	//アイテム画像。
 	std::unique_ptr<ItemImage> m_image;
