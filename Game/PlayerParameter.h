@@ -79,7 +79,7 @@ private:
 	void PlayerLevelUp();
 	static const int m_paramNum = 10;				//パラメーターの画像の数。
 	int m_oldHP = 0;								//プレイヤーの1フレーム前のHPを格納。
-	int m_oldStamina = 0;							//プレイヤーの1フレーム前のスタミナを格納。
+	int m_oldStamina = 10;							//プレイヤーの1フレーム前のスタミナを格納。
 	int m_oldArmor = 0;								//プレイヤーの1フレーム前の防御力を格納。
 	int m_selectNum = 1;							//何番目のアイテムをセレクトしているか 1~9(プレイヤー格納用)。
 	int m_selectNumOld = 0;							//１フレーム前の↑。

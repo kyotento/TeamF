@@ -44,5 +44,8 @@ private:
 	std::unordered_map<std::string, Item*> m_nameMap;
 
     const char* m_toolMap[enTool_Num];
+
+	bool m_itemLoaded = false;
+	bool m_blockLoaded = false;
 };
 

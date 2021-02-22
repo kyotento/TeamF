@@ -12,7 +12,12 @@ Item & Item::GetItem( const std::string & strId ){
 }
 
 void Item::Draw( const CVector2 & pos, const CVector2 & scale ){
-	m_image->Draw( pos, scale );
+	if (m_id == enCube_Chest) {
+		m_image->Draw(pos, scale * 2);
+	}
+	else {
+		m_image->Draw(pos, scale);
+	}
 }
 
 Item::~Item(){}

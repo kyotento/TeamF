@@ -32,7 +32,7 @@ namespace{
 		return int32_t(log10( num )) + 1 + minus;
 	}
 
-	//! チャンクを保存するべきregionファイルを決定する。region座標で"regionX,Z.regi"のファイル名となる。
+	//! チャンクを保存するべきchunkファイルを決定する。chunk座標で"chunkX,Z.chk"のファイル名となる。
 	std::filesystem::path GetFilePath( const Chunk & chunk ){
 		int x = chunk.GetX();
 		int z = chunk.GetZ();

@@ -17,6 +17,8 @@ namespace{
 	bool isSwichByMouseClickFlag = false;
 
 	int oldexp = 0;
+	//画像を奥に描画するよん。
+	const float layerDepth = 0.6f;
 }
 
 PlayerParameter::PlayerParameter()
@@ -74,6 +76,7 @@ void PlayerParameter::SetParamFound()
 		m_hpPosition[i].x += 0.02f * i;
 		m_spriteRenderHP[i].SetPos(m_hpPosition[i]);
 		m_spriteRenderHP[i].SetScale(m_scale);
+		m_spriteRenderHP[i].SetLayerDepth(layerDepth);
 
 		//スタミナ画像の基盤を生成。
 		m_staminaPosition[i] = { 0.7f,0.855f };
@@ -82,6 +85,7 @@ void PlayerParameter::SetParamFound()
 		m_staminaPosition[i].x -= 0.02f * i;
 		m_spriteRenderStamina[i].SetPos(m_staminaPosition[i]);
 		m_spriteRenderStamina[i].SetScale(m_scale);
+		m_spriteRenderStamina[i].SetLayerDepth(layerDepth);
 
 		//防御力画像の基盤。
 		m_armorPos[i] = { 0.3f,0.815f };
@@ -90,6 +94,7 @@ void PlayerParameter::SetParamFound()
 		m_armorPos[i].x += 0.02f * i;
 		m_spriteRenderArmor[i].SetPos(m_armorPos[i]);
 		m_spriteRenderArmor[i].SetScale(m_scale);
+		m_spriteRenderArmor[i].SetLayerDepth(layerDepth);
 	}
 	//手持ちアイテム基盤。
 	m_spriteRenderOnHand.Init(L"Resource/spriteData/OnHandInventory.dds");
