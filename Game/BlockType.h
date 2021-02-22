@@ -52,6 +52,7 @@ enum EnCube
 	enCube_PatternedSandBlock,	//模様付き砂岩。
 	enCube_SandStoneStairs,		//砂岩の階段。
 	enCube_SandStoneHalf,		//砂岩のハーフブロック。
+	enCube_LearnTorch,			//斜め松明
 
 	enCube_Num
 };

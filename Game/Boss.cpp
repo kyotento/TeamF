@@ -50,6 +50,7 @@ namespace {
 		//case enCube_DoorDown:
 		case enCube_TorchBlock:
 		case enCube_Torch:
+		case enCube_LearnTorch:
 		case enCube_BedHead:
 		case enCube_BedLeg:
 		case enCube_Chest:
