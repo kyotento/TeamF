@@ -93,6 +93,12 @@ public:
 	//	m_collision.reset();
 	//}
 
+	//! @brief ƒLƒƒƒ‰ƒRƒ“‚ÆÕ“Ë‚·‚é‚©Žæ“¾
+	bool GetIsColision()const {
+		DW_WARNING_BOX(!m_bInfo, "m_bInfo‚ªnull")
+		return m_bInfo->isColision;
+	}
+
 	//! @brief •s“§–¾‚©‚Ç‚¤‚©Žæ“¾
 	bool GetIsOpacity()const{
 		DW_WARNING_BOX(!m_bInfo,"m_bInfo‚ªnull")

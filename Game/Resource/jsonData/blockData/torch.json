@@ -5,8 +5,9 @@
 	"hp": 1,
 	"light": 14,
 	"aabb": [
-		[-0.035, 0, -0.035],
-		[0.035, 1, 0.035]
+		[ -0.035, 0, -0.035 ],
+		[ 0.035, 1, 0.035 ]
 	],
-	"opacity": false
+	"opacity": false,
+	"isColision": false
 }

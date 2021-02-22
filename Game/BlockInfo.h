@@ -34,6 +34,9 @@ public:
 	//燃料レベル
 	float fuel_level = 0;
 
+	//キャラコンと衝突するか
+	bool isColision = true;
+
 	//enCube_None用のInfo
 	static const BlockInfo NONE_BLOCK;
 };

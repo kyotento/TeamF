@@ -182,6 +182,11 @@ void BlockInfoDictionary::Load( const std::filesystem::path & folderPath ){
 				bInfo.fuel_level = jObj["fuel_level"].get<float>();
 			}
 
+			//ÉLÉÉÉâÉRÉìÇ∆è’ìÀÇ∑ÇÈÇ©
+			if (jObj.find("isColision") != jObj.end()) {
+				bInfo.isColision = jObj["isColision"].get<bool>();
+			}
+
 		} catch( nl::detail::exception& ex ){
 			messageAbort( file, ex.what() );
 
