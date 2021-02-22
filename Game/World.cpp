@@ -692,7 +692,8 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 		const AABB& playerAABB = m_player->GetAABB();
 
 		AABB blockAABB;
-		blockAABB.min = blockAABB.max = pos * Block::WIDTH;
+		blockAABB.min = CVector3(x * Block::WIDTH + Block::WIDTH / 2, y * Block::WIDTH, z * Block::WIDTH + Block::WIDTH / 2);
+		blockAABB.max = blockAABB.min;
 		blockAABB.min -= CVector3(Block::WIDTH / 2.0f, 0.0f, Block::WIDTH / 2.0f);
 		blockAABB.max += CVector3(Block::WIDTH / 2.0f, Block::WIDTH, Block::WIDTH / 2.0f);
 
