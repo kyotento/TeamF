@@ -981,10 +981,12 @@ void Player::Death()
 		//リスポーン。
 		if (m_playerDeath->Click() == m_playerDeath->enButtonResupawn) {
 			Respawn();
+			m_exp = 0.f;
 		}
 		//タイトルへ戻る。
 		else if (m_playerDeath->Click() == m_playerDeath->enButtonRerturnToTitle) {
 			m_game->TransToTitle();
+			m_exp = 0.f;
 		}
 	}
 }
