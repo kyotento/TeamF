@@ -491,6 +491,9 @@ private:
 
 	void Defence();
 
+	//クリエイティブのときのパラメーター。
+	void CreativeSt();
+
 	/// <summary>
 	/// 攻撃力算出
 	/// </summary>
