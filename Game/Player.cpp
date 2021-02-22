@@ -424,7 +424,7 @@ void Player::Jump()
 		if (GetKeyInput(VK_SPACE) && m_characon.IsOnGround() && m_openedGUI == nullptr) {	//スペースが押されていたら&&地面にいたら&& GUIが未表示なら。
 			m_isJump = true;			//ジャンプフラグを返す。
 			if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-				m_stamina -= 0.2f;			//サバイバルモードの時のみスタミナを減らす。
+				m_stamina -= 0.1f;			//サバイバルモードの時のみスタミナを減らす。
 			}
 		}
 		//ジャンプ中の処理。
@@ -685,7 +685,7 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().SetSpeed(0.9f);
 		m_runSpeedDouble = 1.f;
 		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-			m_stamina -= 0.0003f;
+			m_stamina -= 0.00003f;
 		}
 
 		break;
@@ -696,7 +696,7 @@ void Player::StateManagement()
 		m_skinModelRender->GetAnimCon().SetSpeed(1.2f);
 		m_runSpeedDouble = 2.f;
 		if (m_gameMode->GetGameMode() == GameMode::enGameModeSurvival) {
-			m_stamina -= 0.003f;
+			m_stamina -= 0.0003f;
 		}
 
 		break;
