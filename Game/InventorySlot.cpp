@@ -2,7 +2,7 @@
 #include "InventorySlot.h"
 #include "Inventory.h"
 #include "ItemStack.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 #include "GUIManager.h"
 #include "InventoryController.h"
 
@@ -21,13 +21,12 @@ namespace GUI{
 
 	InventorySlots::~InventorySlots(){}
 
-	void InventorySlots::OnClick( GUI::Event::ClickEvent & event ){
+	void InventorySlots::OnMouseEvent( GUI::Event::MouseEvent & event ){
 		CVector2 pos = event.GetPos();
 
 		int x = int( std::floorf( pos.x / ( float( SLOT_WIDTH ) ) ) );
 		int y = int( std::floorf( pos.y / ( float( SLOT_WIDTH ) ) ) );
-		//列と行からスロット番号を算出。
-		m_controller.OnClickSlot( event, m_slotNoStart + x + y * m_widthNum );
+		m_controller.OnMouseEvent( event, m_slotNoStart + x + y * m_widthNum );
 	}
 
 	void InventorySlots::Draw( const CVector2 & pos, const CVector2 & parentScale ){

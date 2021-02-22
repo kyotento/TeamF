@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Node.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 #include "KeyEvent.h"
 #include "GUIManager.h"
 
@@ -28,29 +28,34 @@ namespace GUI{
 		return m_pos - pivotSize;
 	}
 
-	void Node::ReciveClickEvent(const Event::ClickEvent& event, bool isRoot){
-		//クリックが自分の上で起こった場合にだけ実行。
-		if( !event.IsOnNode( *this ) ){
-			if( isRoot ){
+	void Node::ReciveMouseEvent(const Event::MouseEvent& event, bool isRoot){
+		const bool isOnMe = event.IsOnNode( *this );
+
+		//マウスが自分の外側なら終了。
+		if( isOnMe == false){
+			//ルートノードだけ外側クリックを拾う。
+			if( event.IsClick() && isRoot ){
 				OnClickOnOut( event );
 			}
 			return;
 		}
 
 		//自分の座標系に変更。
-		Event::ClickEvent eventOnMe = event.CreateEventOnNode( *this );
+		Event::MouseEvent eventOnMe = event.CreateEventOnNode( *this );
 
-		//イベントを処理。
-		OnClick( eventOnMe );
+		if( isOnMe ){
+			//イベント発行
+			OnMouseEvent( eventOnMe );
 
-		//イベントを消費していたらここで終わり。
-		if( eventOnMe.IsConsumed() ){
-			return;
+			//イベントを消費していたらここで終わり。
+			if( eventOnMe.IsConsumed() ){
+				return;
+			}
 		}
 
 		//イベントが消費されなかったら子ノードにまわす。
 		for( auto& childe : m_children ){
-			childe->ReciveClickEvent( eventOnMe );
+			childe->ReciveMouseEvent( eventOnMe );
 		}
 
 	}

@@ -5,7 +5,7 @@ namespace GUI{
 
 	namespace Event{
 		class KeyEvent;
-		class ClickEvent;
+		class MouseEvent;
 	}
 
 	//! @brief すべてのGUIオブジェクトの基底クラス。複数の子ノードを持つ。
@@ -81,19 +81,25 @@ namespace GUI{
 		}
 
 		//! @brief マウスクリックイベントの受け取りと子ノードへの配給。
-		void ReciveClickEvent(const Event::ClickEvent& event , bool isRoot = false);
+		void ReciveMouseEvent(const Event::MouseEvent& event , bool isRoot = false);
 
 		//! @brief マウスクリックイベントを処理。
-		virtual void OnClick(Event::ClickEvent& event){}
+		virtual void OnClick(Event::MouseEvent& event){}
+
+		//! @brief マウスが上に乗ったイベントを処理。
+		virtual void OnMouseEvent( Event::MouseEvent& event ){}
 
 		//! @brief ノードの外側で起きたマウスクリックイベント。ルートノードでしか呼ばれない。
-		virtual void OnClickOnOut(const Event::ClickEvent& event ){}
+		virtual void OnClickOnOut(const Event::MouseEvent& event ){}
 
 	private:
 		CVector2 m_pos;
 		CVector2 m_scale{1, 1};
 		CVector2 m_pivot;
 		std::vector<std::unique_ptr<Node>> m_children;
+
+		//今マウスが上に乗っている。
+		bool m_mouseOn = false;
 	};
 
 	//! @brief Node の根。GUIManager の AddRoot と RemoveRoot をやってくれるだけ。

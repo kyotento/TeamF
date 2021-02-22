@@ -8,7 +8,7 @@ class ItemStack;
 namespace GUI{
 
 	namespace Event{
-		class ClickEvent;
+		class MouseEvent;
 	}
 
 	namespace Controller{
@@ -21,7 +21,7 @@ namespace GUI{
 							   std::unique_ptr<ItemStack>& grabed, FurnaceFire& fire);
 
 			//! @brief インベントリースロットをクリックしたときに呼ばれる関数。
-			void OnClickSlot( Event::ClickEvent& event, unsigned slotNo );
+			void OnMouseEvent( Event::MouseEvent& event, unsigned slotNo );
 
 		private:
 			FurnaceFire& m_fire;

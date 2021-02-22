@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "FurnaceController.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 #include "Inventory.h"
 #include "ItemStack.h"
 #include "RecipeManager.h"
@@ -12,7 +12,7 @@ namespace GUI::Controller{
 
 	}
 
-	void FurnaceController::OnClickSlot( Event::ClickEvent & event, unsigned slotNo ){
+	void FurnaceController::OnMouseEvent( Event::MouseEvent & event, unsigned slotNo ){
 		auto& result = m_inventory.GetItem( Furnace::RESULT );
 		auto& fuel = m_inventory.GetItem( Furnace::FUEL );
 		auto& source = m_inventory.GetItem( Furnace::SOURCE );
@@ -75,7 +75,7 @@ namespace GUI::Controller{
 		}
 
 		//通常のクリック操作。
-		InventoryController::OnClickSlot( event, slotNo );
+		InventoryController::OnMouseEvent( event, slotNo );
 
 		//火がついていたらここで終わり。
 		if( m_fire.isFire() ){

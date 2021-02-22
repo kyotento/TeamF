@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CraftingController.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 #include "Inventory.h"
 #include "RecipeManager.h"
 #include "Player.h"
@@ -35,7 +35,7 @@ namespace GUI::Controller{
 		}
 	}
 
-	void CraftingController::OnClickSlot( Event::ClickEvent & event, unsigned slotNo ){
+	void CraftingController::OnMouseEvent( Event::MouseEvent & event, unsigned slotNo ){
 		const unsigned resultSlot = 9;
 
 		if( slotNo == resultSlot ){
@@ -81,7 +81,7 @@ namespace GUI::Controller{
 
 		if( slotNo != resultSlot ){
 			//通常のクリック操作。
-			InventoryController::OnClickSlot( event, slotNo );
+			InventoryController::OnMouseEvent( event, slotNo );
 		}
 
 		//クラフト結果を検索。成果物スロットを更新する。

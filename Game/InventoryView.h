@@ -29,7 +29,7 @@ namespace GUI{
 		CVector2 GetSize() const override;
 
 		//! @brief 外側で起こったクリックイベント。
-		void OnClickOnOut( const Event::ClickEvent& event ) override;
+		void OnClickOnOut( const Event::MouseEvent& event ) override;
 
 	protected:
 		//掴んでいるアイテム

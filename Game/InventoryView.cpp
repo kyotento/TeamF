@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "World.h"
 #include "DropItem.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 
 namespace GUI{
 
@@ -74,10 +74,10 @@ namespace GUI{
 		return size;
 	}
 
-	void InventoryView::OnClickOnOut( const Event::ClickEvent & event ){
+	void InventoryView::OnClickOnOut( const Event::MouseEvent & event ){
 		if( m_grabed ){
 			int dropNum = 1;
-			if( event.GetClickType() == event.LEFT ){
+			if( event.GetButton() == event.LEFT ){
 				dropNum = 64;
 			}
 

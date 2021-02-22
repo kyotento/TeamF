@@ -62,9 +62,6 @@
     <ClCompile Include="Biome.cpp">
       <Filter>Biome</Filter>
     </ClCompile>
-    <ClCompile Include="ClickEvent.cpp">
-      <Filter>GUI\Event</Filter>
-    </ClCompile>
     <ClCompile Include="Block.cpp">
       <Filter>Block</Filter>
     </ClCompile>
@@ -246,6 +243,9 @@
     <ClCompile Include="BossGenerator.cpp">
       <Filter>generator</Filter>
     </ClCompile>
+    <ClCompile Include="MouseEvent.cpp">
+      <Filter>GUI\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -334,16 +334,12 @@
     <ClInclude Include="GameCamera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="ClickEvent.h" />
     <ClInclude Include="CollisionIndex.h" />
     <ClInclude Include="ItemImage.h">
       <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="InventoryController.h">
       <Filter>GUI\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="ClickEvent.h">
-      <Filter>GUI\Event</Filter>
     </ClInclude>
     <ClInclude Include="Title.h">
       <Filter>Title</Filter>
@@ -513,6 +509,10 @@
     </ClInclude>
     <ClInclude Include="BossGenerator.h">
       <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseEvent.h" />
+    <ClInclude Include="ZeroableStack.h">
+      <Filter>Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
