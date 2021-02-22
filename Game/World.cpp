@@ -641,7 +641,8 @@ void World::DestroyBlock(const IntVector3& pos) {
 	int x = Chunk::CalcInChunkCoord(pos.x);
 	int z = Chunk::CalcInChunkCoord(pos.z);
 
-	if (chunk->GetBlock(x, pos.y, z)->GetBlockType() == enCube_Bedrock) {//Šâ”Õ‚Í–³—
+	auto block = chunk->GetBlock(x, pos.y, z);
+	if (block && block->GetBlockType() == enCube_Bedrock) {//Šâ”Õ‚Í–³—
 		return;
 	}
 
@@ -662,7 +663,8 @@ void World::DestroyBlockNoDrop(const IntVector3& pos) {
 	int x = Chunk::CalcInChunkCoord(pos.x);
 	int z = Chunk::CalcInChunkCoord(pos.z);
 
-	if (chunk->GetBlock(x, pos.y, z)->GetBlockType() == enCube_Bedrock) {//Šâ”Õ‚Í–³—
+	auto block = chunk->GetBlock(x, pos.y, z);
+	if (block && block->GetBlockType() == enCube_Bedrock) {//Šâ”Õ‚Í–³—
 		return;
 	}
 
