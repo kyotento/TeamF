@@ -47,6 +47,8 @@ void BossGenerator::NewGOMob(const CVector3& pos)
 	//プレイヤーの生成。
 	Enemy* boss = MobGenerator::GetWorld()->CreateEntity<Boss>();
 	boss->SetPos(pos);
+
+	m_runCnt = 0;
 }
 
 void BossGenerator::PreUpdate() {
