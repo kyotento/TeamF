@@ -36,8 +36,9 @@ namespace GUI::Controller {
 	}
 
 	void EquipmentController::OnMouseEvent(Event::MouseEvent & event, unsigned slotNo) {
-		
-
+		if( event.IsClick() == false ){
+			return;
+		}
 
 		//クラフトスロットより上なら操作する。
 		if (slotNo > craftSlot) {

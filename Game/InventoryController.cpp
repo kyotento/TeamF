@@ -32,19 +32,29 @@ namespace GUI::Controller{
 			return;
 		}
 
+		//対象スロットと手持ち。
+		ZeroableStack slot( m_inventory.GetItem( slotNo ) );
+		ZeroableStack grab( m_grabed );
+
 		//置く操作。
-		if( event.IsClick() && m_grabed ){
+		if( event.IsClick() && grab ){
+			//別種アイテムの入れ替え。
+			if( slot && slot.GetID() != grab.GetID() ){
+				slot.swap( grab );
+			}
 			m_state = ON_PUT;
 		}
+
 		//置く操作。ドラッグの場合があるためステート変更とは分けている。
 		if( m_state == ON_PUT ){
 
-			//対象スロット
-			ZeroableStack slot( m_inventory.GetItem( slotNo ) );
-			ZeroableStack grab( m_grabed );
-
 			//新しいドラッグ範囲でない
 			if( m_dragSlots.count( slotNo ) != 0 ){
+				return;
+			}
+
+			//アイテムが違う
+			if( slot && grab && slot.GetID() != grab.GetID() ){
 				return;
 			}
 
@@ -52,11 +62,7 @@ namespace GUI::Controller{
 
 			//1個ずつ置いていく。
 			if( button == Button::RIGHT && m_grabed ){
-				//違うアイテム。
-				if( slot && slot.GetID() != grab.GetID() ){
-					return;
-				}
-				m_inventory.RClickSlot( slotNo, m_grabed );
+				slot.TakeFrom( grab, 1 );
 				return;
 			}
 
@@ -79,6 +85,14 @@ namespace GUI::Controller{
 					return;
 				}
 
+				//スタック上限を超えそうならトータルから引く。
+				const int allLimit = m_dragSlots.size() * m_dragItem->GetStackLimit();
+				int exceed = 0;
+				if( allLimit < total ){
+					exceed = total - allLimit;
+					total = allLimit;
+				}
+
 				//分配
 				for( int sNum : m_dragSlots ){
 					ZeroableStack setSlot( m_inventory.GetItem( sNum ), m_dragItem );
@@ -87,7 +101,7 @@ namespace GUI::Controller{
 
 				//余りを手元に
 				grab.SetItemToNull( m_dragItem );
-				grab.SetNumber( total % m_dragSlots.size());
+				grab.SetNumber( total % m_dragSlots.size() + exceed);
 				return;
 			}
 			return;

@@ -24,6 +24,8 @@ namespace GUI {
 			void OnMouseEvent(Event::MouseEvent& event, unsigned slotNo);
 
 		private:
+			void ShiftCraft( std::unique_ptr<ItemStack>&& result );
+
 			Inventory& m_playerInventory;
 		};
 

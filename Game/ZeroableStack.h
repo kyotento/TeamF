@@ -17,23 +17,24 @@ public:
 		return m_num;
 	}
 
-	void SetNumber(int num){
-		m_num = num;
-		if( m_num == 0 ){
-			m_stack = nullptr;
-			return;
-		}
-		if( m_stack == nullptr ){
-			m_stack = std::make_unique<ItemStack>( *m_item, 0 );
-		}
-		m_stack->SetNumber( num );
+	void SetNumber( int num );
+
+	void AddNumber( int num ){
+		SetNumber( m_num + num );
 	}
+
+	//! @brief 引数から自分に移動できるアイテムの数。
+	int GetCanTakeFrom( ZeroableStack& stack );
+
+	//! @brief 引数から自分にアイテムを移動させる。種類が違うとNG。スタック上限までしか移動しない。
+	//! @return 実際に移動した数。
+	int TakeFrom( ZeroableStack& stack, int count );
 
 	int GetID() const{
 		if( m_item ){
 			return m_item->GetID();
 		} else{
-			return -1;
+			return enCube_None;
 		}
 	}
 
@@ -46,6 +47,8 @@ public:
 			m_item = item;
 		}
 	}
+
+	void swap( ZeroableStack& stack );
 
 	std::unique_ptr<ItemStack>& GetStack(){
 		return m_stack;

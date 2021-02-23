@@ -13,6 +13,10 @@ namespace GUI::Controller{
 	}
 
 	void FurnaceController::OnMouseEvent( Event::MouseEvent & event, unsigned slotNo ){
+		if( event.IsClick() == false ){
+			return;
+		}
+
 		auto& result = m_inventory.GetItem( Furnace::RESULT );
 		auto& fuel = m_inventory.GetItem( Furnace::FUEL );
 		auto& source = m_inventory.GetItem( Furnace::SOURCE );

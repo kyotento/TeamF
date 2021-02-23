@@ -87,6 +87,7 @@
     <ClCompile Include="Wood.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="Utf8ToSjis.cpp" />
+    <ClCompile Include="ZeroableStack.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Bed.h" />
