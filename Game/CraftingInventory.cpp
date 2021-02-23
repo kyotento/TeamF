@@ -12,7 +12,8 @@ namespace GUI{
 		//コントローラー
 		m_controller = std::make_unique<Controller::CraftingController>(
 			player->GetInventory(), m_craftingSlots, m_grabed
-			);
+		);
+		m_controller->SetOthorCtrl( &GetLowerController() );
 
 		//上部分のスロットを追加。
 		const CVector2 craftingSlotPoint( 58, 37 );

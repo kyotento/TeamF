@@ -23,6 +23,8 @@ namespace GUI{
 			//! @brief インベントリースロットをクリックしたときに呼ばれる関数。
 			void OnMouseEvent( Event::MouseEvent& event, unsigned slotNo );
 
+			void AddItem( std::unique_ptr<ItemStack>& item ) override;
+
 		private:
 			FurnaceFire& m_fire;
 		};

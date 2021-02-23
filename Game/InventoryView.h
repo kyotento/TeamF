@@ -34,6 +34,11 @@ namespace GUI{
 	protected:
 		//掴んでいるアイテム
 		std::unique_ptr<ItemStack> m_grabed;
+
+		//下半分のコントローラー
+		Controller::InventoryController& GetLowerController(){
+			return *m_controller;
+		}
 	private:
 		Player* m_player = nullptr;
 		CSprite m_sprite;

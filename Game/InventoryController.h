@@ -24,6 +24,13 @@ namespace GUI{
 			//! @brief インベントリースロットにマウスが入ったときに呼ばれる関数。
 			virtual void OnMouseEvent( Event::MouseEvent& event, unsigned slotNo );
 
+			//! @brief アイテムを追加。シフトクリックで使用。
+			virtual void AddItem( std::unique_ptr<ItemStack>& item );
+
+			void SetOthorCtrl( InventoryController* ctrl ){
+				m_othorCtrl = ctrl;
+			}
+
 		protected:
 			//! @brief アイテム取得の動作。
 			//! @return クリックが行われたならtrue。
@@ -31,6 +38,7 @@ namespace GUI{
 
 			std::unique_ptr<ItemStack>& m_grabed;
 			Inventory& m_inventory;
+			InventoryController* m_othorCtrl = nullptr;
 
 			//ドラッグ中のスロットたち。
 			std::unordered_set<int> m_dragSlots;

@@ -12,7 +12,9 @@ namespace GUI {
 		//コントローラー
 		m_inventoryController = std::make_unique<Controller::InventoryController>(
 			m_inventorySlots, m_grabed
-			);
+		);
+		m_inventoryController->SetOthorCtrl( &GetLowerController() );
+		GetLowerController().SetOthorCtrl( m_inventoryController.get() );
 
 		//上部分のスロットを追加。
 		const CVector2 craftingSlotPoint(14, 40);

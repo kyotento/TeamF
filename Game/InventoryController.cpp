@@ -21,8 +21,18 @@ namespace GUI::Controller{
 			return;
 		}
 
+		//対象スロットと手持ち。
+		ZeroableStack slot( m_inventory.GetItem( slotNo ) );
+		ZeroableStack grab( m_grabed );
+
+		//シフトクリック
+		if( m_othorCtrl && slot && event.IsPressShift() && button == Button::LEFT){
+			m_othorCtrl->AddItem( slot.GetStack() );
+			return;
+		}
+
 		//取得の操作。
-		if( event.IsClick() && m_grabed == nullptr ){
+		if( event.IsClick() && grab == false ){
 			if( button == Button::LEFT ){
 				m_inventory.LClickSlot( slotNo, m_grabed );
 			} else if( button == Button::RIGHT ){
@@ -31,10 +41,6 @@ namespace GUI::Controller{
 			m_state = ON_GET;
 			return;
 		}
-
-		//対象スロットと手持ち。
-		ZeroableStack slot( m_inventory.GetItem( slotNo ) );
-		ZeroableStack grab( m_grabed );
 
 		//置く操作。
 		if( event.IsClick() && grab ){
@@ -106,6 +112,10 @@ namespace GUI::Controller{
 			}
 			return;
 		}
+	}
+
+	void InventoryController::AddItem( std::unique_ptr<ItemStack>& item ){
+		m_inventory.AddItem( item );
 	}
 
 	bool InventoryController::ClickGet( Event::MouseEvent & event, unsigned slotNo ){
