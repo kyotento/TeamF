@@ -186,6 +186,7 @@ void Player::Update()
 		}
 		if (m_openedGUI != nullptr) {
 			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
+			MouseCursor().SetShowMouseCursor( true );
 			m_eatingFlag = false;
 		}
 	}
@@ -231,11 +232,13 @@ void Player::SetRadianXZ( float rot ){
 inline void Player::OpenGUI( std::unique_ptr<GUI::RootNode>&& gui ){
 	m_openedGUI = std::move( gui );
 	MouseCursor().SetLockMouseCursor( false );		//マウスカーソルの固定を外す。
+	MouseCursor().SetShowMouseCursor( true );
 }
 
 inline void Player::CloseGUI(){
 	m_openedGUI.reset();
 	MouseCursor().SetLockMouseCursor( true );		//マウスカーソルを固定する。
+	MouseCursor().SetShowMouseCursor( false );
 }
 
 //キーボードの入力情報管理。

@@ -66,6 +66,7 @@ bool Game::Start()
 	m_cowGenerator->SetWorld(m_world.get());
 
 	MouseCursor().SetLockMouseCursor(true);		//マウスを固定。
+	MouseCursor().SetShowMouseCursor( false );
 
 	return true;
 }

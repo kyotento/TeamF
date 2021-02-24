@@ -67,6 +67,7 @@ bool Config::Start()
 	}
 
 	MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの非固定。
+	MouseCursor().SetShowMouseCursor( true );
 
 	return true;
 }

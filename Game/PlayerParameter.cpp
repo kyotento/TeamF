@@ -117,6 +117,11 @@ void PlayerParameter::SetParamFound()
 	m_sItemPos = leftItemPos;		//todo メモ　一つ移動するごとに0.048。
 	m_spriteRenderSelectItem.SetPos(m_sItemPos);
 	m_spriteRenderSelectItem.SetScale(1.7f);
+	//クロスヘア
+	m_spriteRenderCrossHair.Init( L"Resource/spriteData/crossHair.dds" );
+	m_spriteRenderCrossHair.SetPos( {0.5f, 0.5f} );
+	m_spriteRenderCrossHair.SetPivot( { 0.5f, 0.5f } );
+	m_spriteRenderCrossHair.SetLayerDepth( 0.9f );
 }
 
 //体力を変更する。

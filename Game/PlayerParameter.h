@@ -104,6 +104,7 @@ private:
 	GameObj::CSpriteRender m_spriteRenderExp;						//経験値。
 	GameObj::CSpriteRender m_spriteRenderExpGauge;					//経験値(ゲージの増減)。
 	GameObj::CSpriteRender m_spriteRenderSelectItem;				//度のアイテムを選択しているか。
+	GameObj::CSpriteRender m_spriteRenderCrossHair;					//クロスヘア
 
 	Player* m_player = nullptr;			//プレイヤー。
 	CFont m_font;						//フォント。

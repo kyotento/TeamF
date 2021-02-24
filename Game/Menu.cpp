@@ -12,6 +12,7 @@ Menu::Menu()
 Menu::~Menu()
 {
 	MouseCursor().SetLockMouseCursor(true);		//マウスカーソルの非固定。
+	MouseCursor().SetShowMouseCursor( false );
 }
 
 bool Menu::Start()
@@ -31,6 +32,7 @@ bool Menu::Start()
 		m_spriteRender[i].SetScale(m_scale);
 	}
 	MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの非固定。
+	MouseCursor().SetShowMouseCursor( true );
 	return true;
 }
 

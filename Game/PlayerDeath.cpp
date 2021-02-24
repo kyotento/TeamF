@@ -23,6 +23,7 @@ bool PlayerDeath::Start()
 		m_spriteRender[i].SetScale(m_scale);
 	}
 	MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの非固定。
+	MouseCursor().SetShowMouseCursor( true );
 	return true;
 }
 

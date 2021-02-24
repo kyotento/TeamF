@@ -27,6 +27,7 @@ bool Title::Start()
 	NewTitleSelect();			//TitleSelectを生成。
 
 	MouseCursor().SetLockMouseCursor(false);		//マウスを非固定。
+	MouseCursor().SetShowMouseCursor( true );
 
 	return true;
 }

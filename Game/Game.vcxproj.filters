@@ -513,9 +513,11 @@
     <ClInclude Include="BossGenerator.h">
       <Filter>generator</Filter>
     </ClInclude>
-    <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="ZeroableStack.h">
       <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseEvent.h">
+      <Filter>GUI\Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
