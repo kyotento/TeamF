@@ -226,6 +226,11 @@ void Enemy::KnockBack()
 //死亡時の処理。
 void Enemy::Death()
 {
+	//奈落死
+	if (GetPos().y < 0.f) {
+		DeleteGO(this);
+	}
+
 	float maxRot = 90.f;							//回転の上限値。
 	float rotEndTime = 0.5f;						//回転終了までにかかる時間。
 	float oneFrameRot = maxRot / 60.f/*frameLate*// rotEndTime;			//1フレームの回転量。
