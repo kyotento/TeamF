@@ -87,6 +87,7 @@
     <ClCompile Include="Wood.cpp" />
     <ClCompile Include="WorthOfGod.cpp" />
     <ClCompile Include="Utf8ToSjis.cpp" />
+    <ClCompile Include="ZeroableStack.cpp" />
     <ClCompile Include="ZombieGenerator.cpp" />
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Bed.h" />
@@ -100,8 +101,8 @@
     <ClInclude Include="BlockInfoDictionary.h" />
     <ClInclude Include="Chest.h" />
     <ClInclude Include="ChestInventory.h" />
-    <ClInclude Include="ClickEvent.h" />
-    <ClCompile Include="ClickEvent.cpp" />
+    <ClInclude Include="MouseEvent.h" />
+    <ClCompile Include="MouseEvent.cpp" />
     <ClCompile Include="CraftingController.cpp" />
     <ClCompile Include="CraftingInventory.cpp" />
     <ClCompile Include="CraftingTable.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Wood.h" />
     <ClInclude Include="WorthOfGod.h" />
     <ClInclude Include="Utf8ToSjis.h" />
+    <ClInclude Include="ZeroableStack.h" />
     <ClInclude Include="ZombieGenerator.h" />
   </ItemGroup>
   <ItemGroup>

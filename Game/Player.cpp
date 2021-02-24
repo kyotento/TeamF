@@ -117,7 +117,7 @@ bool Player::Start()
 	//プレイヤーのインベントリ情報がロードできなかったら。
 	//if (playerFiler.IsLoadSuccess() == false) {
 	//	//プレイヤーにテスト用アイテムを持たせる。
-	//	int itemArray[] = { enCube_SandStone,enCube_OakWood };
+	//	int itemArray[] = { enCube_SandStone,enCube_OakLog, enCube_CobbleStone };
 	//	for (int i : itemArray) {
 	//		auto item = std::make_unique<ItemStack>(Item::GetItem(i), Item::GetItem(i).GetStackLimit());
 	//		m_inventory.AddItem(item);
@@ -716,10 +716,6 @@ void Player::StateManagement()
 //オブジェクトの設置と破壊。
 void Player::InstallAndDestruct(const Block* hitBlock, const CVector3& hitnormal)
 {
-	SuicideObj::CSE* se;
-	se = NewGO<SuicideObj::CSE>(m_putName);
-	se->SetVolume(0.5f);
-
 	//設置。
 	if (GetKeyDown(VK_RBUTTON)) {
 		CVector3 installPos;		//設置する場所。
@@ -737,14 +733,41 @@ void Player::InstallAndDestruct(const Block* hitBlock, const CVector3& hitnormal
 			auto& item = m_inventory.GetItem(m_selItemNum - 1);		//アイテムの参照。
 			if (item != nullptr) {
 				if (item->GetIsBlock()) {		//ブロック。
-					se->Play();
 					installPos += hitnormal;
 
-					Block::enMuki muki = CalcMukiReverse( GetFront() );
+					Block::enMuki muki;
+					if (abs(hitnormal.y) > 0.0f) {
+						muki = CalcMukiReverse(GetFront());
+					}
+					else {
+						muki = CalcMukiReverse(hitnormal*-1.0f);
+					}
 
-					if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(static_cast<EnCube>(item->GetID()), muki))) {
-						//設置に成功したらインベントリのブロック数減らす
-						auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
+					bool canPlace = true;//設置していいか
+					EnCube type = static_cast<EnCube>(item->GetID());
+					//松明の向き決める
+					if (type == enCube_Torch || type == enCube_LearnTorch) {
+						if (hitnormal.y < 0.0f) {
+							canPlace = false;//天井は設置不可
+						}
+						else if (hitnormal.y > 0.0f) {
+							type = enCube_Torch;
+						}
+						else {
+							type = enCube_LearnTorch;
+						}
+					}
+
+					if (canPlace) {
+						if (m_world->PlaceBlock(installPos, BlockFactory::CreateBlock(type, muki))) {
+							//設置に成功したらインベントリのブロック数減らす
+							auto item = m_inventory.TakeItem(m_selItemNum - 1, 1);
+
+							SuicideObj::CSE* se;
+							se = NewGO<SuicideObj::CSE>(m_putName);
+							se->SetVolume(0.5f);
+							se->Play();
+						}
 					}
 				}
 			}

@@ -1,0 +1,14 @@
+{
+	"id": "enCube_LearnTorch",
+	"name": "松明(斜め)",
+	"model": "modelData/LearnTorch.tkm",
+	"hp": 1,
+	"light": 14,
+	"aabb": [
+		[ 0.15, 0, -0.035 ],
+		[ 1, 1, 0.035 ]
+	],
+	"opacity": false,
+	"isColision": false,
+	"dropItem": "enCube_Torch"
+}

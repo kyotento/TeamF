@@ -9,17 +9,19 @@ namespace GUI::Event{
 
 	//! @brief クリックを伝えるクラス。
 	//! @author Takayama
-	class ClickEvent{
+	class MouseEvent{
 	public:
 		//! @brief マウスのどのボタンかを示す。
-		enum ClickType{
+		enum Button{
 			LEFT,
-			RIGHT
+			RIGHT,
+			NONE,
 		};
 
 
-		ClickEvent( ClickType type, const CVector2& mousePos ) : clickType( type ), mousePos(mousePos){}
-		ClickEvent( const ClickEvent& e, const Node& node );
+		MouseEvent( Button type, bool isClick ,const CVector2& mousePos ) :
+			clickType( type ), isClick(isClick) ,mousePos(mousePos){}
+		MouseEvent( const MouseEvent& e, const Node& node );
 
 		//! @brief イベントを消費する。消費されたイベントは子ノードに伝わらない。
 		void Consume(){
@@ -37,8 +39,13 @@ namespace GUI::Event{
 		}
 
 		//! @brief マウスのボタンを返す。
-		ClickType GetClickType() const{
+		Button GetButton() const{
 			return clickType;
+		}
+
+		//! @brief クリックならtrue。乗ってるだけならfalse。
+		bool IsClick() const{
+			return isClick;
 		}
 
 		//! @brief クリック位置を返す。
@@ -50,13 +57,14 @@ namespace GUI::Event{
 		bool IsOnNode(const Node& node ) const;
 
 		//! @brief 指定したノードの座標系に変換したイベントを返す。
-		ClickEvent CreateEventOnNode( const Node& node ) const{
-			return ClickEvent( *this, node );
+		MouseEvent CreateEventOnNode( const Node& node ) const{
+			return MouseEvent( *this, node );
 		}
 
 	private:
 		const CVector2 mousePos;
-		const ClickType clickType;
+		const Button clickType;
 		bool isConsume = false;
+		bool isClick = false;
 	};
 }

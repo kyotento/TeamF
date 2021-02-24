@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GUIManager.h"
 #include "Node.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 #include "KeyEvent.h"
 
 namespace{
@@ -19,30 +19,35 @@ namespace GUI{
 			return;
 		}
 
-		//クリックイベントを発行。
+		//マウスイベントを発行。
 		for( auto& r : m_roots ){
-			for( int button : MOUSE_BUTTONS ){
-				if( GetKeyDown( button ) ){
-					ClickEvent::ClickType type;
+			MouseEvent::Button type = MouseEvent::Button::NONE;
+			bool isClick = false;
 
+			//右、左ボタンを調べ、押されていたらtypeに追加。
+			for( int button : MOUSE_BUTTONS ){
+				if( GetKeyInput(button) ){
 					switch( button ){
 					case VK_LBUTTON:
-						type = ClickEvent::ClickType::LEFT;
+						type = MouseEvent::Button::LEFT;
 						break;
 					case VK_RBUTTON:
-						type = ClickEvent::ClickType::RIGHT;
+						type = MouseEvent::Button::RIGHT;
 						break;
 					}
-
-					//マウス座標の作成。
-					CVector2 pos = MouseCursor().GetMouseCursorPos();
-					auto& grEn = GetGraphicsEngine();
-					pos.x *= grEn.GetFrameBuffer_W();
-					pos.y *= grEn.GetFrameBuffer_H();
-
-					r->ReciveClickEvent( ClickEvent( type, pos ), true );
+					if( GetKeyDown( button ) ){
+						isClick = true;
+					}
 				}
 			}
+
+			//マウス座標の作成。
+			CVector2 pos = MouseCursor().GetMouseCursorPos();
+			auto& grEn = GetGraphicsEngine();
+			pos.x *= grEn.GetFrameBuffer_W();
+			pos.y *= grEn.GetFrameBuffer_H();
+
+			r->ReciveMouseEvent( MouseEvent( type, isClick ,pos ), true );
 		}
 	}
 

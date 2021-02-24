@@ -13,6 +13,8 @@ namespace GUI{
 		m_controller = std::make_unique<Controller::FurnaceController>(
 			furnaceInv, m_grabed, fire
 		);
+		m_controller->SetOthorCtrl( &GetLowerController() );
+		GetLowerController().SetOthorCtrl( m_controller.get() );
 
 		//上部分のスロットを追加。
 		const CVector2 fuelPos( 110, 104 );

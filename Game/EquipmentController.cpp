@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EquipmentController.h"
-#include "ClickEvent.h"
+#include "MouseEvent.h"
 #include "Inventory.h"
 #include "RecipeManager.h"
 
@@ -35,9 +35,10 @@ namespace GUI::Controller {
 		}*/
 	}
 
-	void EquipmentController::OnClickSlot(Event::ClickEvent & event, unsigned slotNo) {
-		
-
+	void EquipmentController::OnMouseEvent(Event::MouseEvent & event, unsigned slotNo) {
+		if( event.IsClick() == false ){
+			return;
+		}
 
 		//クラフトスロットより上なら操作する。
 		if (slotNo > craftSlot) {

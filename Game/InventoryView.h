@@ -29,11 +29,16 @@ namespace GUI{
 		CVector2 GetSize() const override;
 
 		//! @brief 外側で起こったクリックイベント。
-		void OnClickOnOut( const Event::ClickEvent& event ) override;
+		void OnClickOnOut( const Event::MouseEvent& event ) override;
 
 	protected:
 		//掴んでいるアイテム
 		std::unique_ptr<ItemStack> m_grabed;
+
+		//下半分のコントローラー
+		Controller::InventoryController& GetLowerController(){
+			return *m_controller;
+		}
 	private:
 		Player* m_player = nullptr;
 		CSprite m_sprite;

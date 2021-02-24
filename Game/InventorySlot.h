@@ -24,8 +24,8 @@ namespace GUI{
 			return CVector2{ float( m_widthNum * SLOT_WIDTH ), float( m_heightNum * SLOT_WIDTH ) } *GetScale();
 		}
 
-		//! @brief GUIManager が呼ぶクリックイベント関数。
-		void OnClick( GUI::Event::ClickEvent& event ) override;
+		//! @brief GUIManager が呼ぶマウスが乗った時イベント関数。
+		void OnMouseEvent( GUI::Event::MouseEvent& event ) override;
 
 		//! @brief GUIManager が呼ぶ描画関数。
 		void Draw( const CVector2& pos, const CVector2& parentScale ) override;

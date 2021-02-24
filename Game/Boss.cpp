@@ -50,6 +50,7 @@ namespace {
 		//case enCube_DoorDown:
 		case enCube_TorchBlock:
 		case enCube_Torch:
+		case enCube_LearnTorch:
 		case enCube_BedHead:
 		case enCube_BedLeg:
 		case enCube_Chest:
@@ -145,7 +146,7 @@ bool Boss::Start()
 void Boss::Update()
 {
 	//EscMenuが開いているとき更新を止める。
-	if (m_game->GetIsEscMenu() ||GetKeyInput(VK_RETURN)) {
+	if (m_game->GetIsEscMenu()){// ||GetKeyInput(VK_RETURN)) {
 		return;
 	}
 
@@ -627,6 +628,20 @@ bool Boss::AddItem(std::unique_ptr<ItemStack>& item) {
 	case enCube_DiamondBlock:	//ダイアモンドブロック
 		point += 10;
 		break;
+
+	case enItem_Iron_Ingot:
+		point += 2;
+		break;
+	case enItem_Gold_Ingot:
+		point += 5;
+		break;
+	case enItem_Diamond:
+		point += 5;
+		break;
+	case enItem_Leather:
+		point += 1;
+		break;
+
 	default:
 		break;
 	}
