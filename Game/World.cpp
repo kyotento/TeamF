@@ -110,6 +110,9 @@ void World::PostUpdate(){
 			minBig -= Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
 			maxBig += Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
 
+			min.y = minBig.y = 0.0f;
+			max.y = maxBig.y = (Chunk::HEIGHT+10) * Block::WIDTH;
+
 			for (Entity* e : m_entities) {
 				if (e == player) { continue; }//ƒvƒŒƒCƒ„‚Í–³Ž‹
 				if (CMath::ColAABBs(min, max, e->GetPos() - CVector3::One(), e->GetPos() + CVector3::One())) {
@@ -681,7 +684,7 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
-	if (y > maxHeight)
+	if (y > maxHeight || y <= 0)
 	{
 		m_errorTimer = errorTime;
 		return false;
