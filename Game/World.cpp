@@ -111,7 +111,7 @@ void World::PostUpdate(){
 			maxBig += Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
 
 			min.y = minBig.y = 0.0f;
-			max.y = maxBig.y = Chunk::HEIGHT * Block::WIDTH;
+			max.y = maxBig.y = (Chunk::HEIGHT+10) * Block::WIDTH;
 
 			for (Entity* e : m_entities) {
 				if (e == player) { continue; }//ƒvƒŒƒCƒ„‚Í–³Ž‹
