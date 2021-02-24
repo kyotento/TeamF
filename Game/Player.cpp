@@ -185,8 +185,8 @@ void Player::Update()
 			CloseGUI();
 		}
 		if (m_openedGUI != nullptr) {
-			MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
-			MouseCursor().SetShowMouseCursor( true );
+			//MouseCursor().SetLockMouseCursor(false);		//マウスカーソルの固定を外す。
+			//MouseCursor().SetShowMouseCursor( true );
 			m_eatingFlag = false;
 		}
 	}
