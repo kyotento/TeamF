@@ -684,7 +684,7 @@ bool World::PlaceBlock( const CVector3& pos, std::unique_ptr<Block> block ){
 	int x = (int)std::floorf( pos.x );
 	int y = (int)std::floorf( pos.y );
 	int z = (int)std::floorf( pos.z );
-	if (y > maxHeight)
+	if (y > maxHeight || y <= 0)
 	{
 		m_errorTimer = errorTime;
 		return false;
