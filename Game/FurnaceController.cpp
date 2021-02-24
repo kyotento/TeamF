@@ -14,6 +14,11 @@ namespace GUI::Controller{
 	}
 
 	void FurnaceController::OnMouseEvent( Event::MouseEvent & event, unsigned slotNo ){
+		if( event.GetButton() == event.NONE ){
+			InventoryController::OnMouseEvent( event, slotNo );
+			return;
+		}
+
 		if( event.IsClick() == false ){
 			return;
 		}
@@ -34,7 +39,7 @@ namespace GUI::Controller{
 				return;
 			}
 
-			if(m_othorCtrl && event.IsPressShift() ){
+			if( m_othorCtrl && event.IsPressShift() ){
 				m_othorCtrl->AddItem( result.GetStack() );
 			} else{
 				grab.TakeFrom( result, INT_MAX );
@@ -45,30 +50,8 @@ namespace GUI::Controller{
 				return;
 			}
 
-			if( source == false ){
-				return;
-			}
-
-			//レシピを参照して、燃やせるものだった場合、燃焼のためのGameObjectを生成する。
-			auto recipeResult = RecipeManager::Instance().GetFurnaceResult( source.GetID() );
-
-			if( recipeResult == nullptr ){
-				return;
-			}
-
-			//完成品スロットに邪魔な物が入っていると燃やせない。
-			if( result ){
-				if( recipeResult->GetID() != result.GetID() ){
-					return;
-				}
-				if( result.GetNumber() == result.GetItem()->GetStackLimit() ){
-					return;
-				}
-			}
-
-			//火をつける。
-			m_fire.setFire();
-
+			//火が付くか試す。
+			TryFire();
 			return;
 		}
 
@@ -83,29 +66,8 @@ namespace GUI::Controller{
 			return;
 		}
 
-		if( source == false || fuel == false ){
-			return;
-		}
-
-		//レシピを参照して、燃やせるものだった場合、燃焼のためのGameObjectを生成する。
-		auto recipeResult = RecipeManager::Instance().GetFurnaceResult( source.GetID() );
-
-		if( recipeResult == nullptr ){
-			return;
-		}
-
-		//完成品スロットに邪魔な物が入っていると燃やせない。
-		if( result ){
-			if( recipeResult->GetID() != result.GetID() ){
-				return;
-			}
-			if( result.GetNumber() == result.GetItem()->GetStackLimit() ){
-				return;
-			}
-		}
-
-		//火をつける。
-		m_fire.setFire();
+		//火が付くか試す。
+		TryFire();
 	}
 
 	void FurnaceController::AddItem( std::unique_ptr<ItemStack>& item ){
@@ -126,20 +88,27 @@ namespace GUI::Controller{
 		if( m_fire.isFire() ){
 			return;
 		}
+		//火が付くか試す
+		TryFire();
+	}
 
-		if( source == false || fuel == false ){
+	void FurnaceController::TryFire(){
+		auto& result = m_inventory.GetItem( Furnace::RESULT );
+		auto& fuel = m_inventory.GetItem( Furnace::FUEL );
+		auto& source = m_inventory.GetItem( Furnace::SOURCE );
+
+		if( source == nullptr || fuel == nullptr ){
 			return;
 		}
 
 		//レシピを参照して、燃やせるものだった場合、燃焼のためのGameObjectを生成する。
-		auto recipeResult = RecipeManager::Instance().GetFurnaceResult( source.GetID() );
+		auto recipeResult = RecipeManager::Instance().GetFurnaceResult( source->GetID() );
 
 		if( recipeResult == nullptr ){
 			return;
 		}
 
 		//完成品スロットに邪魔な物が入っていると燃やせない。
-		auto& result = m_inventory.GetItem( Furnace::RESULT );
 		if( result ){
 			if( recipeResult->GetID() != result->GetID() ){
 				return;

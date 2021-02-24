@@ -26,6 +26,8 @@ namespace GUI{
 			void AddItem( std::unique_ptr<ItemStack>& item ) override;
 
 		private:
+			void TryFire();
+
 			FurnaceFire& m_fire;
 		};
 
