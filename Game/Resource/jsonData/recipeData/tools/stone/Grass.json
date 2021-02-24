@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shaped", 
+    "pattern": [
+      "X",
+      "#"
+    ],
+    "key": {
+      "X": "enCube_OakLeaf",
+      "#": "enCube_Soil"
+    },
+    "result": "enCube_Grass"
+  }
