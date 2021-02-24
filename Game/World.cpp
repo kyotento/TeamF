@@ -110,6 +110,9 @@ void World::PostUpdate(){
 			minBig -= Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
 			maxBig += Chunk::WIDTH * Block::WIDTH * ENTITY_DELETE_CHUNK_AREA_OFFSET;
 
+			min.y = minBig.y = 0.0f;
+			max.y = maxBig.y = Chunk::HEIGHT * Block::WIDTH;
+
 			for (Entity* e : m_entities) {
 				if (e == player) { continue; }//ƒvƒŒƒCƒ„‚Í–³Ž‹
 				if (CMath::ColAABBs(min, max, e->GetPos() - CVector3::One(), e->GetPos() + CVector3::One())) {
